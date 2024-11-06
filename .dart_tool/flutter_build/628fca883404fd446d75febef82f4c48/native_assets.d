@@ -1,0 +1,1 @@
+ C:\\Users\\kosuk\\Magic_Crepas\\.dart_tool\\flutter_build\\628fca883404fd446d75febef82f4c48\\native_assets.yaml: 

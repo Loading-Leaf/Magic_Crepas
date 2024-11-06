@@ -4,7 +4,7 @@
             "outputFile": "com.example.ai_art.app-mergeDebugResources-20:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\kosuk\\AI_X_ART\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\kosuk\\Magic_Crepas\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

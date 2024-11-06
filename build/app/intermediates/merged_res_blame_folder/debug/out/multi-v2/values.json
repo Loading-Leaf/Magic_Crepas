@@ -38,25 +38,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\kosuk\\AI_X_ART\\android\\app\\src\\main\\res\\values\\styles.xml",
-                    "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "176,832",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "483,998"
-                    },
-                    "to": {
-                        "startLines": "108,112",
-                        "startColumns": "4,4",
-                        "startOffsets": "6436,6617",
-                        "endLines": "111,114",
-                        "endColumns": "12,12",
-                        "endOffsets": "6612,6781"
-                    }
-                },
-                {
                     "source": "C:\\Users\\kosuk\\.gradle\\caches\\transforms-3\\4ac9c1c617b4046bb54acd067955b671\\transformed\\lifecycle-runtime-2.6.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -105,6 +86,25 @@
                         "startOffsets": "5771",
                         "endColumns": "82",
                         "endOffsets": "5849"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\kosuk\\Magic_Crepas\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "176,832",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "483,998"
+                    },
+                    "to": {
+                        "startLines": "108,112",
+                        "startColumns": "4,4",
+                        "startOffsets": "6436,6617",
+                        "endLines": "111,114",
+                        "endColumns": "12,12",
+                        "endOffsets": "6612,6781"
                     }
                 },
                 {
