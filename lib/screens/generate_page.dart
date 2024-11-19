@@ -20,8 +20,11 @@ class _GeneratePageState extends State<GeneratePage> {
   List<Map<String, dynamic>> _images = []; // ここで _images を定義
   late Database _database; // late修飾子を使用
   File? image;
+  bool isresult_exist = false;
   @override
   List<int>? drawingImageData;
+  bool showGenerateButton = false; // 絵ができたよボタンの表示制御用
+  Uint8List? resultbytes2;
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -101,23 +104,68 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showDialog(BuildContext context) {
+    Size screenSize = MediaQuery.sizeOf(context);
     showDialog<void>(
       context: context,
       barrierDismissible: false, // (追加)ユーザーがモーダルを閉じないようにする
       builder: (BuildContext context) {
-        return GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Dialog(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('絵ができるまでまってね'),
-                  SizedBox(height: 20),
-                ],
-              ),
+        return Dialog(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('絵ができるまでまってね'),
+                Text('楽しいまちがいさがしゲームで遊んでね'),
+                SizedBox(height: 20),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: screenSize.height * 0.50,
+                      width: screenSize.height * 0.50,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Image.asset('assets/difference/original/1.png'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: screenSize.height * 0.50,
+                      width: screenSize.height * 0.50,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Image.asset('assets/difference/joke/1.png'),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        if (isresult_exist == true) {
+                          Navigator.pushNamed(context, '/output',
+                              arguments: resultbytes2);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('まだできてないよー')),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        '完成した絵を見る',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ]),
+              ],
             ),
           ),
         );
@@ -284,16 +332,16 @@ class _GeneratePageState extends State<GeneratePage> {
                               base64Decode(resultimageBase64);
                           // バイトから画像を生成
                           if (resultbytes.isNotEmpty) {
-                            Navigator.pushNamed(context, '/output',
-                                arguments: resultbytes);
+                            isresult_exist = true;
+                            resultbytes2 = resultbytes;
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('生成された画像が空です')),
+                              SnackBar(content: Text('作ったアートが空だよ')),
                             );
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('アート生成に失敗しました')),
+                            SnackBar(content: Text('アート生成に失敗したよ')),
                           );
                         }
                       },
@@ -301,7 +349,7 @@ class _GeneratePageState extends State<GeneratePage> {
                         backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        'アートを生成する',
+                        'アートを作る',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

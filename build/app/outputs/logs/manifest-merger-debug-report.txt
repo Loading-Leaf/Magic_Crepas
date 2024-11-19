@@ -23,6 +23,7 @@ INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.x
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
 MERGED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
+MERGED from [:flutter_native_splash] C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-36:12
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\kosuk\Magic_Crepas\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:image_gallery_saver] C:\Users\kosuk\Magic_Crepas\build\image_gallery_saver\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
@@ -98,6 +99,8 @@ uses-sdk
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
+MERGED from [:flutter_native_splash] C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_native_splash] C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\kosuk\Magic_Crepas\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41

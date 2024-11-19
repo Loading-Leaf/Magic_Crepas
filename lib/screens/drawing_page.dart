@@ -40,12 +40,23 @@ class _DrawingPageState extends State<DrawingPage> {
 
   @override
   Widget build(BuildContext context) {
+    //height: 387.42857142857144
+    //width: 868.5714285714286
     return Scaffold(
       body: Column(
         children: [
+          Padding(
+            padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.height * 0.1), // 左辺だけに余白を追加
+          ),
           Expanded(
             child: Row(
               children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width *
+                          0.1), // 左辺だけに余白を追加
+                ),
                 // 描画エリア
                 Expanded(
                   child: Stack(
@@ -62,14 +73,27 @@ class _DrawingPageState extends State<DrawingPage> {
                                     context.findRenderObject() as RenderBox;
                                 final localPosition = renderBox
                                     .globalToLocal(details.globalPosition);
+                                // 左側の余白を考慮して座標補正
+                                final padding_left =
+                                    MediaQuery.of(context).size.width * 0.1;
+                                final padding_top =
+                                    MediaQuery.of(context).size.height * 0.1;
+                                final correctedPosition = Offset(
+                                  localPosition.dx - padding_left,
+                                  localPosition.dy - padding_top,
+                                );
 
-                                if (localPosition.dx >= 0 &&
-                                    localPosition.dx <=
-                                        renderBox.size.width - 148 &&
-                                    localPosition.dy >= 0 &&
-                                    localPosition.dy <=
-                                        renderBox.size.height - 80) {
-                                  _currentLinePoints.add(localPosition);
+                                if (correctedPosition.dx >= 0 &&
+                                    correctedPosition.dx <=
+                                        renderBox.size.width -
+                                            MediaQuery.of(context).size.width *
+                                                0.3 &&
+                                    correctedPosition.dy >= 0 &&
+                                    correctedPosition.dy <=
+                                        renderBox.size.height -
+                                            MediaQuery.of(context).size.height *
+                                                0.3) {
+                                  _currentLinePoints.add(correctedPosition);
                                 }
                               });
                             },
@@ -81,8 +105,9 @@ class _DrawingPageState extends State<DrawingPage> {
                               });
                             },
                             child: CustomPaint(
-                              size: Size(MediaQuery.of(context).size.width,
-                                  MediaQuery.of(context).size.height * 0.8),
+                              size: Size(
+                                  MediaQuery.of(context).size.width * 0.7,
+                                  MediaQuery.of(context).size.height * 0.7),
                               painter: DrawingPainter(_lines, _strokeWidth),
                             ),
                           ),
@@ -100,8 +125,8 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 Column(children: [
                   // 色選択用のウィジェット
-                  _buildColorPicker(),
-                  _buildStrokePicker(),
+                  _buildColorPicker(MediaQuery.of(context).size.height ~/ 11),
+                  _buildStrokePicker(MediaQuery.of(context).size.height / 11),
                 ]),
               ],
             ),
@@ -131,7 +156,7 @@ class _DrawingPageState extends State<DrawingPage> {
                   backgroundColor: Color.fromARGB(255, 255, 67, 195),
                 ),
                 child: Text(
-                  'アートを生成する',
+                  'できたよ',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -194,7 +219,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   // 色を選択するためのウィジェット
-  Widget _buildColorPicker() {
+  Widget _buildColorPicker(int size) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -202,33 +227,33 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.red),
-              _colorCircle(Colors.orange),
-              _colorCircle(Colors.yellow),
+              _colorCircle(Colors.red, size),
+              _colorCircle(Colors.orange, size),
+              _colorCircle(Colors.yellow, size),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.lightGreen),
-              _colorCircle(Colors.green),
-              _colorCircle(Colors.lightBlue),
+              _colorCircle(Colors.lightGreen, size),
+              _colorCircle(Colors.green, size),
+              _colorCircle(Colors.lightBlue, size),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.blue),
-              _colorCircle(Colors.purple),
-              _colorCircle(Colors.pink),
+              _colorCircle(Color.fromARGB(255, 0, 30, 255), size),
+              _colorCircle(Colors.purple, size),
+              _colorCircle(Color.fromARGB(255, 255, 130, 171), size),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.white),
-              _colorCircle(Colors.black),
-              _colorCircle(Colors.brown),
+              _colorCircle(Colors.white, size),
+              _colorCircle(Colors.black, size),
+              _colorCircle(Colors.brown, size),
             ],
           ),
         ],
@@ -237,7 +262,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   // 色選択用のボタン
-  Widget _colorCircle(Color color) {
+  Widget _colorCircle(Color color, int size) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -261,7 +286,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   // 太さを選択するためのウィジェット
-  Widget _buildStrokePicker() {
+  Widget _buildStrokePicker(double size) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -269,17 +294,17 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _strokeCircle(5.0),
-              _strokeCircle(6.0),
-              _strokeCircle(7.0),
+              _strokeCircle(5.0, size),
+              _strokeCircle(6.0, size),
+              _strokeCircle(7.0, size),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _strokeCircle(8.0),
-              _strokeCircle(9.0),
-              _strokeCircle(10.0),
+              _strokeCircle(8.0, size),
+              _strokeCircle(9.0, size),
+              _strokeCircle(10.0, size),
             ],
           ),
         ],
@@ -289,7 +314,7 @@ class _DrawingPageState extends State<DrawingPage> {
 
   // 色選択用のボタン
   // 太さを選択するためのウィジェット
-  Widget _strokeCircle(double strokesize) {
+  Widget _strokeCircle(double strokesize, double size) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -298,8 +323,8 @@ class _DrawingPageState extends State<DrawingPage> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 4.0),
-        width: 36, // 幅を36pxに設定
-        height: 36, // 高さを36pxに設定
+        width: size, // 幅を36pxに設定
+        height: size, // 高さを36pxに設定
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 255, 255, 255),
           shape: BoxShape.rectangle, // 矩形の形状に変更

@@ -41,6 +41,8 @@ dependencies:
   image_picker: ^1.1.2
   sqflite: ^2.3.3+1
   image_gallery_saver: ^2.0.3
+  flutter_native_splash: ^2.4.1
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
@@ -96,3 +98,23 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/
+    - assets/difference/original/
+    - assets/difference/joke/
+
+flutter_native_splash:
+  color: '#ffcdec'  # スプラッシュ画面の背景色
+  image: 'assets/magic_logo.png'  # スプラッシュ画面に表示する画像
+  android: true  # Androidのスプラッシュ画面を有効化
+  ios: true  # iOSのスプラッシュ画面を有効化
+  color_dark: '#ffcdec'
+  image_dark: 'assets/magic_logo.png'
+  fullscreen: true
+
+
+flutter_icons:
+  ios: true
+  image_path: "assets/magic_logo.png"
+  remove_alpha_ios: true
+  android: true
+  adaptive_icon_background: "assets/magic_logo.png"
+  adaptive_icon_foreground: "assets/magic_logo.png"

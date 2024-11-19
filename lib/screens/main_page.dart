@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -7,16 +6,28 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-
+    print(screenSize.height);
+    print(screenSize.width);
     return Scaffold(
       body: Column(
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Text('AIが好きな絵と写真を組み合わせて自動描画してくれます'),
+          Padding(
+            padding: EdgeInsets.all(10.0), // ここでPaddingを追加
+            child: Container(
+              alignment: Alignment.centerLeft, // 左寄せ
+              child: Container(
+                height: screenSize.height * 0.15,
+                width: screenSize.width * 0.20,
+                child: Image.asset('assets/title_logo_main.png'),
+              ),
+            ),
           ),
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(5.0),
+            child: Text('AIが好きな絵と写真で新しいアートを作ってくれるよ'),
+          ),
+          Padding(
+            padding: EdgeInsets.all(5.0),
             child: Container(
               height: screenSize.width * 0.15,
               width: screenSize.width * 0.5,
@@ -27,8 +38,8 @@ class MainPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text('好きなドリンクとアートを組み合わせると？？？'),
+            padding: EdgeInsets.all(5.0),
+            child: Text('好きなものとアートを組み合わせると？？？'),
           ),
           Container(
             alignment: Alignment.centerRight,
