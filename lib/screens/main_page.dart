@@ -24,37 +24,44 @@ class MainPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(5.0),
-            child: Text('AIが好きな絵と写真で新しいアートを作ってくれるよ'),
-          ),
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Container(
-              height: screenSize.width * 0.15,
-              width: screenSize.width * 0.5,
-              child: FittedBox(
-                fit: BoxFit.fill,
-                child: Image.asset('assets/title_image.png'),
+            child: Text(
+              'AIが好きな絵と写真で新しいアートを作ってくれるよ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
           ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Container(
+                height: screenSize.width * 0.15,
+                width: screenSize.width * 0.5,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Image.asset('assets/title_image.png'),
+                ),
+              ),
+            ),
+            Container(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/generate');
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                ),
+                child: Text(
+                  'AIでアートを作る',
+                  style: TextStyle(fontSize: 14, color: Colors.white),
+                ),
+              ),
+            ),
+          ]),
           Padding(
             padding: EdgeInsets.all(5.0),
             child: Text('好きなものとアートを組み合わせると？？？'),
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/generate');
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 67, 195),
-              ),
-              child: Text(
-                'AIでアートを作る',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
           ),
         ],
       ),
