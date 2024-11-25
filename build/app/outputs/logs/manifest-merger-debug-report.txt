@@ -1,8 +1,10 @@
 -- Merging decision tree log ---
 application
-INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:5:5-36:19
+INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:5:5-37:19
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-34:19
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-34:19
+MERGED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-14:19
+MERGED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-14:19
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:24:5-31:19
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:24:5-31:19
 MERGED from [androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:28:5-89
@@ -18,23 +20,29 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\ko
 	android:name
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
 manifest
-ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
-INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
-INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
-INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
-MERGED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
+ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
+INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
+INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
+INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
+MERGED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
+MERGED from [:audioplayers_android] C:\Users\kosuk\Magic_Crepas\build\audioplayers_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
+MERGED from [:flutter_native_splash] C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-36:12
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\kosuk\Magic_Crepas\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:image_gallery_saver] C:\Users\kosuk\Magic_Crepas\build\image_gallery_saver\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:path_provider_android] C:\Users\kosuk\Magic_Crepas\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:sqflite] C:\Users\kosuk\Magic_Crepas\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-16:12
+MERGED from [:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\kosuk\.gradle\caches\transforms-3\2c78d49fbcc625202f50a9334fbc9153\transformed\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.7.2] C:\Users\kosuk\.gradle\caches\transforms-3\bde7e7dd978a4f14628e733b41fcdd9f\transformed\jetified-activity-1.7.2\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.browser:browser:1.5.0] C:\Users\kosuk\.gradle\caches\transforms-3\fe539880c5099955febb99e965e706e5\transformed\browser-1.5.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\c1e3cec58f97b65c118bb2f68fab94a8\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\eeb3b3d28863e46e8405d58b4e4ce9b4\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\3dd24de0bfb0a58b7b0437cba93312a0\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\c1e3cec58f97b65c118bb2f68fab94a8\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.customview:customview:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\e7089abc1d97d688192104f9e7c95213\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:17:1-30:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\kosuk\.gradle\caches\transforms-3\93b9d15e098df96a93b7a4fb1262fd3b\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
@@ -56,15 +64,15 @@ INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 	package
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
+		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
+		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-48:12
+		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:1-49:12
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:1:11-69
@@ -83,21 +91,27 @@ ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:
 	android:name
 		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:4:22-77
 queries
-ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:42:5-47:15
+ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:43:5-48:15
 intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
-ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:43:9-46:18
+ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:44:9-47:18
 action#android.intent.action.PROCESS_TEXT
-ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:44:13-72
+ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:45:13-72
 	android:name
-		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:44:21-70
+		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:45:21-70
 data
-ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:45:13-50
+ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:46:13-50
 	android:mimeType
-		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:45:19-48
+		ADDED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:46:19-48
 uses-sdk
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
 INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
+MERGED from [:audioplayers_android] C:\Users\kosuk\Magic_Crepas\build\audioplayers_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:audioplayers_android] C:\Users\kosuk\Magic_Crepas\build\audioplayers_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_native_splash] C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_native_splash] C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\kosuk\Magic_Crepas\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
@@ -108,20 +122,26 @@ MERGED from [:path_provider_android] C:\Users\kosuk\Magic_Crepas\build\path_prov
 MERGED from [:path_provider_android] C:\Users\kosuk\Magic_Crepas\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:sqflite] C:\Users\kosuk\Magic_Crepas\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:sqflite] C:\Users\kosuk\Magic_Crepas\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
+MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\kosuk\.gradle\caches\transforms-3\2c78d49fbcc625202f50a9334fbc9153\transformed\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\kosuk\.gradle\caches\transforms-3\2c78d49fbcc625202f50a9334fbc9153\transformed\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.7.2] C:\Users\kosuk\.gradle\caches\transforms-3\bde7e7dd978a4f14628e733b41fcdd9f\transformed\jetified-activity-1.7.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.activity:activity:1.7.2] C:\Users\kosuk\.gradle\caches\transforms-3\bde7e7dd978a4f14628e733b41fcdd9f\transformed\jetified-activity-1.7.2\AndroidManifest.xml:20:5-44
-MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
-MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
+MERGED from [androidx.browser:browser:1.5.0] C:\Users\kosuk\.gradle\caches\transforms-3\fe539880c5099955febb99e965e706e5\transformed\browser-1.5.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.browser:browser:1.5.0] C:\Users\kosuk\.gradle\caches\transforms-3\fe539880c5099955febb99e965e706e5\transformed\browser-1.5.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\c1e3cec58f97b65c118bb2f68fab94a8\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\c1e3cec58f97b65c118bb2f68fab94a8\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\eeb3b3d28863e46e8405d58b4e4ce9b4\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\eeb3b3d28863e46e8405d58b4e4ce9b4\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\3dd24de0bfb0a58b7b0437cba93312a0\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\3dd24de0bfb0a58b7b0437cba93312a0\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\c1e3cec58f97b65c118bb2f68fab94a8\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\c1e3cec58f97b65c118bb2f68fab94a8\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.customview:customview:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\e7089abc1d97d688192104f9e7c95213\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.customview:customview:1.0.0] C:\Users\kosuk\.gradle\caches\transforms-3\e7089abc1d97d688192104f9e7c95213\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:20:5-44
@@ -162,6 +182,10 @@ INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.
 	android:minSdkVersion
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\kosuk\Magic_Crepas\android\app\src\debug\AndroidManifest.xml
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
+	android:name
+		ADDED from [:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-76
 provider#io.flutter.plugins.imagepicker.ImagePickerFileProvider
 ADDED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-19:20
 	android:grantUriPermissions
@@ -200,6 +224,18 @@ ADDED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picke
 		ADDED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:32:17-33
 	android:name
 		ADDED from [:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:31:17-63
+activity#io.flutter.plugins.urllauncher.WebViewActivity
+ADDED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-13:74
+	android:exported
+		ADDED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-37
+	android:theme
+		ADDED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-71
+	android:name
+		ADDED from [:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-74
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from [:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-76
+	android:name
+		ADDED from [:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-73
 uses-library#androidx.window.extensions
 ADDED from [androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
 	android:required

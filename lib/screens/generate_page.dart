@@ -8,6 +8,16 @@ import 'dart:typed_data';
 import 'package:sqflite/sqflite.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:wifi_info_flutter/wifi_info_flutter.dart';
+import 'dart:math' as math;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+import 'package:ai_art/artproject/audio_provider.dart';
+
+int randomIntWithRange(int min, int max) {
+  int value = math.Random().nextInt(max - min);
+  return value + min;
+}
 
 class GeneratePage extends StatefulWidget {
   const GeneratePage({super.key});
@@ -20,8 +30,28 @@ class _GeneratePageState extends State<GeneratePage> {
   List<Map<String, dynamic>> _images = []; // ここで _images を定義
   late Database _database; // late修飾子を使用
   File? image;
+  bool isresult_exist = false;
   @override
   List<int>? drawingImageData;
+  bool showGenerateButton = false; // 絵ができたよボタンの表示制御用
+  Uint8List? resultbytes2;
+
+  String? wifiName; // Wi-Fi名を保存する変数
+
+  Future<void> _getWifiName() async {
+    try {
+      String? wifi = await WifiInfo().getWifiName();
+      setState(() {
+        wifiName = wifi;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to get Wi-Fi name: $e');
+      setState(() {
+        wifiName = null; // Wi-Fi名が取得できなかった場合、nullをセット
+      });
+    }
+  }
+
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -30,7 +60,7 @@ class _GeneratePageState extends State<GeneratePage> {
       final imageTemp = File(image.path);
       setState(() => this.image = imageTemp);
 
-      // ここで描画データを設定する
+      // 描画データの設定（仮データ）
       String drawingData = 'your_drawing_data_here'; // 適切な描画データを設定
 
       await DatabaseHelper.instance.insert({
@@ -64,6 +94,9 @@ class _GeneratePageState extends State<GeneratePage> {
       // 最後に保存した描画データをセット
       if (_images.isNotEmpty) {
         drawingImageData = _images.last['drawing']; // 最後の画像を使用
+        setState(() {
+          image = File(_images[_images.length - 1]['path']);
+        });
       }
 
       //print(_images.length);
@@ -98,26 +131,90 @@ class _GeneratePageState extends State<GeneratePage> {
     _initializeDatabase(); // データベースの初期化を呼び出す
     loadImages(); // 初期化時に画像を読み込む
     loadDrawings(); // 描画データを読み込む
+    _getWifiName();
   }
 
   void _showDialog(BuildContext context) {
+    Size screenSize = MediaQuery.sizeOf(context);
+    final audioProvider = Provider.of<AudioProvider>(context);
+    double fontsize = (screenSize.height ~/ 29).toDouble();
+    String random_num = randomIntWithRange(1, 7).toString();
+
     showDialog<void>(
       context: context,
       barrierDismissible: false, // (追加)ユーザーがモーダルを閉じないようにする
       builder: (BuildContext context) {
-        return GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Dialog(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('絵ができるまでまってね'),
-                  SizedBox(height: 20),
-                ],
-              ),
+        return Dialog(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('絵ができるまでまってね', style: TextStyle(fontSize: fontsize)),
+                Text('楽しいまちがいさがしゲームで遊んでね',
+                    style: TextStyle(fontSize: fontsize)),
+                SizedBox(height: 20),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: screenSize.height * 0.50,
+                      width: screenSize.height * 0.50,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Image.asset('assets/difference/original/' +
+                            random_num +
+                            '.png'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Container(
+                      height: screenSize.height * 0.50,
+                      width: screenSize.height * 0.50,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Image.asset(
+                            'assets/difference/joke/' + random_num + '.png'),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        if (isresult_exist == true) {
+                          audioProvider.playSound("established.mp3");
+                          Navigator.pushNamed(
+                            context,
+                            '/output',
+                            arguments: {
+                              'outputImage': resultbytes2,
+                              'drawingImageData':
+                                  Uint8List.fromList(drawingImageData!),
+                            },
+                          );
+                        } else {
+                          audioProvider.playSound("tap1.mp3");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('まだできてないよー')),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        '完成した絵を見る',
+                        style:
+                            TextStyle(fontSize: fontsize, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ]),
+              ],
             ),
           ),
         );
@@ -134,6 +231,9 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = (screenSize.height ~/ 29).toDouble();
+    final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: Center(
         child: LayoutBuilder(
@@ -148,21 +248,21 @@ class _GeneratePageState extends State<GeneratePage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("選んだ写真"),
+                        Text("選んだ写真", style: TextStyle(fontSize: fontsize)),
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Container(
                             // 画面のサイズに基づいて縮小したサイズで表示
-                            height: 150,
-                            width: 200,
+                            height: (screenSize.height ~/ 2.74).toDouble(),
+                            width: (screenSize.height ~/ 2.055).toDouble(),
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              child: image != null || _images.isNotEmpty
+                              child: image != null
                                   ? Image.file(image ??
                                       File(_images[_images.length - 1]
                                           ['path'])) // 選択された画像またはDBから取得した画像を表示
                                   : Image.asset(
-                                      'assets/style.jpg'), // どちらもない場合はデフォルト画像を表示
+                                      'assets/style.png'), // どちらもない場合はデフォルト画像を表示
                             ),
                           ),
                         ),
@@ -172,20 +272,20 @@ class _GeneratePageState extends State<GeneratePage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("お絵描きした絵"),
+                        Text("お絵描きした絵", style: TextStyle(fontSize: fontsize)),
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Container(
                             // 画面のサイズに基づいて縮小したサイズで表示
-                            height: 150,
-                            width: 150,
+                            height: (screenSize.height ~/ 2.74).toDouble(),
+                            width: (screenSize.height ~/ 2.74).toDouble(),
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: drawingImageData != null
                                   ? Image.memory(Uint8List.fromList(
                                       drawingImageData!)) // SQLiteから取得した描画データを表示
                                   : Image.asset(
-                                      'assets/content.jpg'), // それ以外はデフォルト画像を表示
+                                      'assets/content.png'), // それ以外はデフォルト画像を表示
                             ),
                           ),
                         ),
@@ -198,6 +298,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
                                 Navigator.pushNamed(context, '/drawing');
                               },
                               style: TextButton.styleFrom(
@@ -206,7 +307,8 @@ class _GeneratePageState extends State<GeneratePage> {
                               ),
                               child: Text(
                                 'お絵描きをする',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: fontsize, color: Colors.white),
                               ),
                             ),
                           ),
@@ -214,6 +316,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
+                                audioProvider.playSound("tap2.mp3");
                                 pickImage();
                               },
                               style: TextButton.styleFrom(
@@ -222,7 +325,8 @@ class _GeneratePageState extends State<GeneratePage> {
                               ),
                               child: Text(
                                 '写真を選ぶ',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: fontsize, color: Colors.white),
                               ),
                             ),
                           ),
@@ -234,6 +338,7 @@ class _GeneratePageState extends State<GeneratePage> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
+                        audioProvider.playSound("tap1.mp3");
                         Navigator.pushNamed(context, '/');
                       },
                       style: TextButton.styleFrom(
@@ -241,20 +346,30 @@ class _GeneratePageState extends State<GeneratePage> {
                       ),
                       child: Text(
                         '戻る',
-                        style: TextStyle(color: Colors.white),
+                        style:
+                            TextStyle(fontSize: fontsize, color: Colors.white),
                       ),
                     ),
                   ),
+                  SizedBox(width: 20),
                   Container(
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () async {
-                        if (image == null || drawingImageData == null) {
+                        if (wifiName != null) {
+                          audioProvider.playSound("tap1.mp3");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Wi-Fiつながってないよ')),
+                          );
+                          return; // 早期リターン
+                        } else if (image == null || drawingImageData == null) {
+                          audioProvider.playSound("tap1.mp3");
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('写真と絵を選択してね')),
                           );
                           return; // 早期リターン
                         }
+                        audioProvider.playSound("tap2.mp3");
                         List<int> photoBytes = image!.readAsBytesSync();
                         //base64にエンコード
                         String base64Image = base64Encode(photoBytes);
@@ -284,16 +399,16 @@ class _GeneratePageState extends State<GeneratePage> {
                               base64Decode(resultimageBase64);
                           // バイトから画像を生成
                           if (resultbytes.isNotEmpty) {
-                            Navigator.pushNamed(context, '/output',
-                                arguments: resultbytes);
+                            isresult_exist = true;
+                            resultbytes2 = resultbytes;
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('生成された画像が空です')),
+                              SnackBar(content: Text('作ったアートが空だよ')),
                             );
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('アート生成に失敗しました')),
+                            SnackBar(content: Text('アート生成に失敗したよ')),
                           );
                         }
                       },
@@ -301,8 +416,9 @@ class _GeneratePageState extends State<GeneratePage> {
                         backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        'アートを生成する',
-                        style: TextStyle(color: Colors.white),
+                        'アートを作る',
+                        style:
+                            TextStyle(fontSize: fontsize, color: Colors.white),
                       ),
                     ),
                   ),

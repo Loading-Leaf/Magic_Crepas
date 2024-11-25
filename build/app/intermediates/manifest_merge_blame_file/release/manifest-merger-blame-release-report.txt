@@ -1,0 +1,243 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.ai_art"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="34" />
+9-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:2:5-67
+11-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:2:22-64
+12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+12-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:3:5-80
+12-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:3:22-78
+13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+13-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:4:5-79
+13-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:4:22-77
+14    <!--
+15         Required to query activities that can process text, see:
+16         https://developer.android.com/training/package-visibility and
+17         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+18
+19         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+20    -->
+21    <queries>
+21-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:43:5-48:15
+22        <intent>
+22-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:44:9-47:18
+23            <action android:name="android.intent.action.PROCESS_TEXT" />
+23-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:45:13-72
+23-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:45:21-70
+24
+25            <data android:mimeType="text/plain" />
+25-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:46:13-50
+25-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:46:19-48
+26        </intent>
+27    </queries>
+28
+29    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+29-->[:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\release\AndroidManifest.xml:9:5-79
+29-->[:connectivity_plus] C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\intermediates\merged_manifest\release\AndroidManifest.xml:9:22-76
+30    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+30-->[:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\release\AndroidManifest.xml:9:5-76
+30-->[:wifi_info_flutter] C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\intermediates\merged_manifest\release\AndroidManifest.xml:9:22-73
+31
+32    <permission
+32-->[androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:22:5-24:47
+33        android:name="com.example.ai_art.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+33-->[androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:23:9-81
+34        android:protectionLevel="signature" />
+34-->[androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:24:9-44
+35
+36    <uses-permission android:name="com.example.ai_art.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+36-->[androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:26:5-97
+36-->[androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:26:22-94
+37
+38    <application
+39        android:name="android.app.Application"
+39-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:7:9-42
+40        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+40-->[androidx.core:core:1.10.1] C:\Users\kosuk\.gradle\caches\transforms-3\a3842a17fe7307c5bcdac869078c73a0\transformed\core-1.10.1\AndroidManifest.xml:28:18-86
+41        android:icon="@mipmap/ic_launcher"
+41-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:8:9-43
+42        android:label="ai_art" >
+42-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:6:9-31
+43        <activity
+43-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:9:9-31:20
+44            android:name="com.example.ai_art.MainActivity"
+44-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:10:13-41
+45            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+45-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:15:13-163
+46            android:exported="true"
+46-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:11:13-36
+47            android:hardwareAccelerated="true"
+47-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:16:13-47
+48            android:launchMode="singleTop"
+48-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:12:13-43
+49            android:screenOrientation="landscape"
+49-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:18:13-50
+50            android:taskAffinity=""
+50-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:13:13-36
+51            android:theme="@style/LaunchTheme"
+51-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:14:13-47
+52            android:windowSoftInputMode="adjustResize" >
+52-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:17:13-55
+53
+54            <!--
+55                 Specifies an Android theme to apply to this Activity as soon as
+56                 the Android process has started. This theme is visible to the user
+57                 while the Flutter UI initializes. After that, this theme continues
+58                 to determine the Window background behind the Flutter UI.
+59            -->
+60            <meta-data
+60-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:23:13-26:17
+61                android:name="io.flutter.embedding.android.NormalTheme"
+61-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:24:15-70
+62                android:resource="@style/NormalTheme" />
+62-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:25:15-52
+63
+64            <intent-filter>
+64-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:27:13-30:29
+65                <action android:name="android.intent.action.MAIN" />
+65-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:28:17-68
+65-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:28:25-66
+66
+67                <category android:name="android.intent.category.LAUNCHER" />
+67-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:29:17-76
+67-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:29:27-74
+68            </intent-filter>
+69        </activity>
+70        <!--
+71             Don't delete the meta-data below.
+72             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+73        -->
+74        <meta-data
+74-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:34:9-36:33
+75            android:name="flutterEmbedding"
+75-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:35:13-44
+76            android:value="2" />
+76-->C:\Users\kosuk\Magic_Crepas\android\app\src\main\AndroidManifest.xml:36:13-30
+77
+78        <provider
+78-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:11:9-19:20
+79            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+79-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:12:13-82
+80            android:authorities="com.example.ai_art.flutter.image_provider"
+80-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-74
+81            android:exported="false"
+81-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:14:13-37
+82            android:grantUriPermissions="true" >
+82-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:15:13-47
+83            <meta-data
+83-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:16:13-18:75
+84                android:name="android.support.FILE_PROVIDER_PATHS"
+84-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:17:17-67
+85                android:resource="@xml/flutter_image_picker_file_paths" />
+85-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:18:17-72
+86        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
+87        <service
+87-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:21:9-33:19
+88            android:name="com.google.android.gms.metadata.ModuleDependencies"
+88-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:22:13-78
+89            android:enabled="false"
+89-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:23:13-36
+90            android:exported="false" >
+90-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:24:13-37
+91            <intent-filter>
+91-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:26:13-28:29
+92                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+92-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:27:17-94
+92-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:27:25-91
+93            </intent-filter>
+94
+95            <meta-data
+95-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:30:13-32:36
+96                android:name="photopicker_activity:0:required"
+96-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:31:17-63
+97                android:value="" />
+97-->[:image_picker_android] C:\Users\kosuk\Magic_Crepas\build\image_picker_android\intermediates\merged_manifest\release\AndroidManifest.xml:32:17-33
+98        </service>
+99
+100        <activity
+100-->[:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:10:9-13:74
+101            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+101-->[:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:11:13-74
+102            android:exported="false"
+102-->[:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:12:13-37
+103            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+103-->[:url_launcher_android] C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-71
+104
+105        <uses-library
+105-->[androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+106            android:name="androidx.window.extensions"
+106-->[androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+107            android:required="false" />
+107-->[androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+108        <uses-library
+108-->[androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+109            android:name="androidx.window.sidecar"
+109-->[androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+110            android:required="false" />
+110-->[androidx.window:window:1.0.0-beta04] C:\Users\kosuk\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+111
+112        <provider
+112-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:24:9-32:20
+113            android:name="androidx.startup.InitializationProvider"
+113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:25:13-67
+114            android:authorities="com.example.ai_art.androidx-startup"
+114-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:26:13-68
+115            android:exported="false" >
+115-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:27:13-37
+116            <meta-data
+116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+117                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+117-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+118                android:value="androidx.startup" />
+118-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+119        </provider>
+120
+121        <receiver
+121-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+122            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+122-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+123            android:directBootAware="false"
+123-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+124            android:enabled="true"
+124-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+125            android:exported="true"
+125-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+126            android:permission="android.permission.DUMP" >
+126-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+127            <intent-filter>
+127-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+128                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+128-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+128-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+129            </intent-filter>
+130            <intent-filter>
+130-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+131                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+132            </intent-filter>
+133            <intent-filter>
+133-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+134                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+135            </intent-filter>
+136            <intent-filter>
+136-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+137                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+137-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+137-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\kosuk\.gradle\caches\transforms-3\77b04ab641bc809f6845dd10c6b5dd1f\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+138            </intent-filter>
+139        </receiver>
+140    </application>
+141
+142</manifest>
