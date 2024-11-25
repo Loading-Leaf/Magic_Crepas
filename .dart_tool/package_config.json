@@ -165,7 +165,7 @@
     },
     {
       "name": "file_selector_linux",
-      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/file_selector_linux-0.9.3",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/file_selector_linux-0.9.3+1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -285,7 +285,7 @@
     },
     {
       "name": "image_picker_ios",
-      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_ios-0.8.12",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_ios-0.8.12+1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -429,7 +429,7 @@
     },
     {
       "name": "platform",
-      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.5",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.6",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -632,7 +632,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-11-25T08:13:03.785935Z",
+  "generated": "2024-11-25T08:26:29.115435Z",
   "generator": "pub",
   "generatorVersion": "3.5.0-5.0.dev",
   "flutterRoot": "file:///C:/Users/kosuk/flutter",
