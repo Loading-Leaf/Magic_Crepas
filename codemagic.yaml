@@ -1,0 +1,8 @@
+workflows:
+  android:
+    name: Build Android App
+    flutter: stable  # 使用するFlutterのバージョンを指定 (例: stable, 3.x.x)
+    scripts:
+      - flutter clean  # ビルドキャッシュをクリア
+      - flutter pub get  # 依存関係を取得
+      - flutter build appbundle --release  # アプリのリリースビルド
