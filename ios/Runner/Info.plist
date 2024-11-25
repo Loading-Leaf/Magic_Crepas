@@ -41,14 +41,19 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
+		<key>UIInterfaceOrientation</key>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
-		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>このアプリは画像を写真ライブラリに保存するためにアクセスを必要とします。</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>このアプリで写真を選択するために必要です。</string>
 		<key>NSCameraUsageDescription</key>
-		<string>このアプリはカメラを使用するためにアクセスを必要とします。</string>
+		<string>このアプリで写真を撮影するためにカメラを使用します。</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>このアプリで位置情報を利用するために必要です。</string>
+
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

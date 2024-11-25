@@ -8,6 +8,9 @@ import "package:ai_art/artproject/drawing_database_helper.dart";
 
 import 'dart:io'; // File クラスを使うためのインポート
 import 'package:sqflite/sqflite.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+import 'package:ai_art/artproject/audio_provider.dart';
 
 class DrawingPage extends StatefulWidget {
   const DrawingPage({super.key});
@@ -23,6 +26,8 @@ class _DrawingPageState extends State<DrawingPage> {
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
+  final audioPlayer = AudioPlayer();
+  bool isDrawing = false; // 描画中かどうかをトラックするフラグ
 
   @override
   void initState() {
@@ -40,8 +45,10 @@ class _DrawingPageState extends State<DrawingPage> {
 
   @override
   Widget build(BuildContext context) {
-    //height: 387.42857142857144
-    //width: 868.5714285714286
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = (screenSize.height ~/ 29).toDouble();
+    final audioProvider = Provider.of<AudioProvider>(context);
+
     return Scaffold(
       body: Column(
         children: [
@@ -69,6 +76,11 @@ class _DrawingPageState extends State<DrawingPage> {
                           child: GestureDetector(
                             onPanUpdate: (details) {
                               setState(() {
+                                if (!isDrawing) {
+                                  audioProvider.playSound("drawing.mp3");
+                                  isDrawing = true;
+                                }
+
                                 final RenderBox renderBox =
                                     context.findRenderObject() as RenderBox;
                                 final localPosition = renderBox
@@ -99,6 +111,8 @@ class _DrawingPageState extends State<DrawingPage> {
                             },
                             onPanEnd: (details) {
                               setState(() {
+                                audioProvider.pauseAudio();
+                                isDrawing = false;
                                 _lines.add(Line(_currentLinePoints,
                                     _selectedColor, _strokeWidth));
                                 _currentLinePoints = [];
@@ -125,7 +139,19 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 Column(children: [
                   // 色選択用のウィジェット
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text('パレット',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                  ),
                   _buildColorPicker(MediaQuery.of(context).size.height ~/ 11),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text('筆の大きさ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                  ),
                   _buildStrokePicker(MediaQuery.of(context).size.height / 11),
                 ]),
               ],
@@ -136,6 +162,7 @@ class _DrawingPageState extends State<DrawingPage> {
             children: [
               TextButton(
                 onPressed: () {
+                  audioProvider.playSound("tap1.mp3");
                   Navigator.pushNamed(context, '/generate');
                 },
                 style: TextButton.styleFrom(
@@ -143,13 +170,14 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 child: Text(
                   '戻る',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(fontSize: fontsize, color: Colors.white),
                 ),
               ),
-              SizedBox(width: 10), // スペースを追加
+              SizedBox(width: 20), // スペースを追加
               TextButton(
                 onPressed: () async {
                   await _takeScreenshot();
+                  audioProvider.playSound("tap2.mp3");
                   Navigator.pushNamed(context, '/generate');
                 },
                 style: TextButton.styleFrom(
@@ -157,7 +185,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 child: Text(
                   'できたよ',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(fontSize: fontsize, color: Colors.white),
                 ),
               ),
             ],
@@ -263,9 +291,11 @@ class _DrawingPageState extends State<DrawingPage> {
 
   // 色選択用のボタン
   Widget _colorCircle(Color color, int size) {
+    final audioProvider = Provider.of<AudioProvider>(context);
     return GestureDetector(
       onTap: () {
         setState(() {
+          audioProvider.playSound("tap1.mp3");
           _selectedColor = color; // 色を更新
         });
       },
@@ -315,9 +345,11 @@ class _DrawingPageState extends State<DrawingPage> {
   // 色選択用のボタン
   // 太さを選択するためのウィジェット
   Widget _strokeCircle(double strokesize, double size) {
+    final audioProvider = Provider.of<AudioProvider>(context);
     return GestureDetector(
       onTap: () {
         setState(() {
+          audioProvider.playSound("tap1.mp3");
           _strokeWidth = strokesize; // 太さを更新
         });
       },

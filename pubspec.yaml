@@ -43,6 +43,11 @@ dependencies:
   image_gallery_saver: ^2.0.3
   flutter_native_splash: ^2.4.1
   flutter_launcher_icons: ^0.14.1
+  url_launcher: ^6.3.1
+  connectivity_plus: ^6.1.0
+  wifi_info_flutter: ^2.0.2
+  audioplayers: ^6.1.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -100,21 +105,22 @@ flutter:
     - assets/
     - assets/difference/original/
     - assets/difference/joke/
+    - assets/tutorial/
 
 flutter_native_splash:
-  color: '#ffcdec'  # スプラッシュ画面の背景色
-  image: 'assets/magic_logo.png'  # スプラッシュ画面に表示する画像
+  color: "#ffcdec"  # スプラッシュ画面の背景色
+  image: "assets/magic_logo.png"  # スプラッシュ画面に表示する画像
   android: true  # Androidのスプラッシュ画面を有効化
   ios: true  # iOSのスプラッシュ画面を有効化
-  color_dark: '#ffcdec'
-  image_dark: 'assets/magic_logo.png'
   fullscreen: true
+  android_custom: true
+  color_dark: "#ffcdec"
+  image_dark: "assets/magic_logo.png"
 
 
 flutter_icons:
   ios: true
   image_path: "assets/magic_logo.png"
-  remove_alpha_ios: true
   android: true
-  adaptive_icon_background: "assets/magic_logo.png"
+  adaptive_icon_background: "#ffcdec"
   adaptive_icon_foreground: "assets/magic_logo.png"

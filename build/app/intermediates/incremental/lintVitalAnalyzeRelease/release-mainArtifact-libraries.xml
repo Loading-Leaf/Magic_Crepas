@@ -4,6 +4,32 @@
       jars="C:\Users\kosuk\Magic_Crepas\build\app\intermediates\flutter\release\libs.jar"
       resolved="__local_aars__:C:\Users\kosuk\Magic_Crepas\build\app\intermediates\flutter\release\libs.jar:unspecified"/>
   <library
+      name="C:\Users\kosuk\Magic_Crepas\android@@:audioplayers_android::release"
+      jars="C:\Users\kosuk\Magic_Crepas\build\audioplayers_android\.transforms\ed31d93d84a58be6d5be302c3908b4a3\transformed\out\jars\classes.jar;C:\Users\kosuk\Magic_Crepas\build\audioplayers_android\.transforms\ed31d93d84a58be6d5be302c3908b4a3\transformed\out\jars\libs\R.jar"
+      resolved="xyz.luan.audioplayers:audioplayers_android:unspecified"
+      folder="C:\Users\kosuk\Magic_Crepas\build\audioplayers_android\.transforms\ed31d93d84a58be6d5be302c3908b4a3\transformed\out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="C:\Users\kosuk\Magic_Crepas\android@@:connectivity_plus::release"
+      jars="C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\.transforms\ec4dcb92a5c11157d98eaed341c86b39\transformed\out\jars\classes.jar;C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\.transforms\ec4dcb92a5c11157d98eaed341c86b39\transformed\out\jars\libs\R.jar"
+      resolved="dev.fluttercommunity.plus.connectivity:connectivity_plus:unspecified"
+      folder="C:\Users\kosuk\Magic_Crepas\build\connectivity_plus\.transforms\ec4dcb92a5c11157d98eaed341c86b39\transformed\out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
       name="C:\Users\kosuk\Magic_Crepas\android@@:flutter_native_splash::release"
       jars="C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\.transforms\eede502e73f580ad378d1085563bc936\transformed\out\jars\classes.jar;C:\Users\kosuk\Magic_Crepas\build\flutter_native_splash\.transforms\eede502e73f580ad378d1085563bc936\transformed\out\jars\libs\R.jar"
       resolved="net.jonhanson.flutter_native_splash:flutter_native_splash:unspecified"
@@ -73,6 +99,32 @@
       jars="C:\Users\kosuk\Magic_Crepas\build\sqflite\.transforms\2b6ca2662885dbb841fb681773f3172e\transformed\out\jars\classes.jar;C:\Users\kosuk\Magic_Crepas\build\sqflite\.transforms\2b6ca2662885dbb841fb681773f3172e\transformed\out\jars\libs\R.jar"
       resolved="com.tekartik.sqflite:sqflite:unspecified"
       folder="C:\Users\kosuk\Magic_Crepas\build\sqflite\.transforms\2b6ca2662885dbb841fb681773f3172e\transformed\out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="C:\Users\kosuk\Magic_Crepas\android@@:url_launcher_android::release"
+      jars="C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\.transforms\a80461d3043eb7637d57f63d58cdf0a1\transformed\out\jars\classes.jar;C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\.transforms\a80461d3043eb7637d57f63d58cdf0a1\transformed\out\jars\libs\R.jar"
+      resolved="io.flutter.plugins.urllauncher:url_launcher_android:unspecified"
+      folder="C:\Users\kosuk\Magic_Crepas\build\url_launcher_android\.transforms\a80461d3043eb7637d57f63d58cdf0a1\transformed\out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="C:\Users\kosuk\Magic_Crepas\android@@:wifi_info_flutter::release"
+      jars="C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\.transforms\7ae8f88fc67f23a315c15d713be72339\transformed\out\jars\classes.jar;C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\.transforms\7ae8f88fc67f23a315c15d713be72339\transformed\out\jars\libs\R.jar"
+      resolved="io.flutter.plugins.wifi_info_flutter:wifi_info_flutter:unspecified"
+      folder="C:\Users\kosuk\Magic_Crepas\build\wifi_info_flutter\.transforms\7ae8f88fc67f23a315c15d713be72339\transformed\out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -339,9 +391,9 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="androidx.annotation:annotation-jvm:1.7.1@jar"
-      jars="C:\Users\kosuk\.gradle\caches\modules-2\files-2.1\androidx.annotation\annotation-jvm\1.7.1\920472d40adcdef5e18708976b3e314f9a636fcd\annotation-jvm-1.7.1.jar"
-      resolved="androidx.annotation:annotation-jvm:1.7.1"/>
+      name="androidx.annotation:annotation-jvm:1.8.0@jar"
+      jars="C:\Users\kosuk\.gradle\caches\modules-2\files-2.1\androidx.annotation\annotation-jvm\1.8.0\b8a16fe526014b7941c1debaccaf9c5153692dbb\annotation-jvm-1.8.0.jar"
+      resolved="androidx.annotation:annotation-jvm:1.8.0"/>
   <library
       name="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22@jar"
       jars="C:\Users\kosuk\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib-jdk7\1.8.22\4dabb8248310d833bb6a8b516024a91fd3d275c\kotlin-stdlib-jdk7-1.8.22.jar"
@@ -376,6 +428,19 @@
       jars="C:\Users\kosuk\.gradle\caches\transforms-3\bb8521d17d051bfde5328e053af79289\transformed\jetified-tracing-1.0.0\jars\classes.jar"
       resolved="androidx.tracing:tracing:1.0.0"
       folder="C:\Users\kosuk\.gradle\caches\transforms-3\bb8521d17d051bfde5328e053af79289\transformed\jetified-tracing-1.0.0"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name="androidx.browser:browser:1.5.0@aar"
+      jars="C:\Users\kosuk\.gradle\caches\transforms-3\fe539880c5099955febb99e965e706e5\transformed\browser-1.5.0\jars\classes.jar"
+      resolved="androidx.browser:browser:1.5.0"
+      folder="C:\Users\kosuk\.gradle\caches\transforms-3\fe539880c5099955febb99e965e706e5\transformed\browser-1.5.0"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.ai_art.app-mergeDebugResources-20:/values-v21/values-v21.xml",
+            "outputFile": "com.example.ai_art.app-mergeDebugResources-21:/values-v21/values-v21.xml",
             "map": [
                 {
                     "source": "C:\\Users\\kosuk\\.gradle\\caches\\transforms-3\\a3842a17fe7307c5bcdac869078c73a0\\transformed\\core-1.10.1\\res\\values-v21\\values-v21.xml",
