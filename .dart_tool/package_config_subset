@@ -1,7 +1,3 @@
-ai_art
-3.5
-file:///C:/Users/kosuk/AI_X_ART/
-file:///C:/Users/kosuk/AI_X_ART/lib/
 async
 2.18
 file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.11.0/
@@ -230,6 +226,10 @@ xdg_directories
 3.3
 file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0/
 file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0/lib/
+ai_art
+3.5
+file:///C:/Users/kosuk/Magic_Crepas/
+file:///C:/Users/kosuk/Magic_Crepas/lib/
 sky_engine
 3.2
 file:///C:/Users/kosuk/flutter/bin/cache/pkg/sky_engine/
