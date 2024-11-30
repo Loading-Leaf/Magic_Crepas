@@ -11,6 +11,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
+import 'package:ai_art/artproject/effect_utils.dart';
 
 class DrawingPage extends StatefulWidget {
   const DrawingPage({super.key});
@@ -46,151 +47,166 @@ class _DrawingPageState extends State<DrawingPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = (screenSize.height ~/ 29).toDouble();
+    double fontsize = (screenSize.height ~/ 27).toDouble();
     final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.height * 0.1), // 左辺だけに余白を追加
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width *
-                          0.1), // 左辺だけに余白を追加
-                ),
-                // 描画エリア
-                Expanded(
-                  child: Stack(
-                    children: [
-                      // RepaintBoundaryを追加
-                      RepaintBoundary(
-                        key: _globalKey, // スクリーンショットを取るためのキー
-                        child: Container(
-                          color: Colors.white,
-                          child: GestureDetector(
-                            onPanUpdate: (details) {
-                              setState(() {
-                                if (!isDrawing) {
-                                  audioProvider.playSound("drawing.mp3");
-                                  isDrawing = true;
-                                }
+      body: GestureDetector(
+        onTapUp: (details) {
+          // タッチされた位置を取得
+          Offset tapPosition = details.localPosition;
+          // キラキラエフェクトを表示
+          showSparkleEffect(context, tapPosition);
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.height * 0.1), // 左辺だけに余白を追加
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width *
+                            0.1), // 左辺だけに余白を追加
+                  ),
+                  // 描画エリア
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        // RepaintBoundaryを追加
+                        RepaintBoundary(
+                          key: _globalKey, // スクリーンショットを取るためのキー
+                          child: Container(
+                            color: Colors.white,
+                            child: GestureDetector(
+                              onPanUpdate: (details) {
+                                setState(() {
+                                  if (!isDrawing) {
+                                    audioProvider.playSound("drawing.mp3");
+                                    isDrawing = true;
+                                  }
 
-                                final RenderBox renderBox =
-                                    context.findRenderObject() as RenderBox;
-                                final localPosition = renderBox
-                                    .globalToLocal(details.globalPosition);
-                                // 左側の余白を考慮して座標補正
-                                final padding_left =
-                                    MediaQuery.of(context).size.width * 0.1;
-                                final padding_top =
-                                    MediaQuery.of(context).size.height * 0.1;
-                                final correctedPosition = Offset(
-                                  localPosition.dx - padding_left,
-                                  localPosition.dy - padding_top,
-                                );
+                                  final RenderBox renderBox =
+                                      context.findRenderObject() as RenderBox;
+                                  final localPosition = renderBox
+                                      .globalToLocal(details.globalPosition);
+                                  // 左側の余白を考慮して座標補正
+                                  final padding_left =
+                                      MediaQuery.of(context).size.width * 0.1;
+                                  final padding_top =
+                                      MediaQuery.of(context).size.height * 0.1;
+                                  final correctedPosition = Offset(
+                                    localPosition.dx - padding_left,
+                                    localPosition.dy - padding_top,
+                                  );
 
-                                if (correctedPosition.dx >= 0 &&
-                                    correctedPosition.dx <=
-                                        renderBox.size.width -
-                                            MediaQuery.of(context).size.width *
-                                                0.3 &&
-                                    correctedPosition.dy >= 0 &&
-                                    correctedPosition.dy <=
-                                        renderBox.size.height -
-                                            MediaQuery.of(context).size.height *
-                                                0.3) {
-                                  _currentLinePoints.add(correctedPosition);
-                                }
-                              });
-                            },
-                            onPanEnd: (details) {
-                              setState(() {
-                                audioProvider.pauseAudio();
-                                isDrawing = false;
-                                _lines.add(Line(_currentLinePoints,
-                                    _selectedColor, _strokeWidth));
-                                _currentLinePoints = [];
-                              });
-                            },
-                            child: CustomPaint(
-                              size: Size(
-                                  MediaQuery.of(context).size.width * 0.7,
-                                  MediaQuery.of(context).size.height * 0.7),
-                              painter: DrawingPainter(_lines, _strokeWidth),
+                                  if (correctedPosition.dx >= 0 &&
+                                      correctedPosition.dx <=
+                                          renderBox.size.width -
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3 &&
+                                      correctedPosition.dy >= 0 &&
+                                      correctedPosition.dy <=
+                                          renderBox.size.height -
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.3) {
+                                    _currentLinePoints.add(correctedPosition);
+                                  }
+                                });
+                              },
+                              onPanEnd: (details) {
+                                setState(() {
+                                  audioProvider.pauseAudio();
+                                  isDrawing = false;
+                                  _lines.add(Line(_currentLinePoints,
+                                      _selectedColor, _strokeWidth));
+                                  _currentLinePoints = [];
+                                });
+                              },
+                              child: CustomPaint(
+                                size: Size(
+                                    MediaQuery.of(context).size.width * 0.7,
+                                    MediaQuery.of(context).size.height * 0.7),
+                                painter: DrawingPainter(
+                                    _lines,
+                                    _currentLinePoints,
+                                    _strokeWidth,
+                                    _selectedColor),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      if (_currentLinePoints.isNotEmpty)
-                        CustomPaint(
-                          painter: DrawingPainter([
-                            Line(_currentLinePoints, _selectedColor,
-                                _strokeWidth)
-                          ], _strokeWidth),
-                        ),
-                    ],
+                        if (_currentLinePoints.isNotEmpty)
+                          CustomPaint(
+                            painter: DrawingPainter([], _currentLinePoints,
+                                _strokeWidth, _selectedColor),
+                          ),
+                      ],
+                    ),
+                  ),
+                  Column(children: [
+                    SizedBox(height: screenSize.height * 0.1),
+                    // 色選択用のウィジェット
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text('パレット',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: fontsize)),
+                    ),
+                    _buildColorPicker(MediaQuery.of(context).size.height ~/ 11),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: Text('筆の大きさ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: fontsize)),
+                    ),
+                    _buildStrokePicker(MediaQuery.of(context).size.height / 11),
+                  ]),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    audioProvider.playSound("tap1.mp3");
+                    Navigator.pushNamed(context, '/generate');
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    '戻る',
+                    style: TextStyle(fontSize: fontsize, color: Colors.white),
                   ),
                 ),
-                Column(children: [
-                  // 色選択用のウィジェット
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text('パレット',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                SizedBox(width: 20), // スペースを追加
+                TextButton(
+                  onPressed: () async {
+                    await _takeScreenshot();
+                    audioProvider.playSound("tap2.mp3");
+                    Navigator.pushNamed(context, '/generate');
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
-                  _buildColorPicker(MediaQuery.of(context).size.height ~/ 11),
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text('筆の大きさ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                  child: Text(
+                    'できたよ',
+                    style: TextStyle(fontSize: fontsize, color: Colors.white),
                   ),
-                  _buildStrokePicker(MediaQuery.of(context).size.height / 11),
-                ]),
+                ),
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  audioProvider.playSound("tap1.mp3");
-                  Navigator.pushNamed(context, '/generate');
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                ),
-                child: Text(
-                  '戻る',
-                  style: TextStyle(fontSize: fontsize, color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 20), // スペースを追加
-              TextButton(
-                onPressed: () async {
-                  await _takeScreenshot();
-                  audioProvider.playSound("tap2.mp3");
-                  Navigator.pushNamed(context, '/generate');
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                ),
-                child: Text(
-                  'できたよ',
-                  style: TextStyle(fontSize: fontsize, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -324,17 +340,17 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _strokeCircle(3.0, size),
               _strokeCircle(5.0, size),
-              _strokeCircle(6.0, size),
               _strokeCircle(7.0, size),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _strokeCircle(8.0, size),
               _strokeCircle(9.0, size),
-              _strokeCircle(10.0, size),
+              _strokeCircle(11.0, size),
+              _strokeCircle(13.0, size),
             ],
           ),
         ],
@@ -392,9 +408,12 @@ class Line {
 // カスタムペインタークラス
 class DrawingPainter extends CustomPainter {
   final List<Line> lines;
+  final List<Offset?> currentLinePoints; // 新たに追加
   final double strokeWidth;
+  final Color lineColor; // 色を追加
 
-  DrawingPainter(this.lines, this.strokeWidth);
+  DrawingPainter(
+      this.lines, this.currentLinePoints, this.strokeWidth, this.lineColor);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -407,6 +426,19 @@ class DrawingPainter extends CustomPainter {
       for (int i = 0; i < line.points.length - 1; i++) {
         if (line.points[i] != null && line.points[i + 1] != null) {
           canvas.drawLine(line.points[i]!, line.points[i + 1]!, paint);
+        }
+      }
+    }
+    if (currentLinePoints.isNotEmpty) {
+      Paint paint = Paint()
+        ..color = lineColor // 一時的に黒で描画（動的に変更することも可能）
+        ..strokeCap = StrokeCap.round
+        ..strokeWidth = strokeWidth;
+
+      for (int i = 0; i < currentLinePoints.length - 1; i++) {
+        if (currentLinePoints[i] != null && currentLinePoints[i + 1] != null) {
+          canvas.drawLine(
+              currentLinePoints[i]!, currentLinePoints[i + 1]!, paint);
         }
       }
     }
