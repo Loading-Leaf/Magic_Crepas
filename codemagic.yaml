@@ -37,6 +37,8 @@ workflows:
           git push
     ios:
       # Provide the necessary iOS-specific build configurations here (e.g., signing, provisioning)
-      distribution_method: ad-hoc
+      code_signing_identity: iPhone Developer
+      export_method: ad-hoc
       provisioning_profile_path: /path/to/provisioning/profile
-      signing_certificate: iPhone Developer: YOUR_DEVELOPER_NAME
+      development_team: P8RMNG2P8Z
+      
