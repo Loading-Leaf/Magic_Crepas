@@ -1,4 +1,4 @@
-package com.example.ai_art
+package magicre2024pas12
 
 import io.flutter.embedding.android.FlutterActivity
 
