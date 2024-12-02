@@ -8,7 +8,23 @@ workflows:
       - flutter build appbundle --release  # アプリのリリースビルド
   ios_release:
     name: iOS release workflow
-    max_build_duration: 60
+    max_build_duration: 120
+    # Step 1: Flutterの依存関係をインストール
+      - flutter-install:
+          channel: stable
+      # Step 2: CocoaPodsの依存関係をインストール
+      - run:
+          name: Install CocoaPods dependencies
+          command: pod install
+      # Step 3: iOSアプリをビルド
+      - flutter-build:
+          ios: true
+          release: true
+      - app-store-connect-publish:
+          api_key_id: XGA9N225C9
+          api_issuer_id: dda28ccc-233f-43ba-8a3c-c77009e75e27
+          private_key: MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgGA1EydJ99HFfbSQuv/LazS+R+3Hp8JSWNI3xX0zg+QSgCgYIKoZIzj0DAQehRANCAAQdRgd7qRp09bCXcJk2FiFst+vDtazwBi3heYZDwP0wz8waS70j2W8GCXC7YpVdxxgxuvUyKBhLC1eQGNoDqOXX
+          ipa_path: build/ios/ipa/まじっくくれぱす.ipa
     environment:
       flutter: stable
       xcode: latest
