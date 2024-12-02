@@ -6,3 +6,37 @@ workflows:
       - flutter clean  # ビルドキャッシュをクリア
       - flutter pub get  # 依存関係を取得
       - flutter build appbundle --release  # アプリのリリースビルド
+  ios_release:
+    name: iOS release workflow
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      ios: latest
+    scripts:
+      - name: Initialize CocoaPods and Git commit
+        script: |
+          # Navigate to the ios directory
+          cd ios
+
+          # Initialize CocoaPods (pod init) if it's not already initialized
+          if [ ! -f Podfile ]; then
+            pod init
+          fi
+
+          # Authenticate GitHub using the personal access token
+          echo "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" | gh auth login --with-token
+
+          # Stage all changes in the git repository
+          git add .
+
+          # Commit the changes with a message
+          git commit -m "Added Podfile"
+
+          # Push the changes to the GitHub repository
+          git push
+    ios:
+      # Provide the necessary iOS-specific build configurations here (e.g., signing, provisioning)
+      distribution_method: ad-hoc
+      provisioning_profile_path: /path/to/provisioning/profile
+      signing_certificate: iPhone Developer: YOUR_DEVELOPER_NAME
