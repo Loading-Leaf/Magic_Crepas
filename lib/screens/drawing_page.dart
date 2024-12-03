@@ -132,8 +132,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               child: CustomPaint(
                                 size: Size(
-                                    MediaQuery.of(context).size.width * 0.7,
-                                    MediaQuery.of(context).size.height * 0.7),
+                                    MediaQuery.of(context).size.width * 0.65,
+                                    MediaQuery.of(context).size.height * 0.65),
                                 painter: DrawingPainter(
                                     _lines,
                                     _currentLinePoints,
@@ -152,7 +152,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                   ),
                   Column(children: [
-                    SizedBox(height: screenSize.height * 0.1),
+                    SizedBox(height: screenSize.height * 0.05),
                     // 色選択用のウィジェット
                     Padding(
                       padding: EdgeInsets.all(5.0),
@@ -185,10 +185,13 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
                   child: Text(
                     '戻る',
-                    style: TextStyle(fontSize: fontsize, color: Colors.white),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
                   ),
                 ),
-                SizedBox(width: 20), // スペースを追加
+                SizedBox(width: 10), // スペースを追加
                 TextButton(
                   onPressed: () async {
                     await _takeScreenshot();
@@ -200,7 +203,10 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
                   child: Text(
                     'できたよ',
-                    style: TextStyle(fontSize: fontsize, color: Colors.white),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
                   ),
                 ),
               ],

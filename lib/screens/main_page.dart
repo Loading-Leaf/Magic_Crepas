@@ -54,8 +54,10 @@ class MainPage extends StatelessWidget {
                       ),
                       child: Text(
                         '設定',
-                        style:
-                            TextStyle(fontSize: fontsize, color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -64,7 +66,7 @@ class MainPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  'AIが好きな絵と写真で新しいアートを作ってくれるよ',
+                  'AIが絵と写真で新しいアートを作ってくれるよ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize_big,
@@ -76,7 +78,7 @@ class MainPage extends StatelessWidget {
                   padding: EdgeInsets.all(5.0),
                   child: Container(
                     height: screenSize.width * 0.15,
-                    width: screenSize.width * 0.5,
+                    width: screenSize.width * 0.6,
                     child: FittedBox(
                       fit: BoxFit.fill,
                       child: Image.asset('assets/title_image.png'),
@@ -95,11 +97,14 @@ class MainPage extends StatelessWidget {
                       ),
                       child: Text(
                         'AIでアートを作る',
-                        style:
-                            TextStyle(fontSize: fontsize, color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
                   Container(
                     child: TextButton(
                       onPressed: () {
@@ -111,8 +116,10 @@ class MainPage extends StatelessWidget {
                       ),
                       child: Text(
                         'あそび方',
-                        style:
-                            TextStyle(fontSize: fontsize, color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -121,7 +128,10 @@ class MainPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text('好きなものとアートを組み合わせると？？？',
-                    style: TextStyle(fontSize: fontsize, color: Colors.black)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.black)),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 SizedBox(width: screenSize.height * 0.1),
@@ -138,6 +148,7 @@ class MainPage extends StatelessWidget {
                     child: Text(
                       '利用規約',
                       style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                         color: const Color.fromARGB(255, 255, 67, 195),
                       ),
@@ -153,6 +164,7 @@ class MainPage extends StatelessWidget {
                     child: Text(
                       'お問い合わせ',
                       style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                         color: const Color.fromARGB(255, 255, 67, 195),
                       ),
@@ -204,6 +216,7 @@ class MainPage extends StatelessWidget {
                       style: TextStyle(fontSize: fontsize, color: Colors.white),
                     ),
                   ),
+                  SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
                       audioProvider.setVolume(0.5); // 音量を50%に設定
@@ -217,6 +230,7 @@ class MainPage extends StatelessWidget {
                       style: TextStyle(fontSize: fontsize, color: Colors.white),
                     ),
                   ),
+                  SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
                       audioProvider.setVolume(1.0); // 音量を100%に設定

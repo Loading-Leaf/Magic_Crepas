@@ -95,7 +95,10 @@ class _TutorialPageState extends State<TutorialPage> {
                     ),
                     child: Text(
                       '進む',
-                      style: TextStyle(fontSize: fontsize, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -117,7 +120,10 @@ class _TutorialPageState extends State<TutorialPage> {
                     ),
                     child: Text(
                       '戻る',
-                      style: TextStyle(fontSize: fontsize, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -126,7 +132,8 @@ class _TutorialPageState extends State<TutorialPage> {
             Padding(
               padding: EdgeInsets.all(5.0),
               child: Text(chapters[chapter - 1],
-                  style: TextStyle(fontSize: fontsize)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: fontsize)),
             ),
           ],
         ),

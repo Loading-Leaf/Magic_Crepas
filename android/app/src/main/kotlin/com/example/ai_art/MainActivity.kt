@@ -1,4 +1,4 @@
-package com.example.ai_art
+package com.magicre2024.ai_art
 
 import io.flutter.embedding.android.FlutterActivity
 

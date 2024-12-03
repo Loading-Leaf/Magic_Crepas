@@ -113,7 +113,10 @@ class _OutputPageState extends State<OutputPage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("作った絵だよ！", style: TextStyle(fontSize: fontsize)),
+                        Text("作った絵だよ！",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize)),
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Container(
@@ -138,7 +141,9 @@ class _OutputPageState extends State<OutputPage> {
                           child: Text(
                             '作った絵を保存する',
                             style: TextStyle(
-                                fontSize: fontsize, color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
                           ),
                         ),
                       ],
@@ -148,7 +153,9 @@ class _OutputPageState extends State<OutputPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text("お絵描きした絵だよ！",
-                            style: TextStyle(fontSize: fontsize)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize)),
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Container(
@@ -173,7 +180,9 @@ class _OutputPageState extends State<OutputPage> {
                           child: Text(
                             'お絵描きした絵を保存する',
                             style: TextStyle(
-                                fontSize: fontsize, color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
                           ),
                         ),
                       ],
@@ -214,7 +223,9 @@ class _OutputPageState extends State<OutputPage> {
                         child: Text(
                           'シェアする',
                           style: TextStyle(
-                              fontSize: fontsize, color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
                         ),
                       ),
                     ),

@@ -148,7 +148,7 @@ class _GeneratePageState extends State<GeneratePage> {
         return Dialog(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -160,8 +160,8 @@ class _GeneratePageState extends State<GeneratePage> {
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Container(
-                      height: screenSize.height * 0.50,
-                      width: screenSize.height * 0.50,
+                      height: screenSize.height * 0.40,
+                      width: screenSize.height * 0.40,
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset('assets/difference/original/' +
@@ -173,8 +173,8 @@ class _GeneratePageState extends State<GeneratePage> {
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Container(
-                      height: screenSize.height * 0.50,
-                      width: screenSize.height * 0.50,
+                      height: screenSize.height * 0.40,
+                      width: screenSize.height * 0.40,
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
@@ -212,7 +212,9 @@ class _GeneratePageState extends State<GeneratePage> {
                           child: Text(
                             '完成した絵を見る',
                             style: TextStyle(
-                                fontSize: fontsize, color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
                           ),
                         ),
                       ),
@@ -260,7 +262,10 @@ class _GeneratePageState extends State<GeneratePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("選んだ写真", style: TextStyle(fontSize: fontsize)),
+                          Text("選んだ写真",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Container(
@@ -284,7 +289,10 @@ class _GeneratePageState extends State<GeneratePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("お絵描きした絵", style: TextStyle(fontSize: fontsize)),
+                          Text("お絵描きした絵",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Container(
@@ -320,10 +328,13 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: Text(
                                   'お絵描きをする',
                                   style: TextStyle(
-                                      fontSize: fontsize, color: Colors.white),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
                                 ),
                               ),
                             ),
+                            SizedBox(height: 10),
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
@@ -338,7 +349,9 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: Text(
                                   '写真を選ぶ',
                                   style: TextStyle(
-                                      fontSize: fontsize, color: Colors.white),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
                                 ),
                               ),
                             ),
@@ -359,7 +372,9 @@ class _GeneratePageState extends State<GeneratePage> {
                         child: Text(
                           '戻る',
                           style: TextStyle(
-                              fontSize: fontsize, color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
                         ),
                       ),
                     ),
@@ -435,7 +450,9 @@ class _GeneratePageState extends State<GeneratePage> {
                         child: Text(
                           'アートを作る',
                           style: TextStyle(
-                              fontSize: fontsize, color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
                         ),
                       ),
                     ),
