@@ -239,7 +239,7 @@ class _GeneratePageState extends State<GeneratePage> {
 
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = (screenSize.height ~/ 29).toDouble();
+    double fontsize = 14;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(

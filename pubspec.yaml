@@ -115,7 +115,6 @@ flutter_native_splash:
   android: true  # Androidのスプラッシュ画面を有効化
   ios: true  # iOSのスプラッシュ画面を有効化
   fullscreen: true
-  android_custom: true
   color_dark: "#ffcdec"
   image_dark: "assets/magic_logo.png"
 

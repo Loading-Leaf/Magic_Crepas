@@ -68,6 +68,7 @@ class MainPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 均等に配置
                   children: [
+                    SizedBox(height: screenSize.height * 0.1),
                     Text(
                       'AIが絵と写真で新しいアートを作ってくれるよ',
                       style: TextStyle(
@@ -81,8 +82,8 @@ class MainPage extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.15,
-                            width: screenSize.width * 0.65,
+                            height: screenSize.width * 0.20,
+                            width: screenSize.width * 0.70,
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/title_image.png'),
@@ -205,9 +206,8 @@ class MainPage extends StatelessWidget {
   }
 
   void _showSettingsDialog(BuildContext context, AudioProvider audioProvider) {
-    Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = (screenSize.height ~/ 20).toDouble();
-    double fontsize = (screenSize.height ~/ 29).toDouble();
+    double fontsize_big = 40;
+    double fontsize = 14;
     showDialog(
       context: context,
       builder: (context) {
