@@ -138,7 +138,7 @@ class _GeneratePageState extends State<GeneratePage> {
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     final audioProvider = Provider.of<AudioProvider>(context);
-    double fontsize = (screenSize.height ~/ 29).toDouble();
+    double fontsize = 14;
     String random_num = randomIntWithRange(1, 7).toString();
 
     showDialog<void>(

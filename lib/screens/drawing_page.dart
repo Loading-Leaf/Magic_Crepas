@@ -47,7 +47,7 @@ class _DrawingPageState extends State<DrawingPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = (screenSize.height ~/ 27).toDouble();
+    double fontsize = 14;
     final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(

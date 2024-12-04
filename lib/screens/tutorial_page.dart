@@ -38,8 +38,8 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = (screenSize.height ~/ 20).toDouble();
-    double fontsize = (screenSize.height ~/ 27).toDouble();
+    double fontsize_big = 20;
+    double fontsize = 14;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(
@@ -66,6 +66,9 @@ class _TutorialPageState extends State<TutorialPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 3),
+                  ),
                   height: screenSize.width * 0.282,
                   width: screenSize.width * 0.6,
                   child: FittedBox(
@@ -102,6 +105,7 @@ class _TutorialPageState extends State<TutorialPage> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10),
                 Container(
                   child: TextButton(
                     onPressed: () {

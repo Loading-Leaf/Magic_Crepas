@@ -93,7 +93,7 @@ class _OutputPageState extends State<OutputPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = (screenSize.height ~/ 27).toDouble();
+    double fontsize = 14;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(
@@ -202,7 +202,9 @@ class _OutputPageState extends State<OutputPage> {
                         child: Text(
                           'ホームに戻る',
                           style: TextStyle(
-                              fontSize: fontsize, color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
                         ),
                       ),
                     ),
