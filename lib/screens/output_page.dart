@@ -43,7 +43,7 @@ class _OutputPageState extends State<OutputPage> {
     );
 
     final snackBar = SnackBar(
-      content: Text(result['isSuccess'] ? '画像を保存しました！' : '画像の保存に失敗しました'),
+      content: Text(result['isSuccess'] ? '作った絵を保存しました！' : '作った絵の保存に失敗しました'),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     audioProvider.playSound("established.mp3");

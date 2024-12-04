@@ -26,7 +26,7 @@ class _TutorialPageState extends State<TutorialPage> {
     "描いた絵があるよ",
     "次は写真を選んでみよう\n「写真を選ぶ」を押してね",
     "写真アプリから写真を選んだよ",
-    "「アートをつくる」でアートを作ろう！",
+    "「アートをつくる」でアートを作ろう！\n※ネットつながるところで行ってね",
     "作ってる間はまちがいさがしであそぼう",
     "音が鳴ったら絵が完成するよ！\n絵ができたら「完成した絵を見る」を押してね",
     "作った絵とお絵描きした絵が出てくるよ",
@@ -51,7 +51,6 @@ class _TutorialPageState extends State<TutorialPage> {
         },
         child: Column(
           children: <Widget>[
-            SizedBox(height: screenSize.height * 0.05),
             Padding(
               padding: EdgeInsets.all(5.0),
               child: Text(
@@ -69,8 +68,8 @@ class _TutorialPageState extends State<TutorialPage> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 3),
                   ),
-                  height: screenSize.width * 0.282,
-                  width: screenSize.width * 0.6,
+                  height: screenSize.width * 0.3055,
+                  width: screenSize.width * 0.65,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(

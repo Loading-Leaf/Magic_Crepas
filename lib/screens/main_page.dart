@@ -68,7 +68,6 @@ class MainPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 均等に配置
                   children: [
-                    SizedBox(height: screenSize.height * 0.1),
                     Text(
                       'AIが絵と写真で新しいアートを作ってくれるよ',
                       style: TextStyle(
@@ -154,48 +153,51 @@ class MainPage extends StatelessWidget {
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter, // 画面の下部に配置
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: screenSize.height * 0.1),
-                      Container(
-                        child: TextButton(
-                          onPressed: () {
-                            audioProvider.playSound("tap1.mp3");
-                            // 利用規約モーダルを表示
-                            showDialog(
-                              context: context,
-                              builder: (context) => TermsOfServiceDialog(),
-                            );
-                          },
-                          child: Text(
-                            '利用規約',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: const Color.fromARGB(255, 255, 67, 195),
+                  child: Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: screenSize.height * 0.1),
+                        Container(
+                          child: TextButton(
+                            onPressed: () {
+                              audioProvider.playSound("tap1.mp3");
+                              // 利用規約モーダルを表示
+                              showDialog(
+                                context: context,
+                                builder: (context) => TermsOfServiceDialog(),
+                              );
+                            },
+                            child: Text(
+                              '利用規約',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: const Color.fromARGB(255, 255, 67, 195),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        child: TextButton(
-                          onPressed: () {
-                            audioProvider.playSound("tap1.mp3");
-                            launchUrl(url);
-                          },
-                          child: Text(
-                            'お問い合わせ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: const Color.fromARGB(255, 255, 67, 195),
+                        Container(
+                          child: TextButton(
+                            onPressed: () {
+                              audioProvider.playSound("tap1.mp3");
+                              launchUrl(url);
+                            },
+                            child: Text(
+                              'お問い合わせ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: const Color.fromARGB(255, 255, 67, 195),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                    SizedBox(height: screenSize.height * 0.05),
+                  ]),
                 ),
               )
             ],

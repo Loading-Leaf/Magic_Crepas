@@ -160,7 +160,7 @@ class _DrawingPageState extends State<DrawingPage> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: fontsize)),
                     ),
-                    _buildColorPicker(MediaQuery.of(context).size.height ~/ 11),
+                    _buildColorPicker(MediaQuery.of(context).size.height / 11),
                     Padding(
                       padding: EdgeInsets.all(5.0),
                       child: Text('筆の大きさ',
@@ -269,7 +269,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   // 色を選択するためのウィジェット
-  Widget _buildColorPicker(int size) {
+  Widget _buildColorPicker(double size) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -282,6 +282,7 @@ class _DrawingPageState extends State<DrawingPage> {
               _colorCircle(Colors.yellow, size),
             ],
           ),
+          SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -290,6 +291,7 @@ class _DrawingPageState extends State<DrawingPage> {
               _colorCircle(Colors.lightBlue, size),
             ],
           ),
+          SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -298,6 +300,7 @@ class _DrawingPageState extends State<DrawingPage> {
               _colorCircle(Color.fromARGB(255, 255, 130, 171), size),
             ],
           ),
+          SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -306,13 +309,14 @@ class _DrawingPageState extends State<DrawingPage> {
               _colorCircle(Colors.brown, size),
             ],
           ),
+          SizedBox(height: 3),
         ],
       ),
     );
   }
 
   // 色選択用のボタン
-  Widget _colorCircle(Color color, int size) {
+  Widget _colorCircle(Color color, double size) {
     final audioProvider = Provider.of<AudioProvider>(context);
     return GestureDetector(
       onTap: () {
@@ -323,8 +327,8 @@ class _DrawingPageState extends State<DrawingPage> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 4.0),
-        width: 36,
-        height: 36,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
