@@ -47,7 +47,7 @@ class _DrawingPageState extends State<DrawingPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 14;
+    double fontsize = 16;
     final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(
@@ -109,14 +109,14 @@ class _DrawingPageState extends State<DrawingPage> {
                                               MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.3 &&
+                                                  0.35 &&
                                       correctedPosition.dy >= 0 &&
                                       correctedPosition.dy <=
                                           renderBox.size.height -
                                               MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.3) {
+                                                  0.35) {
                                     _currentLinePoints.add(correctedPosition);
                                   }
                                 });

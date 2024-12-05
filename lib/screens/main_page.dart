@@ -81,8 +81,8 @@ class MainPage extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.20,
-                            width: screenSize.width * 0.70,
+                            height: screenSize.width * 0.22,
+                            width: screenSize.width * 0.72,
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/title_image.png'),
