@@ -152,9 +152,12 @@ class _GeneratePageState extends State<GeneratePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('絵ができるまでまってね', style: TextStyle(fontSize: fontsize)),
+                Text('絵ができるまでまってね',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: fontsize)),
                 Text('楽しいまちがいさがしゲームで遊んでね',
-                    style: TextStyle(fontSize: fontsize)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: fontsize)),
                 SizedBox(height: 20),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Padding(
@@ -173,8 +176,8 @@ class _GeneratePageState extends State<GeneratePage> {
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Container(
-                      height: screenSize.height * 0.40,
-                      width: screenSize.height * 0.40,
+                      height: screenSize.height * 0.45,
+                      width: screenSize.height * 0.45,
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
