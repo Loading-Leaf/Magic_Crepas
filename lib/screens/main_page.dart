@@ -12,6 +12,8 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
+    print(screenSize.width);
+    print(screenSize.height);
     double fontsize_big = 20;
     double fontsize = 14;
     final url = Uri.parse('https://forms.gle/JAR2RYDkzbzFwdei6');

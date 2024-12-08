@@ -120,8 +120,8 @@ class _OutputPageState extends State<OutputPage> {
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Container(
-                            height: (screenSize.height ~/ 2.74).toDouble(),
-                            width: (screenSize.height ~/ 2.055).toDouble(),
+                            height: (screenSize.width ~/ 5.79).toDouble(),
+                            width: (screenSize.width ~/ 4.34).toDouble(),
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: outputImage != null
@@ -159,8 +159,8 @@ class _OutputPageState extends State<OutputPage> {
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Container(
-                            height: (screenSize.height ~/ 2.74).toDouble(),
-                            width: (screenSize.height ~/ 2.055).toDouble(),
+                            height: (screenSize.width ~/ 5.79).toDouble(),
+                            width: (screenSize.width ~/ 4.34).toDouble(),
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: drawingImageData != null

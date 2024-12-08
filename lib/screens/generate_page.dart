@@ -163,8 +163,8 @@ class _GeneratePageState extends State<GeneratePage> {
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Container(
-                      height: screenSize.height * 0.40,
-                      width: screenSize.height * 0.40,
+                      height: screenSize.width * 0.25,
+                      width: screenSize.width * 0.25,
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset('assets/difference/original/' +
@@ -176,8 +176,8 @@ class _GeneratePageState extends State<GeneratePage> {
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Container(
-                      height: screenSize.height * 0.45,
-                      width: screenSize.height * 0.45,
+                      height: screenSize.width * 0.25,
+                      width: screenSize.width * 0.25,
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
@@ -273,8 +273,8 @@ class _GeneratePageState extends State<GeneratePage> {
                             padding: EdgeInsets.all(10.0),
                             child: Container(
                               // 画面のサイズに基づいて縮小したサイズで表示
-                              height: (screenSize.height ~/ 2.74).toDouble(),
-                              width: (screenSize.height ~/ 2.055).toDouble(),
+                              height: (screenSize.width ~/ 5.79).toDouble(),
+                              width: (screenSize.width ~/ 4.34).toDouble(),
                               child: FittedBox(
                                 fit: BoxFit.fill,
                                 child: image != null
@@ -300,8 +300,8 @@ class _GeneratePageState extends State<GeneratePage> {
                             padding: EdgeInsets.all(10.0),
                             child: Container(
                               // 画面のサイズに基づいて縮小したサイズで表示
-                              height: (screenSize.height ~/ 2.74).toDouble(),
-                              width: (screenSize.height ~/ 2.74).toDouble(),
+                              height: (screenSize.width ~/ 5.79).toDouble(),
+                              width: (screenSize.width ~/ 5.79).toDouble(),
                               child: FittedBox(
                                 fit: BoxFit.fill,
                                 child: drawingImageData != null
