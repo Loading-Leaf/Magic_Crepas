@@ -106,6 +106,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/
+    - assets/difference/answer/
     - assets/difference/original/
     - assets/difference/joke/
     - assets/tutorial/

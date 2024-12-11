@@ -38,6 +38,7 @@ class _GeneratePageState extends State<GeneratePage> {
   Uint8List? resultbytes2;
 
   String? wifiName; // Wi-Fi名を保存する変数
+  int typeValue = 1;
 
   Future<void> _getWifiName() async {
     try {
@@ -140,93 +141,135 @@ class _GeneratePageState extends State<GeneratePage> {
     final audioProvider = Provider.of<AudioProvider>(context);
     double fontsize = 14;
     String random_num = randomIntWithRange(1, 7).toString();
+    int is_answer = 1; // This will be part of the state now
 
     showDialog<void>(
       context: context,
       barrierDismissible: false, // (追加)ユーザーがモーダルを閉じないようにする
       builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('絵ができるまでまってね',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: fontsize)),
-                Text('楽しいまちがいさがしゲームで遊んでね',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: fontsize)),
-                SizedBox(height: 20),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Container(
-                      height: screenSize.width * 0.25,
-                      width: screenSize.width * 0.25,
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Image.asset('assets/difference/original/' +
-                            random_num +
-                            '.png'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Container(
-                      height: screenSize.width * 0.25,
-                      width: screenSize.width * 0.25,
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Image.asset(
-                            'assets/difference/joke/' + random_num + '.png'),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            if (isresult_exist == true) {
-                              audioProvider.playSound("established.mp3");
-                              Navigator.pushNamed(
-                                context,
-                                '/output',
-                                arguments: {
-                                  'outputImage': resultbytes2,
-                                  'drawingImageData':
-                                      Uint8List.fromList(drawingImageData!),
-                                },
-                              );
-                            } else {
-                              audioProvider.playSound("tap1.mp3");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('まだできてないよー')),
-                              );
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            '完成した絵を見る',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
+        return StatefulBuilder(
+          // Use StatefulBuilder to manage the state
+          builder: (BuildContext context, setState) {
+            return Dialog(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('絵ができるまでまってね',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                    Text('楽しいまちがいさがしゲームで遊んでね',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                    SizedBox(height: 20),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Container(
+                          height: screenSize.width * 0.3,
+                          width: screenSize.width * 0.3,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.asset('assets/difference/original/' +
+                                random_num +
+                                '.png'),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ]),
-              ],
-            ),
-          ),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Container(
+                          height: screenSize.width * 0.3,
+                          width: screenSize.width * 0.3,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.asset('assets/difference/' +
+                                (is_answer == 1 ? 'joke/' : 'answer/') +
+                                random_num +
+                                '.png'),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                if (isresult_exist == true) {
+                                  // Toggle the is_answer state
+                                  setState(() {
+                                    if (is_answer == 1) {
+                                      is_answer = 2;
+                                    } else {
+                                      is_answer = 1;
+                                    }
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('まだできてないよー')),
+                                  );
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                is_answer == 1 ? '答えを見る' : 'もとの絵を見る',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                if (isresult_exist == true) {
+                                  audioProvider.playSound("established.mp3");
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/output',
+                                    arguments: {
+                                      'outputImage': resultbytes2,
+                                      'drawingImageData':
+                                          Uint8List.fromList(drawingImageData!),
+                                    },
+                                  );
+                                } else {
+                                  audioProvider.playSound("tap1.mp3");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('まだできてないよー')),
+                                  );
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                '完成した絵を見る',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -238,6 +281,33 @@ class _GeneratePageState extends State<GeneratePage> {
     } catch (e) {
       print('Error initializing database: $e');
     }
+  }
+
+  Widget typelists() {
+    return DropdownButton(
+      items: const [
+        DropdownMenuItem(
+          value: 1,
+          child: Text('ヒト・動物',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 2,
+          child: Text('食べ物',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
+        ),
+      ],
+      value: typeValue,
+      onChanged: (int? value) {
+        setState(() {
+          typeValue = value!;
+        });
+      },
+    );
   }
 
   Widget build(BuildContext context) {
@@ -358,7 +428,9 @@ class _GeneratePageState extends State<GeneratePage> {
                                 ),
                               ),
                             ),
-                          ])
+                            SizedBox(height: 10),
+                            typelists(),
+                          ]),
                     ],
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -406,9 +478,11 @@ class _GeneratePageState extends State<GeneratePage> {
                           String base64Image = base64Encode(photoBytes);
                           String base64Drawing = base64Encode(
                               Uint8List.fromList(drawingImageData!));
+                          print(typeValue);
                           String body = json.encode({
                             'post_photo': base64Image,
                             'post_drawing': base64Drawing,
+                            'photo_type': typeValue,
                           });
                           Uri url = Uri.parse(
                               'https://imakoh.pythonanywhere.com/generate_arts');

@@ -26,8 +26,12 @@ class _TutorialPageState extends State<TutorialPage> {
     "描いた絵があるよ",
     "次は写真を選んでみよう\n「写真を選ぶ」を押してね",
     "写真アプリから写真を選んだよ",
+    "モード変更もしてみてね\n変更すると写真の切り抜きのやり方が変わるよ",
+    "人もしくはペットの写真は「ヒト・動物」\n食べ物や人形は「食べ物」を選んでね",
+    "今回はおやつを選んだから「食べ物」でいくよ",
     "「アートをつくる」でアートを作ろう！\n※ネットつながるところで行ってね",
     "作ってる間はまちがいさがしであそぼう",
+    "音が鳴ったら絵が完成するよ！\n絵もできると同時に間違い探しの答えも見れるよ",
     "音が鳴ったら絵が完成するよ！\n絵ができたら「完成した絵を見る」を押してね",
     "作った絵とお絵描きした絵が出てくるよ",
     "作った絵を保存してみよう",
@@ -90,7 +94,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (chapter >= 20) {
+                            if (chapter >= 24) {
                               audioProvider.playSound("tap2.mp3");
                               Navigator.pushNamed(context, '/');
                             } else {
