@@ -64,7 +64,7 @@ class MainPage extends StatelessWidget {
                 ),
               ]),
               Padding(
-                padding: EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(1.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 均等に配置
                   children: [

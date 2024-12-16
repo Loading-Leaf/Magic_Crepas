@@ -21,6 +21,7 @@ class _TutorialPageState extends State<TutorialPage> {
     "大きい紙とパレットで絵を描くよ",
     "ここがパレットで色を選んで書いてね",
     "筆の大きさを変えれるよ",
+    "もし間違えたら戻ったりやり直したりできるよ",
     "絵をこんな感じに描けるよ\n背景を描くのオススメだよ",
     "絵を描き終わったら「できたよ」を押してね",
     "描いた絵があるよ",
@@ -98,7 +99,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (chapter >= 24) {
+                            if (chapter >= 29) {
                               audioProvider.playSound("tap2.mp3");
                               Navigator.pushNamed(context, '/');
                             } else {

@@ -165,14 +165,22 @@ class _GeneratePageState extends State<GeneratePage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('絵ができたよー'),
-          content: Text('まちがいさがしの答えも見れるよー'),
+          title: Text('絵ができたよー', style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Text('まちがいさがしの答えも見れるよー',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: Text('OK'),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+              ),
+              child: Text(
+                'OK',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
             ),
           ],
         );
@@ -185,14 +193,23 @@ class _GeneratePageState extends State<GeneratePage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('ちょっとまってね！！！'),
-          content: Text('まだできてないよー'),
+          title: Text('ちょっとまってね！！！',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          content:
+              Text('まだできてないよー', style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
               },
-              child: Text('OK'),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+              ),
+              child: Text(
+                'OK',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
             ),
           ],
         );

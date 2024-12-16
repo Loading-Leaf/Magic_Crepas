@@ -21,6 +21,7 @@ class DrawingPage extends StatefulWidget {
 }
 
 class _DrawingPageState extends State<DrawingPage> {
+  List<Line> _undoneLines = []; // undoされた線を保持するリスト
   List<Line> _lines = []; // 描画する線のリスト
   Color _selectedColor = Colors.black; // 選択された色
   double _strokeWidth = 5.0; // 線の太さ
@@ -34,6 +35,22 @@ class _DrawingPageState extends State<DrawingPage> {
   void initState() {
     super.initState();
     _initializeDatabase(); // データベースの初期化を呼び出す
+  }
+
+  void _undo() {
+    setState(() {
+      if (_lines.isNotEmpty) {
+        _undoneLines.add(_lines.removeLast());
+      }
+    });
+  }
+
+  void _redo() {
+    setState(() {
+      if (_undoneLines.isNotEmpty) {
+        _lines.add(_undoneLines.removeLast());
+      }
+    });
   }
 
   Future<void> _initializeDatabase() async {
@@ -128,6 +145,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   _lines.add(Line(_currentLinePoints,
                                       _selectedColor, _strokeWidth));
                                   _currentLinePoints = [];
+                                  _undoneLines.clear();
                                 });
                               },
                               child: CustomPaint(
@@ -160,14 +178,32 @@ class _DrawingPageState extends State<DrawingPage> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: fontsize)),
                     ),
-                    _buildColorPicker(MediaQuery.of(context).size.height / 11),
+                    _buildColorPicker(MediaQuery.of(context).size.height / 13),
                     Padding(
                       padding: EdgeInsets.all(5.0),
                       child: Text('筆の大きさ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: fontsize)),
                     ),
-                    _buildStrokePicker(MediaQuery.of(context).size.height / 11),
+                    _buildStrokePicker(MediaQuery.of(context).size.height / 13),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.undo),
+                          onPressed: _lines.isNotEmpty ? _undo : null,
+                          tooltip: 'Undo',
+                          splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.height / 13,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.redo),
+                          onPressed: _undoneLines.isNotEmpty ? _redo : null,
+                          tooltip: 'Redo',
+                          splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.height / 13,
+                        ),
+                      ],
+                    ),
                   ]),
                 ],
               ),
