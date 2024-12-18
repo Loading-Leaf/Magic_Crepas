@@ -5,9 +5,50 @@ import "package:ai_art/artproject/terms_of_service.dart";
 import 'package:audioplayers/audioplayers.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
+import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the banner ad
+    _bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: AdHelper.bannerAdUnitId,
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          setState(() {
+            _isBannerAdReady = false;
+          });
+          ad.dispose();
+        },
+      ),
+      request: const AdRequest(),
+    );
+    _bannerAd.load();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bannerAd.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +67,13 @@ class MainPage extends StatelessWidget {
           showSparkleEffect(context, tapPosition);
         },
         child: SizedBox.expand(
-          // SizedBox.expandで全画面をタップ対象にする
           child: Column(
             children: <Widget>[
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Padding(
-                  padding: EdgeInsets.all(10.0), // ここでPaddingを追加
+                  padding: EdgeInsets.all(10.0),
                   child: Container(
-                    alignment: Alignment.centerLeft, // 左寄せ
+                    alignment: Alignment.centerLeft,
                     child: Container(
                       height: screenSize.height * 0.15,
                       width: screenSize.width * 0.20,
@@ -42,7 +82,7 @@ class MainPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(10.0), // ここでPaddingを追加
+                  padding: EdgeInsets.all(10.0),
                   child: Container(
                     child: TextButton(
                       onPressed: () {
@@ -66,7 +106,7 @@ class MainPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(1.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 均等に配置
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
                       'AIが絵と写真で新しいアートを作ってくれるよ',
@@ -76,7 +116,7 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // 中央に配置
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
                           padding: EdgeInsets.all(5.0),
@@ -90,8 +130,7 @@ class MainPage extends StatelessWidget {
                           ),
                         ),
                         Column(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center, // 縦の間隔も均等に
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                               child: TextButton(
@@ -112,7 +151,7 @@ class MainPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10), // ボタン間のスペース
+                            SizedBox(height: 10),
                             Container(
                               child: TextButton(
                                 onPressed: () {
@@ -152,54 +191,65 @@ class MainPage extends StatelessWidget {
               ),
               Expanded(
                 child: Align(
-                  alignment: Alignment.bottomCenter, // 画面の下部に配置
-                  child: Column(children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: screenSize.height * 0.1),
-                        Container(
-                          child: TextButton(
-                            onPressed: () {
-                              audioProvider.playSound("tap1.mp3");
-                              // 利用規約モーダルを表示
-                              showDialog(
-                                context: context,
-                                builder: (context) => TermsOfServiceDialog(),
-                              );
-                            },
-                            child: Text(
-                              '利用規約',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: const Color.fromARGB(255, 255, 67, 195),
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: screenSize.height * 0.1),
+                          Container(
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => TermsOfServiceDialog(),
+                                );
+                              },
+                              child: Text(
+                                '利用規約',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color:
+                                      const Color.fromARGB(255, 255, 67, 195),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: TextButton(
-                            onPressed: () {
-                              audioProvider.playSound("tap1.mp3");
-                              launchUrl(url);
-                            },
-                            child: Text(
-                              'お問い合わせ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: const Color.fromARGB(255, 255, 67, 195),
+                          // Display the banner ad next to the buttons
+                          Container(
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                launchUrl(url);
+                              },
+                              child: Text(
+                                'お問い合わせ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color:
+                                      const Color.fromARGB(255, 255, 67, 195),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: screenSize.height * 0.05),
-                  ]),
+                          if (_isBannerAdReady)
+                            Container(
+                              alignment: Alignment.center,
+                              width: _bannerAd.size.width.toDouble(),
+                              height: _bannerAd.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd),
+                            ),
+                        ],
+                      ),
+                      SizedBox(height: screenSize.height * 0.05),
+                    ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -232,7 +282,7 @@ class MainPage extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(0.0); // 音量を0に設定
+                      audioProvider.setVolume(0.0);
                       audioProvider.playSound("tap1.mp3");
                     },
                     style: TextButton.styleFrom(
@@ -249,7 +299,7 @@ class MainPage extends StatelessWidget {
                   SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(0.5); // 音量を50%に設定
+                      audioProvider.setVolume(0.5);
                       audioProvider.playSound("tap1.mp3");
                     },
                     style: TextButton.styleFrom(
@@ -266,7 +316,7 @@ class MainPage extends StatelessWidget {
                   SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(1.0); // 音量を100%に設定
+                      audioProvider.setVolume(1.0);
                       audioProvider.playSound("tap1.mp3");
                     },
                     style: TextButton.styleFrom(
@@ -297,7 +347,7 @@ class MainPage extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // ダイアログを閉じる
+                Navigator.pop(context);
               },
               style: TextButton.styleFrom(
                 backgroundColor: Color.fromARGB(255, 255, 67, 195),

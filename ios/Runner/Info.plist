@@ -21,7 +21,7 @@
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
-		<string>14</string>
+		<string>15</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
@@ -56,6 +56,8 @@
 		<key>UIStatusBarHidden</key>
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<key>GADApplicationIdentifier</key>
+		<string>ca-app-pub-3661514139640335~2030035066</string>
 		<false/>
 	</dict>
 </plist>
