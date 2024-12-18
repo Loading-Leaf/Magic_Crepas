@@ -56,8 +56,8 @@
 		<key>UIStatusBarHidden</key>
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<true/>
 		<key>GADApplicationIdentifier</key>
 		<string>ca-app-pub-3661514139640335~2030035066</string>
-		<false/>
 	</dict>
 </plist>
