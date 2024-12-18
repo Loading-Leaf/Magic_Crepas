@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:share_plus/share_plus.dart';
@@ -32,40 +30,7 @@ class _OutputPageState extends State<OutputPage> {
     }
   }
 
-  Future<void> saveImage() async {
-    final audioProvider = Provider.of<AudioProvider>(context);
-    if (outputImage == null) return;
-
-    final result = await ImageGallerySaver.saveImage(
-      outputImage!,
-      quality: 100,
-      name: 'output_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
-    );
-
-    final snackBar = SnackBar(
-      content: Text(result['isSuccess'] ? '作った絵を保存しました！' : '作った絵の保存に失敗しました'),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    audioProvider.playSound("established.mp3");
-  }
-
-  Future<void> saveDrawing() async {
-    final audioProvider = Provider.of<AudioProvider>(context);
-    if (drawingImageData == null) return;
-
-    final result = await ImageGallerySaver.saveImage(
-      drawingImageData!,
-      quality: 100,
-      name: 'drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
-    );
-
-    final snackBar = SnackBar(
-      content: Text(result['isSuccess'] ? '絵を保存しました！' : '絵の保存に失敗しました'),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    audioProvider.playSound("established.mp3");
-  }
-
+  // 画像をシェアする
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
     // ファイルを保存するディレクトリを取得
     final directory = await getApplicationDocumentsDirectory();
@@ -131,21 +96,6 @@ class _OutputPageState extends State<OutputPage> {
                             ),
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            saveImage();
-                          }, // 画像を保存するボタン
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            '作った絵を保存する',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
                       ],
                     ),
                     SizedBox(width: screenSize.width * 0.1),
@@ -170,24 +120,11 @@ class _OutputPageState extends State<OutputPage> {
                             ),
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            saveDrawing();
-                          }, // 画像を保存するボタン
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            'お絵描きした絵を保存する',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
                       ],
                     ),
                   ]),
+
+                  // ボタンセクション
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       alignment: Alignment.centerRight,
