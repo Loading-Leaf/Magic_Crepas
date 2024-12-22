@@ -57,6 +57,10 @@
 		<string>このアプリでは、新しい写真や動画を撮影し、プロジェクトやアルバムに追加するためにカメラを使用します。</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>このアプリでは、近くのサービスや施設を案内する機能を提供するため、位置情報を利用します。</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>このアプリでは、音声録音機能を利用するためにマイクを利用します。</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>このアプリでは、ユーザーの現在地を取得するために位置情報を使用いたします。</string>
 		<key>UIStatusBarHidden</key>
 		<true/>
 		<key>UIFileSharingEnabled</key>
