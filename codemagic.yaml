@@ -6,55 +6,55 @@ workflows:
       - flutter clean  # ビルドキャッシュをクリア
       - flutter pub get  # 依存関係を取得
       - flutter build appbundle --release  # アプリのリリースビルド
+
   ios_release:
     name: iOS release workflow
     max_build_duration: 120
-    # Step 1: Flutterの依存関係をインストール
-      - flutter-install:
-          channel: stable
-      # Step 2: CocoaPodsの依存関係をインストール
-      - run:
-          name: Install CocoaPods dependencies
-          command: pod install
-      # Step 3: iOSアプリをビルド
-      - flutter-build:
-          ios: true
-          release: true
-      - app-store-connect-publish:
-          api_key_id: XGA9N225C9
-          api_issuer_id: dda28ccc-233f-43ba-8a3c-c77009e75e27
-          private_key: MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgGA1EydJ99HFfbSQuv/LazS+R+3Hp8JSWNI3xX0zg+QSgCgYIKoZIzj0DAQehRANCAAQdRgd7qRp09bCXcJk2FiFst+vDtazwBi3heYZDwP0wz8waS70j2W8GCXC7YpVdxxgxuvUyKBhLC1eQGNoDqOXX
-          ipa_path: build/ios/ipa/まじっくくれぱす.ipa
     environment:
       flutter: stable
       xcode: latest
       ios: latest
     scripts:
-      - name: Initialize CocoaPods and Git commit
-        script: |
-          # Navigate to the ios directory
-          cd ios
+      # Step 1: Flutterの依存関係をインストール
+      - flutter-install:
+          channel: stable
 
-          # Initialize CocoaPods (pod init) if it's not already initialized
-          if [ ! -f Podfile ]; then
-            pod init
-          fi
+      # Step 2: CocoaPodsの依存関係をインストール
+      - run:
+          name: Install CocoaPods dependencies
+          command: |
+            cd ios
+            pod install  # CocoaPodsの依存関係をインストール
 
-          # Authenticate GitHub using the personal access token
-          echo "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" | gh auth login --with-token
+      # Step 3: iOSアプリをビルド
+      - flutter-build:
+          ios: true
+          release: true
 
-          # Stage all changes in the git repository
-          git add .
+      # Step 4: App Store Connectへのアップロード (オプション)
+      - app-store-connect-publish:
+          api_key_id: XGA9N225C9
+          api_issuer_id: dda28ccc-233f-43ba-8a3c-c77009e75e27
+          private_key: MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgGA1EydJ99HFfbSQuv/LazS+R+3Hp8JSWNI3xX0zg+QSgCgYIKoZIzj0DAQehRANCAAQdRgd7qRp09bCXcJk2FiFst+vDtazwBi3heYZDwP0wz8waS70j2W8GCXC7YpVdxxgxuvUyKBhLC1eQGNoDqOXX
+          ipa_path: build/ios/ipa/まじっくくれぱす.ipa
 
-          # Commit the changes with a message
-          git commit -m "Added Podfile"
+      # Step 5: Git操作とGitHubへのコミット（任意）
+      - run:
+          name: Initialize CocoaPods and Git commit
+          command: |
+            cd ios
+            # Initialize CocoaPods (if not already initialized)
+            if [ ! -f Podfile ]; then
+              pod init
+            fi
+            # Stage all changes in the git repository
+            git add .
+            git commit -m "Added Podfile"
+            git push
 
-          # Push the changes to the GitHub repository
-          git push
     ios:
-      # Provide the necessary iOS-specific build configurations here (e.g., signing, provisioning)
+      # Provide the necessary iOS-specific build configurations
       code_signing_identity: iPhone Developer
       export_method: ad-hoc
       provisioning_profile_path: /path/to/provisioning/profile
       development_team: P8RMNG2P8Z
-      

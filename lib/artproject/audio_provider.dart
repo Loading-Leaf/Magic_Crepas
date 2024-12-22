@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AudioProvider with ChangeNotifier {
   double _volume = 1.0; // 音量（1.0 は最大、0.0 はミュート）
   final AudioPlayer _audioPlayer = AudioPlayer(); // AudioPlayerのインスタンス
+  AudioSession? _audioSession;
 
   double get volume => _volume;
   AudioPlayer get audioPlayer => _audioPlayer; // AudioPlayerのインスタンスを提供
 
   AudioProvider() {
     _loadVolume(); // 初期化時に音量を読み込む
+    _initAudioSession(); // オーディオセッションの初期化
+  }
+
+  Future<void> _initAudioSession() async {
+    _audioSession = await AudioSession.instance;
+    await _audioSession?.configure(AudioSessionConfiguration.music());
   }
 
   // 音量を変更するメソッド

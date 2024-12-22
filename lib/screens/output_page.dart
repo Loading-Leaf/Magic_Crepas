@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
+import 'package:photo_manager/photo_manager.dart';
 
 class OutputPage extends StatefulWidget {
   const OutputPage({super.key});
@@ -68,61 +69,91 @@ class _OutputPageState extends State<OutputPage> {
   }
 
   Future<void> saveImage() async {
-    final audioProvider = Provider.of<AudioProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+
     if (outputImage == null) return;
 
-    final result = await ImageGallerySaver.saveImage(
-      outputImage!,
-      quality: 100,
-      name: 'output_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
-    );
+    // 写真ライブラリの権限を確認・リクエスト
+    final PermissionState permission =
+        await PhotoManager.requestPermissionExtend();
+    if (permission.isAuth) {
+      // 権限が許可されている場合、画像を保存
+      final result = await ImageGallerySaver.saveImage(
+        outputImage!,
+        quality: 100,
+        name: 'output_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
 
-    final snackBar = SnackBar(
-      content: Text(result['isSuccess'] ? '作った絵を保存しました！' : '作った絵の保存に失敗しました'),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    audioProvider.playSound("established.mp3");
+      final snackBar = SnackBar(
+        content: Text(result['isSuccess'] ? '作った絵を保存しました！' : '作った絵の保存に失敗しました'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      audioProvider.playSound("established.mp3");
+    } else {
+      // 権限が拒否された場合、警告メッセージを表示
+      final snackBar = SnackBar(
+        content: Text('写真ライブラリへのアクセスが許可されていません。設定を確認してください。'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   Future<void> saveDrawing() async {
-    final audioProvider = Provider.of<AudioProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+
     if (drawingImageData == null) return;
 
-    final result = await ImageGallerySaver.saveImage(
-      drawingImageData!,
-      quality: 100,
-      name: 'drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
-    );
+    // 写真ライブラリの権限を確認・リクエスト
+    final PermissionState permission =
+        await PhotoManager.requestPermissionExtend();
+    if (permission.isAuth) {
+      // 権限が許可されている場合、画像を保存
+      final result = await ImageGallerySaver.saveImage(
+        drawingImageData!,
+        quality: 100,
+        name: 'drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
 
-    final snackBar = SnackBar(
-      content: Text(result['isSuccess'] ? '絵を保存しました！' : '絵の保存に失敗しました'),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    audioProvider.playSound("established.mp3");
+      final snackBar = SnackBar(
+        content:
+            Text(result['isSuccess'] ? 'お絵描きした絵を保存しました！' : 'お絵描きした絵の保存に失敗しました'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      audioProvider.playSound("established.mp3");
+    } else {
+      // 権限が拒否された場合、警告メッセージを表示
+      final snackBar = SnackBar(
+        content: Text('写真ライブラリへのアクセスが許可されていません。設定を確認してください。'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
-    // ファイルを保存するディレクトリを取得
     final directory = await getApplicationDocumentsDirectory();
 
-    // ファイルパスの指定
     final outputImagePath =
         '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
     final drawingImagePath =
         '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-    // 画像データをファイルに書き込み
+    // ファイルを保存
     File(outputImagePath)..writeAsBytesSync(image1);
     File(drawingImagePath)..writeAsBytesSync(image2);
 
-    // ファイルをシェア
-    await Share.shareXFiles(
-      [
-        XFile(outputImagePath),
-        XFile(drawingImagePath),
-      ],
-      text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-    );
+    if (await File(outputImagePath).exists() &&
+        await File(drawingImagePath).exists()) {
+      await Share.shareXFiles(
+        [
+          XFile(outputImagePath),
+          XFile(drawingImagePath),
+        ],
+        text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+      );
+    } else {
+      final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -267,13 +298,14 @@ class _OutputPageState extends State<OutputPage> {
                       ),
                     ),
                   ]),
+                  /*
                   if (_isBannerAdReady)
                     Container(
                       alignment: Alignment.center,
                       width: _bannerAd.size.width.toDouble(),
                       height: _bannerAd.size.height.toDouble(),
                       child: AdWidget(ad: _bannerAd),
-                    ),
+                    ),*/
                 ],
               );
             },

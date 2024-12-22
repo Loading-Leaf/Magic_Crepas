@@ -21,7 +21,7 @@
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
-		<string>15</string>
+		<string>16</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
@@ -29,6 +29,7 @@
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
 		<key>UISupportedInterfaceOrientations</key>
+		
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>
@@ -48,16 +49,28 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>このアプリで写真を選択するために必要です。</string>
+		<string>このアプリで写真を選択し、アルバムやプロジェクトに追加するために、フォトライブラリへのアクセスが必要です。</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>フォトライブラリ内の写真を編集および共有するために、アプリが写真へのアクセスを必要とします。
+		例えば、選択した写真にフィルターを適用できます。</string>
 		<key>NSCameraUsageDescription</key>
-		<string>このアプリで写真を撮影するためにカメラを使用します。</string>
+		<string>このアプリでは、新しい写真や動画を撮影し、プロジェクトやアルバムに追加するためにカメラを使用します。</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>このアプリで位置情報を利用するために必要です。</string>
+		<string>このアプリでは、近くのサービスや施設を案内する機能を提供するため、位置情報を利用します。</string>
 		<key>UIStatusBarHidden</key>
+		<true/>
+		<key>UIFileSharingEnabled</key>
+		<true/>
+		<key>LSSupportsOpeningDocumentsInPlace</key>
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<true/>
 		<key>GADApplicationIdentifier</key>
 		<string>ca-app-pub-3661514139640335~2030035066</string>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>audio</string>
+		</array>
+
 	</dict>
 </plist>

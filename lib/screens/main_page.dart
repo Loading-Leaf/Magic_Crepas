@@ -236,13 +236,14 @@ class _MainPageState extends State<MainPage> {
                               ),
                             ),
                           ),
+                          /*
                           if (_isBannerAdReady)
                             Container(
                               alignment: Alignment.center,
                               width: _bannerAd.size.width.toDouble(),
                               height: _bannerAd.size.height.toDouble(),
                               child: AdWidget(ad: _bannerAd),
-                            ),
+                            ),*/
                         ],
                       ),
                       SizedBox(height: screenSize.height * 0.05),
