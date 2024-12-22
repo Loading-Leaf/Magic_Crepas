@@ -8,8 +8,8 @@ import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のイ�
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
-import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
+//import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
+//import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 import 'package:photo_manager/photo_manager.dart';
 
 class OutputPage extends StatefulWidget {
@@ -22,6 +22,7 @@ class OutputPage extends StatefulWidget {
 class _OutputPageState extends State<OutputPage> {
   Uint8List? outputImage;
   Uint8List? drawingImageData;
+  /*
   late BannerAd _bannerAd;
   bool _isBannerAdReady = false;
 
@@ -55,6 +56,7 @@ class _OutputPageState extends State<OutputPage> {
     super.dispose();
     _bannerAd.dispose();
   }
+  */
 
   @override
   void didChangeDependencies() {

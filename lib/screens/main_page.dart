@@ -5,8 +5,8 @@ import "package:ai_art/artproject/terms_of_service.dart";
 import 'package:audioplayers/audioplayers.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
-import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
+//import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
+//import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -16,6 +16,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  /*
   late BannerAd _bannerAd;
   bool _isBannerAdReady = false;
 
@@ -48,7 +49,7 @@ class _MainPageState extends State<MainPage> {
   void dispose() {
     super.dispose();
     _bannerAd.dispose();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
