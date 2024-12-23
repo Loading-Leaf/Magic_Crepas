@@ -21,7 +21,7 @@
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
-		<string>18</string>
+		<string>19</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
@@ -71,10 +71,6 @@
 		<true/>
 		<key>GADApplicationIdentifier</key>
 		<string>ca-app-pub-3661514139640335~2030035066</string>
-		<key>UIBackgroundModes</key>
-		<array>
-			<string>audio</string>
-		</array>
 
 	</dict>
 </plist>
