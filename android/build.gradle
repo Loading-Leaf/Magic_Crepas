@@ -1,31 +1,13 @@
-// プロジェクト全体のビルド設定
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
-
-    // subprojects内でnamespaceを設定する必要がある場合、各プロジェクトに適用
-    subprojects {
-        afterEvaluate { project ->
-            if (project.hasProperty('android')) {
-                project.android {
-                    // 各モジュールのnamespaceを設定
-                    if (project.name == 'app') {  // 例えばappモジュールの場合
-                        namespace = "com.magicre2024.ai_art"  // 必要なnamespaceに変更
-                    }
-                }
-            }
-        }
-    }
 }
-
 
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(":app")
 }
 
@@ -34,14 +16,14 @@ tasks.register("clean", Delete) {
 }
 
 buildscript {
-    ext.kotlin_version = '1.8.22'
+    ext.kotlin_version = '1.9.22' // 最新のKotlinバージョンを使用
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.0'  // AGPのバージョン
+        classpath 'com.android.tools.build:gradle:8.1.4' // 推奨されるAGPバージョン
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.15'  // Firebase などのプラグイン用
+        //classpath 'com.google.gms:google-services:4.3.15' // 必要に応じて更新
     }
 }

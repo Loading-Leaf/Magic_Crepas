@@ -1,7 +1,6 @@
-// モジュールの設定
 plugins {
     id "com.android.application"
-    id "kotlin-android"
+    id "org.jetbrains.kotlin.android" // 正式なKotlin Androidプラグインの書き方
     id "dev.flutter.flutter-gradle-plugin"
 }
 
