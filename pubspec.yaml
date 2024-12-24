@@ -52,9 +52,6 @@ dependencies:
   flutter_screenutil: ^5.9.3
   google_mobile_ads: ^5.2.0
   photo_manager: ^3.6.3
-  volume_control: ^0.1.5
-  just_audio_background: ^0.0.1-beta.14
-  flutter_ringtone_player: ^4.0.0+3
   audio_session: ^0.1.23
   image_gallery_saver_plus: ^3.0.5
 
