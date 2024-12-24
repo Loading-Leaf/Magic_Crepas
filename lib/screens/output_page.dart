@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:share_plus/share_plus.dart';
@@ -80,7 +80,7 @@ class _OutputPageState extends State<OutputPage> {
         await PhotoManager.requestPermissionExtend();
     if (permission.isAuth) {
       // 権限が許可されている場合、画像を保存
-      final result = await ImageGallerySaver.saveImage(
+      final result = await ImageGallerySaverPlus.saveImage(
         outputImage!,
         quality: 100,
         name: 'output_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
@@ -110,7 +110,7 @@ class _OutputPageState extends State<OutputPage> {
         await PhotoManager.requestPermissionExtend();
     if (permission.isAuth) {
       // 権限が許可されている場合、画像を保存
-      final result = await ImageGallerySaver.saveImage(
+      final result = await ImageGallerySaverPlus.saveImage(
         drawingImageData!,
         quality: 100,
         name: 'drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
