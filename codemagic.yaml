@@ -6,6 +6,12 @@ workflows:
       - flutter clean  # ビルドキャッシュをクリア
       - flutter pub get  # 依存関係を取得
       - flutter build appbundle --release  # アプリのリリースビルド
+    environment:
+      android: latest  # 最新のAndroid SDKとツールを使用
+    cache:
+      - flutter
+      - android
+
 
   ios_release:
     name: iOS release workflow
