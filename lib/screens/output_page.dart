@@ -1,13 +1,13 @@
 import 'dart:typed_data';
-import 'dart:io';
+//import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
-import 'package:share/share.dart';
+//import 'package:share/share.dart';
 
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 //import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
@@ -132,6 +132,8 @@ class _OutputPageState extends State<OutputPage> {
     }
   }
 
+  /*
+
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
     final directory = await getApplicationDocumentsDirectory();
     final box = context.findRenderObject() as RenderBox?; // ここで null チェックを行います
@@ -176,7 +178,7 @@ class _OutputPageState extends State<OutputPage> {
       final snackBar = SnackBar(content: Text('画像の共有中にエラーが発生しました: $e'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -296,6 +298,7 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                       ),
                     ),
+                    /*
                     SizedBox(width: 20), // スペースを追加
                     Container(
                       alignment: Alignment.centerRight,
@@ -318,7 +321,7 @@ class _OutputPageState extends State<OutputPage> {
                               color: Colors.white),
                         ),
                       ),
-                    ),
+                    ),*/
                   ]),
                   /*
                   if (_isBannerAdReady)
