@@ -349,6 +349,7 @@ class _MainPageState extends State<MainPage> {
           actions: [
             TextButton(
               onPressed: () {
+                audioProvider.playSound("tap1.mp3");
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(

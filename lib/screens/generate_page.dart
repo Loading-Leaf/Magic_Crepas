@@ -368,34 +368,39 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   Widget typelists() {
+    const double fontsize = 14;
     return DropdownButton(
       items: const [
         DropdownMenuItem(
           value: 1,
-          child: Text('ワイドモードA',
+          child: Text('モードA',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: fontsize,
               )),
         ),
         DropdownMenuItem(
           value: 2,
-          child: Text('オブジェクトモードA',
+          child: Text('モードB',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: fontsize,
               )),
         ),
         DropdownMenuItem(
           value: 3,
-          child: Text('ワイドモードB',
+          child: Text('モードC',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: fontsize,
               )),
         ),
         DropdownMenuItem(
           value: 4,
-          child: Text('オブジェクトモードB',
+          child: Text('モードD',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: fontsize,
               )),
         ),
       ],
@@ -404,6 +409,63 @@ class _GeneratePageState extends State<GeneratePage> {
         setState(() {
           typeValue = value!;
         });
+      },
+    );
+  }
+
+  void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
+    double fontsize_big = 30;
+    double fontsize = 14;
+    Size screenSize = MediaQuery.sizeOf(context);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'モードについて',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 3),
+                  ),
+                  height: screenSize.width * 0.282,
+                  width: screenSize.width * 0.60,
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Image.asset(
+                      'assets/modes.png',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                audioProvider.playSound("tap1.mp3");
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+              ),
+              child: Text(
+                '閉じる',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                    color: Colors.white),
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -528,6 +590,27 @@ class _GeneratePageState extends State<GeneratePage> {
                             ),
                             SizedBox(height: 10),
                             typelists(),
+                            SizedBox(height: 10),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  _showmodesDialog(context, audioProvider);
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  'モードについて',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ]),
                     ],
                   ),
