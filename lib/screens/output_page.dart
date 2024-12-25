@@ -134,8 +134,16 @@ class _OutputPageState extends State<OutputPage> {
 
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
     final directory = await getApplicationDocumentsDirectory();
-    final box = context.findRenderObject() as RenderBox?;
-    Rect rect = box!.localToGlobal(Offset.zero) & box.size;
+    final box = context.findRenderObject() as RenderBox?; // ここで null チェックを行います
+    if (box == null) {
+      // RenderBoxが取得できない場合はエラーを表示
+      final snackBar = SnackBar(content: Text('座標の取得に失敗しました。再試行してください。'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    // 画面上での位置を取得
+    Rect rect = box.localToGlobal(Offset.zero) & box.size;
 
     final outputImagePath =
         '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -158,7 +166,7 @@ class _OutputPageState extends State<OutputPage> {
             XFile(drawingImagePath),
           ],
           text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-          sharePositionOrigin: rect,
+          sharePositionOrigin: rect, // ここで座標を設定
         );
       } else {
         final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
