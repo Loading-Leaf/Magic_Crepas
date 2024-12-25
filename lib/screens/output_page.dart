@@ -153,16 +153,25 @@ class _OutputPageState extends State<OutputPage> {
         final RenderBox renderBox = context.findRenderObject() as RenderBox;
         final position = renderBox.localToGlobal(Offset.zero); // グローバル座標で位置を取得
 
-        await Share.shareXFiles(
-          [
-            XFile(outputImagePath),
-            XFile(drawingImagePath),
-          ],
-          text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-          sharePositionOrigin: position & renderBox.size, // 位置情報を渡す
-        );
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("$position, $renderBox.size")));
+        // iPadでのシェア挙動を最適化
+        if (Platform.isIOS) {
+          await Share.shareXFiles(
+            [
+              XFile(outputImagePath),
+              XFile(drawingImagePath),
+            ],
+            text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+            sharePositionOrigin: position & renderBox.size, // 位置情報を渡す
+          );
+        } else {
+          await Share.shareXFiles(
+            [
+              XFile(outputImagePath),
+              XFile(drawingImagePath),
+            ],
+            text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+          );
+        }
       } else {
         final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
