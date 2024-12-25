@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
-import 'package:share_plus/share_plus.dart';
+import 'package:share/share.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
@@ -160,10 +160,10 @@ class _OutputPageState extends State<OutputPage> {
       bool drawingImageExists = await File(drawingImagePath).exists();
 
       if (outputImageExists && drawingImageExists) {
-        await Share.shareXFiles(
+        await Share.shareFiles(
           [
-            XFile(outputImagePath),
-            XFile(drawingImagePath),
+            outputImagePath,
+            drawingImagePath,
           ],
           text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
           sharePositionOrigin: rect, // ここで座標を設定
