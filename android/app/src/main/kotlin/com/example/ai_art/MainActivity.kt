@@ -1,13 +1,12 @@
-package com.magicre2024.ai_art  // あなたのプロジェクトのパッケージ名に合わせてください
+package com.magicre2024.ai_art
 
-import android.content.pm.ActivityInfo // 必要に応じて
-import android.os.Bundle // 必要に応じて
+import android.content.pm.ActivityInfo
+import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    fun onCreate(savedInstanceState: Bundle?) { // override を削除！
         super.onCreate(savedInstanceState)
-        // 画面の向きを設定する場合
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 }

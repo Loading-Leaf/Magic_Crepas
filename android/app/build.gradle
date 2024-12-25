@@ -1,6 +1,6 @@
 plugins {
     id "com.android.application"
-    id "org.jetbrains.kotlin.android" // 正式なKotlin Androidプラグインの書き方
+    id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -31,7 +31,8 @@ if (flutterVersionName == null) {
 // Android設定
 android {
     namespace = "com.magicre2024.ai_art" // 必要なnamespaceを設定
-    compileSdk = 34 // 最新のAPIレベル
+    compileSdk = flutter.compileSdkVersion // 最新のAPIレベル
+    compileSdkVersion 34
     ndkVersion = flutter.ndkVersion
 
     lintOptions {
@@ -39,6 +40,9 @@ android {
 
     }
 
+    buildFeatures {//←この処理を追加
+        viewBinding true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -47,10 +51,12 @@ android {
 
     defaultConfig {
         applicationId = "com.magicre2024.ai_art"  // 必要なapplicationId
+        minSdk = flutter.minSdkVersion
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+
     }
 
     kotlinOptions {

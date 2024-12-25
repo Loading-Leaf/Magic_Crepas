@@ -139,21 +139,29 @@ class _OutputPageState extends State<OutputPage> {
     final drawingImagePath =
         '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-    // ファイルを保存
-    File(outputImagePath)..writeAsBytesSync(image1);
-    File(drawingImagePath)..writeAsBytesSync(image2);
+    try {
+      // ファイルを保存
+      await File(outputImagePath).writeAsBytes(image1);
+      await File(drawingImagePath).writeAsBytes(image2);
 
-    if (await File(outputImagePath).exists() &&
-        await File(drawingImagePath).exists()) {
-      await Share.shareXFiles(
-        [
-          XFile(outputImagePath),
-          XFile(drawingImagePath),
-        ],
-        text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-      );
-    } else {
-      final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
+      // ファイルの存在を確認
+      bool outputImageExists = await File(outputImagePath).exists();
+      bool drawingImageExists = await File(drawingImagePath).exists();
+
+      if (outputImageExists && drawingImageExists) {
+        await Share.shareXFiles(
+          [
+            XFile(outputImagePath),
+            XFile(drawingImagePath),
+          ],
+          text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+        );
+      } else {
+        final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      final snackBar = SnackBar(content: Text('画像の共有中にエラーが発生しました: $e'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
