@@ -6,6 +6,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:share_plus/share_plus.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
