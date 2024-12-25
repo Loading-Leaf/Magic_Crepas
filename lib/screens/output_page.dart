@@ -132,52 +132,32 @@ class _OutputPageState extends State<OutputPage> {
   }
 
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
+    final boxipad = context.findRenderObject() as RenderBox?;
     final directory = await getApplicationDocumentsDirectory();
 
     final outputImagePath =
         '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
     final drawingImagePath =
         '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    // ファイルを保存
+    await File(outputImagePath).writeAsBytes(image1);
+    await File(drawingImagePath).writeAsBytes(image2);
 
-    try {
-      // ファイルを保存
-      await File(outputImagePath).writeAsBytes(image1);
-      await File(drawingImagePath).writeAsBytes(image2);
+    // ファイルの存在を確認
+    bool outputImageExists = await File(outputImagePath).exists();
+    bool drawingImageExists = await File(drawingImagePath).exists();
 
-      // ファイルの存在を確認
-      bool outputImageExists = await File(outputImagePath).exists();
-      bool drawingImageExists = await File(drawingImagePath).exists();
-
-      if (outputImageExists && drawingImageExists) {
-        // シェアボタンの位置を取得
-        final RenderBox renderBox = context.findRenderObject() as RenderBox;
-        final position = renderBox.localToGlobal(Offset.zero); // グローバル座標で位置を取得
-
-        // iPadでのシェア挙動を最適化
-        if (Platform.isIOS) {
-          await Share.shareXFiles(
-            [
-              XFile(outputImagePath),
-              XFile(drawingImagePath),
-            ],
-            text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-            sharePositionOrigin: position & renderBox.size, // 位置情報を渡す
-          );
-        } else {
-          await Share.shareXFiles(
-            [
-              XFile(outputImagePath),
-              XFile(drawingImagePath),
-            ],
-            text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-          );
-        }
-      } else {
-        final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    } catch (e) {
-      final snackBar = SnackBar(content: Text('画像の共有中にエラーが発生しました: $e'));
+    if (outputImageExists && drawingImageExists) {
+      await Share.shareXFiles(
+        [
+          XFile(outputImagePath),
+          XFile(drawingImagePath),
+        ],
+        text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+        sharePositionOrigin: boxipad!.localToGlobal(Offset.zero) & boxipad.size,
+      );
+    } else {
+      final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
