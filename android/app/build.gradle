@@ -40,7 +40,7 @@ android {
 
     }
 
-    buildFeatures {//←この処理を追加
+    buildFeatures {
         viewBinding true
     }
 

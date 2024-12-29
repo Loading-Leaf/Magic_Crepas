@@ -414,7 +414,7 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
-    double fontsize_big = 20;
+    double fontsize_big = 18;
     double fontsize = 14;
     Size screenSize = MediaQuery.sizeOf(context);
     showDialog(
@@ -430,13 +430,13 @@ class _GeneratePageState extends State<GeneratePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(2.0),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 3),
                   ),
-                  height: screenSize.width * 0.2585,
-                  width: screenSize.width * 0.55,
+                  height: screenSize.width * 0.235,
+                  width: screenSize.width * 0.50,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(
