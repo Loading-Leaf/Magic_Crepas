@@ -414,7 +414,7 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
-    double fontsize_big = 30;
+    double fontsize_big = 20;
     double fontsize = 14;
     Size screenSize = MediaQuery.sizeOf(context);
     showDialog(
@@ -435,8 +435,8 @@ class _GeneratePageState extends State<GeneratePage> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 3),
                   ),
-                  height: screenSize.width * 0.282,
-                  width: screenSize.width * 0.60,
+                  height: screenSize.width * 0.2585,
+                  width: screenSize.width * 0.55,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(
@@ -445,26 +445,24 @@ class _GeneratePageState extends State<GeneratePage> {
                   ),
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  audioProvider.playSound("tap1.mp3");
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                ),
+                child: Text(
+                  '閉じる',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontsize,
+                      color: Colors.white),
+                ),
+              ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                audioProvider.playSound("tap1.mp3");
-                Navigator.pop(context);
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 67, 195),
-              ),
-              child: Text(
-                '閉じる',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontsize,
-                    color: Colors.white),
-              ),
-            ),
-          ],
         );
       },
     );
