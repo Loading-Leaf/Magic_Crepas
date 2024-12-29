@@ -426,7 +426,7 @@ class _GeneratePageState extends State<GeneratePage> {
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
-          content: Column(
+          content: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
