@@ -220,7 +220,7 @@ class _GeneratePageState extends State<GeneratePage> {
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
-    double fontsize = 14;
+    double fontsize = 12;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
 
@@ -368,7 +368,7 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   Widget typelists() {
-    const double fontsize = 14;
+    const double fontsize = 12;
     return DropdownButton(
       items: const [
         DropdownMenuItem(
@@ -414,8 +414,8 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
-    double fontsize_big = 18;
-    double fontsize = 14;
+    double fontsize_big = 16;
+    double fontsize = 12;
     Size screenSize = MediaQuery.sizeOf(context);
     showDialog(
       context: context,
@@ -470,7 +470,7 @@ class _GeneratePageState extends State<GeneratePage> {
 
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 14;
+    double fontsize = 12;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(

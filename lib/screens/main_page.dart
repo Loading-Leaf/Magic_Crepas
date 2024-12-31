@@ -54,8 +54,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = 20;
-    double fontsize = 14;
+    double fontsize_big = 16;
+    double fontsize = 12;
     final url = Uri.parse('https://forms.gle/JAR2RYDkzbzFwdei6');
     final audioProvider = Provider.of<AudioProvider>(context);
 
@@ -83,7 +83,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(5.0),
                   child: Container(
                     child: TextButton(
                       onPressed: () {
@@ -122,8 +122,13 @@ class _MainPageState extends State<MainPage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.22,
-                            width: screenSize.width * 0.72,
+                            height: screenSize.width / screenSize.height >= 2
+                                ? screenSize.width * 0.18 // 横長の場合
+                                : screenSize.width * 0.22, // 縦長の場合
+                            width: screenSize.width / screenSize.height >= 2
+                                ? screenSize.width * 0.6 // 横長の場合
+                                : screenSize.width * 0.72, // 縦長の場合
+
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/title_image.png'),
@@ -260,8 +265,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _showSettingsDialog(BuildContext context, AudioProvider audioProvider) {
-    double fontsize_big = 40;
-    double fontsize = 14;
+    double fontsize_big = 20;
+    double fontsize = 12;
     showDialog(
       context: context,
       builder: (context) {
@@ -291,24 +296,7 @@ class _MainPageState extends State<MainPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '音量 0%',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  TextButton(
-                    onPressed: () {
-                      audioProvider.setVolume(0.5);
-                      audioProvider.playSound("tap1.mp3");
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                    ),
-                    child: Text(
-                      '音量 50%',
+                      '音なし',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -325,7 +313,7 @@ class _MainPageState extends State<MainPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '音量 100%',
+                      '音あり',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

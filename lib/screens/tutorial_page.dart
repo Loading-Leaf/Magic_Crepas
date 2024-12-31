@@ -47,8 +47,8 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = 20;
-    double fontsize = 14;
+    double fontsize_big = 16;
+    double fontsize = 12;
     final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(
@@ -76,13 +76,13 @@ class _TutorialPageState extends State<TutorialPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(3.0),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black, width: 3),
                     ),
-                    height: screenSize.width * 0.3055,
-                    width: screenSize.width * 0.65,
+                    height: screenSize.width * 0.2585,
+                    width: screenSize.width * 0.55,
                     child: FittedBox(
                       fit: BoxFit.fill,
                       child: Image.asset(

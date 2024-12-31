@@ -11,7 +11,7 @@ class TermsOfServiceDialog extends StatelessWidget {
     final audioProvider = Provider.of<AudioProvider>(context);
 
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 14;
+    double fontsize = 12;
     final String termsOfService = '''
 この利用規約（以下「本規約」といいます。）は、Loading Leaves（以下「当チーム」といいます。）が提供する「まじっくくれぱす」（以下「本サービス」といいます。）の利用条件を定めるものです。ユーザー（以下「ユーザー」といいます。）は、本サービスを利用する際に、本規約に同意するものとします。
 第1条（適用）

@@ -183,7 +183,7 @@ class _OutputPageState extends State<OutputPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 14;
+    double fontsize = 12;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(
