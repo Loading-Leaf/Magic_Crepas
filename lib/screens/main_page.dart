@@ -72,12 +72,12 @@ class _MainPageState extends State<MainPage> {
             children: <Widget>[
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(5.0),
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      height: screenSize.height * 0.15,
-                      width: screenSize.width * 0.20,
+                      height: screenSize.height * 0.15 * 0.75,
+                      width: screenSize.width * 0.20 * 0.75,
                       child: Image.asset('assets/title_logo_main.png'),
                     ),
                   ),
@@ -120,7 +120,7 @@ class _MainPageState extends State<MainPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(5.0),
+                          padding: EdgeInsets.all(3.0),
                           child: Container(
                             height: screenSize.width / screenSize.height >= 2
                                 ? screenSize.width * 0.18 // 横長の場合
@@ -177,12 +177,28 @@ class _MainPageState extends State<MainPage> {
                                 ),
                               ),
                             ),
+                            Text(
+                              screenSize.width.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              screenSize.height.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
                         ),
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(3.0),
                       child: Text(
                         '好きなものとアートを組み合わせると？？？',
                         style: TextStyle(

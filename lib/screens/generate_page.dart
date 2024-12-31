@@ -565,7 +565,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
@@ -586,9 +586,9 @@ class _GeneratePageState extends State<GeneratePage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             typelists(),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
