@@ -112,9 +112,9 @@ class _DrawingPageState extends State<DrawingPage> {
                                       .globalToLocal(details.globalPosition);
                                   // 左側の余白を考慮して座標補正
                                   final padding_left =
-                                      MediaQuery.of(context).size.width * 0.1;
+                                      MediaQuery.of(context).size.width * 0.05;
                                   final padding_top =
-                                      MediaQuery.of(context).size.height * 0.1;
+                                      MediaQuery.of(context).size.height * 0.05;
                                   final correctedPosition = Offset(
                                     localPosition.dx - padding_left,
                                     localPosition.dy - padding_top,
@@ -126,14 +126,14 @@ class _DrawingPageState extends State<DrawingPage> {
                                               MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.35 &&
+                                                  0.4 &&
                                       correctedPosition.dy >= 0 &&
                                       correctedPosition.dy <=
                                           renderBox.size.height -
                                               MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.35) {
+                                                  0.4) {
                                     _currentLinePoints.add(correctedPosition);
                                   }
                                 });
@@ -150,8 +150,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               child: CustomPaint(
                                 size: Size(
-                                    MediaQuery.of(context).size.width * 0.65,
-                                    MediaQuery.of(context).size.height * 0.65),
+                                    MediaQuery.of(context).size.width * 0.6,
+                                    MediaQuery.of(context).size.height * 0.6),
                                 painter: DrawingPainter(
                                     _lines,
                                     _currentLinePoints,
@@ -170,17 +170,17 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                   ),
                   Column(children: [
-                    SizedBox(height: screenSize.height * 0.05),
+                    SizedBox(height: screenSize.height * 0.01),
                     // 色選択用のウィジェット
                     Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(3.0),
                       child: Text('パレット',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: fontsize)),
                     ),
                     _buildColorPicker(MediaQuery.of(context).size.height / 13),
                     Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(3.0),
                       child: Text('筆の大きさ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: fontsize)),
@@ -193,14 +193,14 @@ class _DrawingPageState extends State<DrawingPage> {
                           onPressed: _lines.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 13,
+                          iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),
                           onPressed: _undoneLines.isNotEmpty ? _redo : null,
                           tooltip: 'Redo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 13,
+                          iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                       ],
                     ),
