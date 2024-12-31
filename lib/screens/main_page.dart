@@ -122,12 +122,8 @@ class _MainPageState extends State<MainPage> {
                         Padding(
                           padding: EdgeInsets.all(3.0),
                           child: Container(
-                            height: screenSize.width / screenSize.height >= 2
-                                ? screenSize.width * 0.18 // 横長の場合
-                                : screenSize.width * 0.22, // 縦長の場合
-                            width: screenSize.width / screenSize.height >= 2
-                                ? screenSize.width * 0.6 // 横長の場合
-                                : screenSize.width * 0.72, // 縦長の場合
+                            height: screenSize.width * 0.18, // 縦長の場合
+                            width: screenSize.width * 0.6, // 縦長の場合
 
                             child: FittedBox(
                               fit: BoxFit.fill,
@@ -157,7 +153,7 @@ class _MainPageState extends State<MainPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Container(
                               child: TextButton(
                                 onPressed: () {
@@ -175,22 +171,6 @@ class _MainPageState extends State<MainPage> {
                                       fontSize: fontsize,
                                       color: Colors.white),
                                 ),
-                              ),
-                            ),
-                            Text(
-                              screenSize.width.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              screenSize.height.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.black,
                               ),
                             ),
                           ],
