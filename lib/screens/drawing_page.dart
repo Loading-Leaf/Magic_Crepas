@@ -64,7 +64,7 @@ class _DrawingPageState extends State<DrawingPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 12;
+    double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(
@@ -76,6 +76,7 @@ class _DrawingPageState extends State<DrawingPage> {
           showSparkleEffect(context, tapPosition);
         },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
               padding: EdgeInsets.only(
@@ -220,7 +221,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    '戻る',
+                    '閉じる',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

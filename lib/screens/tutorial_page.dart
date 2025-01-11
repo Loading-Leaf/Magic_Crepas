@@ -47,8 +47,8 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = 16;
-    double fontsize = 12;
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(

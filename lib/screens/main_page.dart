@@ -54,8 +54,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = 16;
-    double fontsize = 12;
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
     final url = Uri.parse('https://forms.gle/JAR2RYDkzbzFwdei6');
     final audioProvider = Provider.of<AudioProvider>(context);
 
@@ -69,10 +69,11 @@ class _MainPageState extends State<MainPage> {
         },
         child: SizedBox.expand(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(7.0),
                   child: Container(
                     alignment: Alignment.centerLeft,
                     child: Container(
@@ -83,7 +84,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(7.0),
                   child: Container(
                     child: TextButton(
                       onPressed: () {
@@ -122,7 +123,7 @@ class _MainPageState extends State<MainPage> {
                         Padding(
                           padding: EdgeInsets.all(3.0),
                           child: Container(
-                            height: screenSize.width * 0.18, // 縦長の場合
+                            height: screenSize.width * 0.15, // 縦長の場合
                             width: screenSize.width * 0.6, // 縦長の場合
 
                             child: FittedBox(

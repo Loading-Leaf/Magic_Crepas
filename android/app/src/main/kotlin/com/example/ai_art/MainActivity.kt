@@ -5,7 +5,7 @@ import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
-    fun onCreate(savedInstanceState: Bundle?) { // override を削除！
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }

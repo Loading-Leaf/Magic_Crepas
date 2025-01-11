@@ -189,14 +189,23 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showWaitDialog() {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text('ちょっとまってね！！！',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          content:
-              Text('まだできてないよー', style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize_big,
+              )),
+          content: Text('まだできてないよー',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
           actions: [
             TextButton(
               onPressed: () {
@@ -207,8 +216,11 @@ class _GeneratePageState extends State<GeneratePage> {
               ),
               child: Text(
                 'OK',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: fontsize,
+                ),
               ),
             ),
           ],
@@ -220,7 +232,7 @@ class _GeneratePageState extends State<GeneratePage> {
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
-    double fontsize = 12;
+    double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
 
@@ -258,8 +270,8 @@ class _GeneratePageState extends State<GeneratePage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.27,
-                            width: screenSize.width * 0.27,
+                            height: screenSize.width * 0.25,
+                            width: screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/difference/original/' +
@@ -271,8 +283,8 @@ class _GeneratePageState extends State<GeneratePage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.27,
-                            width: screenSize.width * 0.27,
+                            height: screenSize.width * 0.25,
+                            width: screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/difference/' +
@@ -367,10 +379,11 @@ class _GeneratePageState extends State<GeneratePage> {
     }
   }
 
-  Widget typelists() {
-    const double fontsize = 12;
+  Widget typelists(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
     return DropdownButton(
-      items: const [
+      items: [
         DropdownMenuItem(
           value: 1,
           child: Text('モードA',
@@ -414,9 +427,10 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
-    double fontsize_big = 16;
-    double fontsize = 12;
     Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
+
     showDialog(
       context: context,
       builder: (context) {
@@ -470,7 +484,7 @@ class _GeneratePageState extends State<GeneratePage> {
 
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 12;
+    double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(
@@ -587,7 +601,7 @@ class _GeneratePageState extends State<GeneratePage> {
                               ),
                             ),
                             SizedBox(height: 5),
-                            typelists(),
+                            typelists(context),
                             SizedBox(height: 5),
                             Container(
                               alignment: Alignment.centerRight,
@@ -624,7 +638,7 @@ class _GeneratePageState extends State<GeneratePage> {
                           backgroundColor: Color.fromARGB(255, 255, 67, 195),
                         ),
                         child: Text(
-                          '戻る',
+                          'ホームに戻る',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,

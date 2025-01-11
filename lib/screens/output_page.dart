@@ -183,7 +183,7 @@ class _OutputPageState extends State<OutputPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = 12;
+    double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     return Scaffold(
       body: GestureDetector(
@@ -197,7 +197,7 @@ class _OutputPageState extends State<OutputPage> {
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Column(
