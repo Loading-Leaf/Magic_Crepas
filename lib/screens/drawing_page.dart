@@ -76,7 +76,6 @@ class _DrawingPageState extends State<DrawingPage> {
           showSparkleEffect(context, tapPosition);
         },
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
               padding: EdgeInsets.only(
@@ -248,6 +247,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
               ],
             ),
+            SizedBox(height: 10), // スペースを追加
           ],
         ),
       ),
