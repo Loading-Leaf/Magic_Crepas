@@ -112,9 +112,9 @@ class _DrawingPageState extends State<DrawingPage> {
                                       .globalToLocal(details.globalPosition);
                                   // 左側の余白を考慮して座標補正
                                   final padding_left =
-                                      MediaQuery.of(context).size.width * 0.05;
+                                      MediaQuery.of(context).size.width * 0.1;
                                   final padding_top =
-                                      MediaQuery.of(context).size.height * 0.05;
+                                      MediaQuery.of(context).size.height * 0.1;
                                   final correctedPosition = Offset(
                                     localPosition.dx - padding_left,
                                     localPosition.dy - padding_top,
@@ -247,7 +247,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
               ],
             ),
-            SizedBox(height: 10), // スペースを追加
+            SizedBox(height: 20), // スペースを追加
           ],
         ),
       ),
