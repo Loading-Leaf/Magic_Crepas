@@ -51,6 +51,7 @@ dependencies:
   image_gallery_saver_plus: ^3.0.5
   wifi_info_flutter: ^2.0.2
   share: ^2.0.4
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

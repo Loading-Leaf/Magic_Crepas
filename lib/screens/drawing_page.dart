@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import "package:ai_art/artproject/drawing_database_helper.dart";
+import 'package:image_picker/image_picker.dart';
 
 import 'dart:io'; // File クラスを使うためのインポート
 import 'package:sqflite/sqflite.dart';
@@ -204,6 +205,24 @@ class _DrawingPageState extends State<DrawingPage> {
                         ),
                       ],
                     ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: () => _pickImage(ImageSource.camera),
+                          tooltip: 'Take Photo',
+                          splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.height / 17,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.photo_library),
+                          onPressed: () => _pickImage(ImageSource.gallery),
+                          tooltip: 'Pick from Gallery',
+                          splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.height / 17,
+                        ),
+                      ],
+                    ),
                   ]),
                 ],
               ),
@@ -302,6 +321,51 @@ class _DrawingPageState extends State<DrawingPage> {
       } catch (e) {
         print('Error saving drawing: $e');
       }
+    }
+  }
+
+  // 画像選択と処理の関数を追加
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: source);
+
+      if (pickedFile != null) {
+        File imageFile = File(pickedFile.path);
+
+        // スクリーンショット処理と同じ処理に渡す
+        await _processImage(imageFile);
+      } else {
+        print('No image selected.');
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+    }
+  }
+
+// 画像を処理する関数
+  Future<void> _processImage(File imageFile) async {
+    await _initializeDatabase();
+
+    try {
+      // ファイルをバイト配列に変換
+      Uint8List pngBytes = await imageFile.readAsBytes();
+
+      // デバイスに保存
+      final directory = await getApplicationDocumentsDirectory();
+      final filename = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
+      final filePath = path.join(directory.path, filename);
+      await File(filePath).writeAsBytes(pngBytes);
+
+      // データベースに保存
+      try {
+        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes);
+        print('Drawing saved to database from image.');
+      } catch (e) {
+        print('Error saving drawing: $e');
+      }
+    } catch (e) {
+      print('Error processing image: $e');
     }
   }
 
