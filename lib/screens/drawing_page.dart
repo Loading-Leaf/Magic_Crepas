@@ -252,7 +252,6 @@ class _DrawingPageState extends State<DrawingPage> {
                   onPressed: () async {
                     audioProvider.playSound("tap2.mp3");
                     pickAndProcessImage();
-                    Navigator.pushNamed(context, '/generate');
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
@@ -348,10 +347,7 @@ class _DrawingPageState extends State<DrawingPage> {
       await _initializeDatabase();
       try {
         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes);
-        print('Drawing saved to database from image.');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('画像が正常に保存されました')),
-        );
+        Navigator.pushNamed(context, '/generate');
       } catch (e) {
         print('Error saving drawing: $e');
         ScaffoldMessenger.of(context).showSnackBar(

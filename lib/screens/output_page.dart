@@ -19,6 +19,8 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:async';
 
+import 'package:ai_art/artproject/gallery_database_helper.dart';
+
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
   return value + min;
@@ -244,8 +246,20 @@ class _OutputPageState extends State<OutputPage> {
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (isresult_exist == true) {
+                                    final drawingData = {
+                                      'drawing':
+                                          Uint8List.fromList(drawingImageData!),
+                                      'photo': photoBytes,
+                                      'selectedphoto':
+                                          Uint8List.fromList(resultbytes2!),
+                                    };
+
+                                    // Insert the completed drawing
+                                    await GalleryDatabaseHelper.instance
+                                        .insertDrawing(drawingData);
+
                                     audioProvider.playSound("established.mp3");
                                     Navigator.pushNamed(
                                       context,
@@ -374,47 +388,97 @@ class _OutputPageState extends State<OutputPage> {
   Widget typelists(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    return DropdownButton(
-      value: typeValue,
-      items: [
-        DropdownMenuItem(
-          value: 1,
-          child: Text('モードA',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
-        DropdownMenuItem(
-          value: 2,
-          child: Text('モードB',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
-        DropdownMenuItem(
-          value: 3,
-          child: Text('モードC',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
-        DropdownMenuItem(
-          value: 4,
-          child: Text('モードD',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  typeValue = 1;
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: typeValue == 1
+                    ? Color.fromARGB(255, 255, 67, 195)
+                    : Colors.grey,
+              ),
+              child: Text(
+                'タイプA',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 2),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  typeValue = 2;
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: typeValue == 2
+                    ? Color.fromARGB(255, 255, 67, 195)
+                    : Colors.grey,
+              ),
+              child: Text(
+                'タイプB',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 2),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  typeValue = 3;
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: typeValue == 3
+                    ? Color.fromARGB(255, 255, 67, 195)
+                    : Colors.grey,
+              ),
+              child: Text(
+                'タイプC',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 2),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  typeValue = 4;
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: typeValue == 4
+                    ? Color.fromARGB(255, 255, 67, 195)
+                    : Colors.grey,
+              ),
+              child: Text(
+                'タイプD',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
-      onChanged: (int? value) {
-        setState(() {
-          typeValue = value!;
-        });
-      },
     );
   }
 
@@ -516,7 +580,7 @@ class _OutputPageState extends State<OutputPage> {
                         backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        'もう一度試す',
+                        'アートを作る',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
