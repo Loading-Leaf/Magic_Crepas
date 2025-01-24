@@ -754,6 +754,7 @@ class _OutputPageState extends State<OutputPage> {
                       child: TextButton(
                         onPressed: () {
                           audioProvider.playSound("tap1.mp3");
+                          _showmodesDialog(context, audioProvider);
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 255, 67, 195),

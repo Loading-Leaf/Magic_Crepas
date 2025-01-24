@@ -344,10 +344,11 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
 // 画像を処理する関数
+  // 画像を処理する関数を改良
   Future<void> _processImage(File imageFile) async {
-    await _initializeDatabase();
-
     try {
+      await _initializeDatabase();
+
       // ファイルをバイト配列に変換
       Uint8List pngBytes = await imageFile.readAsBytes();
 
@@ -361,11 +362,20 @@ class _DrawingPageState extends State<DrawingPage> {
       try {
         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes);
         print('Drawing saved to database from image.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('画像が正常に保存されました')),
+        );
       } catch (e) {
         print('Error saving drawing: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('データベースへの保存中にエラーが発生しました: $e')),
+        );
       }
     } catch (e) {
       print('Error processing image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('画像の処理中にエラーが発生しました: $e')),
+      );
     }
   }
 
