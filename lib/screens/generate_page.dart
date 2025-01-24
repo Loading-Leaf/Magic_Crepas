@@ -34,6 +34,7 @@ class _GeneratePageState extends State<GeneratePage> {
   File? image;
   bool isresult_exist = false;
   @override
+  List<int>? photoBytes;
   List<int>? drawingImageData;
   bool showGenerateButton = false; // 絵ができたよボタンの表示制御用
   Uint8List? resultbytes2;
@@ -336,6 +337,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                         'outputImage': resultbytes2,
                                         'drawingImageData': Uint8List.fromList(
                                             drawingImageData!),
+                                        'ImageData': image,
                                       },
                                     );
                                   } else {

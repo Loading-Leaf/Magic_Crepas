@@ -1,17 +1,28 @@
 import 'dart:typed_data';
-//import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:typed_data';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 //import 'package:share/share.dart';
-
+import 'package:http/http.dart' as http;
 //import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 //import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 import 'package:photo_manager/photo_manager.dart';
+import 'package:wifi_info_flutter/wifi_info_flutter.dart';
+import 'dart:convert';
+
+import 'dart:math' as math;
+import 'dart:async';
+
+int randomIntWithRange(int min, int max) {
+  int value = math.Random().nextInt(max - min);
+  return value + min;
+}
 
 class OutputPage extends StatefulWidget {
   const OutputPage({super.key});
@@ -23,6 +34,13 @@ class OutputPage extends StatefulWidget {
 class _OutputPageState extends State<OutputPage> {
   Uint8List? outputImage;
   Uint8List? drawingImageData;
+  File? image;
+  int typeValue = 1;
+  String? wifiName;
+  bool isresult_exist = false;
+
+  Uint8List? resultbytes2;
+  List<int>? photoBytes;
   /*
   late BannerAd _bannerAd;
   bool _isBannerAdReady = false;
@@ -59,6 +77,261 @@ class _OutputPageState extends State<OutputPage> {
   }
   */
 
+  Future<void> _getWifiName() async {
+    try {
+      String? wifi = await WifiInfo().getWifiName();
+      setState(() {
+        wifiName = wifi;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to get Wi-Fi name: $e');
+      setState(() {
+        wifiName = null; // Wi-Fi名が取得できなかった場合、nullをセット
+      });
+    }
+  }
+
+  // 状態監視を定期的に行うタイマー
+  void _startResultCheckTimer() {
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      // 結果が準備できているか確認
+      if (await _isResultReady()) {
+        timer.cancel(); // タイマーを停止
+        setState(() {
+          isresult_exist = true;
+        });
+        _showResultDialog(); // 結果ダイアログを表示
+      }
+    });
+  }
+
+  // 結果が準備できているかを判定する関数（仮のロジックを実装）
+  Future<bool> _isResultReady() async {
+    // サーバーにリクエストを送る場合のコード例
+    await Future.delayed(Duration(seconds: 1)); // サーバーリクエストのシミュレーション
+    return isresult_exist; // 現在の isresult_exist の値を返す
+  }
+
+  // 結果ダイアログを表示する関数
+  void _showResultDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('絵ができたよー', style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Text('まちがいさがしの答えも見れるよー',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+              ),
+              child: Text(
+                'OK',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showWaitDialog() {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('ちょっとまってね！！！',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize_big,
+              )),
+          content: Text('まだできてないよー',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+              ),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: fontsize,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialog(BuildContext context) {
+    Size screenSize = MediaQuery.sizeOf(context);
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    double fontsize = screenSize.width / 74.6;
+    String random_num = randomIntWithRange(1, 7).toString();
+    int is_answer = 1;
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return Dialog(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '絵ができるまで楽しいまちがいさがしで遊んでね',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                      ),
+                    ),
+                    Text(
+                      'まちがいは3つあるよ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Container(
+                            height: screenSize.width * 0.25,
+                            width: screenSize.width * 0.25,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.asset('assets/difference/original/' +
+                                  random_num +
+                                  '.png'),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Container(
+                            height: screenSize.width * 0.25,
+                            width: screenSize.width * 0.25,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.asset('assets/difference/' +
+                                  (is_answer == 1 ? 'joke/' : 'answer/') +
+                                  random_num +
+                                  '.png'),
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  if (isresult_exist == true) {
+                                    setState(() {
+                                      is_answer = is_answer == 1 ? 2 : 1;
+                                    });
+                                  } else {
+                                    _showWaitDialog();
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  is_answer == 1 ? '答えを見る' : 'もとの絵を見る',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  if (isresult_exist == true) {
+                                    audioProvider.playSound("established.mp3");
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/output',
+                                      arguments: {
+                                        'outputImage': resultbytes2,
+                                        'drawingImageData': Uint8List.fromList(
+                                            drawingImageData!),
+                                        'ImageData': photoBytes,
+                                      },
+                                    );
+                                  } else {
+                                    audioProvider.playSound("tap1.mp3");
+                                    _showWaitDialog();
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  '完成した絵を見る',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getWifiName();
+    _startResultCheckTimer();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -66,6 +339,7 @@ class _OutputPageState extends State<OutputPage> {
     if (args is Map<String, dynamic>) {
       outputImage = args['outputImage'];
       drawingImageData = args['drawingImageData'];
+      image = args["ImageData"];
     } else {
       print('No image data passed or incorrect type');
     }
@@ -180,6 +454,183 @@ class _OutputPageState extends State<OutputPage> {
     }
   }*/
 
+  Widget typelists(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
+    return DropdownButton(
+      items: [
+        DropdownMenuItem(
+          value: 1,
+          child: Text('モードA',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 2,
+          child: Text('モードB',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 3,
+          child: Text('モードC',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 4,
+          child: Text('モードD',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+      ],
+      value: typeValue,
+      onChanged: (int? value) {
+        setState(() {
+          typeValue = value!;
+        });
+      },
+    );
+  }
+
+  void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            '別のモードを使う',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
+          ),
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(2.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 3),
+                  ),
+                  height: screenSize.width * 0.235,
+                  width: screenSize.width * 0.50,
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Image.asset(
+                      'assets/modes.png',
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    typelists(context),
+                    SizedBox(height: 5),
+                    TextButton(
+                      onPressed: () async {
+                        if (wifiName != null) {
+                          audioProvider.playSound("tap1.mp3");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Wi-Fiつながってないよ')),
+                          );
+                          return; // 早期リターン
+                        }
+                        audioProvider.playSound("tap2.mp3");
+                        List<int> photoBytes = image!.readAsBytesSync();
+                        String base64Image = base64Encode(photoBytes);
+                        String base64Drawing =
+                            base64Encode(Uint8List.fromList(drawingImageData!));
+                        String body = json.encode({
+                          'post_photo': base64Image,
+                          'post_drawing': base64Drawing,
+                          'photo_type': typeValue,
+                        });
+                        Uri url = Uri.parse(
+                            'https://imakoh.pythonanywhere.com/generate_arts');
+                        //192.168.68.58
+                        _showDialog(context);
+                        final response = await http.post(
+                          url,
+                          body: body,
+                          headers: {'Content-Type': 'application/json'},
+                        );
+
+                        /// base64 -> file
+                        if (response.statusCode == 200) {
+                          audioProvider.playSound("generated.mp3");
+                          final data = json.decode(response.body);
+                          String resultimageBase64 = data['result'];
+
+                          // バイトのリストに変換
+                          Uint8List resultbytes =
+                              base64Decode(resultimageBase64);
+
+                          // バイトから画像を生成
+                          if (resultbytes.isNotEmpty) {
+                            setState(() {
+                              isresult_exist = true;
+                              resultbytes2 = resultbytes;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('作ったアートが空だよ')),
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('アート生成に失敗したよ')),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        'もう一度試す',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    TextButton(
+                      onPressed: () {
+                        audioProvider.playSound("tap1.mp3");
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        '閉じる',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ]),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -291,6 +742,24 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                         child: Text(
                           'ホームに戻る',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          audioProvider.playSound("tap1.mp3");
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          '別のモードを使う',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,
