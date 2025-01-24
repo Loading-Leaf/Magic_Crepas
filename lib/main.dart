@@ -7,6 +7,7 @@ import "package:ai_art/screens/generate_page.dart";
 import "package:ai_art/screens/drawing_page.dart";
 import "package:ai_art/screens/output_page.dart";
 import "package:ai_art/screens/tutorial_page.dart";
+import "package:ai_art/screens/image_gallery_page.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
 
 void main() {
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/drawing': (context) => const DrawingPage(),
         '/output': (context) => const OutputPage(),
         '/tutorial': (context) => const TutorialPage(),
+        '/gallery': (context) => const GalleryPage(),
       },
     );
   }

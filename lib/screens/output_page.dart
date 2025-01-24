@@ -375,18 +375,41 @@ class _OutputPageState extends State<OutputPage> {
     final Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     return DropdownButton(
-      items: [
-        for (int i = 1; i <= 4; i++)
-          DropdownMenuItem(
-            value: i,
-            child: Text('モード${i}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
-                )),
-          ),
-      ],
       value: typeValue,
+      items: [
+        DropdownMenuItem(
+          value: 1,
+          child: Text('モードA',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 2,
+          child: Text('モードB',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 3,
+          child: Text('モードC',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 4,
+          child: Text('モードD',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+      ],
       onChanged: (int? value) {
         setState(() {
           typeValue = value!;
@@ -643,6 +666,7 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                       ),
                     ),
+                    SizedBox(width: 20),
                     Container(
                       alignment: Alignment.centerRight,
                       child: TextButton(

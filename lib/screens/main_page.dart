@@ -174,6 +174,26 @@ class _MainPageState extends State<MainPage> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 5),
+                            Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  Navigator.pushNamed(context, '/gallery');
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 0, 164, 14),
+                                ),
+                                child: Text(
+                                  'ギャラリー',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],

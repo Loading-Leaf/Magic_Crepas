@@ -252,6 +252,7 @@ class _DrawingPageState extends State<DrawingPage> {
                   onPressed: () async {
                     audioProvider.playSound("tap2.mp3");
                     pickAndProcessImage();
+                    Navigator.pushNamed(context, '/generate');
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
