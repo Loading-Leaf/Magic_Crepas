@@ -26,6 +26,7 @@ class _DrawingPageState extends State<DrawingPage> {
   List<Line> _lines = []; // 描画する線のリスト
   Color _selectedColor = Colors.black; // 選択された色
   double _strokeWidth = 5.0; // 線の太さ
+  File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
@@ -205,24 +206,6 @@ class _DrawingPageState extends State<DrawingPage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.camera_alt),
-                          onPressed: () => _pickImage(ImageSource.camera),
-                          tooltip: 'Take Photo',
-                          splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 17,
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.photo_library),
-                          onPressed: () => _pickImage(ImageSource.gallery),
-                          tooltip: 'Pick from Gallery',
-                          splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 17,
-                        ),
-                      ],
-                    ),
                   ]),
                 ],
               ),
@@ -258,6 +241,23 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
                   child: Text(
                     'できたよ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 10), // スペースを追加
+                TextButton(
+                  onPressed: () async {
+                    audioProvider.playSound("tap2.mp3");
+                    pickAndProcessImage();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    '写真から選ぶ',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -324,30 +324,15 @@ class _DrawingPageState extends State<DrawingPage> {
     }
   }
 
-  // 画像選択と処理の関数を追加
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: source);
-
-      if (pickedFile != null) {
-        File imageFile = File(pickedFile.path);
-
-        // スクリーンショット処理と同じ処理に渡す
-        await _processImage(imageFile);
-      } else {
-        print('No image selected.');
-      }
-    } catch (e) {
-      print('Error picking image: $e');
-    }
-  }
-
 // 画像を処理する関数
   // 画像を処理する関数を改良
-  Future<void> _processImage(File imageFile) async {
+  Future<void> pickAndProcessImage() async {
     try {
-      await _initializeDatabase();
+      // 画像をギャラリーから選択
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageFile = File(image.path);
 
       // ファイルをバイト配列に変換
       Uint8List pngBytes = await imageFile.readAsBytes();
@@ -358,7 +343,8 @@ class _DrawingPageState extends State<DrawingPage> {
       final filePath = path.join(directory.path, filename);
       await File(filePath).writeAsBytes(pngBytes);
 
-      // データベースに保存
+      // データベースの初期化と保存
+      await _initializeDatabase();
       try {
         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes);
         print('Drawing saved to database from image.');
@@ -371,6 +357,9 @@ class _DrawingPageState extends State<DrawingPage> {
           SnackBar(content: Text('データベースへの保存中にエラーが発生しました: $e')),
         );
       }
+
+      // UI更新のための状態管理
+      setState(() => this.image = imageFile);
     } catch (e) {
       print('Error processing image: $e');
       ScaffoldMessenger.of(context).showSnackBar(

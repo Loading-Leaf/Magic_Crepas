@@ -41,41 +41,6 @@ class _OutputPageState extends State<OutputPage> {
 
   Uint8List? resultbytes2;
   List<int>? photoBytes;
-  /*
-  late BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the banner ad
-    _bannerAd = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdHelper.bannerAdUnitId,
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          setState(() {
-            _isBannerAdReady = false;
-          });
-          ad.dispose();
-        },
-      ),
-      request: const AdRequest(),
-    );
-    _bannerAd.load();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bannerAd.dispose();
-  }
-  */
 
   Future<void> _getWifiName() async {
     try {
@@ -406,91 +371,20 @@ class _OutputPageState extends State<OutputPage> {
     }
   }
 
-  /*
-
-  Future<void> shareImages(Uint8List image1, Uint8List image2) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final box = context.findRenderObject() as RenderBox?; // ここで null チェックを行います
-    if (box == null) {
-      // RenderBoxが取得できない場合はエラーを表示
-      final snackBar = SnackBar(content: Text('座標の取得に失敗しました。再試行してください。'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
-    }
-
-    // 画面上での位置を取得
-    Rect rect = box.localToGlobal(Offset.zero) & box.size;
-
-    final outputImagePath =
-        '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
-    final drawingImagePath =
-        '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
-
-    try {
-      // ファイルを保存
-      await File(outputImagePath).writeAsBytes(image1);
-      await File(drawingImagePath).writeAsBytes(image2);
-
-      // ファイルの存在を確認
-      bool outputImageExists = await File(outputImagePath).exists();
-      bool drawingImageExists = await File(drawingImagePath).exists();
-
-      if (outputImageExists && drawingImageExists) {
-        await Share.shareFiles(
-          [
-            outputImagePath,
-            drawingImagePath,
-          ],
-          text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-          sharePositionOrigin: rect, // ここで座標を設定
-        );
-      } else {
-        final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    } catch (e) {
-      final snackBar = SnackBar(content: Text('画像の共有中にエラーが発生しました: $e'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }*/
-
   Widget typelists(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     return DropdownButton(
       items: [
-        DropdownMenuItem(
-          value: 1,
-          child: Text('モードA',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
-        DropdownMenuItem(
-          value: 2,
-          child: Text('モードB',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
-        DropdownMenuItem(
-          value: 3,
-          child: Text('モードC',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
-        DropdownMenuItem(
-          value: 4,
-          child: Text('モードD',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              )),
-        ),
+        for (int i = 1; i <= 4; i++)
+          DropdownMenuItem(
+            value: i,
+            child: Text('モード${i}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize,
+                )),
+          ),
       ],
       value: typeValue,
       onChanged: (int? value) {
@@ -768,39 +662,7 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                       ),
                     ),
-                    /*
-                    SizedBox(width: 20), // スペースを追加
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          if (outputImage != null && drawingImageData != null) {
-                            shareImages(
-                                outputImage!, drawingImageData!); // 両方の画像をシェアする
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 67, 180, 255),
-                        ),
-                        child: Text(
-                          'シェアする',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),*/
                   ]),
-                  /*
-                  if (_isBannerAdReady)
-                    Container(
-                      alignment: Alignment.center,
-                      width: _bannerAd.size.width.toDouble(),
-                      height: _bannerAd.size.height.toDouble(),
-                      child: AdWidget(ad: _bannerAd),
-                    ),*/
                 ],
               );
             },
