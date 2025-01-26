@@ -37,6 +37,9 @@ class _GalleryPageState extends State<GalleryPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
 
+    double imageWidth = screenSize.width / 6 - 10; // 余白を考慮して少し小さく
+    double imageHeight = imageWidth; // 画像が正方形の場合
+
     return Scaffold(
       body: GestureDetector(
         onTapUp: (details) {
@@ -71,16 +74,12 @@ class _GalleryPageState extends State<GalleryPage> {
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount:
-                              2, // You can change the number of columns
+                              6, // You can change the number of columns
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
-                          final snackBar = SnackBar(
-                            content: Text(drawings.length.toString()),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           Uint8List outputImage =
                               drawings[index]['selectedphoto'];
                           return Container(
@@ -92,6 +91,8 @@ class _GalleryPageState extends State<GalleryPage> {
                               borderRadius: BorderRadius.circular(8),
                               child: Image.memory(
                                 outputImage,
+                                width: imageWidth, // 横のサイズを設定
+                                height: imageHeight, // 縦のサイズを設定
                                 fit: BoxFit.cover,
                               ),
                             ),
