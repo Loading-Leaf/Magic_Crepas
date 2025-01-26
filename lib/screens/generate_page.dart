@@ -337,7 +337,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                     final photoData =
                                         Uint8List.fromList(photoBytes!);
                                     // Insert the completed drawing
-                                    await GalleryDatabaseHelper.instance
+                                    GalleryDatabaseHelper.instance
                                         .insertDrawing(
                                       drawingData,
                                       selectedPhoto,
