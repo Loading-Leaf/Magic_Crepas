@@ -119,23 +119,25 @@ class _DrawingPageState extends State<DrawingPage> {
                                       MediaQuery.of(context).size.height * 0.1;
                                   final correctedPosition = Offset(
                                     localPosition.dx - padding_left,
-                                    localPosition.dy - padding_top,
+                                    localPosition.dy - padding_top - 20,
                                   );
 
-                                  if (correctedPosition.dx >= 0 &&
+                                  if (correctedPosition.dx >= -20 &&
                                       correctedPosition.dx <=
                                           renderBox.size.width -
                                               MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.4 &&
-                                      correctedPosition.dy >= 0 &&
+                                                  0.4 +
+                                              20 &&
+                                      correctedPosition.dy >= -20 &&
                                       correctedPosition.dy <=
                                           renderBox.size.height -
                                               MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.4) {
+                                                  0.4 +
+                                              20) {
                                     _currentLinePoints.add(correctedPosition);
                                   }
                                 });
@@ -229,6 +231,24 @@ class _DrawingPageState extends State<DrawingPage> {
                         color: Colors.white),
                   ),
                 ),
+
+                SizedBox(width: 10), // スペースを追加
+                TextButton(
+                  onPressed: () async {
+                    audioProvider.playSound("tap2.mp3");
+                    pickAndProcessImage();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    '写真から選ぶ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
+                  ),
+                ),
                 SizedBox(width: 10), // スペースを追加
                 TextButton(
                   onPressed: () async {
@@ -241,23 +261,6 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
                   child: Text(
                     'できたよ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-                SizedBox(width: 10), // スペースを追加
-                TextButton(
-                  onPressed: () async {
-                    audioProvider.playSound("tap2.mp3");
-                    pickAndProcessImage();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    '写真から選ぶ',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

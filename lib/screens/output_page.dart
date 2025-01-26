@@ -385,100 +385,50 @@ class _OutputPageState extends State<OutputPage> {
     }
   }
 
-  Widget typelists(BuildContext context) {
+  typelists(BuildContext context) async {
     final Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  typeValue = 1;
-                });
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: typeValue == 1
-                    ? Color.fromARGB(255, 255, 67, 195)
-                    : Colors.grey,
-              ),
-              child: Text(
-                'タイプA',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 2),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  typeValue = 2;
-                });
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: typeValue == 2
-                    ? Color.fromARGB(255, 255, 67, 195)
-                    : Colors.grey,
-              ),
-              child: Text(
-                'タイプB',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 2),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  typeValue = 3;
-                });
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: typeValue == 3
-                    ? Color.fromARGB(255, 255, 67, 195)
-                    : Colors.grey,
-              ),
-              child: Text(
-                'タイプC',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 2),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  typeValue = 4;
-                });
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: typeValue == 4
-                    ? Color.fromARGB(255, 255, 67, 195)
-                    : Colors.grey,
-              ),
-              child: Text(
-                'タイプD',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
+    return DropdownButton(
+      items: [
+        DropdownMenuItem(
+          value: 1,
+          child: Text('モードA',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 2,
+          child: Text('モードB',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 3,
+          child: Text('モードC',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
+        ),
+        DropdownMenuItem(
+          value: 4,
+          child: Text('モードD',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize,
+              )),
         ),
       ],
+      value: typeValue,
+      onChanged: (int? value) {
+        setState(() {
+          typeValue = value!;
+        });
+      },
     );
   }
 
