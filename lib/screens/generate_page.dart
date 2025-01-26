@@ -328,7 +328,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (isresult_exist == true) {
                                     final drawingData =
                                         Uint8List.fromList(drawingImageData!);
@@ -337,7 +337,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                     final photoData =
                                         Uint8List.fromList(photoBytes!);
                                     // Insert the completed drawing
-                                    GalleryDatabaseHelper.instance
+                                    await GalleryDatabaseHelper.instance
                                         .insertDrawing(
                                       drawingData,
                                       selectedPhoto,
