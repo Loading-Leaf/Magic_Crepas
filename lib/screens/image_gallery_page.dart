@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import "package:ai_art/artproject/terms_of_service.dart";
-import 'package:audioplayers/audioplayers.dart';
-import 'package:ai_art/artproject/audio_provider.dart';
-import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/gallery_database_helper.dart';
-import 'dart:convert';
-import 'dart:async';
+import 'package:ai_art/artproject/audio_provider.dart';
 import 'dart:typed_data';
-
-//import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
-//import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({super.key});
@@ -37,17 +28,11 @@ class _GalleryPageState extends State<GalleryPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
 
-    double imageWidth = screenSize.width / 6 - 10; // 余白を考慮して少し小さく
-    double imageHeight = imageWidth; // 画像が正方形の場合
+    double imageWidth = screenSize.width / 6 - 10; // Adjusted for spacing
+    double imageHeight = imageWidth;
 
     return Scaffold(
       body: GestureDetector(
-        onTapUp: (details) {
-          // タッチされた位置を取得
-          Offset tapPosition = details.localPosition;
-          // キラキラエフェクトを表示
-          showSparkleEffect(context, tapPosition);
-        },
         child: SizedBox.expand(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -63,16 +48,17 @@ class _GalleryPageState extends State<GalleryPage> {
                 future: _drawingsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text('No images available.');
+                    return const Text('No images available.');
                   } else {
                     List<Map<String, dynamic>> drawings = snapshot.data!;
                     return Expanded(
                       child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount:
                               6, // You can change the number of columns
                           crossAxisSpacing: 10,
@@ -81,6 +67,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
                           Uint8List outputImage = drawings[index]['photo'];
+                          print("Output Image Data: $outputImage"); // Debug log
                           return Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
@@ -90,8 +77,8 @@ class _GalleryPageState extends State<GalleryPage> {
                               borderRadius: BorderRadius.circular(8),
                               child: Image.memory(
                                 outputImage,
-                                width: imageWidth, // 横のサイズを設定
-                                height: imageHeight, // 縦のサイズを設定
+                                width: imageWidth,
+                                height: imageHeight,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -111,7 +98,7 @@ class _GalleryPageState extends State<GalleryPage> {
                       Navigator.pushNamed(context, '/');
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      backgroundColor: const Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
                       '閉じる',

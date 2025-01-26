@@ -8,7 +8,7 @@ class GalleryDatabaseHelper {
   static final _databaseName = "MyDatabase.db"; // DB名
   static final _databaseVersion = 2; // バージョン番号
 
-  static final table = 'generate_arts'; // テーブル名
+  static final table = 'drawings'; // テーブル名
 
   static final columnId = '_id'; // 列1
   static final columnDrawing = 'drawing'; // 列2
