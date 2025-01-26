@@ -248,17 +248,19 @@ class _OutputPageState extends State<OutputPage> {
                               child: TextButton(
                                 onPressed: () async {
                                   if (isresult_exist == true) {
-                                    final drawingData = {
-                                      'drawing':
-                                          Uint8List.fromList(drawingImageData!),
-                                      'photo': photoBytes,
-                                      'selectedphoto':
-                                          Uint8List.fromList(resultbytes2!),
-                                    };
-
+                                    final drawingData =
+                                        Uint8List.fromList(drawingImageData!);
+                                    final selectedPhoto =
+                                        Uint8List.fromList(resultbytes2!);
+                                    final photoData =
+                                        Uint8List.fromList(photoBytes!);
                                     // Insert the completed drawing
                                     await GalleryDatabaseHelper.instance
-                                        .insertDrawing(drawingData);
+                                        .insertDrawing(
+                                      drawingData,
+                                      selectedPhoto,
+                                      photoData,
+                                    );
 
                                     audioProvider.playSound("established.mp3");
                                     Navigator.pushNamed(
@@ -403,7 +405,7 @@ class _OutputPageState extends State<OutputPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
-    List<String> buttonLabels = ['タイプA', 'タイプB', 'タイプC', 'タイプD'];
+    List<String> buttonLabels = ['モードA', 'モードB', 'モードC', 'モードD'];
     List<int> photoTypes = [1, 2, 3, 4];
 
     showDialog(

@@ -8,7 +8,7 @@ class GalleryDatabaseHelper {
   static final _databaseName = "MyDatabase.db"; // DB名
   static final _databaseVersion = 2; // バージョン番号
 
-  static final table = 'drawings'; // テーブル名
+  static final table = 'arts'; // テーブル名
 
   static final columnId = '_id'; // 列1
   static final columnDrawing = 'drawing'; // 列2
@@ -51,9 +51,14 @@ class GalleryDatabaseHelper {
     ''');
   }
 
-  Future<int> insertDrawing(Map<String, dynamic> drawingData) async {
+  Future<int> insertDrawing(
+      Uint8List drawingData, Uint8List PhotoData, Uint8List OutputData) async {
     final db = await instance.database;
-    return await db.insert(table, drawingData);
+    return await db.insert(table, {
+      "drawing": drawingData,
+      "photo": PhotoData,
+      "selectedphoto": OutputData
+    });
   }
 
   Future<List<Map<String, dynamic>>> fetchDrawings() async {

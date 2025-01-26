@@ -27,6 +27,7 @@ class _GalleryPageState extends State<GalleryPage> {
     double fontsizeBig = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
+    Uint8List? outputImagecheck;
 
     double imageWidth = screenSize.width / 6 - 10; // Adjusted for spacing
     double imageHeight = imageWidth;
@@ -37,6 +38,7 @@ class _GalleryPageState extends State<GalleryPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: 20),
               Text(
                 '今まで作った絵を見れるよ～',
                 style: TextStyle(
@@ -55,6 +57,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     return const Text('No images available.');
                   } else {
                     List<Map<String, dynamic>> drawings = snapshot.data!;
+                    outputImagecheck = drawings[0]['photo'];
                     return Expanded(
                       child: GridView.builder(
                         gridDelegate:
@@ -94,6 +97,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   }
                 },
               ),
+              Text(outputImagecheck.toString()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -115,7 +119,8 @@ class _GalleryPageState extends State<GalleryPage> {
                     ),
                   ),
                 ],
-              )
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),

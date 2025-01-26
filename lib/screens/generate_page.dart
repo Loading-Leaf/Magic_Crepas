@@ -330,17 +330,19 @@ class _GeneratePageState extends State<GeneratePage> {
                               child: TextButton(
                                 onPressed: () {
                                   if (isresult_exist == true) {
-                                    final drawingData = {
-                                      'drawing':
-                                          Uint8List.fromList(drawingImageData!),
-                                      'photo': photoBytes,
-                                      'selectedphoto':
-                                          Uint8List.fromList(resultbytes2!),
-                                    };
-
+                                    final drawingData =
+                                        Uint8List.fromList(drawingImageData!);
+                                    final selectedPhoto =
+                                        Uint8List.fromList(resultbytes2!);
+                                    final photoData =
+                                        Uint8List.fromList(photoBytes!);
                                     // Insert the completed drawing
                                     GalleryDatabaseHelper.instance
-                                        .insertDrawing(drawingData);
+                                        .insertDrawing(
+                                      drawingData,
+                                      selectedPhoto,
+                                      photoData,
+                                    );
                                     audioProvider.playSound("established.mp3");
                                     Navigator.pushNamed(
                                       context,
