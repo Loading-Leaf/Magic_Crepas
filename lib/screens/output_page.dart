@@ -399,59 +399,6 @@ class _OutputPageState extends State<OutputPage> {
     );
   }
 
-  void generatedrawingimages(int typeValue, AudioProvider audioProvider) async {
-    if (wifiName != null) {
-      audioProvider.playSound("tap1.mp3");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Wi-Fiつながってないよ')),
-      );
-      return; // 早期リターン
-    }
-    audioProvider.playSound("tap2.mp3");
-    List<int> photoBytes = image!.readAsBytesSync();
-    String base64Image = base64Encode(photoBytes);
-    String base64Drawing = base64Encode(Uint8List.fromList(drawingImageData!));
-    String body = json.encode({
-      'post_photo': base64Image,
-      'post_drawing': base64Drawing,
-      'photo_type': typeValue,
-    });
-    Uri url = Uri.parse('https://imakoh.pythonanywhere.com/generate_arts');
-    //192.168.68.58
-    _showDialog(context);
-    final response = await http.post(
-      url,
-      body: body,
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    /// base64 -> file
-    if (response.statusCode == 200) {
-      audioProvider.playSound("generated.mp3");
-      final data = json.decode(response.body);
-      String resultimageBase64 = data['result'];
-
-      // バイトのリストに変換
-      Uint8List resultbytes = base64Decode(resultimageBase64);
-
-      // バイトから画像を生成
-      if (resultbytes.isNotEmpty) {
-        setState(() {
-          isresult_exist = true;
-          resultbytes2 = resultbytes;
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('作ったアートが空だよ')),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('アート生成に失敗したよ')),
-      );
-    }
-  }
-
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
@@ -488,68 +435,47 @@ class _OutputPageState extends State<OutputPage> {
               Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
-                      onPressed: () async {
-                        generatedrawingimages(1, audioProvider);
+                    DropdownButton(
+                      items: [
+                        DropdownMenuItem(
+                          value: 1,
+                          child: Text('モードA',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                              )),
+                        ),
+                        DropdownMenuItem(
+                          value: 2,
+                          child: Text('モードB',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                              )),
+                        ),
+                        DropdownMenuItem(
+                          value: 3,
+                          child: Text('モードC',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                              )),
+                        ),
+                        DropdownMenuItem(
+                          value: 4,
+                          child: Text('モードD',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                              )),
+                        ),
+                      ],
+                      value: typeValue,
+                      onChanged: (int? value) {
+                        setState(() {
+                          typeValue = value!;
+                        });
                       },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                      ),
-                      child: Text(
-                        'タイプA',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontsize,
-                            color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    TextButton(
-                      onPressed: () async {
-                        generatedrawingimages(2, audioProvider);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                      ),
-                      child: Text(
-                        'タイプB',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontsize,
-                            color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    TextButton(
-                      onPressed: () async {
-                        generatedrawingimages(3, audioProvider);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                      ),
-                      child: Text(
-                        'タイプC',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontsize,
-                            color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    TextButton(
-                      onPressed: () async {
-                        generatedrawingimages(4, audioProvider);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                      ),
-                      child: Text(
-                        'タイプD',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontsize,
-                            color: Colors.white),
-                      ),
                     ),
                     SizedBox(height: 5),
                     TextButton(

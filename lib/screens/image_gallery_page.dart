@@ -80,8 +80,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         ),
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
-                          Uint8List outputImage =
-                              drawings[index]['selectedphoto'];
+                          Uint8List outputImage = drawings[index]['photo'];
                           return Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),

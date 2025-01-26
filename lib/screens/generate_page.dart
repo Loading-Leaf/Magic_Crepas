@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import "package:ai_art/artproject/database_helper.dart";
 import "package:ai_art/artproject/drawing_database_helper.dart";
+import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'dart:typed_data';
 import 'package:sqflite/sqflite.dart';
 import 'package:http/http.dart' as http;
@@ -329,6 +330,17 @@ class _GeneratePageState extends State<GeneratePage> {
                               child: TextButton(
                                 onPressed: () {
                                   if (isresult_exist == true) {
+                                    final drawingData = {
+                                      'drawing':
+                                          Uint8List.fromList(drawingImageData!),
+                                      'photo': photoBytes,
+                                      'selectedphoto':
+                                          Uint8List.fromList(resultbytes2!),
+                                    };
+
+                                    // Insert the completed drawing
+                                    GalleryDatabaseHelper.instance
+                                        .insertDrawing(drawingData);
                                     audioProvider.playSound("established.mp3");
                                     Navigator.pushNamed(
                                       context,
