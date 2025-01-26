@@ -451,6 +451,7 @@ class _OutputPageState extends State<OutputPage> {
                                   return; // 早期リターン
                                 }
                                 audioProvider.playSound("tap2.mp3");
+                                Navigator.pop(context);
                                 List<int> photoBytes = image!.readAsBytesSync();
                                 String base64Image = base64Encode(photoBytes);
                                 String base64Drawing = base64Encode(

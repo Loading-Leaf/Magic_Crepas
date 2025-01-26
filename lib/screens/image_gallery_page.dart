@@ -69,10 +69,6 @@ class _GalleryPageState extends State<GalleryPage> {
                           Uint8List outputImage = drawings[index]['photo'];
                           print("Output Image Data: $outputImage"); // Debug log
                           return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.grey[200],
-                            ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.memory(
