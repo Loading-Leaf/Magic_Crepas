@@ -248,20 +248,6 @@ class _OutputPageState extends State<OutputPage> {
                               child: TextButton(
                                 onPressed: () async {
                                   if (isresult_exist == true) {
-                                    final drawingData =
-                                        Uint8List.fromList(drawingImageData!);
-                                    final selectedPhoto =
-                                        Uint8List.fromList(resultbytes2!);
-                                    final photoData =
-                                        Uint8List.fromList(photoBytes!);
-                                    // Insert the completed drawing
-                                    await GalleryDatabaseHelper.instance
-                                        .insertDrawing(
-                                      drawingData,
-                                      selectedPhoto,
-                                      photoData,
-                                    );
-
                                     audioProvider.playSound("established.mp3");
                                     Navigator.pushNamed(
                                       context,
@@ -698,6 +684,43 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                         child: Text(
                           '別のモードを使う',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          audioProvider.playSound("tap1.mp3");
+                          final drawingData =
+                              Uint8List.fromList(drawingImageData!);
+                          final selectedPhoto =
+                              Uint8List.fromList(resultbytes2!);
+                          final photoData = Uint8List.fromList(photoBytes!);
+                          // Insert the completed drawing
+                          try {
+                            GalleryDatabaseHelper.instance.insertDrawing(
+                              drawingData,
+                              selectedPhoto,
+                              photoData,
+                            );
+                          } on PlatformException catch (e) {
+                            print('$e');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('保存できなかったよ\n$e')),
+                            );
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          'プロジェクトを保存する',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,
