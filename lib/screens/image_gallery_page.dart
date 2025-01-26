@@ -24,7 +24,7 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = screenSize.width / 64;
+    double fontsizeBig = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
 
@@ -41,7 +41,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 '今まで作った絵を見れるよ～',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: fontsize_big,
+                  fontSize: fontsizeBig,
                 ),
               ),
               FutureBuilder<List<Map<String, dynamic>>>(
@@ -66,8 +66,16 @@ class _GalleryPageState extends State<GalleryPage> {
                         ),
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
-                          Uint8List outputImage = drawings[index]['photo'];
-                          print("Output Image Data: $outputImage"); // Debug log
+                          Uint8List? outputImage = drawings[index]['photo'];
+                          if (outputImage == null || outputImage.isEmpty) {
+                            // Fallback to indicate invalid image data
+                            return Container(
+                              color: Colors.grey,
+                              child: const Center(
+                                child: Text("Invalid Image"),
+                              ),
+                            );
+                          }
                           return Container(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
@@ -75,7 +83,8 @@ class _GalleryPageState extends State<GalleryPage> {
                                 outputImage,
                                 width: imageWidth,
                                 height: imageHeight,
-                                fit: BoxFit.cover,
+                                fit: BoxFit
+                                    .contain, // Changed from cover to prevent cropping
                               ),
                             ),
                           );
@@ -99,9 +108,10 @@ class _GalleryPageState extends State<GalleryPage> {
                     child: Text(
                       '閉じる',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.white),
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],

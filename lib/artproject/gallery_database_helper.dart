@@ -24,10 +24,8 @@ class GalleryDatabaseHelper {
 
   // DBにアクセスするためのメソッド
   Future<Database> get database async {
-    // データベースが未初期化の場合、初期化
-    if (!(_database is Database)) {
-      _database = await _initDatabase();
-    }
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
     return _database!;
   }
 
@@ -41,46 +39,30 @@ class GalleryDatabaseHelper {
 
   Future _onCreate(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const textType = 'TEXT';
     const blobType = 'BLOB';
 
     await db.execute('''
-    CREATE TABLE drawings (
-      id $idType,
-      drawing $blobType,
-      photo $blobType,
-      selectedphoto $blobType
+    CREATE TABLE $table (
+      $columnId $idType,
+      $columnDrawing $blobType,
+      $columnPhoto $blobType,
+      $columnSelectedPhoto $blobType
     )
     ''');
-  } // 挿入関数
+  }
 
   Future<int> insertDrawing(Map<String, dynamic> drawingData) async {
     final db = await instance.database;
-    return await db.insert('drawings', drawingData);
+    return await db.insert(table, drawingData);
   }
 
-  // すべての絵を取得する関数
-  Future<List<Map<String, dynamic>>> getDrawings() async {
-    final db = await instance.database;
-    return await db.query('drawings');
-  }
-
-  // 更新
-  Future<int> update(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    int id = row[columnId];
-    return await db.update(table, row, where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  // 削除
-  Future<int> delete(int id) async {
-    Database db = await instance.database;
-    return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  // 描画データを全件取得するメソッド
   Future<List<Map<String, dynamic>>> fetchDrawings() async {
-    Database db = await instance.database;
+    final db = await instance.database;
     return await db.query(table);
+  }
+
+  Future<int> delete(int id) async {
+    final db = await instance.database;
+    return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
 }
