@@ -385,7 +385,7 @@ class _OutputPageState extends State<OutputPage> {
     }
   }
 
-  typelists(BuildContext context) async {
+  Widget typelists(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     return DropdownButton(
@@ -428,6 +428,20 @@ class _OutputPageState extends State<OutputPage> {
         setState(() {
           typeValue = value!;
         });
+      },
+    );
+  }
+
+  void _showImageModal(BuildContext context, ImageProvider image) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent, // 背景を透明に
+          child: InteractiveViewer(
+            child: Image(image: image), // ここでタップした画像を表示
+          ),
+        );
       },
     );
   }
@@ -591,15 +605,28 @@ class _OutputPageState extends State<OutputPage> {
                                 fontSize: fontsize)),
                         Padding(
                           padding: EdgeInsets.all(10.0),
-                          child: Container(
-                            height: (screenSize.width ~/ 5.79).toDouble(),
-                            width: (screenSize.width ~/ 4.34).toDouble(),
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: outputImage != null
-                                  ? Image.memory(outputImage!) // 画像を表示
-                                  : Image.asset(
-                                      'assets/output_style.png'), // デフォルト画像
+                          child: GestureDetector(
+                            onTap: () {
+                              if (outputImage != null) {
+                                // 画像が存在する場合、タップしてモーダルを表示
+                                _showImageModal(
+                                    context, MemoryImage(outputImage!));
+                              } else {
+                                // デフォルト画像の場合
+                                _showImageModal(context,
+                                    AssetImage('assets/output_style.png'));
+                              }
+                            },
+                            child: Container(
+                              height: (screenSize.width ~/ 5.79).toDouble(),
+                              width: (screenSize.width ~/ 4.34).toDouble(),
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: outputImage != null
+                                    ? Image.memory(outputImage!) // 画像を表示
+                                    : Image.asset(
+                                        'assets/output_style.png'), // デフォルト画像
+                              ),
                             ),
                           ),
                         ),
@@ -630,15 +657,28 @@ class _OutputPageState extends State<OutputPage> {
                                 fontSize: fontsize)),
                         Padding(
                           padding: EdgeInsets.all(10.0),
-                          child: Container(
-                            height: (screenSize.width ~/ 5.79).toDouble(),
-                            width: (screenSize.width ~/ 4.34).toDouble(),
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: drawingImageData != null
-                                  ? Image.memory(drawingImageData!) // 画像を表示
-                                  : Image.asset(
-                                      'assets/content.png'), // デフォルト画像
+                          child: GestureDetector(
+                            onTap: () {
+                              if (drawingImageData != null) {
+                                // 画像が存在する場合、タップしてモーダルを表示
+                                _showImageModal(
+                                    context, MemoryImage(drawingImageData!));
+                              } else {
+                                // デフォルト画像の場合
+                                _showImageModal(
+                                    context, AssetImage('assets/content.png'));
+                              }
+                            },
+                            child: Container(
+                              height: (screenSize.width ~/ 5.79).toDouble(),
+                              width: (screenSize.width ~/ 4.34).toDouble(),
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: drawingImageData != null
+                                    ? Image.memory(drawingImageData!) // 画像を表示
+                                    : Image.asset(
+                                        'assets/content.png'), // デフォルト画像
+                              ),
                             ),
                           ),
                         ),

@@ -48,8 +48,8 @@ class GalleryDatabaseHelper {
     CREATE TABLE drawings (
       id $idType,
       drawing $blobType,
-      image $blobType,
-      outputImage $blobType
+      photo $blobType,
+      selectedphoto $blobType
     )
     ''');
   } // 挿入関数

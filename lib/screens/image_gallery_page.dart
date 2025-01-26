@@ -77,8 +77,12 @@ class _GalleryPageState extends State<GalleryPage> {
                         ),
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
+                          final snackBar = SnackBar(
+                            content: Text(drawings.length.toString()),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           Uint8List outputImage =
-                              drawings[index]['outputImage'];
+                              drawings[index]['selectedphoto'];
                           return Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
