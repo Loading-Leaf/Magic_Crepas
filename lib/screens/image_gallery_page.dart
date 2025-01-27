@@ -58,7 +58,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     return const Text('No images available.');
                   } else {
                     List<Map<String, dynamic>> drawings = snapshot.data!;
-                    outputImagecheck = drawings[0]['drawingimage'];
+                    outputImagecheck = drawings[0]['outputimage'];
                     return Expanded(
                       child: GridView.builder(
                         gridDelegate:
@@ -70,7 +70,8 @@ class _GalleryPageState extends State<GalleryPage> {
                         ),
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
-                          Uint8List? outputImage = drawings[index]['photo'];
+                          Uint8List? outputImage =
+                              drawings[index]['outputimage'];
                           Lengthdb = drawings.length.toString();
                           if (outputImage == null || outputImage.isEmpty) {
                             // Fallback to indicate invalid image data

@@ -53,25 +53,23 @@ class GalleryDatabaseHelper {
       Database db = await instance.database;
 
       // データの存在確認
+      /*
       if (drawingData['drawingimage'] == null) {
         throw Exception('Drawing image is missing');
       } else if (drawingData['outputimage'] == null) {
         throw Exception('Output image is missing');
-      }
+      }*/
 
       // photoimageはnullableとして扱う
       Map<String, dynamic> sanitizedData = {
-        columnDrawing: drawingData['drawingimage'],
-        columnPhoto: drawingData['photoimage'],
+        //columnDrawing: drawingData['drawingimage'],
+        //columnPhoto: drawingData['photoimage'],
         columnSelectedPhoto: drawingData['outputimage'],
       };
 
       print('Inserting data with sizes: ');
-      print('Drawing image size: ${drawingData['drawingimage'].length}');
+      //print('Drawing image size: ${drawingData['drawingimage'].length}');
       print('Output image size: ${drawingData['outputimage'].length}');
-      if (drawingData['photoimage'] != null) {
-        print('Photo image size: ${drawingData['photoimage'].length}');
-      }
 
       int result = await db.insert(
         table,

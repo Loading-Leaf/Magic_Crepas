@@ -25,19 +25,29 @@ class DrawingPage extends StatefulWidget {
 }
 
 // スプレーポイントを表現するクラスを追加
-class SprayPoints {
-  List<Offset> points;
-  Color color;
-  double density; // スプレーの密度
 
-  SprayPoints(this.points, this.color, this.density);
+abstract class DrawingItem {
+  Color color;
+  DrawingItem(this.color);
+}
+
+class Line extends DrawingItem {
+  List<Offset?> points;
+  double strokeWidth;
+
+  Line(this.points, Color color, this.strokeWidth) : super(color);
+}
+
+class SprayPoints extends DrawingItem {
+  List<Offset> points;
+  double density;
+
+  SprayPoints(this.points, Color color, this.density) : super(color);
 }
 
 class _DrawingPageState extends State<DrawingPage> {
-  List<Line> _undoneLines = []; // undoされた線を保持するリスト
-  List<Line> _lines = []; // 描画する線のリスト
-  List<SprayPoints> _undoneSprayPoints = []; // スプレーのundo用配列
-  List<SprayPoints> _sprayPoints = []; // スプレーのundo用配列
+  List<DrawingItem> _drawItems = []; // DrawingItem型のリスト
+  List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
   Color _selectedColor = Colors.black; // 選択された色
   bool _isSprayMode = false; // スプレーモードのフラグ
   double _sprayDensity = 20.0; // スプレーの密度
@@ -68,30 +78,16 @@ class _DrawingPageState extends State<DrawingPage> {
 
   void _undo() {
     setState(() {
-      if (_lines.isNotEmpty || _sprayPoints.isNotEmpty) {
-        if (_lines.isNotEmpty &&
-            (_sprayPoints.isEmpty ||
-                _lines.last.points.last!.dy >
-                    _sprayPoints.last.points.last.dy)) {
-          _undoneLines.add(_lines.removeLast());
-        } else if (_sprayPoints.isNotEmpty) {
-          _undoneSprayPoints.add(_sprayPoints.removeLast());
-        }
+      if (_drawItems.isNotEmpty) {
+        _undoneItems.add(_drawItems.removeLast());
       }
     });
   }
 
   void _redo() {
     setState(() {
-      if (_undoneLines.isNotEmpty || _undoneSprayPoints.isNotEmpty) {
-        if (_undoneLines.isNotEmpty &&
-            (_undoneSprayPoints.isEmpty ||
-                _undoneLines.last.points.last!.dy >
-                    _undoneSprayPoints.last.points.last.dy)) {
-          _lines.add(_undoneLines.removeLast());
-        } else if (_undoneSprayPoints.isNotEmpty) {
-          _sprayPoints.add(_undoneSprayPoints.removeLast());
-        }
+      if (_undoneItems.isNotEmpty) {
+        _drawItems.add(_undoneItems.removeLast());
       }
     });
   }
@@ -211,7 +207,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                 setState(() {
                                   if (_isSprayMode &&
                                       _currentSprayPoints.isNotEmpty) {
-                                    _sprayPoints.add(SprayPoints(
+                                    _drawItems.add(SprayPoints(
                                         List.from(_currentSprayPoints),
                                         _selectedColor,
                                         _sprayDensity));
@@ -219,12 +215,11 @@ class _DrawingPageState extends State<DrawingPage> {
                                   } else {
                                     audioProvider.pauseAudio();
                                     isDrawing = false;
-                                    _lines.add(Line(_currentLinePoints,
+                                    _drawItems.add(Line(_currentLinePoints,
                                         _selectedColor, _strokeWidth));
                                     _currentLinePoints = [];
                                   }
-                                  _undoneLines.clear();
-                                  _undoneSprayPoints.clear();
+                                  _undoneItems.clear();
                                 });
                               },
                               child: CustomPaint(
@@ -232,9 +227,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                     MediaQuery.of(context).size.width * 0.6,
                                     MediaQuery.of(context).size.height * 0.6),
                                 painter: DrawingPainter(
-                                  _lines,
+                                  _drawItems,
                                   _currentLinePoints,
-                                  _sprayPoints,
                                   _currentSprayPoints,
                                   _strokeWidth,
                                   _selectedColor,
@@ -248,7 +242,6 @@ class _DrawingPageState extends State<DrawingPage> {
                             painter: DrawingPainter(
                               [],
                               _currentLinePoints,
-                              _sprayPoints,
                               _currentSprayPoints,
                               _strokeWidth,
                               _selectedColor,
@@ -278,20 +271,14 @@ class _DrawingPageState extends State<DrawingPage> {
                       children: [
                         IconButton(
                           icon: Icon(Icons.undo),
-                          onPressed:
-                              _lines.isNotEmpty || _sprayPoints.isNotEmpty
-                                  ? _undo
-                                  : null,
+                          onPressed: _drawItems.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
                           iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),
-                          onPressed: _undoneLines.isNotEmpty ||
-                                  _undoneSprayPoints.isNotEmpty
-                              ? _redo
-                              : null,
+                          onPressed: _undoneItems.isNotEmpty ? _redo : null,
                           tooltip: 'Redo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
                           iconSize: MediaQuery.of(context).size.height / 17,
@@ -607,86 +594,60 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 }
 
-// 線を表現するクラス
-class Line {
-  List<Offset?> points;
-  Color color;
-  double strokeWidth; // Add strokeWidth property
-
-  Line(this.points, this.color, this.strokeWidth);
-}
-
 // カスタムペインタークラス
 // CustomPainterの修正
 class DrawingPainter extends CustomPainter {
-  final List<Line> lines;
+  final List<DrawingItem> items;
   final List<Offset?> currentLinePoints;
-  final List<SprayPoints> sprayPoints;
   final List<Offset> currentSprayPoints;
   final double strokeWidth;
-  final Color lineColor;
+  final Color color;
 
   DrawingPainter(
-    this.lines,
+    this.items,
     this.currentLinePoints,
-    this.sprayPoints,
     this.currentSprayPoints,
     this.strokeWidth,
-    this.lineColor,
+    this.color,
   );
 
   @override
   void paint(Canvas canvas, Size size) {
     // 通常の線を描画
-    for (Line line in lines) {
-      Paint paint = Paint()
-        ..color = line.color
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = line.strokeWidth;
-
-      for (int i = 0; i < line.points.length - 1; i++) {
-        if (line.points[i] != null && line.points[i + 1] != null) {
-          canvas.drawLine(line.points[i]!, line.points[i + 1]!, paint);
+    for (var item in items) {
+      if (item is Line) {
+        Paint paint = Paint()
+          ..color = item.color
+          ..strokeWidth = item.strokeWidth;
+        for (int i = 0; i < item.points.length - 1; i++) {
+          if (item.points[i] != null && item.points[i + 1] != null) {
+            canvas.drawLine(item.points[i]!, item.points[i + 1]!, paint);
+          }
+        }
+      } else if (item is SprayPoints) {
+        Paint paint = Paint()..color = item.color;
+        for (var point in item.points) {
+          canvas.drawCircle(point, 1.0, paint);
         }
       }
     }
 
-    // スプレーポイントを描画
-    for (SprayPoints spray in sprayPoints) {
-      Paint paint = Paint()
-        ..color = spray.color
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = 1.0;
-
-      for (Offset point in spray.points) {
-        canvas.drawCircle(point, 1.0, paint);
-      }
-    }
-
-    // 現在のスプレーポイントを描画
-    if (currentSprayPoints.isNotEmpty) {
-      Paint paint = Paint()
-        ..color = lineColor
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = 1.0;
-
-      for (Offset point in currentSprayPoints) {
-        canvas.drawCircle(point, 1.0, paint);
-      }
-    }
-
-    // 現在の線を描画
     if (currentLinePoints.isNotEmpty) {
       Paint paint = Paint()
-        ..color = lineColor
-        ..strokeCap = StrokeCap.round
+        ..color = color
         ..strokeWidth = strokeWidth;
-
       for (int i = 0; i < currentLinePoints.length - 1; i++) {
         if (currentLinePoints[i] != null && currentLinePoints[i + 1] != null) {
           canvas.drawLine(
               currentLinePoints[i]!, currentLinePoints[i + 1]!, paint);
         }
+      }
+    }
+
+    if (currentSprayPoints.isNotEmpty) {
+      Paint paint = Paint()..color = color;
+      for (var point in currentSprayPoints) {
+        canvas.drawCircle(point, 1.0, paint);
       }
     }
   }
