@@ -512,7 +512,7 @@ class _GeneratePageState extends State<GeneratePage> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
-                          Text(_images.length.toString()),
+                          //Text(_images.length.toString()), //結局格納すらできていない
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Container(

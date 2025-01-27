@@ -105,7 +105,7 @@ class _DrawingPageState extends State<DrawingPage> {
       final angle = 2 * math.pi * random.nextDouble();
       final dx = radius * math.cos(angle);
       final dy = radius * math.sin(angle);
-      points.add(Offset(center.dx + dx, center.dy + dy));
+      points.add(Offset(center.dx + dx - 20, center.dy + dy - 20));
     }
 
     _currentSprayPoints.addAll(points);
@@ -293,14 +293,20 @@ class _DrawingPageState extends State<DrawingPage> {
                       children: [
                         IconButton(
                           icon: Icon(Icons.undo),
-                          onPressed: _lines.isNotEmpty ? _undo : null,
+                          onPressed:
+                              _lines.isNotEmpty || _sprayPoints.isNotEmpty
+                                  ? _undo
+                                  : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
                           iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),
-                          onPressed: _undoneLines.isNotEmpty ? _redo : null,
+                          onPressed: _undoneLines.isNotEmpty ||
+                                  _undoneSprayPoints.isNotEmpty
+                              ? _redo
+                              : null,
                           tooltip: 'Redo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
                           iconSize: MediaQuery.of(context).size.height / 17,

@@ -53,9 +53,10 @@ class GalleryDatabaseHelper {
       Database db = await instance.database;
 
       // データの存在確認
-      if (drawingData['drawingimage'] == null ||
-          drawingData['outputimage'] == null) {
-        throw Exception('Required data is missing');
+      if (drawingData['drawingimage'] == null) {
+        throw Exception('Drawing image is missing');
+      } else if (drawingData['outputimage'] == null) {
+        throw Exception('Output image is missing');
       }
 
       // photoimageはnullableとして扱う

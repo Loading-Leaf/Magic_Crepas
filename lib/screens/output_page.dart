@@ -730,6 +730,15 @@ class _OutputPageState extends State<OutputPage> {
                       child: TextButton(
                         onPressed: () async {
                           audioProvider.playSound("tap1.mp3");
+                          if (drawingImageData == null ||
+                              resultbytes2 == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Cannot save project: Missing image data')),
+                            );
+                            return;
+                          }
 
                           saveToGalleryDB();
                         },
