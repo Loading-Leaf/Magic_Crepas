@@ -28,7 +28,7 @@ class _GalleryPageState extends State<GalleryPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     Uint8List? outputImagecheck;
-    String? Lengthdb;
+    String Lengthdb = "";
 
     double imageWidth = screenSize.width / 6 - 10; // Adjusted for spacing
     double imageHeight = imageWidth;
@@ -93,14 +93,13 @@ class _GalleryPageState extends State<GalleryPage> {
                               ),
                             ),
                           );
-                          
                         },
                       ),
                     );
                   }
                 },
               ),
-              Text(Lengthdb);
+              Text(Lengthdb),
               Text(outputImagecheck.toString()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

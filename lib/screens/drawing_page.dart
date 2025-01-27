@@ -33,18 +33,11 @@ class _DrawingPageState extends State<DrawingPage> {
   late Database _database; // late修飾子を使用
   final audioPlayer = AudioPlayer();
   bool isDrawing = false; // 描画中かどうかをトラックするフラグ
-  bool _isCrayonMode = false;
 
   @override
   void initState() {
     super.initState();
     _initializeDatabase(); // データベースの初期化を呼び出す
-  }
-
-  void _toggleCrayonMode() {
-    setState(() {
-      _isCrayonMode = !_isCrayonMode;
-    });
   }
 
   void _undo() {
@@ -168,8 +161,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     _lines,
                                     _currentLinePoints,
                                     _strokeWidth,
-                                    _selectedColor,
-                                    _isCrayonMode),
+                                    _selectedColor),
                               ),
                             ),
                           ),
@@ -177,7 +169,7 @@ class _DrawingPageState extends State<DrawingPage> {
                         if (_currentLinePoints.isNotEmpty)
                           CustomPaint(
                             painter: DrawingPainter([], _currentLinePoints,
-                                _strokeWidth, _selectedColor, _isCrayonMode),
+                                _strokeWidth, _selectedColor),
                           ),
                       ],
                     ),
@@ -201,12 +193,6 @@ class _DrawingPageState extends State<DrawingPage> {
                     _buildStrokePicker(MediaQuery.of(context).size.height / 13),
                     Row(
                       children: [
-                        IconButton(
-                          icon: Icon(_isCrayonMode ? Icons.brush : Icons.edit),
-                          onPressed: _toggleCrayonMode,
-                          tooltip: 'Crayon Mode',
-                          color: _isCrayonMode ? Colors.orange : Colors.grey,
-                        ),
                         IconButton(
                           icon: Icon(Icons.undo),
                           onPressed: _lines.isNotEmpty ? _undo : null,
@@ -536,10 +522,9 @@ class DrawingPainter extends CustomPainter {
   final List<Offset?> currentLinePoints; // 新たに追加
   final double strokeWidth;
   final Color lineColor; // 色を追加
-  final bool isCrayonMode;
 
-  DrawingPainter(this.lines, this.currentLinePoints, this.strokeWidth,
-      this.lineColor, this.isCrayonMode);
+  DrawingPainter(
+      this.lines, this.currentLinePoints, this.strokeWidth, this.lineColor);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -556,34 +541,15 @@ class DrawingPainter extends CustomPainter {
       }
     }
     if (currentLinePoints.isNotEmpty) {
-      for (Line line in lines) {
-        Paint paint = Paint()
-          ..color = lineColor // 一時的に黒で描画（動的に変更することも可能）
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = strokeWidth;
-        if (isCrayonMode) {
-          // Add a more textured, crayon-like stroke
-          for (int i = 0; i < line.points.length - 1; i++) {
-            if (line.points[i] != null && line.points[i + 1] != null) {
-              // Add slight randomness to create a crayon-like texture
-              canvas.drawLine(
-                  line.points[i]! +
-                      Offset(math.Random().nextDouble() - 0.5,
-                          math.Random().nextDouble() - 0.5),
-                  line.points[i + 1]! +
-                      Offset(math.Random().nextDouble() - 0.5,
-                          math.Random().nextDouble() - 0.5),
-                  paint);
-            }
-          }
-        } else {
-          for (int i = 0; i < currentLinePoints.length - 1; i++) {
-            if (currentLinePoints[i] != null &&
-                currentLinePoints[i + 1] != null) {
-              canvas.drawLine(
-                  currentLinePoints[i]!, currentLinePoints[i + 1]!, paint);
-            }
-          }
+      Paint paint = Paint()
+        ..color = lineColor // 一時的に黒で描画（動的に変更することも可能）
+        ..strokeCap = StrokeCap.round
+        ..strokeWidth = strokeWidth;
+
+      for (int i = 0; i < currentLinePoints.length - 1; i++) {
+        if (currentLinePoints[i] != null && currentLinePoints[i + 1] != null) {
+          canvas.drawLine(
+              currentLinePoints[i]!, currentLinePoints[i + 1]!, paint);
         }
       }
     }
