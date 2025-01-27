@@ -28,6 +28,7 @@ class _GalleryPageState extends State<GalleryPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     Uint8List? outputImagecheck;
+    String? Lengthdb;
 
     double imageWidth = screenSize.width / 6 - 10; // Adjusted for spacing
     double imageHeight = imageWidth;
@@ -70,6 +71,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         itemCount: drawings.length,
                         itemBuilder: (context, index) {
                           Uint8List? outputImage = drawings[index]['photo'];
+                          Lengthdb = drawings.length.toString();
                           if (outputImage == null || outputImage.isEmpty) {
                             // Fallback to indicate invalid image data
                             return Container(
@@ -91,12 +93,14 @@ class _GalleryPageState extends State<GalleryPage> {
                               ),
                             ),
                           );
+                          
                         },
                       ),
                     );
                   }
                 },
               ),
+              Text(Lengthdb);
               Text(outputImagecheck.toString()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
