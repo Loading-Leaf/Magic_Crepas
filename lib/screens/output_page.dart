@@ -34,8 +34,8 @@ class OutputPage extends StatefulWidget {
 }
 
 class _OutputPageState extends State<OutputPage> {
-  Uint8List? outputImage;
-  Uint8List? drawingImageData;
+  Uint8List outputImage = Uint8List(0);
+  Uint8List drawingImageData = Uint8List(0);
   File? image;
   int typeValue = 1;
   String? wifiName;
@@ -755,6 +755,7 @@ class _OutputPageState extends State<OutputPage> {
                       ),
                     ),
                   ]),
+                  Text(outputImage.toString()),
                 ],
               );
             },

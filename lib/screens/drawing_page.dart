@@ -50,12 +50,13 @@ class _DrawingPageState extends State<DrawingPage> {
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
   Color _selectedColor = Colors.black; // 選択された色
   bool _isSprayMode = false; // スプレーモードのフラグ
-  double _sprayDensity = 20.0; // スプレーの密度
+  double _sprayDensity = 30.0; // スプレーの密度
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
+  List<Offset> _currentCrayonPoints = [];
 
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
@@ -92,7 +93,9 @@ class _DrawingPageState extends State<DrawingPage> {
     });
   }
 
-  void _addSprayPoints(Offset center) {
+  void _addSprayPoints(Offset center, BuildContext context) {
+    double width = MediaQuery.of(context).size.width * 0.1;
+    double height = MediaQuery.of(context).size.height * 0.1;
     final random = math.Random();
     final points = <Offset>[];
 
@@ -101,7 +104,7 @@ class _DrawingPageState extends State<DrawingPage> {
       final angle = 2 * math.pi * random.nextDouble();
       final dx = radius * math.cos(angle);
       final dy = radius * math.sin(angle);
-      points.add(Offset(center.dx + dx - 20, center.dy + dy - 20));
+      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
     }
 
     _currentSprayPoints.addAll(points);
@@ -159,29 +162,42 @@ class _DrawingPageState extends State<DrawingPage> {
                                     audioProvider.playSound("drawing.mp3");
                                     isDrawing = true;
                                   }
-
-                                  if (_isSprayMode) {
+                                  final RenderBox renderBox =
+                                      context.findRenderObject() as RenderBox;
+                                  final localPosition = renderBox
+                                      .globalToLocal(details.globalPosition);
+                                  // 左側の余白を考慮して座標補正
+                                  final padding_left =
+                                      MediaQuery.of(context).size.width * 0.1;
+                                  final padding_top =
+                                      MediaQuery.of(context).size.height * 0.1;
+                                  final correctedPosition = Offset(
+                                    localPosition.dx - padding_left,
+                                    localPosition.dy - padding_top - 20,
+                                  );
+                                  if (_isSprayMode &&
+                                      correctedPosition.dx >= -20 &&
+                                      correctedPosition.dx <=
+                                          renderBox.size.width -
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4 +
+                                              20 &&
+                                      correctedPosition.dy >= -20 &&
+                                      correctedPosition.dy <=
+                                          renderBox.size.height -
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.4 +
+                                              20) {
                                     final RenderBox renderBox =
                                         context.findRenderObject() as RenderBox;
                                     final localPosition = renderBox
                                         .globalToLocal(details.globalPosition);
-                                    _addSprayPoints(localPosition);
+                                    _addSprayPoints(localPosition, context);
                                   } else {
-                                    final RenderBox renderBox =
-                                        context.findRenderObject() as RenderBox;
-                                    final localPosition = renderBox
-                                        .globalToLocal(details.globalPosition);
-                                    // 左側の余白を考慮して座標補正
-                                    final padding_left =
-                                        MediaQuery.of(context).size.width * 0.1;
-                                    final padding_top =
-                                        MediaQuery.of(context).size.height *
-                                            0.1;
-                                    final correctedPosition = Offset(
-                                      localPosition.dx - padding_left,
-                                      localPosition.dy - padding_top - 20,
-                                    );
-
                                     if (correctedPosition.dx >= -20 &&
                                         correctedPosition.dx <=
                                             renderBox.size.width -
@@ -618,7 +634,8 @@ class DrawingPainter extends CustomPainter {
       if (item is Line) {
         Paint paint = Paint()
           ..color = item.color
-          ..strokeWidth = item.strokeWidth;
+          ..strokeWidth = item.strokeWidth
+          ..strokeCap = StrokeCap.round;
         for (int i = 0; i < item.points.length - 1; i++) {
           if (item.points[i] != null && item.points[i + 1] != null) {
             canvas.drawLine(item.points[i]!, item.points[i + 1]!, paint);
@@ -635,7 +652,8 @@ class DrawingPainter extends CustomPainter {
     if (currentLinePoints.isNotEmpty) {
       Paint paint = Paint()
         ..color = color
-        ..strokeWidth = strokeWidth;
+        ..strokeWidth = strokeWidth
+        ..strokeCap = StrokeCap.round;
       for (int i = 0; i < currentLinePoints.length - 1; i++) {
         if (currentLinePoints[i] != null && currentLinePoints[i + 1] != null) {
           canvas.drawLine(
@@ -645,7 +663,9 @@ class DrawingPainter extends CustomPainter {
     }
 
     if (currentSprayPoints.isNotEmpty) {
-      Paint paint = Paint()..color = color;
+      Paint paint = Paint()
+        ..color = color
+        ..strokeCap = StrokeCap.round;
       for (var point in currentSprayPoints) {
         canvas.drawCircle(point, 1.0, paint);
       }
