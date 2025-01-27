@@ -755,7 +755,6 @@ class _OutputPageState extends State<OutputPage> {
                       ),
                     ),
                   ]),
-                  Text(outputImage.toString()),
                 ],
               );
             },
