@@ -57,7 +57,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     return const Text('No images available.');
                   } else {
                     List<Map<String, dynamic>> drawings = snapshot.data!;
-                    outputImagecheck = drawings[0]['photo'];
+                    outputImagecheck = drawings[0]['drawingimage'];
                     return Expanded(
                       child: GridView.builder(
                         gridDelegate:

@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:wifi_info_flutter/wifi_info_flutter.dart';
 import 'dart:math' as math;
+import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
@@ -33,7 +34,6 @@ class _GeneratePageState extends State<GeneratePage> {
   File? image;
   bool isresult_exist = false;
   @override
-  List<int>? photoBytes;
   List<int>? drawingImageData;
   bool showGenerateButton = false; // 絵ができたよボタンの表示制御用
   Uint8List? resultbytes2;

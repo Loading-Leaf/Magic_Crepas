@@ -11,9 +11,9 @@ class GalleryDatabaseHelper {
   static final table = 'arts'; // テーブル名
 
   static final columnId = '_id'; // 列1
-  static final columnDrawing = 'drawing'; // 列2
-  static final columnPhoto = 'photo'; // 列3
-  static final columnSelectedPhoto = 'selectedphoto'; // 列4
+  static final columnDrawing = 'drawingimage'; // 列2
+  static final columnPhoto = 'photoimage'; // 列3
+  static final columnSelectedPhoto = 'outputimage'; // 列4
 
   // DatabaseHelperクラスをシングルトンにするためのコンストラクタ
   GalleryDatabaseHelper._privateConstructor();
@@ -38,15 +38,12 @@ class GalleryDatabaseHelper {
   }
 
   Future _onCreate(Database db, int version) async {
-    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const blobType = 'BLOB';
-
     await db.execute('''
     CREATE TABLE $table (
-      $columnId $idType,
-      $columnDrawing $blobType,
-      $columnPhoto $blobType,
-      $columnSelectedPhoto $blobType
+      $columnId INTEGER PRIMARY KEY,
+      $columnDrawing BLOB,
+      $columnPhoto BLOB,
+      $columnSelectedPhoto BLOB
     )
     ''');
   }

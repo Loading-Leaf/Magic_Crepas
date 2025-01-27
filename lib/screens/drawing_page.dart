@@ -202,6 +202,12 @@ class _DrawingPageState extends State<DrawingPage> {
                     Row(
                       children: [
                         IconButton(
+                          icon: Icon(_isCrayonMode ? Icons.brush : Icons.edit),
+                          onPressed: _toggleCrayonMode,
+                          tooltip: 'Crayon Mode',
+                          color: _isCrayonMode ? Colors.orange : Colors.grey,
+                        ),
+                        IconButton(
                           icon: Icon(Icons.undo),
                           onPressed: _lines.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
@@ -216,12 +222,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                       ],
-                    ),
-                    IconButton(
-                      icon: Icon(_isCrayonMode ? Icons.brush : Icons.edit),
-                      onPressed: _toggleCrayonMode,
-                      tooltip: 'Crayon Mode',
-                      color: _isCrayonMode ? Colors.orange : Colors.grey,
                     ),
                   ]),
                 ],
