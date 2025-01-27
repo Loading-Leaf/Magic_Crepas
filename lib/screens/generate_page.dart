@@ -131,7 +131,7 @@ class _GeneratePageState extends State<GeneratePage> {
   @override
   void initState() {
     super.initState();
-    //_initializeDatabase(); // データベースの初期化を呼び出す
+    _initializeDatabase(); // データベースの初期化を呼び出す
     loadImages(); // 初期化時に画像を読み込む
     loadDrawings(); // 描画データを読み込む
     _getWifiName();
@@ -372,7 +372,6 @@ class _GeneratePageState extends State<GeneratePage> {
     );
   }
 
-  /*
   Future<void> _initializeDatabase() async {
     try {
       _database = await DatabaseHelper.instance.database; // データベースを初期化
@@ -380,7 +379,6 @@ class _GeneratePageState extends State<GeneratePage> {
       print('Error initializing database: $e');
     }
   }
-  */
 
   Widget typelists(BuildContext context) {
     final Size screenSize = MediaQuery.sizeOf(context);
@@ -514,6 +512,7 @@ class _GeneratePageState extends State<GeneratePage> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
+                          Text(_images.length.toString()),
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Container(

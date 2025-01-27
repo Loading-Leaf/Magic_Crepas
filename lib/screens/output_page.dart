@@ -695,17 +695,15 @@ class _OutputPageState extends State<OutputPage> {
                     Container(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           audioProvider.playSound("tap1.mp3");
-                          final drawingData = {
+
+                          await GalleryDatabaseHelper.instance.insertDrawing({
                             'drawingimage':
                                 Uint8List.fromList(drawingImageData!),
                             'photoimage': photoBytes,
                             'outputimage': Uint8List.fromList(resultbytes2!),
-                          };
-
-                          GalleryDatabaseHelper.instance
-                              .insertDrawing(drawingData);
+                          });
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('保存できたよ$resultbytes2')));
                         },
