@@ -157,21 +157,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           child: Container(
                             color: Colors.white,
                             child: GestureDetector(
-                              onPanStart: (details) {
-                                if (_isSprayMode) {
-                                  _sprayTimer = Timer.periodic(
-                                      Duration(milliseconds: 50), (_) {
-                                    setState(() {
-                                      final RenderBox renderBox = context
-                                          .findRenderObject() as RenderBox;
-                                      final localPosition =
-                                          renderBox.globalToLocal(
-                                              details.globalPosition);
-                                      _addSprayPoints(localPosition);
-                                    });
-                                  });
-                                }
-                              },
                               onPanUpdate: (details) {
                                 setState(() {
                                   if (!isDrawing) {

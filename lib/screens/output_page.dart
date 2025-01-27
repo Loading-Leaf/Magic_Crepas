@@ -529,15 +529,15 @@ class _OutputPageState extends State<OutputPage> {
 
   Future<void> saveToGalleryDB() async {
     try {
-      if (drawingImageData == null || resultbytes2 == null) {
+      if (drawingImageData == null || image == null) {
         throw Exception('Required images are not available');
       }
 
       // photoBytes が null の場合も許容する
       Map<String, dynamic> drawingData = {
         'drawingimage': drawingImageData,
-        'photoimage': photoBytes, // null でも可
-        'outputimage': resultbytes2,
+        'photoimage': image, // null でも可
+        'outputimage': outputImage,
       };
 
       int result =
