@@ -13,6 +13,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
+import 'dart:async';
+
 import 'dart:math' as math;
 
 class DrawingPage extends StatefulWidget {
@@ -22,17 +24,35 @@ class DrawingPage extends StatefulWidget {
   _DrawingPageState createState() => _DrawingPageState();
 }
 
+// スプレーポイントを表現するクラスを追加
+class SprayPoints {
+  List<Offset> points;
+  Color color;
+  double density; // スプレーの密度
+
+  SprayPoints(this.points, this.color, this.density);
+}
+
 class _DrawingPageState extends State<DrawingPage> {
   List<Line> _undoneLines = []; // undoされた線を保持するリスト
   List<Line> _lines = []; // 描画する線のリスト
+  List<SprayPoints> _undoneSprayPoints = []; // スプレーのundo用配列
+  List<SprayPoints> _sprayPoints = []; // スプレーのundo用配列
   Color _selectedColor = Colors.black; // 選択された色
+  bool _isSprayMode = false; // スプレーモードのフラグ
+  double _sprayDensity = 20.0; // スプレーの密度
+
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
+  List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
+
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
   final audioPlayer = AudioPlayer();
   bool isDrawing = false; // 描画中かどうかをトラックするフラグ
+  // タイマーを追加
+  Timer? _sprayTimer;
 
   @override
   void initState() {
@@ -40,20 +60,55 @@ class _DrawingPageState extends State<DrawingPage> {
     _initializeDatabase(); // データベースの初期化を呼び出す
   }
 
+  @override
+  void dispose() {
+    _sprayTimer?.cancel();
+    super.dispose();
+  }
+
   void _undo() {
     setState(() {
-      if (_lines.isNotEmpty) {
-        _undoneLines.add(_lines.removeLast());
+      if (_lines.isNotEmpty || _sprayPoints.isNotEmpty) {
+        if (_lines.isNotEmpty &&
+            (_sprayPoints.isEmpty ||
+                _lines.last.points.last!.dy >
+                    _sprayPoints.last.points.last.dy)) {
+          _undoneLines.add(_lines.removeLast());
+        } else if (_sprayPoints.isNotEmpty) {
+          _undoneSprayPoints.add(_sprayPoints.removeLast());
+        }
       }
     });
   }
 
   void _redo() {
     setState(() {
-      if (_undoneLines.isNotEmpty) {
-        _lines.add(_undoneLines.removeLast());
+      if (_undoneLines.isNotEmpty || _undoneSprayPoints.isNotEmpty) {
+        if (_undoneLines.isNotEmpty &&
+            (_undoneSprayPoints.isEmpty ||
+                _undoneLines.last.points.last!.dy >
+                    _undoneSprayPoints.last.points.last.dy)) {
+          _lines.add(_undoneLines.removeLast());
+        } else if (_undoneSprayPoints.isNotEmpty) {
+          _sprayPoints.add(_undoneSprayPoints.removeLast());
+        }
       }
     });
+  }
+
+  void _addSprayPoints(Offset center) {
+    final random = math.Random();
+    final points = <Offset>[];
+
+    for (int i = 0; i < _sprayDensity; i++) {
+      final radius = _strokeWidth * random.nextDouble();
+      final angle = 2 * math.pi * random.nextDouble();
+      final dx = radius * math.cos(angle);
+      final dy = radius * math.sin(angle);
+      points.add(Offset(center.dx + dx, center.dy + dy));
+    }
+
+    _currentSprayPoints.addAll(points);
   }
 
   Future<void> _initializeDatabase() async {
@@ -102,6 +157,21 @@ class _DrawingPageState extends State<DrawingPage> {
                           child: Container(
                             color: Colors.white,
                             child: GestureDetector(
+                              onPanStart: (details) {
+                                if (_isSprayMode) {
+                                  _sprayTimer = Timer.periodic(
+                                      Duration(milliseconds: 50), (_) {
+                                    setState(() {
+                                      final RenderBox renderBox = context
+                                          .findRenderObject() as RenderBox;
+                                      final localPosition =
+                                          renderBox.globalToLocal(
+                                              details.globalPosition);
+                                      _addSprayPoints(localPosition);
+                                    });
+                                  });
+                                }
+                              },
                               onPanUpdate: (details) {
                                 setState(() {
                                   if (!isDrawing) {
@@ -109,48 +179,67 @@ class _DrawingPageState extends State<DrawingPage> {
                                     isDrawing = true;
                                   }
 
-                                  final RenderBox renderBox =
-                                      context.findRenderObject() as RenderBox;
-                                  final localPosition = renderBox
-                                      .globalToLocal(details.globalPosition);
-                                  // 左側の余白を考慮して座標補正
-                                  final padding_left =
-                                      MediaQuery.of(context).size.width * 0.1;
-                                  final padding_top =
-                                      MediaQuery.of(context).size.height * 0.1;
-                                  final correctedPosition = Offset(
-                                    localPosition.dx - padding_left,
-                                    localPosition.dy - padding_top - 20,
-                                  );
+                                  if (_isSprayMode) {
+                                    final RenderBox renderBox =
+                                        context.findRenderObject() as RenderBox;
+                                    final localPosition = renderBox
+                                        .globalToLocal(details.globalPosition);
+                                    _addSprayPoints(localPosition);
+                                  } else {
+                                    final RenderBox renderBox =
+                                        context.findRenderObject() as RenderBox;
+                                    final localPosition = renderBox
+                                        .globalToLocal(details.globalPosition);
+                                    // 左側の余白を考慮して座標補正
+                                    final padding_left =
+                                        MediaQuery.of(context).size.width * 0.1;
+                                    final padding_top =
+                                        MediaQuery.of(context).size.height *
+                                            0.1;
+                                    final correctedPosition = Offset(
+                                      localPosition.dx - padding_left,
+                                      localPosition.dy - padding_top - 20,
+                                    );
 
-                                  if (correctedPosition.dx >= -20 &&
-                                      correctedPosition.dx <=
-                                          renderBox.size.width -
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4 +
-                                              20 &&
-                                      correctedPosition.dy >= -20 &&
-                                      correctedPosition.dy <=
-                                          renderBox.size.height -
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.4 +
-                                              20) {
-                                    _currentLinePoints.add(correctedPosition);
+                                    if (correctedPosition.dx >= -20 &&
+                                        correctedPosition.dx <=
+                                            renderBox.size.width -
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4 +
+                                                20 &&
+                                        correctedPosition.dy >= -20 &&
+                                        correctedPosition.dy <=
+                                            renderBox.size.height -
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.4 +
+                                                20) {
+                                      _currentLinePoints.add(correctedPosition);
+                                    }
                                   }
                                 });
                               },
                               onPanEnd: (details) {
                                 setState(() {
-                                  audioProvider.pauseAudio();
-                                  isDrawing = false;
-                                  _lines.add(Line(_currentLinePoints,
-                                      _selectedColor, _strokeWidth));
-                                  _currentLinePoints = [];
+                                  if (_isSprayMode &&
+                                      _currentSprayPoints.isNotEmpty) {
+                                    _sprayPoints.add(SprayPoints(
+                                        List.from(_currentSprayPoints),
+                                        _selectedColor,
+                                        _sprayDensity));
+                                    _currentSprayPoints.clear();
+                                  } else {
+                                    audioProvider.pauseAudio();
+                                    isDrawing = false;
+                                    _lines.add(Line(_currentLinePoints,
+                                        _selectedColor, _strokeWidth));
+                                    _currentLinePoints = [];
+                                  }
                                   _undoneLines.clear();
+                                  _undoneSprayPoints.clear();
                                 });
                               },
                               child: CustomPaint(
@@ -158,18 +247,27 @@ class _DrawingPageState extends State<DrawingPage> {
                                     MediaQuery.of(context).size.width * 0.6,
                                     MediaQuery.of(context).size.height * 0.6),
                                 painter: DrawingPainter(
-                                    _lines,
-                                    _currentLinePoints,
-                                    _strokeWidth,
-                                    _selectedColor),
+                                  _lines,
+                                  _currentLinePoints,
+                                  _sprayPoints,
+                                  _currentSprayPoints,
+                                  _strokeWidth,
+                                  _selectedColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
                         if (_currentLinePoints.isNotEmpty)
                           CustomPaint(
-                            painter: DrawingPainter([], _currentLinePoints,
-                                _strokeWidth, _selectedColor),
+                            painter: DrawingPainter(
+                              [],
+                              _currentLinePoints,
+                              _sprayPoints,
+                              _currentSprayPoints,
+                              _strokeWidth,
+                              _selectedColor,
+                            ),
                           ),
                       ],
                     ),
@@ -204,6 +302,17 @@ class _DrawingPageState extends State<DrawingPage> {
                           icon: Icon(Icons.redo),
                           onPressed: _undoneLines.isNotEmpty ? _redo : null,
                           tooltip: 'Redo',
+                          splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.height / 17,
+                        ),
+                        IconButton(
+                          icon: Icon(_isSprayMode ? Icons.brush : Icons.brush),
+                          onPressed: () {
+                            setState(() {
+                              _isSprayMode = !_isSprayMode;
+                            });
+                          },
+                          tooltip: _isSprayMode ? 'Brush Mode' : 'Spray Mode',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
                           iconSize: MediaQuery.of(context).size.height / 17,
                         ),
@@ -517,17 +626,27 @@ class Line {
 }
 
 // カスタムペインタークラス
+// CustomPainterの修正
 class DrawingPainter extends CustomPainter {
   final List<Line> lines;
-  final List<Offset?> currentLinePoints; // 新たに追加
+  final List<Offset?> currentLinePoints;
+  final List<SprayPoints> sprayPoints;
+  final List<Offset> currentSprayPoints;
   final double strokeWidth;
-  final Color lineColor; // 色を追加
+  final Color lineColor;
 
   DrawingPainter(
-      this.lines, this.currentLinePoints, this.strokeWidth, this.lineColor);
+    this.lines,
+    this.currentLinePoints,
+    this.sprayPoints,
+    this.currentSprayPoints,
+    this.strokeWidth,
+    this.lineColor,
+  );
 
   @override
   void paint(Canvas canvas, Size size) {
+    // 通常の線を描画
     for (Line line in lines) {
       Paint paint = Paint()
         ..color = line.color
@@ -540,9 +659,35 @@ class DrawingPainter extends CustomPainter {
         }
       }
     }
+
+    // スプレーポイントを描画
+    for (SprayPoints spray in sprayPoints) {
+      Paint paint = Paint()
+        ..color = spray.color
+        ..strokeCap = StrokeCap.round
+        ..strokeWidth = 1.0;
+
+      for (Offset point in spray.points) {
+        canvas.drawCircle(point, 1.0, paint);
+      }
+    }
+
+    // 現在のスプレーポイントを描画
+    if (currentSprayPoints.isNotEmpty) {
+      Paint paint = Paint()
+        ..color = lineColor
+        ..strokeCap = StrokeCap.round
+        ..strokeWidth = 1.0;
+
+      for (Offset point in currentSprayPoints) {
+        canvas.drawCircle(point, 1.0, paint);
+      }
+    }
+
+    // 現在の線を描画
     if (currentLinePoints.isNotEmpty) {
       Paint paint = Paint()
-        ..color = lineColor // 一時的に黒で描画（動的に変更することも可能）
+        ..color = lineColor
         ..strokeCap = StrokeCap.round
         ..strokeWidth = strokeWidth;
 
@@ -556,7 +701,5 @@ class DrawingPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

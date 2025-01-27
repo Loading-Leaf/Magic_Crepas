@@ -527,6 +527,39 @@ class _OutputPageState extends State<OutputPage> {
     );
   }
 
+  Future<void> saveToGalleryDB() async {
+    try {
+      if (drawingImageData == null || resultbytes2 == null) {
+        throw Exception('Required images are not available');
+      }
+
+      // photoBytes が null の場合も許容する
+      Map<String, dynamic> drawingData = {
+        'drawingimage': drawingImageData,
+        'photoimage': photoBytes, // null でも可
+        'outputimage': resultbytes2,
+      };
+
+      int result =
+          await GalleryDatabaseHelper.instance.insertDrawing(drawingData);
+
+      if (result > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存に成功しました')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('保存に失敗しました')),
+        );
+      }
+    } catch (e) {
+      print('Error saving to gallery DB: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('エラーが発生しました: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -698,14 +731,7 @@ class _OutputPageState extends State<OutputPage> {
                         onPressed: () async {
                           audioProvider.playSound("tap1.mp3");
 
-                          await GalleryDatabaseHelper.instance.insertDrawing({
-                            'drawingimage':
-                                Uint8List.fromList(drawingImageData!),
-                            'photoimage': photoBytes,
-                            'outputimage': Uint8List.fromList(resultbytes2!),
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('保存できたよ$resultbytes2')));
+                          saveToGalleryDB();
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 255, 67, 195),
