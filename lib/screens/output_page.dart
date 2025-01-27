@@ -246,7 +246,7 @@ class _OutputPageState extends State<OutputPage> {
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
-                                onPressed: () async {
+                                onPressed: () {
                                   if (isresult_exist == true) {
                                     audioProvider.playSound("established.mp3");
                                     Navigator.pushNamed(
