@@ -51,14 +51,9 @@ class GalleryDatabaseHelper {
     ''');
   }
 
-  Future<int> insertDrawing(
-      Uint8List drawingData, Uint8List PhotoData, Uint8List OutputData) async {
+  Future<int> insertDrawing(Map<String, dynamic> drawingData) async {
     final db = await instance.database;
-    return await db.insert(table, {
-      "drawing": drawingData,
-      "photo": PhotoData,
-      "selectedphoto": OutputData
-    });
+    return await db.insert(table, drawingData);
   }
 
   Future<List<Map<String, dynamic>>> fetchDrawings() async {

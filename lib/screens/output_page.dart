@@ -697,18 +697,19 @@ class _OutputPageState extends State<OutputPage> {
                       child: TextButton(
                         onPressed: () {
                           audioProvider.playSound("tap1.mp3");
-                          final drawingData =
-                              Uint8List.fromList(drawingImageData!);
-                          final selectedPhoto =
-                              Uint8List.fromList(resultbytes2!);
-                          final photoData = Uint8List.fromList(photoBytes!);
                           // Insert the completed drawing
                           try {
-                            GalleryDatabaseHelper.instance.insertDrawing(
-                              drawingData,
-                              selectedPhoto,
-                              photoData,
-                            );
+                            final drawingData = {
+                              'drawing': Uint8List.fromList(drawingImageData!),
+                              'photo': photoBytes,
+                              'selectedphoto':
+                                  Uint8List.fromList(resultbytes2!),
+                            };
+
+                            GalleryDatabaseHelper.instance
+                                .insertDrawing(drawingData);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('保存できたよ$resultbytes2')));
                           } on PlatformException catch (e) {
                             print('$e');
                             ScaffoldMessenger.of(context).showSnackBar(
