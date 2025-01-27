@@ -50,7 +50,8 @@ class _DrawingPageState extends State<DrawingPage> {
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
   Color _selectedColor = Colors.black; // 選択された色
   bool _isSprayMode = false; // スプレーモードのフラグ
-  double _sprayDensity = 30.0; // スプレーの密度
+  bool _isCrayonMode = false; // スプレーモードのフラグ
+  double _sprayDensity = 60.0; // スプレーの密度
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
@@ -100,7 +101,7 @@ class _DrawingPageState extends State<DrawingPage> {
     final points = <Offset>[];
 
     for (int i = 0; i < _sprayDensity; i++) {
-      final radius = _strokeWidth * random.nextDouble();
+      final radius = _strokeWidth * 2 * random.nextDouble();
       final angle = 2 * math.pi * random.nextDouble();
       final dx = radius * math.cos(angle);
       final dy = radius * math.sin(angle);
@@ -223,6 +224,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                 setState(() {
                                   if (_isSprayMode &&
                                       _currentSprayPoints.isNotEmpty) {
+                                    audioProvider.pauseAudio();
+                                    isDrawing = false;
                                     _drawItems.add(SprayPoints(
                                         List.from(_currentSprayPoints),
                                         _selectedColor,

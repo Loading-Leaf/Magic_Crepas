@@ -730,8 +730,7 @@ class _OutputPageState extends State<OutputPage> {
                       child: TextButton(
                         onPressed: () async {
                           audioProvider.playSound("tap1.mp3");
-                          if (drawingImageData == null ||
-                              resultbytes2 == null) {
+                          if (outputImage == false) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
