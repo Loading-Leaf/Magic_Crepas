@@ -66,19 +66,7 @@ class GalleryDatabaseHelper {
         //columnPhoto: drawingData['photoimage'],
         columnSelectedPhoto: drawingData['outputimage'],
       };
-
-      print('Inserting data with sizes: ');
-      //print('Drawing image size: ${drawingData['drawingimage'].length}');
-      print('Output image size: ${drawingData['outputimage'].length}');
-
-      int result = await db.insert(
-        table,
-        sanitizedData,
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-
-      print('Insert result: $result');
-      return result;
+      return await db.insert(table, sanitizedData);
     } catch (e) {
       print('Error inserting drawing: $e');
       rethrow;

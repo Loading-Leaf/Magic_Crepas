@@ -100,8 +100,6 @@ class _GalleryPageState extends State<GalleryPage> {
                   }
                 },
               ),
-              Text(Lengthdb),
-              Text(outputImagecheck.toString()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
