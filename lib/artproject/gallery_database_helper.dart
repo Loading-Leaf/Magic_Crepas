@@ -5,8 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 
 class GalleryDatabaseHelper {
-  static final _databaseName = "MyDatabase.db"; // DB名
-  static final _databaseVersion = 2; // バージョン番号
+  static final _databaseName = "GalleryDatabase.db"; // DB名
+  static final _databaseVersion = 3; // バージョン番号
 
   static final table = 'arts'; // テーブル名
 
@@ -62,8 +62,8 @@ class GalleryDatabaseHelper {
 
       // photoimageはnullableとして扱う
       Map<String, dynamic> sanitizedData = {
-        //columnDrawing: drawingData['drawingimage'],
-        //columnPhoto: drawingData['photoimage'],
+        columnDrawing: drawingData['drawingimage'],
+        columnPhoto: drawingData['photoimage'],
         columnSelectedPhoto: drawingData['outputimage'],
       };
       return await db.insert(table, sanitizedData);

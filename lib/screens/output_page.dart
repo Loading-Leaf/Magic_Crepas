@@ -40,6 +40,23 @@ class _OutputPageState extends State<OutputPage> {
   int typeValue = 1;
   String? wifiName;
   bool isresult_exist = false;
+  String outputimage_title = "";
+  int? emotion_num;
+  List<String> your_emotions = [
+    "うれしい",
+    "たのしい",
+    "おもしろい",
+    "きもちいい",
+    "しあわせ",
+    "うまくいく",
+    "つかれた",
+    "むかつく",
+    "かなしい",
+    "ふあん",
+    "おこった",
+    "ぼっち"
+  ];
+  String Detail_emotion = "";
 
   Uint8List? resultbytes2;
   List<int>? photoBytes;
@@ -387,6 +404,24 @@ class _OutputPageState extends State<OutputPage> {
     );
   }
 
+  void _savemodal(BuildContext context) {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize_big = screenSize.width / 64;
+    double fontsize = screenSize.width / 74.6;
+    int screen_num = 1;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text(
+                '別のモードを使う',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: fontsize_big),
+              ),
+              content: Row(mainAxisSize: MainAxisSize.min, children: []));
+        });
+  }
+
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
@@ -534,9 +569,10 @@ class _OutputPageState extends State<OutputPage> {
       }
 
       // photoBytes が null の場合も許容する
+      List<int> photoBytes = image!.readAsBytesSync();
       Map<String, dynamic> drawingData = {
-        //'drawingimage': drawingImageData,
-        //'photoimage': image, // null でも可
+        'drawingimage': drawingImageData,
+        'photoimage': photoBytes, // null でも可
         'outputimage': outputImage,
       };
 

@@ -51,7 +51,7 @@ class _DrawingPageState extends State<DrawingPage> {
   Color _selectedColor = Colors.black; // 選択された色
   bool _isSprayMode = false; // スプレーモードのフラグ
   bool _isCrayonMode = false; // スプレーモードのフラグ
-  double _sprayDensity = 60.0; // スプレーの密度
+  double _sprayDensity = 100.0; // スプレーの密度
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
@@ -102,6 +102,23 @@ class _DrawingPageState extends State<DrawingPage> {
 
     for (int i = 0; i < _sprayDensity; i++) {
       final radius = _strokeWidth * 2 * random.nextDouble();
+      final angle = 2 * math.pi * random.nextDouble();
+      final dx = radius * math.cos(angle);
+      final dy = radius * math.sin(angle);
+      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
+    }
+
+    _currentSprayPoints.addAll(points);
+  }
+
+  void _addCrayonPoints(Offset center, BuildContext context) {
+    double width = MediaQuery.of(context).size.width * 0.1;
+    double height = MediaQuery.of(context).size.height * 0.1;
+    final random = math.Random();
+    final points = <Offset>[];
+
+    for (int i = 0; i < _sprayDensity; i++) {
+      final radius = _strokeWidth * random.nextDouble();
       final angle = 2 * math.pi * random.nextDouble();
       final dx = radius * math.cos(angle);
       final dy = radius * math.sin(angle);
