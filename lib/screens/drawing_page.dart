@@ -52,6 +52,7 @@ class _DrawingPageState extends State<DrawingPage> {
   bool _isSprayMode = false; // スプレーモードのフラグ
   bool _isCrayonMode = false; // スプレーモードのフラグ
   double _sprayDensity = 100.0; // スプレーの密度
+  int isPhoto = 0;
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
@@ -443,7 +444,7 @@ class _DrawingPageState extends State<DrawingPage> {
       await file.writeAsBytes(pngBytes);
 
       try {
-        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes);
+        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
         print('Drawing saved to database');
       } catch (e) {
         print('Error saving drawing: $e');
@@ -469,11 +470,12 @@ class _DrawingPageState extends State<DrawingPage> {
       final filename = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
       final filePath = path.join(directory.path, filename);
       await File(filePath).writeAsBytes(pngBytes);
+      isPhoto = 1;
 
       // データベースの初期化と保存
       await _initializeDatabase();
       try {
-        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes);
+        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
         Navigator.pushNamed(context, '/generate');
       } catch (e) {
         print('Error saving drawing: $e');

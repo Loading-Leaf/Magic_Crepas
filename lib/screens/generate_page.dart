@@ -35,6 +35,7 @@ class _GeneratePageState extends State<GeneratePage> {
   bool isresult_exist = false;
   @override
   List<int>? drawingImageData;
+  int? is_photo_flag;
   bool showGenerateButton = false; // 絵ができたよボタンの表示制御用
   Uint8List? resultbytes2;
 
@@ -119,6 +120,7 @@ class _GeneratePageState extends State<GeneratePage> {
 
       setState(() {
         if (drawings.isNotEmpty) {
+          is_photo_flag = drawings.last["is_photo_flag"];
           drawingImageData =
               List<int>.from(drawings.last['drawing']); // 描画データを取得
         }
@@ -337,6 +339,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                         'drawingImageData': Uint8List.fromList(
                                             drawingImageData!),
                                         'ImageData': image,
+                                        "is_photo_flag": is_photo_flag,
                                       },
                                     );
                                   } else {
@@ -679,9 +682,10 @@ class _GeneratePageState extends State<GeneratePage> {
                             'post_photo': base64Image,
                             'post_drawing': base64Drawing,
                             'photo_type': typeValue,
+                            'is_photo_flag': is_photo_flag,
                           });
                           Uri url = Uri.parse(
-                              'https://imakoh.pythonanywhere.com/generate_arts');
+                              'https://imakoh.pythonanywhere.com/generate_arts2');
                           //192.168.68.58
                           _showDialog(context);
                           final response = await http.post(
@@ -695,6 +699,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             audioProvider.playSound("generated.mp3");
                             final data = json.decode(response.body);
                             String resultimageBase64 = data['result'];
+                            is_photo_flag = data["is_photo_flag"];
 
                             // バイトのリストに変換
                             Uint8List resultbytes =

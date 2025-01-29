@@ -10,6 +10,7 @@ class DrawingDatabaseHelper {
   static final table = 'drawings';
   static final columnId = '_id'; // 列1
   static final columnDrawing = 'drawing'; // 列2
+  static final is_photo_flag = "is_photo_flag";
   // シングルトンパターン
   DrawingDatabaseHelper._privateConstructor();
   static final DrawingDatabaseHelper instance =
@@ -37,13 +38,15 @@ class DrawingDatabaseHelper {
       CREATE TABLE $table (
         $columnId INTEGER PRIMARY KEY,
         $columnDrawing BLOB NOT NULL
+        $is_photo_flag INTEGER
       )
     ''');
   }
 
-  Future<int> insertDrawing(Uint8List drawingData) async {
+  Future<int> insertDrawing(Uint8List drawingData, int photo_flag) async {
     Database db = await instance.database;
-    return await db.insert(table, {'drawing': drawingData});
+    return await db
+        .insert(table, {'drawing': drawingData, "is_photo_flag": photo_flag});
   }
 
   // 他のメソッド（取得、更新、削除）を必要に応じて追加

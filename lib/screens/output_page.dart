@@ -48,18 +48,22 @@ class _OutputPageState extends State<OutputPage> {
     "おもしろい",
     "きもちいい",
     "しあわせ",
-    "うまくいく",
+    "なつかしい",
+    "ほっとする",
+    "わくわくする",
+    "かんどうする",
     "つかれた",
     "むかつく",
     "かなしい",
-    "ふあん",
-    "おこった",
-    "ぼっち"
+    "くやしい",
+    "こわい",
+    "さびしい"
   ];
   String Detail_emotion = "";
 
   Uint8List? resultbytes2;
   List<int>? photoBytes;
+  int? is_photo_flag;
 
   Future<void> _getWifiName() async {
     try {
@@ -274,6 +278,7 @@ class _OutputPageState extends State<OutputPage> {
                                         'drawingImageData': Uint8List.fromList(
                                             drawingImageData!),
                                         'ImageData': photoBytes,
+                                        "is_photo_flag": is_photo_flag,
                                       },
                                     );
                                   } else {
@@ -324,6 +329,7 @@ class _OutputPageState extends State<OutputPage> {
       outputImage = args['outputImage'];
       drawingImageData = args['drawingImageData'];
       image = args["ImageData"];
+      is_photo_flag = args["is_photo_flag"];
     } else {
       print('No image data passed or incorrect type');
     }
@@ -483,9 +489,10 @@ class _OutputPageState extends State<OutputPage> {
                                   'post_photo': base64Image,
                                   'post_drawing': base64Drawing,
                                   'photo_type': photoTypes[index],
+                                  'is_photo_flag': is_photo_flag,
                                 });
                                 Uri url = Uri.parse(
-                                    'https://imakoh.pythonanywhere.com/generate_arts');
+                                    'https://imakoh.pythonanywhere.com/generate_arts2');
                                 _showDialog(context);
                                 final response = await http.post(
                                   url,
