@@ -822,6 +822,6 @@ class DrawLinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return false; // 再描画しない
+    return true; // 再描画しない
   }
 }

@@ -503,18 +503,18 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.red, size),
-              _colorCircle(Colors.orange, size),
-              _colorCircle(Colors.yellow, size),
+              _colorCircle(Color.fromARGB(255, 244, 67, 54), size),
+              _colorCircle(Color.fromARGB(255, 255, 152, 0), size),
+              _colorCircle(Color.fromARGB(255, 255, 235, 59), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.lightGreen, size),
-              _colorCircle(Colors.green, size),
-              _colorCircle(Colors.lightBlue, size),
+              _colorCircle(Color.fromARGB(255, 139, 195, 74), size),
+              _colorCircle(Color.fromARGB(255, 76, 175, 80), size),
+              _colorCircle(Color.fromARGB(255, 3, 169, 244), size),
             ],
           ),
           SizedBox(height: 3),
@@ -522,7 +522,7 @@ class _DrawingPageState extends State<DrawingPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _colorCircle(Color.fromARGB(255, 0, 30, 255), size),
-              _colorCircle(Colors.purple, size),
+              _colorCircle(Color.fromARGB(255, 156, 39, 176), size),
               _colorCircle(Color.fromARGB(255, 255, 130, 171), size),
             ],
           ),
@@ -530,9 +530,9 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(Colors.white, size),
-              _colorCircle(Colors.black, size),
-              _colorCircle(Colors.brown, size),
+              _colorCircle(Color.fromARGB(255, 255, 255, 255), size),
+              _colorCircle(Color.fromARGB(255, 0, 0, 0), size),
+              _colorCircle(Color.fromARGB(255, 121, 85, 72), size),
             ],
           ),
           SizedBox(height: 3),

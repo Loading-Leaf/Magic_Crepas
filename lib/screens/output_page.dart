@@ -609,51 +609,48 @@ class _OutputPageState extends State<OutputPage> {
                         ],
                       ),
                     ] else if (screen_num == 2) ...[
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5, // 5列に設定
-                              crossAxisSpacing: 8.0, // 横の間隔
-                              mainAxisSpacing: 8.0, // 縦の間隔
-                              childAspectRatio: 1.0, // 横と縦の比率を1:1に設定
-                            ),
-                            itemCount: emotions.length,
-                            itemBuilder: (context, index) {
-                              bool isSelected = emotion_num == index;
-                              return SizedBox(
-                                width: 50, // 幅50
-                                height: 50, // 高さ50
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: isSelected
-                                        ? Color.fromARGB(255, 255, 67, 195)
-                                        : Colors.white,
-                                    foregroundColor: isSelected
-                                        ? Colors.white
-                                        : Colors.black,
-                                    side: BorderSide(
-                                      color: Color.fromARGB(255, 255, 67, 195),
-                                      width: 1.5,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      emotion_num = index;
-                                      your_emotions = emotions[index];
-                                    });
-                                  },
-                                  child: Text(
-                                    emotions[index],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 14),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5, // 5列に設定
+                            crossAxisSpacing: 8.0, // 横の間隔
+                            mainAxisSpacing: 8.0, // 縦の間隔
+                            childAspectRatio: 1.0, // 横と縦の比率を1:1に設定
+                          ),
+                          itemCount: emotions.length,
+                          itemBuilder: (context, index) {
+                            bool isSelected = emotion_num == index;
+                            return SizedBox(
+                              width: 50, // 幅50
+                              height: 50, // 高さ50
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isSelected
+                                      ? Color.fromARGB(255, 255, 67, 195)
+                                      : Colors.white,
+                                  foregroundColor:
+                                      isSelected ? Colors.white : Colors.black,
+                                  side: BorderSide(
+                                    color: Color.fromARGB(255, 255, 67, 195),
+                                    width: 1.5,
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                                onPressed: () {
+                                  setState(() {
+                                    emotion_num = index;
+                                    your_emotions = emotions[index];
+                                  });
+                                },
+                                child: Text(
+                                  emotions[index],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ] else if (screen_num == 3) ...[
@@ -1161,6 +1158,6 @@ class DrawLinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return false; // 再描画しない
+    return true; // 再描画しない
   }
 }

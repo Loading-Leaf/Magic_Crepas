@@ -72,6 +72,7 @@ class _MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                SizedBox(width: 10),
                 Padding(
                   padding: EdgeInsets.all(7.0),
                   child: Container(
@@ -104,6 +105,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                 ),
+                SizedBox(width: 10),
               ]),
               Padding(
                 padding: EdgeInsets.all(1.0),
