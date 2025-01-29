@@ -298,7 +298,12 @@ class _GeneratePageState extends State<GeneratePage> {
                                   localPosition = localOffset;
                                 });
 
-                                print("タップ座標 (画像内): $localOffset");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'タップ座標 (画像内): $localOffset, $localPosition'),
+                                  ),
+                                );
                               },
                               child: Stack(
                                 children: [
