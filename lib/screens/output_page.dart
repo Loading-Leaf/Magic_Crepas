@@ -186,6 +186,25 @@ class _OutputPageState extends State<OutputPage> {
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
 
+    List<Offset> linePoints = []; // ここで線の座標を管理
+    List<Offset> _undoneLines = []; // undoされた線を保持するリスト]
+
+    void _undo() {
+      setState(() {
+        if (linePoints.isNotEmpty) {
+          _undoneLines.add(linePoints.removeLast());
+        }
+      });
+    }
+
+    void _redo() {
+      setState(() {
+        if (_undoneLines.isNotEmpty) {
+          linePoints.add(_undoneLines.removeLast());
+        }
+      });
+    }
+
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -237,10 +256,25 @@ class _OutputPageState extends State<OutputPage> {
                             width: screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              child: Image.asset('assets/difference/' +
-                                  (is_answer == 1 ? 'joke/' : 'answer/') +
-                                  random_num +
-                                  '.png'),
+                              child: GestureDetector(
+                                onPanUpdate: (details) {
+                                  setState(() {
+                                    // 画像上に描かれた線の座標を保存
+                                    if (linePoints.length < 3) {
+                                      linePoints.add(details.localPosition);
+                                    }
+                                  });
+                                },
+                                child: CustomPaint(
+                                  painter: DrawLinePainter(linePoints),
+                                  child: Image.asset(
+                                    'assets/difference/original/' +
+                                        random_num +
+                                        '.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -308,6 +342,30 @@ class _OutputPageState extends State<OutputPage> {
                                   ),
                                 ),
                               ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.undo),
+                                  onPressed:
+                                      linePoints.isNotEmpty ? _undo : null,
+                                  tooltip: 'Undo',
+                                  splashColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                  iconSize:
+                                      MediaQuery.of(context).size.height / 17,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.redo),
+                                  onPressed:
+                                      _undoneLines.isNotEmpty ? _redo : null,
+                                  tooltip: 'Redo',
+                                  splashColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                  iconSize:
+                                      MediaQuery.of(context).size.height / 17,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -557,36 +615,41 @@ class _OutputPageState extends State<OutputPage> {
                           child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              crossAxisSpacing: 8.0,
-                              mainAxisSpacing: 8.0,
-                              childAspectRatio: 2,
+                              crossAxisCount: 5, // 5列に設定
+                              crossAxisSpacing: 8.0, // 横の間隔
+                              mainAxisSpacing: 8.0, // 縦の間隔
+                              childAspectRatio: 1.0, // 横と縦の比率を1:1に設定
                             ),
                             itemCount: emotions.length,
                             itemBuilder: (context, index) {
                               bool isSelected = emotion_num == index;
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: isSelected
-                                      ? Color.fromARGB(255, 255, 67, 195)
-                                      : Colors.white,
-                                  foregroundColor:
-                                      isSelected ? Colors.white : Colors.black,
-                                  side: BorderSide(
-                                    color: Color.fromARGB(255, 255, 67, 195),
-                                    width: 1.5,
+                              return SizedBox(
+                                width: 50, // 幅50
+                                height: 50, // 高さ50
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: isSelected
+                                        ? Color.fromARGB(255, 255, 67, 195)
+                                        : Colors.white,
+                                    foregroundColor: isSelected
+                                        ? Colors.white
+                                        : Colors.black,
+                                    side: BorderSide(
+                                      color: Color.fromARGB(255, 255, 67, 195),
+                                      width: 1.5,
+                                    ),
                                   ),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    emotion_num = index;
-                                    your_emotions = emotions[index];
-                                  });
-                                },
-                                child: Text(
-                                  emotions[index],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 14),
+                                  onPressed: () {
+                                    setState(() {
+                                      emotion_num = index;
+                                      your_emotions = emotions[index];
+                                    });
+                                  },
+                                  child: Text(
+                                    emotions[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 14),
+                                  ),
                                 ),
                               );
                             },
@@ -1075,5 +1138,29 @@ class _OutputPageState extends State<OutputPage> {
         ),
       ),
     );
+  }
+}
+
+class DrawLinePainter extends CustomPainter {
+  final List<Offset> points;
+
+  DrawLinePainter(this.points);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red // 線の色を設定
+      ..strokeWidth = 5.0 // 線の太さ
+      ..style = PaintingStyle.stroke; // 塗りつぶしではなく線を描画
+
+    // 線を描画
+    for (int i = 0; i < points.length - 1; i++) {
+      canvas.drawLine(points[i], points[i + 1], paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false; // 再描画しない
   }
 }

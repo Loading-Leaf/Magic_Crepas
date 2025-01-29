@@ -237,6 +237,24 @@ class _GeneratePageState extends State<GeneratePage> {
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
+    List<Offset> linePoints = []; // ここで線の座標を管理
+    List<Offset> _undoneLines = []; // undoされた線を保持するリスト]
+
+    void _undo() {
+      setState(() {
+        if (linePoints.isNotEmpty) {
+          _undoneLines.add(linePoints.removeLast());
+        }
+      });
+    }
+
+    void _redo() {
+      setState(() {
+        if (_undoneLines.isNotEmpty) {
+          linePoints.add(_undoneLines.removeLast());
+        }
+      });
+    }
 
     showDialog<void>(
       context: context,
@@ -289,10 +307,25 @@ class _GeneratePageState extends State<GeneratePage> {
                             width: screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              child: Image.asset('assets/difference/' +
-                                  (is_answer == 1 ? 'joke/' : 'answer/') +
-                                  random_num +
-                                  '.png'),
+                              child: GestureDetector(
+                                onPanUpdate: (details) {
+                                  setState(() {
+                                    // 画像上に描かれた線の座標を保存
+                                    if (linePoints.length < 3) {
+                                      linePoints.add(details.localPosition);
+                                    }
+                                  });
+                                },
+                                child: CustomPaint(
+                                  painter: DrawLinePainter(linePoints),
+                                  child: Image.asset(
+                                    'assets/difference/original/' +
+                                        random_num +
+                                        '.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -360,6 +393,30 @@ class _GeneratePageState extends State<GeneratePage> {
                                   ),
                                 ),
                               ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.undo),
+                                  onPressed:
+                                      linePoints.isNotEmpty ? _undo : null,
+                                  tooltip: 'Undo',
+                                  splashColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                  iconSize:
+                                      MediaQuery.of(context).size.height / 17,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.redo),
+                                  onPressed:
+                                      _undoneLines.isNotEmpty ? _redo : null,
+                                  tooltip: 'Redo',
+                                  splashColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                  iconSize:
+                                      MediaQuery.of(context).size.height / 17,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -742,5 +799,29 @@ class _GeneratePageState extends State<GeneratePage> {
         ),
       ),
     );
+  }
+}
+
+class DrawLinePainter extends CustomPainter {
+  final List<Offset> points;
+
+  DrawLinePainter(this.points);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red // 線の色を設定
+      ..strokeWidth = 5.0 // 線の太さ
+      ..style = PaintingStyle.stroke; // 塗りつぶしではなく線を描画
+
+    // 線を描画
+    for (int i = 0; i < points.length - 1; i++) {
+      canvas.drawLine(points[i], points[i + 1], paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false; // 再描画しない
   }
 }
