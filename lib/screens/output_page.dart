@@ -444,6 +444,10 @@ class _OutputPageState extends State<OutputPage> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: fontsize_big),
                 ),
+                Text(screen_num.toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: fontsize_big),
+                ),),
                 if (screen_num == 1) ...[
                   Text(
                     "作品タイトルを入力して",
