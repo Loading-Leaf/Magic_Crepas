@@ -233,28 +233,10 @@ class _GeneratePageState extends State<GeneratePage> {
 
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
-    List<Offset> linePoints = []; // ここで線の座標を管理
-    List<Offset> _undoneLines = []; // undoされた線を保持するリスト]
-
-    void _undo() {
-      setState(() {
-        if (linePoints.isNotEmpty) {
-          _undoneLines.add(linePoints.removeLast());
-        }
-      });
-    }
-
-    void _redo() {
-      setState(() {
-        if (_undoneLines.isNotEmpty) {
-          linePoints.add(_undoneLines.removeLast());
-        }
-      });
-    }
+    Offset? localPosition; // 画像内のローカル座標を保存
 
     showDialog<void>(
       context: context,
@@ -305,121 +287,39 @@ class _GeneratePageState extends State<GeneratePage> {
                           child: Container(
                             height: screenSize.width * 0.25,
                             width: screenSize.width * 0.25,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: GestureDetector(
-                                onPanUpdate: (details) {
-                                  setState(() {
-                                    // 画像のサイズに合わせて座標を調整
-                                    final localPosition = details.localPosition;
-                                    if (linePoints.length < 3) {
-                                      linePoints.add(localPosition);
-                                    }
-                                  });
-                                },
-                                child: CustomPaint(
-                                  painter: DrawLinePainter(linePoints),
-                                  child: Image.asset(
-                                    'assets/difference/original/' +
+                            child: GestureDetector(
+                              onTapDown: (details) {
+                                RenderBox box =
+                                    context.findRenderObject() as RenderBox;
+                                Offset localOffset =
+                                    box.globalToLocal(details.globalPosition);
+
+                                setState(() {
+                                  localPosition = localOffset;
+                                });
+
+                                print("タップ座標 (画像内): $localOffset");
+                              },
+                              child: Stack(
+                                children: [
+                                  Image.asset(
+                                    'assets/difference/' +
+                                        (is_answer == 1 ? 'joke/' : 'answer/') +
                                         random_num +
                                         '.png',
                                     fit: BoxFit.fill,
                                   ),
-                                ),
+                                  if (localPosition != null)
+                                    Positioned(
+                                      left: localPosition!.dx,
+                                      top: localPosition!.dy,
+                                      child: Icon(Icons.circle,
+                                          color: Colors.red, size: 15),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  if (isresult_exist == true) {
-                                    setState(() {
-                                      is_answer = is_answer == 1 ? 2 : 1;
-                                    });
-                                  } else {
-                                    _showWaitDialog();
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                ),
-                                child: Text(
-                                  is_answer == 1 ? '答えを見る' : 'もとの絵を見る',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  if (isresult_exist == true) {
-                                    audioProvider.playSound("established.mp3");
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/output',
-                                      arguments: {
-                                        'outputImage': resultbytes2,
-                                        'drawingImageData': Uint8List.fromList(
-                                            drawingImageData!),
-                                        'ImageData': image,
-                                        "is_photo_flag": is_photo_flag,
-                                      },
-                                    );
-                                  } else {
-                                    audioProvider.playSound("tap1.mp3");
-                                    _showWaitDialog();
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                ),
-                                child: Text(
-                                  '完成した絵を見る',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.undo),
-                                  onPressed:
-                                      linePoints.isNotEmpty ? _undo : null,
-                                  tooltip: 'Undo',
-                                  splashColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                  iconSize:
-                                      MediaQuery.of(context).size.height / 17,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.redo),
-                                  onPressed:
-                                      _undoneLines.isNotEmpty ? _redo : null,
-                                  tooltip: 'Redo',
-                                  splashColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                  iconSize:
-                                      MediaQuery.of(context).size.height / 17,
-                                ),
-                              ],
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -800,34 +700,5 @@ class _GeneratePageState extends State<GeneratePage> {
         ),
       ),
     );
-  }
-}
-
-class DrawLinePainter extends CustomPainter {
-  final List<Offset> points;
-
-  DrawLinePainter(this.points);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.red // 線の色を設定
-      ..strokeWidth = 5.0 // 線の太さ
-      ..style = PaintingStyle.stroke; // 塗りつぶしではなく線を描画
-
-    // 線を描画
-    for (int i = 0; i < points.length - 1; i++) {
-      canvas.drawLine(points[i], points[i + 1], paint);
-    }
-
-    // 最後の点を追加して線を閉じる（オプション）
-    if (points.isNotEmpty) {
-      canvas.drawCircle(points.last, 5.0, paint); // 最後の点を描く
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true; // 再描画しない
   }
 }

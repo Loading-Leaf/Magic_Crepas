@@ -185,26 +185,6 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
-
-    List<Offset> linePoints = []; // ここで線の座標を管理
-    List<Offset> _undoneLines = []; // undoされた線を保持するリスト]
-
-    void _undo() {
-      setState(() {
-        if (linePoints.isNotEmpty) {
-          _undoneLines.add(linePoints.removeLast());
-        }
-      });
-    }
-
-    void _redo() {
-      setState(() {
-        if (_undoneLines.isNotEmpty) {
-          linePoints.add(_undoneLines.removeLast());
-        }
-      });
-    }
-
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -256,25 +236,10 @@ class _OutputPageState extends State<OutputPage> {
                             width: screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              child: GestureDetector(
-                                onPanUpdate: (details) {
-                                  setState(() {
-                                    // 画像上に描かれた線の座標を保存
-                                    if (linePoints.length < 3) {
-                                      linePoints.add(details.localPosition);
-                                    }
-                                  });
-                                },
-                                child: CustomPaint(
-                                  painter: DrawLinePainter(linePoints),
-                                  child: Image.asset(
-                                    'assets/difference/original/' +
-                                        random_num +
-                                        '.png',
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
+                              child: Image.asset('assets/difference/' +
+                                  (is_answer == 1 ? 'joke/' : 'answer/') +
+                                  random_num +
+                                  '.png'),
                             ),
                           ),
                         ),
@@ -342,30 +307,6 @@ class _OutputPageState extends State<OutputPage> {
                                   ),
                                 ),
                               ),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.undo),
-                                  onPressed:
-                                      linePoints.isNotEmpty ? _undo : null,
-                                  tooltip: 'Undo',
-                                  splashColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                  iconSize:
-                                      MediaQuery.of(context).size.height / 17,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.redo),
-                                  onPressed:
-                                      _undoneLines.isNotEmpty ? _redo : null,
-                                  tooltip: 'Redo',
-                                  splashColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                  iconSize:
-                                      MediaQuery.of(context).size.height / 17,
-                                ),
-                              ],
                             ),
                           ],
                         ),
@@ -506,17 +447,17 @@ class _OutputPageState extends State<OutputPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontsize_big),
                     ),
-                    TextField(
-                      onChanged: (value) {
-                        outputimage_title = value;
-                      },
-                      style: TextStyle(fontSize: fontsize),
-                      decoration: InputDecoration(
-                        labelText: '作品タイトルを入力してね～',
-                        labelStyle: TextStyle(fontSize: fontsize),
-                      ),
-                    ),
                     if (screen_num == 1) ...[
+                      TextField(
+                        onChanged: (value) {
+                          outputimage_title = value;
+                        },
+                        style: TextStyle(fontSize: fontsize),
+                        decoration: InputDecoration(
+                          labelText: '作品タイトルを入力してね～',
+                          labelStyle: TextStyle(fontSize: fontsize),
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -599,6 +540,12 @@ class _OutputPageState extends State<OutputPage> {
                         ],
                       ),
                     ] else if (screen_num == 2) ...[
+                      Text(
+                        'プロジェクトを保存',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize_big),
+                      ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(3, (rowIndex) {
@@ -706,7 +653,8 @@ class _OutputPageState extends State<OutputPage> {
                                 screen_num += 1;
                               });
                               audioProvider.playSound("tap1.mp3");
-                            } else if (screen_num == 2 && emotion_num != null) {
+                            } else if (screen_num == 2 &&
+                                your_emotions != null) {
                               setState(() {
                                 // StatefulBuilderのsetStateを使用
                                 screen_num += 1;
@@ -1117,29 +1065,5 @@ class _OutputPageState extends State<OutputPage> {
         ),
       ),
     );
-  }
-}
-
-class DrawLinePainter extends CustomPainter {
-  final List<Offset> points;
-
-  DrawLinePainter(this.points);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.red // 線の色を設定
-      ..strokeWidth = 5.0 // 線の太さ
-      ..style = PaintingStyle.stroke; // 塗りつぶしではなく線を描画
-
-    // 線を描画
-    for (int i = 0; i < points.length - 1; i++) {
-      canvas.drawLine(points[i], points[i + 1], paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true; // 再描画しない
   }
 }
