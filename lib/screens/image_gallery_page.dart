@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'dart:typed_data';
+import 'gallery_detail_page.dart'; // ← 追加
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({super.key});
@@ -17,7 +18,6 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   void initState() {
     super.initState();
-    // Fetch the list of drawings when the page is initialized
     _drawingsFuture = GalleryDatabaseHelper.instance.fetchDrawings();
   }
 
@@ -27,10 +27,8 @@ class _GalleryPageState extends State<GalleryPage> {
     double fontsizeBig = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
-    Uint8List? outputImagecheck;
-    String Lengthdb = "";
 
-    double imageWidth = screenSize.width / 6 - 10; // Adjusted for spacing
+    double imageWidth = screenSize.width / 6 - 10;
     double imageHeight = imageWidth;
 
     return Scaffold(
@@ -39,7 +37,7 @@ class _GalleryPageState extends State<GalleryPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 '今まで作った絵を見れるよ～',
                 style: TextStyle(
@@ -55,16 +53,14 @@ class _GalleryPageState extends State<GalleryPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('No images available.');
+                    return const Text('まだ保存してないよ～');
                   } else {
                     List<Map<String, dynamic>> drawings = snapshot.data!;
-                    outputImagecheck = drawings[0]['outputimage'];
                     return Expanded(
                       child: GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount:
-                              6, // You can change the number of columns
+                          crossAxisCount: 6,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),
@@ -72,25 +68,30 @@ class _GalleryPageState extends State<GalleryPage> {
                         itemBuilder: (context, index) {
                           Uint8List? outputImage =
                               drawings[index]['outputimage'];
-                          Lengthdb = drawings.length.toString();
                           if (outputImage == null || outputImage.isEmpty) {
-                            // Fallback to indicate invalid image data
                             return Container(
                               color: Colors.grey,
-                              child: const Center(
-                                child: Text("Invalid Image"),
-                              ),
+                              child: const Center(child: Text("Invalid Image")),
                             );
                           }
-                          return Container(
+                          return GestureDetector(
+                            onTap: () {
+                              audioProvider.playSound("tap1.mp3");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      GalleryDetailPage(data: drawings[index]),
+                                ),
+                              );
+                            },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.memory(
                                 outputImage,
                                 width: imageWidth,
                                 height: imageHeight,
-                                fit: BoxFit
-                                    .contain, // Changed from cover to prevent cropping
+                                fit: BoxFit.contain,
                               ),
                             ),
                           );
@@ -122,7 +123,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),

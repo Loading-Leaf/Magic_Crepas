@@ -20,6 +20,7 @@ import 'dart:math' as math;
 import 'dart:async';
 
 import 'package:ai_art/artproject/gallery_database_helper.dart';
+import 'package:intl/intl.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -65,6 +66,13 @@ class _OutputPageState extends State<OutputPage> {
   Uint8List? resultbytes2;
   List<int>? photoBytes;
   int? is_photo_flag;
+
+  String formattedDate = "";
+
+  String getFormattedDate() {
+    DateTime now = DateTime.now();
+    return DateFormat('yyyy/M/d HH:mm').format(now);
+  }
 
   Future<void> _getWifiName() async {
     try {
@@ -438,8 +446,10 @@ class _OutputPageState extends State<OutputPage> {
                         onChanged: (value) {
                           outputimage_title = value;
                         },
+                        style: TextStyle(fontSize: fontsize),
                         decoration: InputDecoration(
                           labelText: '作品名', // ラベル
+                          labelStyle: TextStyle(fontSize: fontsize),
                         ),
                       ),
                       Row(
@@ -469,10 +479,10 @@ class _OutputPageState extends State<OutputPage> {
                                       }
                                     },
                                     child: Container(
-                                      height:
-                                          (screenSize.width ~/ 5.79).toDouble(),
-                                      width:
-                                          (screenSize.width ~/ 4.34).toDouble(),
+                                      height: (screenSize.width ~/ 6.948)
+                                          .toDouble(),
+                                      width: (screenSize.width ~/ 5.208)
+                                          .toDouble(),
                                       child: FittedBox(
                                         fit: BoxFit.fill,
                                         child: outputImage != null
@@ -509,10 +519,10 @@ class _OutputPageState extends State<OutputPage> {
                                       }
                                     },
                                     child: Container(
-                                      height:
-                                          (screenSize.width ~/ 5.79).toDouble(),
-                                      width:
-                                          (screenSize.width ~/ 4.34).toDouble(),
+                                      height: (screenSize.width ~/ 6.948)
+                                          .toDouble(),
+                                      width: (screenSize.width ~/ 5.208)
+                                          .toDouble(),
                                       child: FittedBox(
                                         fit: BoxFit.fill,
                                         child: drawingImageData != null
@@ -584,8 +594,10 @@ class _OutputPageState extends State<OutputPage> {
                               onChanged: (value) {
                                 outputimage_title = value;
                               },
+                              style: TextStyle(fontSize: fontsize),
                               decoration: InputDecoration(
                                 labelText: 'なにかあったら描いてね～', // ラベル
+                                labelStyle: TextStyle(fontSize: fontsize),
                               ),
                             ),
                           ]),
@@ -624,6 +636,7 @@ class _OutputPageState extends State<OutputPage> {
                               );
                               return;
                             }
+                            formattedDate = getFormattedDate();
                             saveToGalleryDB();
                             Navigator.pop(context);
                             audioProvider.playSound("established.mp3");
@@ -809,6 +822,7 @@ class _OutputPageState extends State<OutputPage> {
         'title': outputimage_title,
         'emotion': your_emotions, // null でも可
         'detailemotion': Detail_emotion,
+        'time': formattedDate,
       };
 
       int result =

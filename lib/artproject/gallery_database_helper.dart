@@ -17,6 +17,7 @@ class GalleryDatabaseHelper {
   static final columntitle = 'title'; // 列2
   static final columnemotion = 'emotion'; // 列3
   static final columndetailemotion = 'detailemotion'; // 列4
+  static final columntime = 'time';
 
   // DatabaseHelperクラスをシングルトンにするためのコンストラクタ
   GalleryDatabaseHelper._privateConstructor();
@@ -49,7 +50,8 @@ class GalleryDatabaseHelper {
       $columnSelectedPhoto BLOB,
       $columntitle TEXT NOT NULL,
       $columnemotion TEXT NOT NULL,
-      $columndetailemotion TEXT NOT NULL
+      $columndetailemotion TEXT NOT NULL,
+      $columntime TEXT NOT NULL
     )
     ''');
   }
@@ -74,6 +76,7 @@ class GalleryDatabaseHelper {
         columntitle: drawingData['title'],
         columnemotion: drawingData['emotion'],
         columndetailemotion: drawingData['detailemotion'],
+        columntime: drawingData['time']
       };
       return await db.insert(table, sanitizedData);
     } catch (e) {
