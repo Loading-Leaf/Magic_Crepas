@@ -72,17 +72,21 @@ class _MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                SizedBox(width: 10),
-                Padding(
-                  padding: EdgeInsets.all(7.0),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      height: screenSize.height * 0.15 * 0.75,
-                      width: screenSize.width * 0.20 * 0.75,
-                      child: Image.asset('assets/title_logo_main.png'),
+                Row(
+                  children: [
+                    SizedBox(width: 10),
+                    Padding(
+                      padding: EdgeInsets.all(7.0),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          height: screenSize.height * 0.15 * 0.75,
+                          width: screenSize.width * 0.20 * 0.75,
+                          child: Image.asset('assets/title_logo_main.png'),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.all(7.0),

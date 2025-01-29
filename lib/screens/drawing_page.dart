@@ -53,6 +53,7 @@ class _DrawingPageState extends State<DrawingPage> {
   bool _isCrayonMode = false; // スプレーモードのフラグ
   double _sprayDensity = 100.0; // スプレーの密度
   int isPhoto = 0;
+  int selectmode = 1; //1: 色選択, 2: 線の太さおよびペンの選択, 3: スタンプ
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
@@ -289,21 +290,40 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
                   Column(children: [
                     SizedBox(height: screenSize.height * 0.01),
-                    // 色選択用のウィジェット
-                    Padding(
-                      padding: EdgeInsets.all(3.0),
-                      child: Text('パレット',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: fontsize)),
-                    ),
-                    _buildColorPicker(MediaQuery.of(context).size.height / 13),
-                    Padding(
-                      padding: EdgeInsets.all(3.0),
-                      child: Text('筆の大きさ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: fontsize)),
-                    ),
-                    _buildStrokePicker(MediaQuery.of(context).size.height / 13),
+                    if (selectmode == 1) ...[
+                      // 色選択用のウィジェット
+                      Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: Text('パレット',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize)),
+                      ),
+                      _buildColorPicker(
+                          MediaQuery.of(context).size.height / 13),
+                    ] else if (selectmode == 2) ...[
+                      Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: Text('筆の大きさ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize)),
+                      ),
+                      _buildStrokePicker(
+                          MediaQuery.of(context).size.height / 13),
+                      IconButton(
+                        icon: Icon(_isSprayMode ? Icons.brush : Icons.brush),
+                        onPressed: () {
+                          setState(() {
+                            _isSprayMode = !_isSprayMode;
+                          });
+                        },
+                        tooltip: _isSprayMode ? 'Brush Mode' : 'Spray Mode',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.height / 17,
+                      ),
+                    ] else if (selectmode == 3)
+                      ...[],
                     Row(
                       children: [
                         IconButton(
@@ -320,18 +340,45 @@ class _DrawingPageState extends State<DrawingPage> {
                           splashColor: Color.fromARGB(255, 255, 67, 195),
                           iconSize: MediaQuery.of(context).size.height / 17,
                         ),
-                        IconButton(
-                          icon: Icon(_isSprayMode ? Icons.brush : Icons.brush),
-                          onPressed: () {
-                            setState(() {
-                              _isSprayMode = !_isSprayMode;
-                            });
-                          },
-                          tooltip: _isSprayMode ? 'Brush Mode' : 'Spray Mode',
-                          splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 17,
-                        ),
                       ],
+                    ),
+                  ]),
+                  Column(children: [
+                    SizedBox(height: screenSize.height * 0.01),
+                    IconButton(
+                      icon: Icon(Icons.palette),
+                      onPressed: () {
+                        setState(() {
+                          selectmode = 1;
+                        });
+                      },
+                      tooltip: 'pallete',
+                      splashColor: Color.fromARGB(255, 255, 67, 195),
+                      iconSize: MediaQuery.of(context).size.height / 17,
+                    ),
+                    SizedBox(height: screenSize.height * 0.01),
+                    IconButton(
+                      icon: Icon(Icons.brush),
+                      onPressed: () {
+                        setState(() {
+                          selectmode = 2;
+                        });
+                      },
+                      tooltip: 'pen',
+                      splashColor: Color.fromARGB(255, 255, 67, 195),
+                      iconSize: MediaQuery.of(context).size.height / 17,
+                    ),
+                    SizedBox(height: screenSize.height * 0.01),
+                    IconButton(
+                      icon: Icon(Icons.favorite),
+                      onPressed: () {
+                        setState(() {
+                          selectmode = 3;
+                        });
+                      },
+                      tooltip: 'favorite',
+                      splashColor: Color.fromARGB(255, 255, 67, 195),
+                      iconSize: MediaQuery.of(context).size.height / 17,
                     ),
                   ]),
                 ],
