@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
-import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryDetailPage extends StatefulWidget {
