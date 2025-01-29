@@ -434,8 +434,8 @@ class _OutputPageState extends State<OutputPage> {
           ),
           child: Container(
             width: screenSize.width * 0.8, // モーダルの幅を固定
-            height: screenSize.height * 0.6, // モーダルの高さを固定
-            padding: const EdgeInsets.all(16.0),
+            height: screenSize.height * 0.9, // モーダルの高さを固定
+            padding: const EdgeInsets.all(8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -639,8 +639,7 @@ class _OutputPageState extends State<OutputPage> {
                           saveToGalleryDB();
                           Navigator.pop(context);
                           audioProvider.playSound("established.mp3");
-                        } else if (screen_num == 1 &&
-                            outputimage_title.length != 0) {
+                        } else if (screen_num == 1) {
                           setState(() {
                             screen_num += 1;
                           });
