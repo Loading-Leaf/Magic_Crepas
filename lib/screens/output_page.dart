@@ -42,7 +42,8 @@ class _OutputPageState extends State<OutputPage> {
   bool isresult_exist = false;
   String outputimage_title = "";
   int? emotion_num;
-  List<String> your_emotions = [
+  String? your_emotions;
+  List<String> emotions = [
     "うれしい",
     "たのしい",
     "おもしろい",
@@ -410,7 +411,7 @@ class _OutputPageState extends State<OutputPage> {
     );
   }
 
-  void _savemodal(BuildContext context) {
+  void _savemodal(BuildContext context, AudioProvider audioProvider) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
@@ -420,11 +421,235 @@ class _OutputPageState extends State<OutputPage> {
         builder: (context) {
           return AlertDialog(
               title: Text(
-                '別のモードを使う',
+                'プロジェクトを保存',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, fontSize: fontsize_big),
               ),
-              content: Row(mainAxisSize: MainAxisSize.min, children: []));
+              content: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    if (screen_num == 1) ...[
+                      Text(
+                        "作品タイトルを入力して",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize),
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          outputimage_title = value;
+                        },
+                        decoration: InputDecoration(
+                          labelText: '作品名', // ラベル
+                        ),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("作った絵だよ！",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize)),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (outputImage != null) {
+                                        // 画像が存在する場合、タップしてモーダルを表示
+                                        _showImageModal(
+                                            context, MemoryImage(outputImage!));
+                                      } else {
+                                        // デフォルト画像の場合
+                                        _showImageModal(
+                                            context,
+                                            AssetImage(
+                                                'assets/output_style.png'));
+                                      }
+                                    },
+                                    child: Container(
+                                      height:
+                                          (screenSize.width ~/ 5.79).toDouble(),
+                                      width:
+                                          (screenSize.width ~/ 4.34).toDouble(),
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: outputImage != null
+                                            ? Image.memory(
+                                                outputImage!) // 画像を表示
+                                            : Image.asset(
+                                                'assets/output_style.png'), // デフォルト画像
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: screenSize.width * 0.1),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("お絵描きした絵だよ！",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize)),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (drawingImageData != null) {
+                                        // 画像が存在する場合、タップしてモーダルを表示
+                                        _showImageModal(context,
+                                            MemoryImage(drawingImageData!));
+                                      } else {
+                                        // デフォルト画像の場合
+                                        _showImageModal(context,
+                                            AssetImage('assets/content.png'));
+                                      }
+                                    },
+                                    child: Container(
+                                      height:
+                                          (screenSize.width ~/ 5.79).toDouble(),
+                                      width:
+                                          (screenSize.width ~/ 4.34).toDouble(),
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: drawingImageData != null
+                                            ? Image.memory(
+                                                drawingImageData!) // 画像を表示
+                                            : Image.asset(
+                                                'assets/content.png'), // デフォルト画像
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ]),
+                    ] else if (screen_num == 2) ...[
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5, // 5列
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 8.0,
+                              childAspectRatio: 2, // ボタンの横幅を調整
+                            ),
+                            itemCount: emotions.length,
+                            itemBuilder: (context, index) {
+                              bool isSelected = emotion_num == index;
+
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isSelected
+                                      ? Color.fromARGB(255, 255, 67, 195)
+                                      : Colors.white,
+                                  foregroundColor:
+                                      isSelected ? Colors.white : Colors.black,
+                                  side: BorderSide(
+                                      color: Color.fromARGB(255, 255, 67, 195),
+                                      width: 1.5),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    emotion_num = index;
+                                    your_emotions = emotions[index];
+                                  });
+                                },
+                                child: Text(
+                                  emotions[index],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ] else if (screen_num == 3) ...[
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "さらに感じた気持ちを教えて",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize),
+                            ),
+                            TextField(
+                              onChanged: (value) {
+                                outputimage_title = value;
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'なにかあったら描いてね～', // ラベル
+                              ),
+                            ),
+                          ]),
+                    ],
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      TextButton(
+                        onPressed: () {
+                          audioProvider.playSound("tap1.mp3");
+                          if (screen_num == 1) {
+                            Navigator.pop(context);
+                          } else {
+                            screen_num -= 1;
+                          }
+                          ;
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          '戻る',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      TextButton(
+                        onPressed: () async {
+                          if (screen_num == 3) {
+                            if (outputImage == false) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        'Cannot save project: Missing image data')),
+                              );
+                              return;
+                            }
+                            saveToGalleryDB();
+                            Navigator.pop(context);
+                            audioProvider.playSound("established.mp3");
+                          } else if (screen_num == 1 &&
+                              outputimage_title.length != 0) {
+                            screen_num += 1;
+                            audioProvider.playSound("tap1.mp3");
+                          } else if (screen_num == 2 && emotion_num != null) {
+                            screen_num += 1;
+                            audioProvider.playSound("tap1.mp3");
+                          }
+                          ;
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          '進む',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ]),
+                  ]));
         });
   }
 
@@ -581,6 +806,9 @@ class _OutputPageState extends State<OutputPage> {
         'drawingimage': drawingImageData,
         'photoimage': photoBytes, // null でも可
         'outputimage': outputImage,
+        'title': outputimage_title,
+        'emotion': your_emotions, // null でも可
+        'detailemotion': Detail_emotion,
       };
 
       int result =
@@ -782,7 +1010,7 @@ class _OutputPageState extends State<OutputPage> {
                             return;
                           }
 
-                          saveToGalleryDB();
+                          _savemodal(context, audioProvider);
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 255, 67, 195),

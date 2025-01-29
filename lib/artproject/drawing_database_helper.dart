@@ -37,7 +37,7 @@ class DrawingDatabaseHelper {
     await db.execute('''
       CREATE TABLE $table (
         $columnId INTEGER PRIMARY KEY,
-        $columnDrawing BLOB NOT NULL
+        $columnDrawing BLOB NOT NULL,
         $is_photo_flag INTEGER
       )
     ''');

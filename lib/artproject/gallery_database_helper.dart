@@ -14,6 +14,9 @@ class GalleryDatabaseHelper {
   static final columnDrawing = 'drawingimage'; // 列2
   static final columnPhoto = 'photoimage'; // 列3
   static final columnSelectedPhoto = 'outputimage'; // 列4
+  static final columntitle = 'title'; // 列2
+  static final columnemotion = 'emotion'; // 列3
+  static final columndetailemotion = 'detailemotion'; // 列4
 
   // DatabaseHelperクラスをシングルトンにするためのコンストラクタ
   GalleryDatabaseHelper._privateConstructor();
@@ -43,7 +46,10 @@ class GalleryDatabaseHelper {
       $columnId INTEGER PRIMARY KEY,
       $columnDrawing BLOB,
       $columnPhoto BLOB,
-      $columnSelectedPhoto BLOB
+      $columnSelectedPhoto BLOB,
+      $columntitle TEXT NOT NULL,
+      $columnemotion TEXT NOT NULL,
+      $columndetailemotion TEXT NOT NULL
     )
     ''');
   }
@@ -65,6 +71,9 @@ class GalleryDatabaseHelper {
         columnDrawing: drawingData['drawingimage'],
         columnPhoto: drawingData['photoimage'],
         columnSelectedPhoto: drawingData['outputimage'],
+        columntitle: drawingData['title'],
+        columnemotion: drawingData['emotion'],
+        columndetailemotion: drawingData['detailemotion'],
       };
       return await db.insert(table, sanitizedData);
     } catch (e) {
