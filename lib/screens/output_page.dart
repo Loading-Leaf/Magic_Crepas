@@ -424,21 +424,164 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     int screen_num = 1;
+
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text(
-                'プロジェクトを保存',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: fontsize_big),
-              ),
-              content: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (screen_num == 1) ...[
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Container(
+            width: screenSize.width * 0.8, // モーダルの幅を固定
+            height: screenSize.height * 0.6, // モーダルの高さを固定
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'プロジェクトを保存',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: fontsize_big),
+                ),
+                if (screen_num == 1) ...[
+                  Text(
+                    "作品タイトルを入力して",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: fontsize),
+                  ),
+                  TextField(
+                    onChanged: (value) {
+                      outputimage_title = value;
+                    },
+                    style: TextStyle(fontSize: fontsize),
+                    decoration: InputDecoration(
+                      labelText: '作品名',
+                      labelStyle: TextStyle(fontSize: fontsize),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "作った絵だよ！",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (outputImage != null) {
+                                  _showImageModal(
+                                      context, MemoryImage(outputImage!));
+                                } else {
+                                  _showImageModal(context,
+                                      AssetImage('assets/output_style.png'));
+                                }
+                              },
+                              child: Container(
+                                height: (screenSize.width ~/ 6.948).toDouble(),
+                                width: (screenSize.width ~/ 5.208).toDouble(),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: outputImage != null
+                                      ? Image.memory(outputImage!)
+                                      : Image.asset('assets/output_style.png'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: screenSize.width * 0.1),
+                      Column(
+                        children: [
+                          Text(
+                            "お絵描きした絵だよ！",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (drawingImageData != null) {
+                                  _showImageModal(
+                                      context, MemoryImage(drawingImageData!));
+                                } else {
+                                  _showImageModal(context,
+                                      AssetImage('assets/content.png'));
+                                }
+                              },
+                              child: Container(
+                                height: (screenSize.width ~/ 6.948).toDouble(),
+                                width: (screenSize.width ~/ 5.208).toDouble(),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: drawingImageData != null
+                                      ? Image.memory(drawingImageData!)
+                                      : Image.asset('assets/content.png'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ] else if (screen_num == 2) ...[
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 2,
+                        ),
+                        itemCount: emotions.length,
+                        itemBuilder: (context, index) {
+                          bool isSelected = emotion_num == index;
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isSelected
+                                  ? Color.fromARGB(255, 255, 67, 195)
+                                  : Colors.white,
+                              foregroundColor:
+                                  isSelected ? Colors.white : Colors.black,
+                              side: BorderSide(
+                                color: Color.fromARGB(255, 255, 67, 195),
+                                width: 1.5,
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                emotion_num = index;
+                                your_emotions = emotions[index];
+                              });
+                            },
+                            child: Text(
+                              emotions[index],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ] else if (screen_num == 3) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Text(
-                        "作品タイトルを入力して",
+                        "さらに感じた気持ちを教えて",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: fontsize),
                       ),
@@ -448,222 +591,86 @@ class _OutputPageState extends State<OutputPage> {
                         },
                         style: TextStyle(fontSize: fontsize),
                         decoration: InputDecoration(
-                          labelText: '作品名', // ラベル
+                          labelText: 'なにかあったら描いてね～',
                           labelStyle: TextStyle(fontSize: fontsize),
                         ),
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("作った絵だよ！",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontsize)),
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (outputImage != null) {
-                                        // 画像が存在する場合、タップしてモーダルを表示
-                                        _showImageModal(
-                                            context, MemoryImage(outputImage!));
-                                      } else {
-                                        // デフォルト画像の場合
-                                        _showImageModal(
-                                            context,
-                                            AssetImage(
-                                                'assets/output_style.png'));
-                                      }
-                                    },
-                                    child: Container(
-                                      height: (screenSize.width ~/ 6.948)
-                                          .toDouble(),
-                                      width: (screenSize.width ~/ 5.208)
-                                          .toDouble(),
-                                      child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: outputImage != null
-                                            ? Image.memory(
-                                                outputImage!) // 画像を表示
-                                            : Image.asset(
-                                                'assets/output_style.png'), // デフォルト画像
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: screenSize.width * 0.1),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("お絵描きした絵だよ！",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontsize)),
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (drawingImageData != null) {
-                                        // 画像が存在する場合、タップしてモーダルを表示
-                                        _showImageModal(context,
-                                            MemoryImage(drawingImageData!));
-                                      } else {
-                                        // デフォルト画像の場合
-                                        _showImageModal(context,
-                                            AssetImage('assets/content.png'));
-                                      }
-                                    },
-                                    child: Container(
-                                      height: (screenSize.width ~/ 6.948)
-                                          .toDouble(),
-                                      width: (screenSize.width ~/ 5.208)
-                                          .toDouble(),
-                                      child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: drawingImageData != null
-                                            ? Image.memory(
-                                                drawingImageData!) // 画像を表示
-                                            : Image.asset(
-                                                'assets/content.png'), // デフォルト画像
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ]),
-                    ] else if (screen_num == 2) ...[
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5, // 5列
-                              crossAxisSpacing: 8.0,
-                              mainAxisSpacing: 8.0,
-                              childAspectRatio: 2, // ボタンの横幅を調整
-                            ),
-                            itemCount: emotions.length,
-                            itemBuilder: (context, index) {
-                              bool isSelected = emotion_num == index;
-
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: isSelected
-                                      ? Color.fromARGB(255, 255, 67, 195)
-                                      : Colors.white,
-                                  foregroundColor:
-                                      isSelected ? Colors.white : Colors.black,
-                                  side: BorderSide(
-                                      color: Color.fromARGB(255, 255, 67, 195),
-                                      width: 1.5),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    emotion_num = index;
-                                    your_emotions = emotions[index];
-                                  });
-                                },
-                                child: Text(
-                                  emotions[index],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ] else if (screen_num == 3) ...[
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "さらに感じた気持ちを教えて",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize),
-                            ),
-                            TextField(
-                              onChanged: (value) {
-                                outputimage_title = value;
-                              },
-                              style: TextStyle(fontSize: fontsize),
-                              decoration: InputDecoration(
-                                labelText: 'なにかあったら描いてね～', // ラベル
-                                labelStyle: TextStyle(fontSize: fontsize),
-                              ),
-                            ),
-                          ]),
                     ],
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          if (screen_num == 1) {
-                            Navigator.pop(context);
-                          } else {
+                  ),
+                ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        audioProvider.playSound("tap1.mp3");
+                        if (screen_num == 1) {
+                          Navigator.pop(context);
+                        } else {
+                          setState(() {
                             screen_num -= 1;
-                          }
-                          ;
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          '戻る',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
+                          });
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
-                      SizedBox(width: 20),
-                      TextButton(
-                        onPressed: () async {
-                          if (screen_num == 3) {
-                            if (outputImage == false) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        'Cannot save project: Missing image data')),
-                              );
-                              return;
-                            }
-                            formattedDate = getFormattedDate();
-                            saveToGalleryDB();
-                            Navigator.pop(context);
-                            audioProvider.playSound("established.mp3");
-                          } else if (screen_num == 1 &&
-                              outputimage_title.length != 0) {
-                            screen_num += 1;
-                            audioProvider.playSound("tap1.mp3");
-                          } else if (screen_num == 2 && emotion_num != null) {
-                            screen_num += 1;
-                            audioProvider.playSound("tap1.mp3");
-                          }
-                          ;
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          '進む',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
+                      child: Text(
+                        '戻る',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
                       ),
-                    ]),
-                  ]));
-        });
+                    ),
+                    SizedBox(width: 20),
+                    TextButton(
+                      onPressed: () async {
+                        if (screen_num == 3) {
+                          if (outputImage == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('保存することができませんでした。'),
+                              ),
+                            );
+                            return;
+                          }
+                          formattedDate = getFormattedDate();
+                          saveToGalleryDB();
+                          Navigator.pop(context);
+                          audioProvider.playSound("established.mp3");
+                        } else if (screen_num == 1 &&
+                            outputimage_title.length != 0) {
+                          setState(() {
+                            screen_num += 1;
+                          });
+                          audioProvider.playSound("tap1.mp3");
+                        } else if (screen_num == 2 && emotion_num != null) {
+                          setState(() {
+                            screen_num += 1;
+                          });
+                          audioProvider.playSound("tap1.mp3");
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        '進む',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {

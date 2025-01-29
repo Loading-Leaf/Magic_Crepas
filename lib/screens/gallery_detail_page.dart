@@ -6,6 +6,7 @@ import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:photo_manager/photo_manager.dart';
+import 'package:ai_art/artproject/gallery_database_helper.dart';
 
 class GalleryDetailPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -96,6 +97,102 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     );
   }
 
+  Future<void> _showDeleteConfirmDialog() async {
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('削除の確認'),
+          content: Text('この作品を削除してもよろしいですか？'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('キャンセル'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('削除'),
+              onPressed: () async {
+                // データベースから削除
+                await GalleryDatabaseHelper.instance.delete(widget.data['_id']);
+                audioProvider.playSound("established.mp3");
+
+                // スナックバーで削除完了を表示
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('作品を削除しました')),
+                );
+
+                Navigator.of(context).pop(); // ダイアログを閉じる
+                Navigator.of(context).pop(); // 詳細ページを閉じる
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPhotoAndEmotionModal() {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "詳細な感情: ${widget.data['detailemotion'] ?? '不明'}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                  ),
+                ),
+                SizedBox(height: 20),
+                if (photoImage != null && photoImage!.isNotEmpty) ...[
+                  Text(
+                    "参考にした写真",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontsize,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: (screenSize.width ~/ 6.948).toDouble(),
+                    width: (screenSize.width ~/ 5.208).toDouble(),
+                    child: Image.memory(
+                      photoImage!,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ],
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    '閉じる',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     outputImage = widget.data['outputimage'];
@@ -106,7 +203,6 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     String detailemotion = widget.data['detailemotion'] ?? "無題";
     String time = widget.data['time'] ?? "不明";
     Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
 
     return Scaffold(
@@ -168,8 +264,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         }
                       },
                       child: Container(
-                        height: (screenSize.width ~/ 5.79).toDouble(),
-                        width: (screenSize.width ~/ 4.34).toDouble(),
+                        height: (screenSize.width ~/ 6.948).toDouble(),
+                        width: (screenSize.width ~/ 5.208).toDouble(),
                         child: FittedBox(
                           fit: BoxFit.fill,
                           child: outputImage != null
@@ -218,8 +314,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         }
                       },
                       child: Container(
-                        height: (screenSize.width ~/ 5.79).toDouble(),
-                        width: (screenSize.width ~/ 4.34).toDouble(),
+                        height: (screenSize.width ~/ 6.948).toDouble(),
+                        width: (screenSize.width ~/ 5.208).toDouble(),
                         child: FittedBox(
                           fit: BoxFit.fill,
                           child: drawingImage != null
@@ -248,15 +344,51 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               ),
             ]),
             const SizedBox(height: 20),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 67, 195),
-              ),
-              child: const Text(
-                "戻る",
-                style: TextStyle(color: Colors.white),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    "戻る",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fontsize,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                TextButton(
+                  onPressed: _showPhotoAndEmotionModal,
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    "詳細を見る",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fontsize,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                TextButton(
+                  onPressed: _showDeleteConfirmDialog,
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  ),
+                  child: Text(
+                    "削除する",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fontsize,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
