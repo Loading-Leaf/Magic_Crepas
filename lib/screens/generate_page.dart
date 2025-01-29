@@ -310,9 +310,10 @@ class _GeneratePageState extends State<GeneratePage> {
                               child: GestureDetector(
                                 onPanUpdate: (details) {
                                   setState(() {
-                                    // 画像上に描かれた線の座標を保存
+                                    // 画像のサイズに合わせて座標を調整
+                                    final localPosition = details.localPosition;
                                     if (linePoints.length < 3) {
-                                      linePoints.add(details.localPosition);
+                                      linePoints.add(localPosition);
                                     }
                                   });
                                 },
@@ -817,6 +818,11 @@ class DrawLinePainter extends CustomPainter {
     // 線を描画
     for (int i = 0; i < points.length - 1; i++) {
       canvas.drawLine(points[i], points[i + 1], paint);
+    }
+
+    // 最後の点を追加して線を閉じる（オプション）
+    if (points.isNotEmpty) {
+      canvas.drawCircle(points.last, 5.0, paint); // 最後の点を描く
     }
   }
 

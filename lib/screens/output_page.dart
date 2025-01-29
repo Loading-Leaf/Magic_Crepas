@@ -50,14 +50,14 @@ class _OutputPageState extends State<OutputPage> {
     "おもしろい",
     "きもちいい",
     "しあわせ",
-    "なつかしい",
+    //"なつかしい",
     "ほっとする",
     "わくわくする",
-    "かんどうする",
+    //"かんどうする",
     "つかれた",
     "むかつく",
     "かなしい",
-    "くやしい",
+    //"くやしい",
     "こわい",
     "さびしい"
   ];
@@ -496,26 +496,16 @@ class _OutputPageState extends State<OutputPage> {
               ),
               child: Container(
                 width: screenSize.width * 0.8,
-                height: screenSize.height * 0.9,
+                height: screenSize.height * 0.95,
                 padding: const EdgeInsets.all(8),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      'プロジェクトを保存',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: fontsize_big),
-                    ),
-                    Text(
-                      screen_num.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: fontsize_big),
-                    ),
-                    if (screen_num == 1) ...[
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
                       Text(
-                        "作品タイトルを入力して",
+                        'プロジェクトを保存',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: fontsize),
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize_big),
                       ),
                       TextField(
                         onChanged: (value) {
@@ -523,94 +513,12 @@ class _OutputPageState extends State<OutputPage> {
                         },
                         style: TextStyle(fontSize: fontsize),
                         decoration: InputDecoration(
-                          labelText: '作品名',
+                          labelText: '作品タイトルを入力してね～',
                           labelStyle: TextStyle(fontSize: fontsize),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "作った絵だよ！",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (outputImage != null) {
-                                      _showImageModal(
-                                          context, MemoryImage(outputImage!));
-                                    } else {
-                                      _showImageModal(
-                                          context,
-                                          AssetImage(
-                                              'assets/output_style.png'));
-                                    }
-                                  },
-                                  child: Container(
-                                    height:
-                                        (screenSize.width ~/ 6.948).toDouble(),
-                                    width:
-                                        (screenSize.width ~/ 5.208).toDouble(),
-                                    child: FittedBox(
-                                      fit: BoxFit.fill,
-                                      child: outputImage != null
-                                          ? Image.memory(outputImage!)
-                                          : Image.asset(
-                                              'assets/output_style.png'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: screenSize.width * 0.1),
-                          Column(
-                            children: [
-                              Text(
-                                "お絵描きした絵だよ！",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (drawingImageData != null) {
-                                      _showImageModal(context,
-                                          MemoryImage(drawingImageData!));
-                                    } else {
-                                      _showImageModal(context,
-                                          AssetImage('assets/content.png'));
-                                    }
-                                  },
-                                  child: Container(
-                                    height:
-                                        (screenSize.width ~/ 6.948).toDouble(),
-                                    width:
-                                        (screenSize.width ~/ 5.208).toDouble(),
-                                    child: FittedBox(
-                                      fit: BoxFit.fill,
-                                      child: drawingImageData != null
-                                          ? Image.memory(drawingImageData!)
-                                          : Image.asset('assets/content.png'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ] else if (screen_num == 2) ...[
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(8),
                         child: GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -653,7 +561,6 @@ class _OutputPageState extends State<OutputPage> {
                           },
                         ),
                       ),
-                    ] else if (screen_num == 3) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -669,84 +576,65 @@ class _OutputPageState extends State<OutputPage> {
                             },
                             style: TextStyle(fontSize: fontsize),
                             decoration: InputDecoration(
-                              labelText: 'なにかあったら描いてね～',
+                              labelText: 'さらに感じた気持ちあったら教えて～',
                               labelStyle: TextStyle(fontSize: fontsize),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            audioProvider.playSound("tap1.mp3");
-                            if (screen_num == 1) {
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              audioProvider.playSound("tap1.mp3");
                               Navigator.pop(context);
-                            } else {
-                              setState(() {
-                                // StatefulBuilderのsetStateを使用
-                                screen_num -= 1;
-                              });
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              '戻る',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
                           ),
-                          child: Text(
-                            '戻る',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        TextButton(
-                          onPressed: () async {
-                            if (screen_num == 3) {
-                              if (outputImage == false) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('保存することができませんでした。'),
-                                  ),
-                                );
-                                return;
+                          SizedBox(width: 20),
+                          TextButton(
+                            onPressed: () async {
+                              if (emotion_num != null) {
+                                if (outputImage == false) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('保存することができませんでした。'),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                formattedDate = getFormattedDate();
+                                saveToGalleryDB();
+                                Navigator.pop(context);
+                                audioProvider.playSound("established.mp3");
                               }
-                              formattedDate = getFormattedDate();
-                              saveToGalleryDB();
-                              Navigator.pop(context);
-                              audioProvider.playSound("established.mp3");
-                            } else if (screen_num == 1) {
-                              setState(() {
-                                // StatefulBuilderのsetStateを使用
-                                screen_num += 1;
-                              });
-                              audioProvider.playSound("tap1.mp3");
-                            } else if (screen_num == 2 && emotion_num != null) {
-                              setState(() {
-                                // StatefulBuilderのsetStateを使用
-                                screen_num += 1;
-                              });
-                              audioProvider.playSound("tap1.mp3");
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              'できたよ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
                           ),
-                          child: Text(
-                            '進む',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                        ],
+                      ),
+                    ]),
               ),
             );
           },
