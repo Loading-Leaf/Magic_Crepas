@@ -423,6 +423,7 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     int screen_num = 1; // 初期値を設定
+    String record_your_emotions = "";
 
     showDialog(
       context: context,
@@ -564,19 +565,21 @@ class _OutputPageState extends State<OutputPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     your_emotions = emotion;
+                                    record_your_emotions = emotion;
                                   },
                                   style: TextButton.styleFrom(
-                                    backgroundColor: your_emotions == emotion
-                                        ? Color.fromARGB(
-                                            255, 255, 67, 195) // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198), // 未選択ならグレー
+                                    backgroundColor:
+                                        record_your_emotions == emotion
+                                            ? Color.fromARGB(
+                                                255, 255, 67, 195) // 選択されたらピンク
+                                            : const Color.fromARGB(
+                                                255, 199, 198, 198), // 未選択ならグレー
 
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 8),
                                   ),
                                   child: Text(
-                                    "あなたの気持ち: $emotion",
+                                    emotions[index],
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontsize,

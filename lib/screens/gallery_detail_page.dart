@@ -21,6 +21,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   Uint8List? outputImage = Uint8List(0);
   Uint8List? drawingImage = Uint8List(0);
   Uint8List? photoImage = Uint8List(0);
+  String your_detailemotion = "";
 
   Future<void> saveImage() async {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
@@ -129,6 +130,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     fontSize: fontsize,
                     color: Colors.white),
               ),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 audioProvider.playSound("tap1.mp3");
@@ -141,6 +145,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
                     color: Colors.white),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 255, 67, 195),
               ),
               onPressed: () async {
                 // データベースから削除
@@ -178,6 +185,14 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               children: [
                 Text(
                   "詳細な感情: ${widget.data['detailemotion'] ?? '不明'}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  your_detailemotion,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -236,6 +251,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     String title = widget.data['title'] ?? "無題";
     String emotion = widget.data['emotion'] ?? "無題";
     String detailemotion = widget.data['detailemotion'] ?? "無題";
+    your_detailemotion = detailemotion;
     String time = widget.data['time'] ?? "不明";
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
