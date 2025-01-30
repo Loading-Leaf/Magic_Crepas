@@ -366,7 +366,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           onPressed: _undoneItems.isNotEmpty ? _redo : null,
                           tooltip: 'Redo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                       ],
                     ),
@@ -374,8 +373,6 @@ class _DrawingPageState extends State<DrawingPage> {
                   Column(children: [
                     SizedBox(height: screenSize.height * 0.01),
                     Container(
-                      width: MediaQuery.of(context).size.height / 15,
-                      height: MediaQuery.of(context).size.height / 15,
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: selectmode == 1 ? Colors.blue : Colors.white,
@@ -391,13 +388,10 @@ class _DrawingPageState extends State<DrawingPage> {
                         },
                         tooltip: 'palette',
                         splashColor: Color.fromARGB(255, 255, 67, 195),
-                        iconSize: MediaQuery.of(context).size.height / 15,
                       ),
                     ),
                     SizedBox(height: screenSize.height * 0.01),
                     Container(
-                      width: MediaQuery.of(context).size.height / 15,
-                      height: MediaQuery.of(context).size.height / 15,
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: selectmode == 2 ? Colors.blue : Colors.white,
@@ -413,13 +407,10 @@ class _DrawingPageState extends State<DrawingPage> {
                         },
                         tooltip: 'pen',
                         splashColor: Color.fromARGB(255, 255, 67, 195),
-                        iconSize: MediaQuery.of(context).size.height / 15,
                       ),
                     ),
                     SizedBox(height: screenSize.height * 0.01),
                     Container(
-                      width: MediaQuery.of(context).size.height / 15,
-                      height: MediaQuery.of(context).size.height / 15,
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: selectmode == 3 ? Colors.blue : Colors.white,
@@ -435,13 +426,10 @@ class _DrawingPageState extends State<DrawingPage> {
                         },
                         tooltip: 'favorite',
                         splashColor: Color.fromARGB(255, 255, 67, 195),
-                        iconSize: MediaQuery.of(context).size.height / 15,
                       ),
                     ),
                     SizedBox(height: screenSize.height * 0.01),
                     Container(
-                      width: MediaQuery.of(context).size.height / 15,
-                      height: MediaQuery.of(context).size.height / 15,
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: selectmode == 4 ? Colors.blue : Colors.white,

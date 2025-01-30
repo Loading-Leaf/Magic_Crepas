@@ -77,40 +77,50 @@ class _OutputPageState extends State<OutputPage> {
   }
 
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final box = context.findRenderObject() as RenderBox?;
-
-    if (box == null) {
-      final snackBar = SnackBar(content: Text('座標の取得に失敗しました。再試行してください。'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
-    }
-
-    final outputImagePath =
-        '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
-    final drawingImagePath =
-        '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
-
     try {
+      final directory = await getApplicationDocumentsDirectory();
+      final initialBox = context.findRenderObject() as RenderBox?;
+
+      if (initialBox == null) {
+        final snackBar = SnackBar(content: Text('座標の取得に失敗しました。再試行してください。'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return;
+      }
+
+      final outputImagePath =
+          '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final drawingImagePath =
+          '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+
       await File(outputImagePath).writeAsBytes(image1);
       await File(drawingImagePath).writeAsBytes(image2);
 
-      bool outputImageExists = await File(outputImagePath).exists();
-      bool drawingImageExists = await File(drawingImagePath).exists();
+      final files = <XFile>[XFile(outputImagePath), XFile(drawingImagePath)];
 
-      if (outputImageExists && drawingImageExists) {
-        await Share.shareXFiles(
-          [XFile(outputImagePath), XFile(drawingImagePath)],
-          text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-          sharePositionOrigin: box.localToGlobal(Offset.zero) &
-              (box.size ?? Size.zero), // ✅ `null` 対策
-        );
-      } else {
-        final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
+      // iPadの場合、sharePositionOriginを画面中央に設定
+      final renderBox = context.findRenderObject() as RenderBox;
+      final bounds = renderBox.localToGlobal(Offset.zero) & renderBox.size;
+      final centeredRect = Rect.fromCenter(
+        center: bounds.center,
+        width: 0,
+        height: 0,
+      );
+
+      await Share.shareXFiles(
+        files,
+        text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+        subject: 'まじっくくれぱすで作った絵',
+        sharePositionOrigin: centeredRect,
+      );
+
+      // 一時ファイルの削除
+      await File(outputImagePath).delete();
+      await File(drawingImagePath).delete();
     } catch (e) {
-      final snackBar = SnackBar(content: Text('画像の共有中にエラーが発生しました: $e'));
+      final snackBar = SnackBar(
+        content: Text('画像の共有中にエラーが発生しました: $e'),
+        duration: Duration(seconds: 3),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
