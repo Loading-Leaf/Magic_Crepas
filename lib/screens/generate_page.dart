@@ -235,6 +235,7 @@ class _GeneratePageState extends State<GeneratePage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     int is_answer = 1;
     Offset? localPosition; // 画像内のローカル座標を保存
 
@@ -325,6 +326,73 @@ class _GeneratePageState extends State<GeneratePage> {
                               ),
                             ),
                           ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  if (isresult_exist == true) {
+                                    setState(() {
+                                      is_answer = is_answer == 1 ? 2 : 1;
+                                    });
+                                  } else {
+                                    _showWaitDialog();
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  is_answer == 1 ? '答えを見る' : 'もとの絵を見る',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {
+                                  if (isresult_exist == true) {
+                                    audioProvider.playSound("established.mp3");
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/output',
+                                      arguments: {
+                                        'outputImage': resultbytes2,
+                                        'drawingImageData': Uint8List.fromList(
+                                            drawingImageData!),
+                                        'ImageData': image,
+                                        "is_photo_flag": is_photo_flag,
+                                      },
+                                    );
+                                  } else {
+                                    audioProvider.playSound("tap1.mp3");
+                                    _showWaitDialog();
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  '完成した絵を見る',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
