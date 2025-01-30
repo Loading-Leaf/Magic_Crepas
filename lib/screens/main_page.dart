@@ -71,46 +71,55 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Padding(
-                      padding: EdgeInsets.all(7.0),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Padding(
+                        padding: EdgeInsets.all(7.0),
                         child: Container(
-                          height: screenSize.height * 0.15 * 0.75,
-                          width: screenSize.width * 0.20 * 0.75,
-                          child: Image.asset('assets/title_logo_main.png'),
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: screenSize.height * 0.15 * 0.75,
+                            width: screenSize.width * 0.20 * 0.75,
+                            child: Image.asset('assets/title_logo_main.png'),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(7.0),
-                  child: Container(
-                    child: TextButton(
-                      onPressed: () {
-                        audioProvider.playSound("tap1.mp3");
-                        _showSettingsDialog(context, audioProvider);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                      ),
-                      child: Text(
-                        '設定',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontsize,
-                            color: Colors.white),
-                      ),
-                    ),
+                    ],
                   ),
-                ),
-                SizedBox(width: 10),
-              ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(7.0),
+                        child: Container(
+                          child: TextButton(
+                            onPressed: () {
+                              audioProvider.playSound("tap1.mp3");
+                              _showSettingsDialog(context, audioProvider);
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              '設定',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                ],
+              ),
               Padding(
                 padding: EdgeInsets.all(1.0),
                 child: Column(

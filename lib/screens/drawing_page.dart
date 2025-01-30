@@ -323,6 +323,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         iconSize: MediaQuery.of(context).size.height / 17,
                       ),
                     ] else if (selectmode == 3)
+                      ...[]
+                    else if (selectmode == 4)
                       ...[],
                     Row(
                       children: [
@@ -345,40 +347,84 @@ class _DrawingPageState extends State<DrawingPage> {
                   ]),
                   Column(children: [
                     SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.palette),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 1;
-                        });
-                      },
-                      tooltip: 'pallete',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      iconSize: MediaQuery.of(context).size.height / 17,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: selectmode == 1 ? Colors.blue : Colors.white,
+                            width: 2), // 青い枠線を追加
+                        borderRadius: BorderRadius.circular(8), // 角丸（必要に応じて変更）
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.palette),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 1;
+                          });
+                        },
+                        tooltip: 'palette',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.height / 17,
+                      ),
                     ),
                     SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.brush),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 2;
-                        });
-                      },
-                      tooltip: 'pen',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      iconSize: MediaQuery.of(context).size.height / 17,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: selectmode == 2 ? Colors.blue : Colors.white,
+                            width: 2), // 青い枠線を追加
+                        borderRadius: BorderRadius.circular(8), // 角丸（必要に応じて変更）
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.brush),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 2;
+                          });
+                        },
+                        tooltip: 'pen',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.height / 17,
+                      ),
                     ),
                     SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.favorite),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 3;
-                        });
-                      },
-                      tooltip: 'favorite',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      iconSize: MediaQuery.of(context).size.height / 17,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: selectmode == 3 ? Colors.blue : Colors.white,
+                            width: 2), // 青い枠線を追加
+                        borderRadius: BorderRadius.circular(8), // 角丸（必要に応じて変更）
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.favorite),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 3;
+                          });
+                        },
+                        tooltip: 'favorite',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.height / 17,
+                      ),
+                    ),
+                    SizedBox(height: screenSize.height * 0.01),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: selectmode == 4 ? Colors.blue : Colors.white,
+                            width: 2), // 青い枠線を追加
+                        borderRadius: BorderRadius.circular(8), // 角丸（必要に応じて変更）
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.crop_portrait),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 4;
+                          });
+                        },
+                        tooltip: 'paper',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.height / 17,
+                      ),
                     ),
                   ]),
                 ],

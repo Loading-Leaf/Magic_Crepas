@@ -430,6 +430,9 @@ class _OutputPageState extends State<OutputPage> {
         return StatefulBuilder(
           // StatefulBuilderを追加
           builder: (context, setState) {
+            double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+            bool isKeyboardVisible = keyboardHeight > 0;
+
             // setStateを提供する
             return Dialog(
               shape: RoundedRectangleBorder(
@@ -458,90 +461,91 @@ class _OutputPageState extends State<OutputPage> {
                           labelStyle: TextStyle(fontSize: fontsize),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "作った絵だよ！",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (outputImage != null) {
-                                      _showImageModal(
-                                          context, MemoryImage(outputImage!));
-                                    } else {
-                                      _showImageModal(
-                                          context,
-                                          AssetImage(
-                                              'assets/output_style.png'));
-                                    }
-                                  },
-                                  child: Container(
-                                    height:
-                                        (screenSize.width ~/ 6.948).toDouble(),
-                                    width:
-                                        (screenSize.width ~/ 5.208).toDouble(),
-                                    child: FittedBox(
-                                      fit: BoxFit.fill,
-                                      child: outputImage != null
-                                          ? Image.memory(outputImage!)
-                                          : Image.asset(
-                                              'assets/output_style.png'),
+                      if (!isKeyboardVisible) // キーボードが表示されていないときのみ表示
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "作った絵だよ！",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (outputImage != null) {
+                                        _showImageModal(
+                                            context, MemoryImage(outputImage!));
+                                      } else {
+                                        _showImageModal(
+                                            context,
+                                            AssetImage(
+                                                'assets/output_style.png'));
+                                      }
+                                    },
+                                    child: Container(
+                                      height: (screenSize.width ~/ 6.948)
+                                          .toDouble(),
+                                      width: (screenSize.width ~/ 5.208)
+                                          .toDouble(),
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: outputImage != null
+                                            ? Image.memory(outputImage!)
+                                            : Image.asset(
+                                                'assets/output_style.png'),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: screenSize.width * 0.1),
-                          Column(
-                            children: [
-                              Text(
-                                "お絵描きした絵だよ！",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (drawingImageData != null) {
-                                      _showImageModal(context,
-                                          MemoryImage(drawingImageData!));
-                                    } else {
-                                      _showImageModal(context,
-                                          AssetImage('assets/content.png'));
-                                    }
-                                  },
-                                  child: Container(
-                                    height:
-                                        (screenSize.width ~/ 6.948).toDouble(),
-                                    width:
-                                        (screenSize.width ~/ 5.208).toDouble(),
-                                    child: FittedBox(
-                                      fit: BoxFit.fill,
-                                      child: drawingImageData != null
-                                          ? Image.memory(drawingImageData!)
-                                          : Image.asset('assets/content.png'),
+                              ],
+                            ),
+                            SizedBox(width: screenSize.width * 0.1),
+                            Column(
+                              children: [
+                                Text(
+                                  "お絵描きした絵だよ！",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (drawingImageData != null) {
+                                        _showImageModal(context,
+                                            MemoryImage(drawingImageData!));
+                                      } else {
+                                        _showImageModal(context,
+                                            AssetImage('assets/content.png'));
+                                      }
+                                    },
+                                    child: Container(
+                                      height: (screenSize.width ~/ 6.948)
+                                          .toDouble(),
+                                      width: (screenSize.width ~/ 5.208)
+                                          .toDouble(),
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: drawingImageData != null
+                                            ? Image.memory(drawingImageData!)
+                                            : Image.asset('assets/content.png'),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                              ],
+                            ),
+                          ],
+                        ),
                     ] else if (screen_num == 2) ...[
                       Text(
-                        'プロジェクトを保存',
+                        '絵を描いた時の気持ちを選んでね',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize_big),
@@ -559,21 +563,26 @@ class _OutputPageState extends State<OutputPage> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: TextButton(
                                   onPressed: () {
-                                    print("${emotions[index]} が選ばれました");
                                     your_emotions = emotion;
                                   },
                                   style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 255, 67, 195),
+                                    backgroundColor: your_emotions == emotion
+                                        ? Color.fromARGB(
+                                            255, 255, 67, 195) // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198), // 未選択ならグレー
+
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 8),
                                   ),
                                   child: Text(
-                                    emotions[index],
+                                    "あなたの気持ち: $emotion",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontsize,
-                                      color: Colors.white,
+                                      color: your_emotions == emotion
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                 ),
@@ -586,19 +595,13 @@ class _OutputPageState extends State<OutputPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "さらに感じた気持ちを教えて",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize),
-                          ),
                           TextField(
                             onChanged: (value) {
-                              outputimage_title = value;
+                              Detail_emotion = value;
                             },
                             style: TextStyle(fontSize: fontsize),
                             decoration: InputDecoration(
-                              labelText: 'なにかあったら描いてね～',
+                              labelText: 'さらに感じた気持ちがあったら描いてね～',
                               labelStyle: TextStyle(fontSize: fontsize),
                             ),
                           ),

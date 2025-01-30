@@ -99,26 +99,53 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
   Future<void> _showDeleteConfirmDialog() async {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
 
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('削除の確認'),
-          content: Text('この作品を削除してもよろしいですか？'),
+          title: Text(
+            '削除の確認',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: fontsize,
+            ),
+          ),
+          content: Text(
+            'この作品を削除してもよろしいですか？',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: fontsize,
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text('キャンセル'),
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                    color: Colors.white),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
+                audioProvider.playSound("tap1.mp3");
               },
             ),
             TextButton(
-              child: Text('削除'),
+              child: Text(
+                '削除',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                    color: Colors.white),
+              ),
               onPressed: () async {
                 // データベースから削除
                 await GalleryDatabaseHelper.instance.delete(widget.data['_id']);
-                audioProvider.playSound("established.mp3");
+                audioProvider.playSound("tap1.mp3");
 
                 // スナックバーで削除完了を表示
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -126,7 +153,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 );
 
                 Navigator.of(context).pop(); // ダイアログを閉じる
-                Navigator.of(context).pop(); // 詳細ページを閉じる
+                Navigator.pushNamed(context, '/gallery');
               },
             ),
           ],
@@ -136,6 +163,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   }
 
   void _showPhotoAndEmotionModal() {
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
 
@@ -176,13 +204,19 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ],
                 SizedBox(height: 20),
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () async {
+                    audioProvider.playSound("tap1.mp3");
+                    Navigator.pushNamed(context, '/gallery');
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
                     '閉じる',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
                   ),
                 ),
               ],
@@ -195,6 +229,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     outputImage = widget.data['outputimage'];
     drawingImage = widget.data['drawingimage'];
     photoImage = widget.data['photoimage'];
@@ -278,6 +313,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   ),
                   TextButton(
                     onPressed: () {
+                      audioProvider.playSound("established.mp3");
                       saveImage();
                     }, // 画像を保存するボタン
                     style: TextButton.styleFrom(
@@ -327,6 +363,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   ),
                   TextButton(
                     onPressed: () {
+                      audioProvider.playSound("established.mp3");
                       saveDrawing();
                     }, // 画像を保存するボタン
                     style: TextButton.styleFrom(
@@ -355,9 +392,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   child: Text(
                     "戻る",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: fontsize,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
                   ),
                 ),
                 SizedBox(width: 20),
@@ -369,9 +406,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   child: Text(
                     "詳細を見る",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: fontsize,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
                   ),
                 ),
                 SizedBox(width: 20),
@@ -383,9 +420,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   child: Text(
                     "削除する",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: fontsize,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white),
                   ),
                 ),
               ],

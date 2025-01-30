@@ -238,6 +238,8 @@ class _GeneratePageState extends State<GeneratePage> {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     int is_answer = 1;
     Offset? localPosition; // 画像内のローカル座標を保存
+    double dx = 0;
+    double dy = 0;
 
     showDialog<void>(
       context: context,
@@ -297,12 +299,13 @@ class _GeneratePageState extends State<GeneratePage> {
 
                                 setState(() {
                                   localPosition = localOffset;
+                                  dx = localPosition!.dx;
+                                  dy = localPosition!.dy;
                                 });
 
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(
-                                        'タップ座標 (画像内): $localOffset, $localPosition'),
+                                    content: Text('タップ座標 (画像内): $dx, $dy'),
                                   ),
                                 );
                               },
