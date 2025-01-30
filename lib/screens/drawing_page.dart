@@ -427,6 +427,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                     ),
                   ]),
+                  SizedBox(width: screenSize.width * 0.1),
                 ],
               ),
             ),
@@ -598,32 +599,41 @@ class _DrawingPageState extends State<DrawingPage> {
             children: [
               _colorCircle(Color.fromARGB(255, 244, 67, 54), size),
               _colorCircle(Color.fromARGB(255, 255, 152, 0), size),
-              _colorCircle(Color.fromARGB(255, 255, 235, 59), size),
+              _colorCircle(Color.fromARGB(255, 248, 181, 0), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _colorCircle(Color.fromARGB(255, 255, 235, 59), size),
               _colorCircle(Color.fromARGB(255, 139, 195, 74), size),
               _colorCircle(Color.fromARGB(255, 76, 175, 80), size),
-              _colorCircle(Color.fromARGB(255, 3, 169, 244), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _colorCircle(Color.fromARGB(255, 3, 169, 244), size),
               _colorCircle(Color.fromARGB(255, 0, 30, 255), size),
               _colorCircle(Color.fromARGB(255, 156, 39, 176), size),
-              _colorCircle(Color.fromARGB(255, 255, 130, 171), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _colorCircle(Color.fromARGB(255, 255, 130, 171), size),
+              _colorCircle(Color.fromARGB(255, 254, 220, 189), size),
               _colorCircle(Color.fromARGB(255, 255, 255, 255), size),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _colorCircle(Color.fromARGB(255, 125, 125, 125), size),
               _colorCircle(Color.fromARGB(255, 0, 0, 0), size),
               _colorCircle(Color.fromARGB(255, 121, 85, 72), size),
             ],

@@ -115,7 +115,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             ),
           ),
           content: Text(
-            'この作品を削除してもよろしいですか？',
+            'この作品を削除してもだいじょうぶ？',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: fontsize,
@@ -124,7 +124,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
           actions: <Widget>[
             TextButton(
               child: Text(
-                'キャンセル',
+                '戻る',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -169,6 +169,15 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     );
   }
 
+  String _getFormattedText(String input, int maxLength) {
+    List<String> lines = [];
+    for (int i = 0; i < input.length; i += maxLength) {
+      lines.add(input.substring(
+          i, i + maxLength > input.length ? input.length : i + maxLength));
+    }
+    return lines.join('\n'); // Join lines with a newline
+  }
+
   void _showPhotoAndEmotionModal() {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
@@ -179,12 +188,14 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
+            width: screenSize.width * 0.6,
+            height: screenSize.height * 0.9,
             padding: EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "詳細な感情: ${widget.data['detailemotion'] ?? '不明'}",
+                  "詳細な気持ち: ${widget.data['detailemotion'] ?? '不明'}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -192,7 +203,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  your_detailemotion,
+                  _getFormattedText(your_detailemotion, 20),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -221,7 +232,6 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 TextButton(
                   onPressed: () async {
                     audioProvider.playSound("tap1.mp3");
-                    Navigator.pushNamed(context, '/gallery');
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
@@ -285,15 +295,6 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
               ),
             ]),
-            /*
-            Text(
-              "詳細な感情: $detailemotion",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              ),
-            ),*/
-
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

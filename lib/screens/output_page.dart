@@ -423,7 +423,6 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     int screen_num = 1; // 初期値を設定
-    String record_your_emotions = "";
 
     showDialog(
       context: context,
@@ -461,6 +460,7 @@ class _OutputPageState extends State<OutputPage> {
                           labelText: '作品タイトルを入力してね～',
                           labelStyle: TextStyle(fontSize: fontsize),
                         ),
+                        maxLength: 20, // 最大文字数を20に設定
                       ),
                       if (!isKeyboardVisible) // キーボードが表示されていないときのみ表示
                         Row(
@@ -565,15 +565,13 @@ class _OutputPageState extends State<OutputPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     your_emotions = emotion;
-                                    record_your_emotions = emotion;
                                   },
                                   style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        record_your_emotions == emotion
-                                            ? Color.fromARGB(
-                                                255, 255, 67, 195) // 選択されたらピンク
-                                            : const Color.fromARGB(
-                                                255, 199, 198, 198), // 未選択ならグレー
+                                    backgroundColor: your_emotions == emotion
+                                        ? Color.fromARGB(
+                                            255, 255, 67, 195) // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198), // 未選択ならグレー
 
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 8),
@@ -600,13 +598,16 @@ class _OutputPageState extends State<OutputPage> {
                         children: [
                           TextField(
                             onChanged: (value) {
-                              Detail_emotion = value;
+                              setState(() {
+                                Detail_emotion = value;
+                              });
                             },
                             style: TextStyle(fontSize: fontsize),
                             decoration: InputDecoration(
                               labelText: 'さらに感じた気持ちがあったら描いてね～',
                               labelStyle: TextStyle(fontSize: fontsize),
                             ),
+                            maxLength: 20,
                           ),
                         ],
                       ),
