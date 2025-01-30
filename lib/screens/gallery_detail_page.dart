@@ -87,6 +87,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   void _showImageModal(BuildContext context, ImageProvider image) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: Colors.transparent, // 背景を透明に
@@ -105,6 +106,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
@@ -185,6 +187,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
@@ -195,7 +198,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "詳細な気持ち: ${widget.data['detailemotion'] ?? '不明'}",
+                  "詳細な気持ち",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -232,6 +235,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 TextButton(
                   onPressed: () async {
                     audioProvider.playSound("tap1.mp3");
+                    Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),

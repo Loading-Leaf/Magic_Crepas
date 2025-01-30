@@ -49,8 +49,7 @@ class _DrawingPageState extends State<DrawingPage> {
   List<DrawingItem> _drawItems = []; // DrawingItem型のリスト
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
   Color _selectedColor = Colors.black; // 選択された色
-  bool _isSprayMode = false; // スプレーモードのフラグ
-  bool _isCrayonMode = false; // スプレーモードのフラグ
+  int edittingmode = 1; // スプレーモードのフラグ
   double _sprayDensity = 100.0; // スプレーの密度
   int isPhoto = 0;
   int selectmode = 1; //1: 色選択, 2: 線の太さおよびペンの選択, 3: スタンプ
@@ -195,7 +194,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     localPosition.dx - padding_left,
                                     localPosition.dy - padding_top - 20,
                                   );
-                                  if (_isSprayMode &&
+                                  if (edittingmode == 2 &&
                                       correctedPosition.dx >= -20 &&
                                       correctedPosition.dx <=
                                           renderBox.size.width -
@@ -217,7 +216,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     final localPosition = renderBox
                                         .globalToLocal(details.globalPosition);
                                     _addSprayPoints(localPosition, context);
-                                  } else {
+                                  } else if (edittingmode == 1) {
                                     if (correctedPosition.dx >= -20 &&
                                         correctedPosition.dx <=
                                             renderBox.size.width -
@@ -241,7 +240,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               onPanEnd: (details) {
                                 setState(() {
-                                  if (_isSprayMode &&
+                                  if (edittingmode == 2 &&
                                       _currentSprayPoints.isNotEmpty) {
                                     audioProvider.pauseAudio();
                                     isDrawing = false;
@@ -311,16 +310,43 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                       _buildStrokePicker(
                           MediaQuery.of(context).size.height / 13),
-                      IconButton(
-                        icon: Icon(_isSprayMode ? Icons.brush : Icons.brush),
-                        onPressed: () {
-                          setState(() {
-                            _isSprayMode = !_isSprayMode;
-                          });
-                        },
-                        tooltip: _isSprayMode ? 'Brush Mode' : 'Spray Mode',
-                        splashColor: Color.fromARGB(255, 255, 67, 195),
-                        iconSize: MediaQuery.of(context).size.height / 17,
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 1 ? Icons.create : Icons.create,
+                                color: edittingmode == 1
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 1;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 2 ? Icons.brush : Icons.brush,
+                                color: edittingmode == 2
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 2;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 2 ? 'Brush Mode' : 'Spray Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                        ],
                       ),
                     ] else if (selectmode == 3)
                       ...[]
@@ -427,7 +453,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                     ),
                   ]),
-                  SizedBox(width: screenSize.width * 0.1),
+                  SizedBox(width: screenSize.width * 0.5),
                 ],
               ),
             ),

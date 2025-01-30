@@ -426,6 +426,7 @@ class _OutputPageState extends State<OutputPage> {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return StatefulBuilder(
           // StatefulBuilderを追加
@@ -565,6 +566,8 @@ class _OutputPageState extends State<OutputPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     your_emotions = emotion;
+                                    screen_num += 1;
+                                    audioProvider.playSound("tap1.mp3");
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor: your_emotions == emotion
@@ -641,7 +644,8 @@ class _OutputPageState extends State<OutputPage> {
                         SizedBox(width: 20),
                         TextButton(
                           onPressed: () async {
-                            if (screen_num == 3) {
+                            if (screen_num == 3 &&
+                                Detail_emotion.length > 100) {
                               if (outputImage == false) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -654,7 +658,9 @@ class _OutputPageState extends State<OutputPage> {
                               saveToGalleryDB();
                               Navigator.pop(context);
                               audioProvider.playSound("established.mp3");
-                            } else if (screen_num == 1) {
+                            } else if (screen_num == 1 &&
+                                (outputimage_title.length >= 0 ||
+                                    outputimage_title.length <= 20)) {
                               setState(() {
                                 // StatefulBuilderのsetStateを使用
                                 screen_num += 1;
