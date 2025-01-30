@@ -564,7 +564,7 @@ class _OutputPageState extends State<OutputPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     your_emotions = emotion;
                                     screen_num += 1;
                                     audioProvider.playSound("tap1.mp3");

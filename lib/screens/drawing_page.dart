@@ -453,7 +453,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                     ),
                   ]),
-                  SizedBox(width: screenSize.width * 0.5),
+                  SizedBox(width: screenSize.width * 0.05),
                 ],
               ),
             ),
