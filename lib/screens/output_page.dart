@@ -23,6 +23,7 @@ import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:share_plus/share_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -71,9 +72,20 @@ class _OutputPageState extends State<OutputPage> {
 
   String formattedDate = "";
 
+  bool isIpad = false;
+
   String getFormattedDate() {
     DateTime now = DateTime.now();
     return DateFormat('yyyy/M/d HH:mm').format(now);
+  }
+
+  Future<void> checkDevice() async {
+    if (Platform.isIOS) {
+      final deviceInfo = await DeviceInfoPlugin().iosInfo;
+      setState(() {
+        isIpad = deviceInfo.model.toLowerCase().contains("ipad");
+      });
+    }
   }
 
   Future<void> shareImages(Uint8List image1, Uint8List image2) async {
@@ -378,6 +390,7 @@ class _OutputPageState extends State<OutputPage> {
     super.initState();
     _getWifiName();
     _startResultCheckTimer();
+    checkDevice();
   }
 
   @override
@@ -706,11 +719,12 @@ class _OutputPageState extends State<OutputPage> {
                                   ),
                                 );
                                 return;
+                              } else {
+                                formattedDate = getFormattedDate();
+                                saveToGalleryDB();
+                                Navigator.pop(context);
+                                audioProvider.playSound("established.mp3");
                               }
-                              formattedDate = getFormattedDate();
-                              saveToGalleryDB();
-                              Navigator.pop(context);
-                              audioProvider.playSound("established.mp3");
                             } else if (screen_num == 1 &&
                                 (outputimage_title.length >= 0 ||
                                     outputimage_title.length <= 20)) {
@@ -1083,28 +1097,31 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          if (outputImage != null && drawingImageData != null) {
-                            shareImages(
-                                outputImage!, drawingImageData!); // 両方の画像をシェアする
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 67, 180, 255),
-                        ),
-                        child: Text(
-                          'シェアする',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+                    if (isIpad == false) ...[
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            if (outputImage != null &&
+                                drawingImageData != null) {
+                              shareImages(outputImage!,
+                                  drawingImageData!); // 両方の画像をシェアする
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 67, 180, 255),
+                          ),
+                          child: Text(
+                            'シェアする',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ]),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
