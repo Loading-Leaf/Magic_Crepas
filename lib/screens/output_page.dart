@@ -647,7 +647,7 @@ class _OutputPageState extends State<OutputPage> {
                         TextButton(
                           onPressed: () async {
                             if (screen_num == 3 &&
-                                Detail_emotion.length > 100) {
+                                Detail_emotion.length < 100) {
                               if (outputImage == false) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

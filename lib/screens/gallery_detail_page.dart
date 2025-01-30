@@ -87,7 +87,6 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   void _showImageModal(BuildContext context, ImageProvider image) {
     showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: Colors.transparent, // 背景を透明に
@@ -448,6 +447,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
               ],
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),
