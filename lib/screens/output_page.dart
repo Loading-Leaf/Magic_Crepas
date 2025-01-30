@@ -23,7 +23,6 @@ import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:share_plus/share_plus.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -79,25 +78,10 @@ class _OutputPageState extends State<OutputPage> {
     return DateFormat('yyyy/M/d HH:mm').format(now);
   }
 
-  Future<void> checkDevice() async {
-    if (Platform.isIOS) {
-      final deviceInfo = await DeviceInfoPlugin().iosInfo;
-      setState(() {
-        isIpad = deviceInfo.model.toLowerCase().contains("ipad");
-      });
-    }
-  }
-
-  Future<void> shareImages(Uint8List image1, Uint8List image2) async {
+  Future<void> shareImages(
+      BuildContext context, Uint8List image1, Uint8List image2) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final initialBox = context.findRenderObject() as RenderBox?;
-
-      if (initialBox == null) {
-        final snackBar = SnackBar(content: Text('座標の取得に失敗しました。再試行してください。'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        return;
-      }
 
       final outputImagePath =
           '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -109,20 +93,16 @@ class _OutputPageState extends State<OutputPage> {
 
       final files = <XFile>[XFile(outputImagePath), XFile(drawingImagePath)];
 
-      // iPadの場合、sharePositionOriginを画面中央に設定
-      final renderBox = context.findRenderObject() as RenderBox;
-      final bounds = renderBox.localToGlobal(Offset.zero) & renderBox.size;
-      final centeredRect = Rect.fromCenter(
-        center: bounds.center,
-        width: 0,
-        height: 0,
-      );
+      // iPad ではポップアップの位置を適切に指定する
+      final RenderBox? box = context.findRenderObject() as RenderBox?;
+      final Rect sharePositionOrigin =
+          box != null ? box.localToGlobal(Offset.zero) & box.size : Rect.zero;
 
       await Share.shareXFiles(
         files,
         text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
         subject: 'まじっくくれぱすで作った絵',
-        sharePositionOrigin: centeredRect,
+        sharePositionOrigin: sharePositionOrigin, // iPad のクラッシュ回避
       );
 
       // 一時ファイルの削除
@@ -390,7 +370,6 @@ class _OutputPageState extends State<OutputPage> {
     super.initState();
     _getWifiName();
     _startResultCheckTimer();
-    checkDevice();
   }
 
   @override
@@ -1068,36 +1047,38 @@ class _OutputPageState extends State<OutputPage> {
                       ],
                     ),
                   ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () async {
-                          audioProvider.playSound("tap1.mp3");
-                          if (outputImage == false) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(
-                                      'Cannot save project: Missing image data')),
-                            );
-                            return;
-                          }
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () async {
+                            audioProvider.playSound("tap1.mp3");
+                            if (outputImage == false) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        'Cannot save project: Missing image data')),
+                              );
+                              return;
+                            }
 
-                          _savemodal(context, audioProvider);
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          'プロジェクトを保存する',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+                            _savemodal(context, audioProvider);
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            'プロジェクトを保存する',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    if (isIpad == false) ...[
+                      SizedBox(width: screenSize.width * 0.1),
                       Container(
                         alignment: Alignment.centerRight,
                         child: TextButton(
@@ -1105,7 +1086,7 @@ class _OutputPageState extends State<OutputPage> {
                             audioProvider.playSound("tap1.mp3");
                             if (outputImage != null &&
                                 drawingImageData != null) {
-                              shareImages(outputImage!,
+                              shareImages(context, outputImage!,
                                   drawingImageData!); // 両方の画像をシェアする
                             }
                           },
@@ -1122,7 +1103,7 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                       ),
                     ],
-                  ]),
+                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       alignment: Alignment.centerRight,
