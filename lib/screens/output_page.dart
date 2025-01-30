@@ -8,7 +8,7 @@ import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 //import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
-//import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 //import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
@@ -21,6 +21,8 @@ import 'dart:async';
 
 import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:intl/intl.dart';
+
+import 'package:share_plus/share_plus.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -72,6 +74,45 @@ class _OutputPageState extends State<OutputPage> {
   String getFormattedDate() {
     DateTime now = DateTime.now();
     return DateFormat('yyyy/M/d HH:mm').format(now);
+  }
+
+  Future<void> shareImages(Uint8List image1, Uint8List image2) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final box = context.findRenderObject() as RenderBox?;
+
+    if (box == null) {
+      final snackBar = SnackBar(content: Text('座標の取得に失敗しました。再試行してください。'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    final outputImagePath =
+        '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final drawingImagePath =
+        '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    try {
+      await File(outputImagePath).writeAsBytes(image1);
+      await File(drawingImagePath).writeAsBytes(image2);
+
+      bool outputImageExists = await File(outputImagePath).exists();
+      bool drawingImageExists = await File(drawingImagePath).exists();
+
+      if (outputImageExists && drawingImageExists) {
+        await Share.shareXFiles(
+          [XFile(outputImagePath), XFile(drawingImagePath)],
+          text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+          sharePositionOrigin: box.localToGlobal(Offset.zero) &
+              (box.size ?? Size.zero), // ✅ `null` 対策
+        );
+      } else {
+        final snackBar = SnackBar(content: Text('画像の共有に失敗しました。再試行してください。'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      final snackBar = SnackBar(content: Text('画像の共有中にエラーが発生しました: $e'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   Future<void> _getWifiName() async {
@@ -1007,6 +1048,58 @@ class _OutputPageState extends State<OutputPage> {
                     Container(
                       alignment: Alignment.centerRight,
                       child: TextButton(
+                        onPressed: () async {
+                          audioProvider.playSound("tap1.mp3");
+                          if (outputImage == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Cannot save project: Missing image data')),
+                            );
+                            return;
+                          }
+
+                          _savemodal(context, audioProvider);
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          'プロジェクトを保存する',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          audioProvider.playSound("tap1.mp3");
+                          if (outputImage != null && drawingImageData != null) {
+                            shareImages(
+                                outputImage!, drawingImageData!); // 両方の画像をシェアする
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 67, 180, 255),
+                        ),
+                        child: Text(
+                          'シェアする',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
                         onPressed: () {
                           audioProvider.playSound("tap1.mp3");
                           Navigator.pushNamed(context, '/');
@@ -1036,35 +1129,6 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                         child: Text(
                           '別のモードを使う',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () async {
-                          audioProvider.playSound("tap1.mp3");
-                          if (outputImage == false) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(
-                                      'Cannot save project: Missing image data')),
-                            );
-                            return;
-                          }
-
-                          _savemodal(context, audioProvider);
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          'プロジェクトを保存する',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,

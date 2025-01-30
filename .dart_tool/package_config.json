@@ -530,6 +530,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "share_plus",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/share_plus-10.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "share_plus_platform_interface",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/share_plus_platform_interface-5.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "shared_preferences",
       "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences-2.3.4",
       "packageUri": "lib/",
@@ -776,6 +788,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "win32",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.10.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
       "name": "xdg_directories",
       "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0",
       "packageUri": "lib/",
@@ -800,7 +818,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-29T05:45:35.685615Z",
+  "generated": "2025-01-30T14:51:29.916643Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///C:/Users/kosuk/flutter",
