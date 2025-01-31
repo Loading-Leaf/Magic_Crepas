@@ -325,21 +325,10 @@ class _GeneratePageState extends State<GeneratePage> {
                               onTapUp: (details) {
                                 if (_circles.length >= 3) return;
 
-                                RenderBox box =
-                                    context.findRenderObject() as RenderBox;
-                                Offset localOffset =
-                                    box.globalToLocal(details.globalPosition);
-                                // 画像がどのように縮尺されているかを考慮するためのスケール係数
-                                double scaleX =
-                                    box.size.width / (screenSize.width * 0.25);
-                                double scaleY =
-                                    box.size.height / (screenSize.width * 0.25);
-
-                                // タップ位置をスケーリングする
-                                double dx = localOffset.dx / scaleX;
-                                double dy = localOffset.dy / scaleY;
-
                                 setState(() {
+                                  double dx = details.localPosition.dx;
+                                  double dy = details.localPosition.dy;
+
                                   _undoStack
                                       .add(List.from(_circles)); // 変更前の状態を保存
                                   _circles.add(Circle(Offset(dx, dy), 10.0,
