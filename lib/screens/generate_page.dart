@@ -291,6 +291,12 @@ class _GeneratePageState extends State<GeneratePage> {
                             height: screenSize.width * 0.25,
                             width: screenSize.width * 0.25,
                             child: GestureDetector(
+                              onTapUp: (details) {
+                                // タッチされた位置を取得
+                                Offset tapPosition = details.localPosition;
+                                // キラキラエフェクトを表示
+                                showSparkleEffect(context, tapPosition);
+                              },
                               onTapDown: (details) {
                                 RenderBox box =
                                     context.findRenderObject() as RenderBox;

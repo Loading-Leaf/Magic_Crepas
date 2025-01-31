@@ -34,8 +34,10 @@ abstract class DrawingItem {
 class Line extends DrawingItem {
   List<Offset?> points;
   double strokeWidth;
+  int alpha;
 
-  Line(this.points, Color color, this.strokeWidth) : super(color);
+  Line(this.points, Color color, this.strokeWidth, {this.alpha = 255})
+      : super(color);
 }
 
 class SprayPoints extends DrawingItem {
@@ -45,28 +47,9 @@ class SprayPoints extends DrawingItem {
   SprayPoints(this.points, Color color, this.density) : super(color);
 }
 
-class CrayonPoints extends DrawingItem {
-  // CrayonPointsクラス
-  List<Offset> points;
-  double strokeWidth;
-
-  CrayonPoints(this.points, Color color, this.strokeWidth) : super(color);
-}
-
-class BrushPoints extends DrawingItem {
-  // BrushPointsクラス
-  final List<Offset> points;
-  final int density; // 必要に応じて密度を追加
-
-  BrushPoints(this.points, Color color, this.density) : super(color);
-}
-
 class _DrawingPageState extends State<DrawingPage> {
-  Timer? _fadeTimer;
   List<DrawingItem> _drawItems = []; // DrawingItem型のリスト
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
-  List<double> _currentBrushAlpha = [];
-  List<CrayonPoints> _drawCrayonItems = [];
   Color _selectedColor = Colors.black; // 選択された色
   Color _selectedpaperColor = Colors.white;
   int edittingmode = 1; // スプレーモードのフラグ
@@ -74,13 +57,14 @@ class _DrawingPageState extends State<DrawingPage> {
   int isPhoto = 0;
   int selectmode = 1; //1: 色選択, 2: 線の太さおよびペンの選択, 3: スタンプ
   int alpha = 255;
+  double _currentStrokeWidth = 0.0; // 現在の線の太さ（モード4用）
+  int _currentAlpha = 255;
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
   List<Offset> _currentCrayonPoints = [];
-  List<Offset> _currentBrushPoints = [];
 
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
@@ -93,7 +77,6 @@ class _DrawingPageState extends State<DrawingPage> {
   void initState() {
     super.initState();
     _initializeDatabase(); // データベースの初期化を呼び出す
-    _fadeTimer?.cancel();
   }
 
   @override
@@ -141,48 +124,57 @@ class _DrawingPageState extends State<DrawingPage> {
     final random = math.Random();
     final points = <Offset>[];
 
-    for (int i = 0; i < _sprayDensity; i++) {
-      final radius = _strokeWidth * random.nextDouble();
+    // クレヨンのような不規則な描画効果を作成
+    for (int i = 0; i < _sprayDensity * 1.5; i++) {
+      final radius = _strokeWidth * 0.8 * random.nextDouble();
       final angle = 2 * math.pi * random.nextDouble();
       final dx = radius * math.cos(angle);
       final dy = radius * math.sin(angle);
-      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
+
+      // ランダムなオフセットを追加してテクスチャ感を出す
+      final textureOffset = random.nextDouble() * 2 - 1;
+      points.add(Offset(center.dx + dx - width + textureOffset,
+          center.dy + dy - height + textureOffset));
     }
 
-    _currentCrayonPoints.addAll(points);
+    _currentSprayPoints.addAll(points);
   }
 
-  void _addBrushPoints(Offset center, BuildContext context) {
-    double width = MediaQuery.of(context).size.width * 0.1;
-    double height = MediaQuery.of(context).size.height * 0.1;
-    final random = math.Random();
-    final points = <Offset>[];
-
-    for (int i = 0; i < _sprayDensity; i++) {
-      final radius = _strokeWidth * 1.3 * random.nextDouble(); // 1.3倍の太さ
-      final angle = 2 * math.pi * random.nextDouble();
-      final dx = radius * math.cos(angle);
-      final dy = radius * math.sin(angle);
-      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
-      _currentBrushAlpha.add(1.0); // 初期透明度を1.0に設定
+  void handleMode4Drawing(DragUpdateDetails details) {
+    if (!isDrawing) {
+      // 描画開始時の設定
+      _currentStrokeWidth = _strokeWidth * 1.3;
+      _currentAlpha = 255;
+      isDrawing = true;
     }
 
-    _currentBrushPoints.addAll(points);
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final localPosition = renderBox.globalToLocal(details.globalPosition);
+    final padding_left = MediaQuery.of(context).size.width * 0.1;
+    final padding_top = MediaQuery.of(context).size.height * 0.1;
+    final correctedPosition = Offset(
+      localPosition.dx - padding_left,
+      localPosition.dy - padding_top - 20,
+    );
 
-    // 透明度を徐々に下げるタイマー
-    _fadeTimer?.cancel(); // 既存のタイマーをキャンセル
-    _fadeTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-      if (_currentBrushPoints.isNotEmpty) {
-        setState(() {
-          for (int i = 0; i < _currentBrushPoints.length; i++) {
-            _currentBrushAlpha[i] -= 0.05; // 透明度を0.05ずつ下げる
-            if (_currentBrushAlpha[i] <= 0) {
-              _currentBrushAlpha[i] = 0; // 透明度が0以下にならないようにする
-            }
-          }
-        });
-      } else {
-        _fadeTimer?.cancel();
+    setState(() {
+      // 描画中の太さと透明度の変更
+      _currentStrokeWidth =
+          math.max(_strokeWidth * 0.7, _currentStrokeWidth * 0.995);
+      _currentAlpha = math.max(100, (_currentAlpha * 0.995).toInt());
+
+      _currentLinePoints.add(correctedPosition);
+
+      // 現在の線を保存
+      if (_currentLinePoints.length > 1) {
+        _drawItems.add(Line(
+          [
+            _currentLinePoints[_currentLinePoints.length - 2],
+            _currentLinePoints.last
+          ],
+          _selectedColor.withAlpha(_currentAlpha),
+          _currentStrokeWidth,
+        ));
       }
     });
   }
@@ -293,29 +285,11 @@ class _DrawingPageState extends State<DrawingPage> {
                                                 20) {
                                       _currentLinePoints.add(correctedPosition);
                                     }
-                                  }
-                                  if (edittingmode == 3 &&
-                                      correctedPosition.dx >= -20 &&
-                                      correctedPosition.dx <=
-                                          renderBox.size.width -
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4 +
-                                              20 &&
-                                      correctedPosition.dy >= -20 &&
-                                      correctedPosition.dy <=
-                                          renderBox.size.height -
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.4 +
-                                              20) {
-                                    final RenderBox renderBox =
-                                        context.findRenderObject() as RenderBox;
-                                    final localPosition = renderBox
-                                        .globalToLocal(details.globalPosition);
-                                    _addCrayonPoints(localPosition, context);
+                                  } else if (edittingmode == 3) {
+                                    _addCrayonPoints(
+                                        details.localPosition, context);
+                                  } else if (edittingmode == 4) {
+                                    handleMode4Drawing(details);
                                   }
                                 });
                               },
@@ -330,23 +304,12 @@ class _DrawingPageState extends State<DrawingPage> {
                                         _selectedColor,
                                         _sprayDensity));
                                     _currentSprayPoints.clear();
-                                  } else if (edittingmode == 1 &&
-                                      _currentLinePoints.isNotEmpty) {
+                                  } else {
                                     audioProvider.pauseAudio();
                                     isDrawing = false;
                                     _drawItems.add(Line(_currentLinePoints,
                                         _selectedColor, _strokeWidth));
                                     _currentLinePoints = [];
-                                  } else if (edittingmode == 3 &&
-                                      _currentCrayonPoints.isNotEmpty) {
-                                    audioProvider.pauseAudio();
-                                    isDrawing = false;
-                                    _drawItems.add(CrayonPoints(
-                                        // _drawCrayonItems に追加
-                                        List.from(_currentCrayonPoints),
-                                        _selectedColor,
-                                        _strokeWidth));
-                                    _currentCrayonPoints.clear();
                                   }
                                   _undoneItems.clear();
                                 });
@@ -357,7 +320,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                     MediaQuery.of(context).size.height * 0.6),
                                 painter: DrawingPainter(
                                   _drawItems,
-                                  _drawCrayonItems,
                                   _currentLinePoints,
                                   _currentSprayPoints,
                                   _strokeWidth,
@@ -371,7 +333,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           CustomPaint(
                             painter: DrawingPainter(
                               [],
-                              _drawCrayonItems,
                               _currentLinePoints,
                               _currentSprayPoints,
                               _strokeWidth,
@@ -498,6 +459,7 @@ class _DrawingPageState extends State<DrawingPage> {
                           onPressed: _drawItems.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),
@@ -963,7 +925,6 @@ class _DrawingPageState extends State<DrawingPage> {
 // CustomPainterの修正
 class DrawingPainter extends CustomPainter {
   final List<DrawingItem> items;
-  final List<CrayonPoints> crayonItems;
   final List<Offset?> currentLinePoints;
   final List<Offset> currentSprayPoints;
   final double strokeWidth;
@@ -971,7 +932,6 @@ class DrawingPainter extends CustomPainter {
 
   DrawingPainter(
     this.items,
-    this.crayonItems,
     this.currentLinePoints,
     this.currentSprayPoints,
     this.strokeWidth,
@@ -980,27 +940,14 @@ class DrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (var item in crayonItems) {
-      final points = item.points;
-      final paint = Paint()
-        ..color = item.color
-        ..strokeWidth = item.strokeWidth
-        ..style = PaintingStyle.stroke;
-
-      for (int i = 0; i < points.length - 1; i++) {
-        if (points[i] != null && points[i + 1] != null) {
-          canvas.drawLine(points[i]!, points[i + 1]!, paint);
-        }
-      }
-    }
-
     // 通常の線を描画
     for (var item in items) {
       if (item is Line) {
         Paint paint = Paint()
-          ..color = item.color
+          ..color = item.color.withAlpha(item.alpha)
           ..strokeWidth = item.strokeWidth
           ..strokeCap = StrokeCap.round;
+
         for (int i = 0; i < item.points.length - 1; i++) {
           if (item.points[i] != null && item.points[i + 1] != null) {
             canvas.drawLine(item.points[i]!, item.points[i + 1]!, paint);
