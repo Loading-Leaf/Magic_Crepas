@@ -730,7 +730,6 @@ class _OutputPageState extends State<OutputPage> {
                                     content: Text('保存することができませんでした。'),
                                   ),
                                 );
-                                return;
                               } else {
                                 formattedDate = getFormattedDate();
                                 saveToGalleryDB();

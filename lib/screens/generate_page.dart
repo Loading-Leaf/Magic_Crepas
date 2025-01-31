@@ -305,6 +305,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                   _selectedPositions
                                       .add(localOffset); // 新しい座標を追加
                                   _redoStack.clear(); // 新しい変更があった場合、redoをクリア
+                                  showSparkleEffect(context, localOffset);
                                 });
                               },
                               child: Stack(
@@ -316,13 +317,17 @@ class _GeneratePageState extends State<GeneratePage> {
                                         '.png',
                                     fit: BoxFit.fill,
                                   ),
-                                  ..._selectedPositions
-                                      .map((position) => Positioned(
-                                            left: position.dx,
-                                            top: position.dy,
-                                            child: Icon(Icons.circle,
-                                                color: Colors.red, size: 15),
-                                          )),
+                                  ..._selectedPositions.map((position) {
+                                    return Positioned(
+                                      left: position.dx - 7.5,
+                                      top: position.dy - 7.5,
+                                      child: Icon(
+                                        Icons.circle,
+                                        color: Colors.red,
+                                        size: 15,
+                                      ),
+                                    );
+                                  }).toList(),
                                 ],
                               ),
                             ),

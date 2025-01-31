@@ -47,6 +47,56 @@ class SprayPoints extends DrawingItem {
   SprayPoints(this.points, Color color, this.density) : super(color);
 }
 
+// 図形の追加
+class Circle extends DrawingItem {
+  final Offset center;
+  final double radius;
+  final Color color;
+
+  Circle(this.center, this.radius, this.color) : super(color);
+}
+
+class Triangle extends DrawingItem {
+  final Offset center;
+  final double size;
+  final Color color;
+
+  Triangle(this.center, this.size, this.color) : super(color);
+}
+
+class Rectangle extends DrawingItem {
+  final Offset topLeft;
+  final double width;
+  final double height;
+  final Color color;
+
+  Rectangle(this.topLeft, this.width, this.height, this.color) : super(color);
+}
+
+class Heart extends DrawingItem {
+  final Offset center;
+  final double size;
+  final Color color;
+
+  Heart(this.center, this.size, this.color) : super(color);
+}
+
+class Star extends DrawingItem {
+  final Offset center;
+  final double size;
+  final Color color;
+
+  Star(this.center, this.size, this.color) : super(color);
+}
+
+class Diamond extends DrawingItem {
+  final Offset center;
+  final double size;
+  final Color color;
+
+  Diamond(this.center, this.size, this.color) : super(color);
+}
+
 class _DrawingPageState extends State<DrawingPage> {
   List<DrawingItem> _drawItems = []; // DrawingItem型のリスト
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
@@ -163,6 +213,31 @@ class _DrawingPageState extends State<DrawingPage> {
                           child: Container(
                             color: _selectedpaperColor,
                             child: GestureDetector(
+                              onTapUp: (details) {
+                                setState(() {
+                                  Offset tapPosition = details.localPosition;
+
+                                  if (edittingmode == 3) {
+                                    _drawItems.add(Circle(
+                                        tapPosition, 20, _selectedColor));
+                                  } else if (edittingmode == 4) {
+                                    _drawItems.add(Triangle(
+                                        tapPosition, 30, _selectedColor));
+                                  } else if (edittingmode == 5) {
+                                    _drawItems.add(Rectangle(
+                                        tapPosition, 40, 40, _selectedColor));
+                                  } else if (edittingmode == 6) {
+                                    _drawItems.add(
+                                        Heart(tapPosition, 30, _selectedColor));
+                                  } else if (edittingmode == 7) {
+                                    _drawItems.add(
+                                        Star(tapPosition, 30, _selectedColor));
+                                  } else if (edittingmode == 8) {
+                                    _drawItems.add(Diamond(
+                                        tapPosition, 30, _selectedColor));
+                                  }
+                                });
+                              },
                               onPanUpdate: (details) {
                                 setState(() {
                                   if (!isDrawing) {
@@ -332,6 +407,126 @@ class _DrawingPageState extends State<DrawingPage> {
                             },
                             tooltip:
                                 edittingmode == 2 ? 'Brush Mode' : 'Spray Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 3 ? Icons.circle : Icons.circle,
+                                color: edittingmode == 3
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 3;
+                              });
+                            },
+                            tooltip: edittingmode == 3
+                                ? 'circle Mode'
+                                : 'circle Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 4
+                                    ? Icons.change_history
+                                    : Icons.change_history,
+                                color: edittingmode == 4
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 4;
+                              });
+                            },
+                            tooltip: edittingmode == 4
+                                ? 'triangle Mode'
+                                : 'triangle Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 5
+                                    ? Icons.rectangle
+                                    : Icons.rectangle,
+                                color: edittingmode == 5
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 5;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 5 ? 'Rect Mode' : 'Rect Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 6
+                                    ? Icons.favorite
+                                    : Icons.favorite,
+                                color: edittingmode == 6
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 6;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 6 ? 'Heart Mode' : 'Heart Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 7 ? Icons.star : Icons.star,
+                                color: edittingmode == 7
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 7;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 7 ? 'Star Mode' : 'Star Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 8
+                                    ? Icons.diamond
+                                    : Icons.diamond,
+                                color: edittingmode == 8
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 8;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
                             iconSize: MediaQuery.of(context).size.height / 17,
                           ),
@@ -813,10 +1008,11 @@ class DrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 通常の線を描画
+    Paint paint = Paint()..style = PaintingStyle.fill;
+
     for (var item in items) {
       if (item is Line) {
-        Paint paint = Paint()
+        paint
           ..color = item.color.withAlpha(item.alpha)
           ..strokeWidth = item.strokeWidth
           ..strokeCap = StrokeCap.round;
@@ -827,32 +1023,68 @@ class DrawingPainter extends CustomPainter {
           }
         }
       } else if (item is SprayPoints) {
-        Paint paint = Paint()..color = item.color;
+        paint.color = item.color;
         for (var point in item.points) {
           canvas.drawCircle(point, 1.0, paint);
         }
-      }
-    }
+      } else if (item is Circle) {
+        paint.color = item.color;
+        canvas.drawCircle(item.center, item.radius, paint);
+      } else if (item is Triangle) {
+        paint.color = item.color;
+        Path path = Path();
+        path.moveTo(item.center.dx, item.center.dy - item.size);
+        path.lineTo(item.center.dx - item.size, item.center.dy + item.size);
+        path.lineTo(item.center.dx + item.size, item.center.dy + item.size);
+        path.close();
+        canvas.drawPath(path, paint);
+      } else if (item is Rectangle) {
+        paint.color = item.color;
+        canvas.drawRect(
+          Rect.fromLTWH(
+              item.topLeft.dx, item.topLeft.dy, item.width, item.height),
+          paint,
+        );
+      } else if (item is Heart) {
+        paint.color = item.color;
+        Path path = Path();
+        double x = item.center.dx;
+        double y = item.center.dy;
+        double s = item.size;
 
-    if (currentLinePoints.isNotEmpty) {
-      Paint paint = Paint()
-        ..color = color
-        ..strokeWidth = strokeWidth
-        ..strokeCap = StrokeCap.round;
-      for (int i = 0; i < currentLinePoints.length - 1; i++) {
-        if (currentLinePoints[i] != null && currentLinePoints[i + 1] != null) {
-          canvas.drawLine(
-              currentLinePoints[i]!, currentLinePoints[i + 1]!, paint);
+        path.moveTo(x, y + s / 4);
+        path.cubicTo(x - s, y - s, x - s * 1.5, y + s / 2, x, y + s);
+        path.cubicTo(x + s * 1.5, y + s / 2, x + s, y - s, x, y + s / 4);
+
+        canvas.drawPath(path, paint);
+      } else if (item is Star) {
+        paint.color = item.color;
+        Path path = Path();
+        double x = item.center.dx;
+        double y = item.center.dy;
+        double s = item.size;
+
+        for (int i = 0; i < 5; i++) {
+          double angle = (i * 144) * (3.1415926535 / 180);
+          double dx = x + s * math.cos(angle);
+          double dy = y + s * math.sin(angle);
+          if (i == 0) {
+            path.moveTo(dx, dy);
+          } else {
+            path.lineTo(dx, dy);
+          }
         }
-      }
-    }
-
-    if (currentSprayPoints.isNotEmpty) {
-      Paint paint = Paint()
-        ..color = color
-        ..strokeCap = StrokeCap.round;
-      for (var point in currentSprayPoints) {
-        canvas.drawCircle(point, 1.0, paint);
+        path.close();
+        canvas.drawPath(path, paint);
+      } else if (item is Diamond) {
+        paint.color = item.color;
+        Path path = Path();
+        path.moveTo(item.center.dx, item.center.dy - item.size);
+        path.lineTo(item.center.dx - item.size, item.center.dy);
+        path.lineTo(item.center.dx, item.center.dy + item.size);
+        path.lineTo(item.center.dx + item.size, item.center.dy);
+        path.close();
+        canvas.drawPath(path, paint);
       }
     }
   }
