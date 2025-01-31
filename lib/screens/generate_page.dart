@@ -339,16 +339,6 @@ class _GeneratePageState extends State<GeneratePage> {
                                 double dx = localOffset.dx / scaleX;
                                 double dy = localOffset.dy / scaleY;
 
-                                // 画像の左上位置（画像が配置されている座標）を考慮
-                                double imageLeft =
-                                    box.localToGlobal(Offset.zero).dx;
-                                double imageTop =
-                                    box.localToGlobal(Offset.zero).dy;
-
-                                // 画像内でのタップ位置を補正
-                                dx -= imageLeft;
-                                dy -= imageTop;
-
                                 setState(() {
                                   _undoStack
                                       .add(List.from(_circles)); // 変更前の状態を保存
