@@ -92,14 +92,19 @@ class _OutputPageState extends State<OutputPage> {
       await File(outputImagePath).writeAsBytes(image1);
       await File(drawingImagePath).writeAsBytes(image2);
 
-      final files = <XFile>[XFile(outputImagePath)];
+      final files = <XFile>[XFile(outputImagePath), XFile(drawingImagePath)];
 
       // UIフレームの描画後にRenderBoxを取得
       SchedulerBinding.instance.addPostFrameCallback((_) {
         final box = context.findRenderObject() as RenderBox?;
         final mediaQuery = MediaQuery.of(context);
 
-        Rect sharePositionOrigin;
+        Rect sharePositionOrigin = Rect.fromCenter(
+          center: Offset(mediaQuery.size.width / 2, mediaQuery.size.height / 2),
+          width: 200,
+          height: 200,
+        );
+        /*
 
         if (box != null && box.hasSize) {
           // 通常の取得方法
@@ -123,7 +128,7 @@ class _OutputPageState extends State<OutputPage> {
               200,
             );
           }
-        }
+        }*/
 
         Share.shareXFiles(
           files,
@@ -971,66 +976,6 @@ class _OutputPageState extends State<OutputPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    SizedBox(width: 20),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () async {
-                              audioProvider.playSound("tap1.mp3");
-                              if (outputImage == false) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          'Cannot save project: Missing image data')),
-                                );
-                                return;
-                              }
-
-                              _savemodal(context, audioProvider);
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 255, 67, 195),
-                            ),
-                            child: Text(
-                              'プロジェクトを保存する',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              audioProvider.playSound("tap1.mp3");
-                              if (outputImage != null &&
-                                  drawingImageData != null) {
-                                shareImages(context, outputImage!,
-                                    drawingImageData!); // 両方の画像をシェアする
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 67, 180, 255),
-                            ),
-                            child: Text(
-                              'シェアする',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -1135,6 +1080,63 @@ class _OutputPageState extends State<OutputPage> {
                       ],
                     ),
                   ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () async {
+                            audioProvider.playSound("tap1.mp3");
+                            if (outputImage == false) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        'Cannot save project: Missing image data')),
+                              );
+                              return;
+                            }
+
+                            _savemodal(context, audioProvider);
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            'プロジェクトを保存する',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: screenSize.width * 0.1),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            if (outputImage != null &&
+                                drawingImageData != null) {
+                              shareImages(context, outputImage!,
+                                  drawingImageData!); // 両方の画像をシェアする
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 67, 180, 255),
+                          ),
+                          child: Text(
+                            'シェアする',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       alignment: Alignment.centerRight,

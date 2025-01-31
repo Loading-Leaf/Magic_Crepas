@@ -132,12 +132,10 @@ class _DrawingPageState extends State<DrawingPage> {
       final dy = radius * math.sin(angle);
 
       // ランダムなオフセットを追加してテクスチャ感を出す
-      final textureOffset = random.nextDouble() * 2 - 1;
-      points.add(Offset(center.dx + dx - width + textureOffset,
-          center.dy + dy - height + textureOffset));
+      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
     }
 
-    _currentSprayPoints.addAll(points);
+    _currentCrayonPoints.addAll(points);
   }
 
   Future<void> _initializeDatabase() async {
@@ -308,6 +306,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   _drawItems,
                                   _currentLinePoints,
                                   _currentSprayPoints,
+                                  _currentCrayonPoints,
                                   _strokeWidth,
                                   _selectedColor,
                                 ),
@@ -321,6 +320,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               [],
                               _currentLinePoints,
                               _currentSprayPoints,
+                              _currentCrayonPoints,
                               _strokeWidth,
                               _selectedColor,
                             ),
@@ -889,6 +889,7 @@ class DrawingPainter extends CustomPainter {
   final List<DrawingItem> items;
   final List<Offset?> currentLinePoints;
   final List<Offset> currentSprayPoints;
+  final List<Offset> currentCrayonPoints;
   final double strokeWidth;
   final Color color;
 
@@ -896,6 +897,7 @@ class DrawingPainter extends CustomPainter {
     this.items,
     this.currentLinePoints,
     this.currentSprayPoints,
+    this.currentCrayonPoints,
     this.strokeWidth,
     this.color,
   );
