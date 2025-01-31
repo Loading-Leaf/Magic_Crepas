@@ -218,21 +218,27 @@ class _DrawingPageState extends State<DrawingPage> {
                                   Offset tapPosition = details.localPosition;
 
                                   if (edittingmode == 3) {
+                                    audioProvider.playSound("stamp.mp3");
                                     _drawItems.add(Circle(
                                         tapPosition, 20, _selectedColor));
                                   } else if (edittingmode == 4) {
+                                    audioProvider.playSound("stamp.mp3");
                                     _drawItems.add(Triangle(
                                         tapPosition, 30, _selectedColor));
                                   } else if (edittingmode == 5) {
+                                    audioProvider.playSound("stamp.mp3");
                                     _drawItems.add(Rectangle(
                                         tapPosition, 40, 40, _selectedColor));
                                   } else if (edittingmode == 6) {
+                                    audioProvider.playSound("stamp.mp3");
                                     _drawItems.add(
                                         Heart(tapPosition, 30, _selectedColor));
                                   } else if (edittingmode == 7) {
+                                    audioProvider.playSound("stamp.mp3");
                                     _drawItems.add(
                                         Star(tapPosition, 30, _selectedColor));
                                   } else if (edittingmode == 8) {
+                                    audioProvider.playSound("stamp.mp3");
                                     _drawItems.add(Diamond(
                                         tapPosition, 30, _selectedColor));
                                   }
@@ -241,8 +247,14 @@ class _DrawingPageState extends State<DrawingPage> {
                               onPanUpdate: (details) {
                                 setState(() {
                                   if (!isDrawing) {
-                                    audioProvider.playSound("drawing.mp3");
+                                    //audioProvider.playSound("drawing.mp3");
                                     isDrawing = true;
+                                  }
+
+                                  if (edittingmode == 1) {
+                                    audioProvider.playSound("drawing.mp3");
+                                  } else if (edittingmode == 2) {
+                                    audioProvider.playSound("drawing2.mp3");
                                   }
                                   final RenderBox renderBox =
                                       context.findRenderObject() as RenderBox;
@@ -1054,10 +1066,10 @@ class DrawingPainter extends CustomPainter {
         // Move to the starting point
         path.moveTo(x, y + s / 4);
         // Left side curve
-        path.cubicTo(x - s * 0.6, y - s * 0.6, x - s, y + s * 0.2, x, y + s);
+        path.cubicTo(x - s * 0.5, y - s * 0.5, x - s, y + s * 0.2, x, y + s);
         // Right side curve
         path.cubicTo(
-            x + s, y + s * 0.2, x + s * 0.6, y - s * 0.6, x, y + s / 4);
+            x + s, y + s * 0.2, x + s * 0.5, y - s * 0.5, x, y + s / 4);
         // Draw the path
         canvas.drawPath(path, paint);
       } else if (item is Star) {

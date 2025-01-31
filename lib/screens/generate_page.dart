@@ -330,14 +330,22 @@ class _GeneratePageState extends State<GeneratePage> {
                                 Offset localOffset =
                                     box.globalToLocal(details.globalPosition);
 
+                                double dx = localOffset.dx -
+                                    box.localToGlobal(Offset.zero).dx;
+                                double dy = localOffset.dy -
+                                    box.localToGlobal(Offset.zero).dy;
+
+                                // 画像内でのタップ位置をローカル座標で計算
+                                Offset correctedOffset = Offset(dx, dy);
+
                                 setState(() {
                                   _undoStack
                                       .add(List.from(_circles)); // 変更前の状態を保存
-                                  _circles.add(Circle(
-                                      localOffset, 10.0, Colors.red)); // 円を追加
+                                  _circles.add(Circle(correctedOffset, 10.0,
+                                      Colors.red)); // 円を追加
                                   _redoStack.clear(); // redoをクリア
                                   showSparkleEffect(
-                                      context, localOffset); // スパークルエフェクト表示
+                                      context, correctedOffset); // スパークルエフェクト表示
                                 });
                               },
                               child: Stack(
