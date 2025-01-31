@@ -125,7 +125,7 @@ class _DrawingPageState extends State<DrawingPage> {
     final points = <Offset>[];
 
     // クレヨンのような不規則な描画効果を作成
-    for (int i = 0; i < _sprayDensity * 1.5; i++) {
+    for (int i = 0; i < _sprayDensity; i++) {
       final radius = _strokeWidth * 0.8 * random.nextDouble();
       final angle = 2 * math.pi * random.nextDouble();
       final dx = radius * math.cos(angle);
@@ -292,7 +292,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     audioProvider.pauseAudio();
                                     isDrawing = false;
                                     _drawItems.add(SprayPoints(
-                                        List.from(_currentSprayPoints),
+                                        List.from(_currentCrayonPoints),
                                         _selectedColor,
                                         _sprayDensity));
                                     _currentCrayonPoints = [];
@@ -422,7 +422,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           onPressed: _drawItems.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),

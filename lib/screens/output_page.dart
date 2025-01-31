@@ -971,6 +971,66 @@ class _OutputPageState extends State<OutputPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    SizedBox(width: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () async {
+                              audioProvider.playSound("tap1.mp3");
+                              if (outputImage == false) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'Cannot save project: Missing image data')),
+                                );
+                                return;
+                              }
+
+                              _savemodal(context, audioProvider);
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              'プロジェクトを保存する',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              audioProvider.playSound("tap1.mp3");
+                              if (outputImage != null &&
+                                  drawingImageData != null) {
+                                shareImages(context, outputImage!,
+                                    drawingImageData!); // 両方の画像をシェアする
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 67, 180, 255),
+                            ),
+                            child: Text(
+                              'シェアする',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -1075,63 +1135,6 @@ class _OutputPageState extends State<OutputPage> {
                       ],
                     ),
                   ]),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () async {
-                            audioProvider.playSound("tap1.mp3");
-                            if (outputImage == false) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        'Cannot save project: Missing image data')),
-                              );
-                              return;
-                            }
-
-                            _savemodal(context, audioProvider);
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            'プロジェクトを保存する',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: screenSize.width * 0.1),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            audioProvider.playSound("tap1.mp3");
-                            if (outputImage != null &&
-                                drawingImageData != null) {
-                              shareImages(context, outputImage!,
-                                  drawingImageData!); // 両方の画像をシェアする
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 67, 180, 255),
-                          ),
-                          child: Text(
-                            'シェアする',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       alignment: Alignment.centerRight,

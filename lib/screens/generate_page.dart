@@ -302,10 +302,8 @@ class _GeneratePageState extends State<GeneratePage> {
                                   dx = localPosition!.dx;
                                   dy = localPosition!.dy;
                                 });
-                                // タッチされた位置を取得
-                                Offset tapPosition = details.localPosition;
-                                // キラキラエフェクトを表示
-                                showSparkleEffect(context, tapPosition);
+
+                                showSparkleEffect(context, localPosition!);
                               },
                               onTapDown: (details) {
                                 RenderBox box =
