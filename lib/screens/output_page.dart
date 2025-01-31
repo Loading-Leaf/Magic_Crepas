@@ -80,6 +80,8 @@ class _OutputPageState extends State<OutputPage> {
 
   Future<void> shareImages(
       BuildContext context, Uint8List image1, Uint8List image2) async {
+    final box = context.findRenderObject() as RenderBox?;
+
     try {
       final directory = await getApplicationDocumentsDirectory();
 
@@ -91,18 +93,14 @@ class _OutputPageState extends State<OutputPage> {
       await File(outputImagePath).writeAsBytes(image1);
       await File(drawingImagePath).writeAsBytes(image2);
 
-      final files = <XFile>[XFile(outputImagePath), XFile(drawingImagePath)];
+      final files = <XFile>[XFile(outputImagePath)];
 
       // iPad ではポップアップの位置を適切に指定する
-      final RenderBox? box = context.findRenderObject() as RenderBox?;
-      final Rect sharePositionOrigin =
-          box != null ? box.localToGlobal(Offset.zero) & box.size : Rect.zero;
-
       await Share.shareXFiles(
         files,
         text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
         subject: 'まじっくくれぱすで作った絵',
-        sharePositionOrigin: sharePositionOrigin, // iPad のクラッシュ回避
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
       );
 
       // 一時ファイルの削除

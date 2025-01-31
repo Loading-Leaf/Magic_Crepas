@@ -45,20 +45,42 @@ class SprayPoints extends DrawingItem {
   SprayPoints(this.points, Color color, this.density) : super(color);
 }
 
+class CrayonPoints extends DrawingItem {
+  // CrayonPointsクラス
+  List<Offset> points;
+  double strokeWidth;
+
+  CrayonPoints(this.points, Color color, this.strokeWidth) : super(color);
+}
+
+class BrushPoints extends DrawingItem {
+  // BrushPointsクラス
+  final List<Offset> points;
+  final int density; // 必要に応じて密度を追加
+
+  BrushPoints(this.points, Color color, this.density) : super(color);
+}
+
 class _DrawingPageState extends State<DrawingPage> {
+  Timer? _fadeTimer;
   List<DrawingItem> _drawItems = []; // DrawingItem型のリスト
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
+  List<double> _currentBrushAlpha = [];
+  List<CrayonPoints> _drawCrayonItems = [];
   Color _selectedColor = Colors.black; // 選択された色
+  Color _selectedpaperColor = Colors.white;
   int edittingmode = 1; // スプレーモードのフラグ
   double _sprayDensity = 100.0; // スプレーの密度
   int isPhoto = 0;
   int selectmode = 1; //1: 色選択, 2: 線の太さおよびペンの選択, 3: スタンプ
+  int alpha = 255;
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
   List<Offset> _currentCrayonPoints = [];
+  List<Offset> _currentBrushPoints = [];
 
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
@@ -71,6 +93,7 @@ class _DrawingPageState extends State<DrawingPage> {
   void initState() {
     super.initState();
     _initializeDatabase(); // データベースの初期化を呼び出す
+    _fadeTimer?.cancel();
   }
 
   @override
@@ -126,7 +149,42 @@ class _DrawingPageState extends State<DrawingPage> {
       points.add(Offset(center.dx + dx - width, center.dy + dy - height));
     }
 
-    _currentSprayPoints.addAll(points);
+    _currentCrayonPoints.addAll(points);
+  }
+
+  void _addBrushPoints(Offset center, BuildContext context) {
+    double width = MediaQuery.of(context).size.width * 0.1;
+    double height = MediaQuery.of(context).size.height * 0.1;
+    final random = math.Random();
+    final points = <Offset>[];
+
+    for (int i = 0; i < _sprayDensity; i++) {
+      final radius = _strokeWidth * 1.3 * random.nextDouble(); // 1.3倍の太さ
+      final angle = 2 * math.pi * random.nextDouble();
+      final dx = radius * math.cos(angle);
+      final dy = radius * math.sin(angle);
+      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
+      _currentBrushAlpha.add(1.0); // 初期透明度を1.0に設定
+    }
+
+    _currentBrushPoints.addAll(points);
+
+    // 透明度を徐々に下げるタイマー
+    _fadeTimer?.cancel(); // 既存のタイマーをキャンセル
+    _fadeTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (_currentBrushPoints.isNotEmpty) {
+        setState(() {
+          for (int i = 0; i < _currentBrushPoints.length; i++) {
+            _currentBrushAlpha[i] -= 0.05; // 透明度を0.05ずつ下げる
+            if (_currentBrushAlpha[i] <= 0) {
+              _currentBrushAlpha[i] = 0; // 透明度が0以下にならないようにする
+            }
+          }
+        });
+      } else {
+        _fadeTimer?.cancel();
+      }
+    });
   }
 
   Future<void> _initializeDatabase() async {
@@ -173,7 +231,7 @@ class _DrawingPageState extends State<DrawingPage> {
                         RepaintBoundary(
                           key: _globalKey, // スクリーンショットを取るためのキー
                           child: Container(
-                            color: Colors.white,
+                            color: _selectedpaperColor,
                             child: GestureDetector(
                               onPanUpdate: (details) {
                                 setState(() {
@@ -236,6 +294,29 @@ class _DrawingPageState extends State<DrawingPage> {
                                       _currentLinePoints.add(correctedPosition);
                                     }
                                   }
+                                  if (edittingmode == 3 &&
+                                      correctedPosition.dx >= -20 &&
+                                      correctedPosition.dx <=
+                                          renderBox.size.width -
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4 +
+                                              20 &&
+                                      correctedPosition.dy >= -20 &&
+                                      correctedPosition.dy <=
+                                          renderBox.size.height -
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.4 +
+                                              20) {
+                                    final RenderBox renderBox =
+                                        context.findRenderObject() as RenderBox;
+                                    final localPosition = renderBox
+                                        .globalToLocal(details.globalPosition);
+                                    _addCrayonPoints(localPosition, context);
+                                  }
                                 });
                               },
                               onPanEnd: (details) {
@@ -249,12 +330,23 @@ class _DrawingPageState extends State<DrawingPage> {
                                         _selectedColor,
                                         _sprayDensity));
                                     _currentSprayPoints.clear();
-                                  } else {
+                                  } else if (edittingmode == 1 &&
+                                      _currentLinePoints.isNotEmpty) {
                                     audioProvider.pauseAudio();
                                     isDrawing = false;
                                     _drawItems.add(Line(_currentLinePoints,
                                         _selectedColor, _strokeWidth));
                                     _currentLinePoints = [];
+                                  } else if (edittingmode == 3 &&
+                                      _currentCrayonPoints.isNotEmpty) {
+                                    audioProvider.pauseAudio();
+                                    isDrawing = false;
+                                    _drawItems.add(CrayonPoints(
+                                        // _drawCrayonItems に追加
+                                        List.from(_currentCrayonPoints),
+                                        _selectedColor,
+                                        _strokeWidth));
+                                    _currentCrayonPoints.clear();
                                   }
                                   _undoneItems.clear();
                                 });
@@ -265,6 +357,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     MediaQuery.of(context).size.height * 0.6),
                                 painter: DrawingPainter(
                                   _drawItems,
+                                  _drawCrayonItems,
                                   _currentLinePoints,
                                   _currentSprayPoints,
                                   _strokeWidth,
@@ -278,6 +371,7 @@ class _DrawingPageState extends State<DrawingPage> {
                           CustomPaint(
                             painter: DrawingPainter(
                               [],
+                              _drawCrayonItems,
                               _currentLinePoints,
                               _currentSprayPoints,
                               _strokeWidth,
@@ -331,7 +425,9 @@ class _DrawingPageState extends State<DrawingPage> {
                           ),
                           IconButton(
                             icon: Icon(
-                                edittingmode == 2 ? Icons.brush : Icons.brush,
+                                edittingmode == 2
+                                    ? Icons.auto_awesome
+                                    : Icons.auto_awesome,
                                 color: edittingmode == 2
                                     ? Color.fromARGB(
                                         255, 255, 67, 195) // 選択されたらピンク
@@ -348,10 +444,53 @@ class _DrawingPageState extends State<DrawingPage> {
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 3
+                                    ? Icons.auto_fix_high
+                                    : Icons.auto_fix_high,
+                                color: edittingmode == 3
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 3;
+                              });
+                            },
+                            tooltip: edittingmode == 3
+                                ? 'Crayon Mode'
+                                : 'Crayon Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                                edittingmode == 4 ? Icons.brush : Icons.brush,
+                                color: edittingmode == 4
+                                    ? Color.fromARGB(
+                                        255, 255, 67, 195) // 選択されたらピンク
+                                    : const Color.fromARGB(255, 199, 198, 198)),
+                            onPressed: () {
+                              setState(() {
+                                edittingmode = 4;
+                              });
+                            },
+                            tooltip:
+                                edittingmode == 4 ? 'Brush Mode' : 'Spray Mode',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.height / 17,
+                          ),
+                        ],
+                      ),
                     ] else if (selectmode == 3)
                       ...[]
-                    else if (selectmode == 4)
-                      ...[],
+                    else if (selectmode == 4) ...[
+                      _buildPaperColorPicker(
+                          MediaQuery.of(context).size.height / 13),
+                    ],
                     Row(
                       children: [
                         IconButton(
@@ -359,7 +498,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           onPressed: _drawItems.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.height / 17,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),
@@ -377,6 +515,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       onPressed: () {
                         setState(() {
                           selectmode = 1;
+                          audioProvider.playSound("tap1.mp3");
                         });
                       },
                       tooltip: 'palette',
@@ -391,6 +530,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       onPressed: () {
                         setState(() {
                           selectmode = 2;
+                          audioProvider.playSound("tap1.mp3");
                         });
                       },
                       tooltip: 'pen',
@@ -405,6 +545,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       onPressed: () {
                         setState(() {
                           selectmode = 3;
+                          audioProvider.playSound("tap1.mp3");
                         });
                       },
                       tooltip: 'stamp',
@@ -418,12 +559,13 @@ class _DrawingPageState extends State<DrawingPage> {
                       icon: Icon(Icons.crop_portrait),
                       onPressed: () {
                         setState(() {
-                          selectmode = 3;
+                          selectmode = 4;
+                          audioProvider.playSound("tap1.mp3");
                         });
                       },
                       tooltip: 'paper',
                       splashColor: Color.fromARGB(255, 255, 67, 195),
-                      color: selectmode == 3
+                      color: selectmode == 4
                           ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
                           : const Color.fromARGB(255, 199, 198, 198),
                     ),
@@ -671,6 +813,87 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
+  // 色を選択するためのウィジェット
+  Widget _buildPaperColorPicker(double size) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _papercolorCircle(Color.fromARGB(255, 244, 67, 54), size),
+              _papercolorCircle(Color.fromARGB(255, 255, 152, 0), size),
+              _papercolorCircle(Color.fromARGB(255, 248, 181, 0), size),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _papercolorCircle(Color.fromARGB(255, 255, 235, 59), size),
+              _papercolorCircle(Color.fromARGB(255, 139, 195, 74), size),
+              _papercolorCircle(Color.fromARGB(255, 76, 175, 80), size),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _papercolorCircle(Color.fromARGB(255, 3, 169, 244), size),
+              _papercolorCircle(Color.fromARGB(255, 0, 30, 255), size),
+              _papercolorCircle(Color.fromARGB(255, 156, 39, 176), size),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _papercolorCircle(Color.fromARGB(255, 255, 130, 171), size),
+              _papercolorCircle(Color.fromARGB(255, 254, 220, 189), size),
+              _papercolorCircle(Color.fromARGB(255, 255, 255, 255), size),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _papercolorCircle(Color.fromARGB(255, 125, 125, 125), size),
+              _papercolorCircle(Color.fromARGB(255, 0, 0, 0), size),
+              _papercolorCircle(Color.fromARGB(255, 121, 85, 72), size),
+            ],
+          ),
+          SizedBox(height: 3),
+        ],
+      ),
+    );
+  }
+
+  // 色選択用のボタン
+  Widget _papercolorCircle(Color color, double size) {
+    final audioProvider = Provider.of<AudioProvider>(context);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          audioProvider.playSound("tap1.mp3");
+          _selectedpaperColor = color; // 色を更新
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: color,
+          border: Border.all(
+            width: _selectedpaperColor == color ? 3 : 1,
+            color: _selectedpaperColor == color ? Colors.black : Colors.grey,
+          ),
+        ),
+      ),
+    );
+  }
+
   // 太さを選択するためのウィジェット
   Widget _buildStrokePicker(double size) {
     return Padding(
@@ -740,6 +963,7 @@ class _DrawingPageState extends State<DrawingPage> {
 // CustomPainterの修正
 class DrawingPainter extends CustomPainter {
   final List<DrawingItem> items;
+  final List<CrayonPoints> crayonItems;
   final List<Offset?> currentLinePoints;
   final List<Offset> currentSprayPoints;
   final double strokeWidth;
@@ -747,6 +971,7 @@ class DrawingPainter extends CustomPainter {
 
   DrawingPainter(
     this.items,
+    this.crayonItems,
     this.currentLinePoints,
     this.currentSprayPoints,
     this.strokeWidth,
@@ -755,6 +980,20 @@ class DrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    for (var item in crayonItems) {
+      final points = item.points;
+      final paint = Paint()
+        ..color = item.color
+        ..strokeWidth = item.strokeWidth
+        ..style = PaintingStyle.stroke;
+
+      for (int i = 0; i < points.length - 1; i++) {
+        if (points[i] != null && points[i + 1] != null) {
+          canvas.drawLine(points[i]!, points[i + 1]!, paint);
+        }
+      }
+    }
+
     // 通常の線を描画
     for (var item in items) {
       if (item is Line) {
