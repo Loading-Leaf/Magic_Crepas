@@ -1102,6 +1102,28 @@ class DrawingPainter extends CustomPainter {
         canvas.drawPath(path, paint);
       }
     }
+    // 現在の線の描画
+    if (currentLinePoints.isNotEmpty) {
+      paint
+        ..color = color
+        ..strokeWidth = strokeWidth
+        ..strokeCap = StrokeCap.round;
+
+      for (int i = 0; i < currentLinePoints.length - 1; i++) {
+        if (currentLinePoints[i] != null && currentLinePoints[i + 1] != null) {
+          canvas.drawLine(
+              currentLinePoints[i]!, currentLinePoints[i + 1]!, paint);
+        }
+      }
+    }
+
+    // 現在のスプレーの描画
+    if (currentSprayPoints.isNotEmpty) {
+      paint.color = color;
+      for (var point in currentSprayPoints) {
+        canvas.drawCircle(point, 1.0, paint);
+      }
+    }
   }
 
   @override
