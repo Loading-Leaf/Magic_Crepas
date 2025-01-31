@@ -28,6 +28,37 @@ class GeneratePage extends StatefulWidget {
   _GeneratePageState createState() => _GeneratePageState();
 }
 
+class Circle {
+  final Offset center;
+  final double radius;
+  final Color color;
+
+  Circle(this.center, this.radius, this.color);
+}
+
+class CirclePainter extends CustomPainter {
+  final List<Circle> circles;
+
+  CirclePainter(this.circles);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..style = PaintingStyle.stroke // 外枠のみ描画
+      ..strokeWidth = 3.0; // 円の外枠の太さ
+
+    for (var circle in circles) {
+      paint.color = circle.color;
+      canvas.drawCircle(circle.center, circle.radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
 class _GeneratePageState extends State<GeneratePage> {
   List<Map<String, dynamic>> _images = []; // ここで _images を定義
   late Database _database; // late修飾子を使用
@@ -237,9 +268,9 @@ class _GeneratePageState extends State<GeneratePage> {
     String random_num = randomIntWithRange(1, 7).toString();
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     int is_answer = 1;
-    List<Offset> _selectedPositions = [];
-    List<List<Offset>> _undoStack = [];
-    List<List<Offset>> _redoStack = [];
+    List<Circle> _circles = []; // 円を保持するリスト
+    List<List<Circle>> _undoStack = [];
+    List<List<Circle>> _redoStack = [];
 
     showDialog<void>(
       context: context,
@@ -292,7 +323,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             width: screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
-                                if (_selectedPositions.length >= 3) return;
+                                if (_circles.length >= 3) return;
 
                                 RenderBox box =
                                     context.findRenderObject() as RenderBox;
@@ -300,12 +331,13 @@ class _GeneratePageState extends State<GeneratePage> {
                                     box.globalToLocal(details.globalPosition);
 
                                 setState(() {
-                                  _undoStack.add(List.from(
-                                      _selectedPositions)); // 変更前の状態を保存
-                                  _selectedPositions
-                                      .add(localOffset); // 新しい座標を追加
-                                  _redoStack.clear(); // 新しい変更があった場合、redoをクリア
-                                  showSparkleEffect(context, localOffset);
+                                  _undoStack
+                                      .add(List.from(_circles)); // 変更前の状態を保存
+                                  _circles.add(Circle(
+                                      localOffset, 10.0, Colors.red)); // 円を追加
+                                  _redoStack.clear(); // redoをクリア
+                                  showSparkleEffect(
+                                      context, localOffset); // スパークルエフェクト表示
                                 });
                               },
                               child: Stack(
@@ -317,17 +349,11 @@ class _GeneratePageState extends State<GeneratePage> {
                                         '.png',
                                     fit: BoxFit.fill,
                                   ),
-                                  ..._selectedPositions.map((position) {
-                                    return Positioned(
-                                      left: position.dx - 7.5,
-                                      top: position.dy - 7.5,
-                                      child: Icon(
-                                        Icons.circle,
-                                        color: Colors.red,
-                                        size: 15,
-                                      ),
-                                    );
-                                  }).toList(),
+                                  CustomPaint(
+                                    size: Size(screenSize.width * 0.25,
+                                        screenSize.width * 0.25),
+                                    painter: CirclePainter(_circles), // 円を描画
+                                  ),
                                 ],
                               ),
                             ),
@@ -402,12 +428,11 @@ class _GeneratePageState extends State<GeneratePage> {
                               children: [
                                 IconButton(
                                   icon: Icon(Icons.undo),
-                                  onPressed: _selectedPositions.isNotEmpty
+                                  onPressed: _circles.isNotEmpty
                                       ? () {
                                           setState(() {
-                                            _redoStack.add(
-                                                List.from(_selectedPositions));
-                                            _selectedPositions = List.from(
+                                            _redoStack.add(List.from(_circles));
+                                            _circles = List.from(
                                                 _undoStack.removeLast());
                                           });
                                         }
@@ -418,9 +443,8 @@ class _GeneratePageState extends State<GeneratePage> {
                                   onPressed: _redoStack.isNotEmpty
                                       ? () {
                                           setState(() {
-                                            _undoStack.add(
-                                                List.from(_selectedPositions));
-                                            _selectedPositions = List.from(
+                                            _undoStack.add(List.from(_circles));
+                                            _circles = List.from(
                                                 _redoStack.removeLast());
                                           });
                                         }

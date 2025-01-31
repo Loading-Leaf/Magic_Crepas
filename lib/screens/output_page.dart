@@ -361,7 +361,7 @@ class _OutputPageState extends State<OutputPage> {
                                         'outputImage': resultbytes2,
                                         'drawingImageData': Uint8List.fromList(
                                             drawingImageData!),
-                                        'ImageData': photoBytes,
+                                        'ImageData': image,
                                         "is_photo_flag": is_photo_flag,
                                       },
                                     );
@@ -688,7 +688,7 @@ class _OutputPageState extends State<OutputPage> {
                               labelText: 'さらに感じた気持ちがあったら描いてね～',
                               labelStyle: TextStyle(fontSize: fontsize),
                             ),
-                            maxLength: 20,
+                            maxLength: 40,
                           ),
                         ],
                       ),
@@ -722,8 +722,7 @@ class _OutputPageState extends State<OutputPage> {
                         SizedBox(width: 20),
                         TextButton(
                           onPressed: () async {
-                            if (screen_num == 3 &&
-                                Detail_emotion.length < 100) {
+                            if (screen_num == 3 && Detail_emotion.length < 40) {
                               if (outputImage == false) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -1087,7 +1086,7 @@ class _OutputPageState extends State<OutputPage> {
                         child: TextButton(
                           onPressed: () async {
                             audioProvider.playSound("tap1.mp3");
-                            if (outputImage == false) {
+                            if (outputImage == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                     content: Text(

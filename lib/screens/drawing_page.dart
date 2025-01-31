@@ -1051,11 +1051,14 @@ class DrawingPainter extends CustomPainter {
         double x = item.center.dx;
         double y = item.center.dy;
         double s = item.size;
-
+        // Move to the starting point
         path.moveTo(x, y + s / 4);
-        path.cubicTo(x - s, y - s, x - s * 1.5, y + s / 2, x, y + s);
-        path.cubicTo(x + s * 1.5, y + s / 2, x + s, y - s, x, y + s / 4);
-
+        // Left side curve
+        path.cubicTo(x - s * 0.6, y - s * 0.6, x - s, y + s * 0.2, x, y + s);
+        // Right side curve
+        path.cubicTo(
+            x + s, y + s * 0.2, x + s * 0.6, y - s * 0.6, x, y + s / 4);
+        // Draw the path
         canvas.drawPath(path, paint);
       } else if (item is Star) {
         paint.color = item.color;
