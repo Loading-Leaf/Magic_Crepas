@@ -237,9 +237,9 @@ class _GeneratePageState extends State<GeneratePage> {
     String random_num = randomIntWithRange(1, 7).toString();
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     int is_answer = 1;
-    Offset? localPosition; // 画像内のローカル座標を保存
-    double dx = 0;
-    double dy = 0;
+    List<Offset> _selectedPositions = [];
+    List<List<Offset>> _undoStack = [];
+    List<List<Offset>> _redoStack = [];
 
     showDialog<void>(
       context: context,
@@ -292,38 +292,20 @@ class _GeneratePageState extends State<GeneratePage> {
                             width: screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
+                                if (_selectedPositions.length >= 3) return;
+
                                 RenderBox box =
                                     context.findRenderObject() as RenderBox;
                                 Offset localOffset =
                                     box.globalToLocal(details.globalPosition);
 
                                 setState(() {
-                                  localPosition = localOffset;
-                                  dx = localPosition!.dx;
-                                  dy = localPosition!.dy;
+                                  _undoStack.add(List.from(
+                                      _selectedPositions)); // 変更前の状態を保存
+                                  _selectedPositions
+                                      .add(localOffset); // 新しい座標を追加
+                                  _redoStack.clear(); // 新しい変更があった場合、redoをクリア
                                 });
-
-                                showSparkleEffect(context, localPosition!);
-                              },
-                              onTapDown: (details) {
-                                RenderBox box =
-                                    context.findRenderObject() as RenderBox;
-                                Offset localOffset =
-                                    box.globalToLocal(details.globalPosition);
-
-                                setState(() {
-                                  localPosition = localOffset;
-                                  dx = localPosition!.dx;
-                                  dy = localPosition!.dy;
-                                });
-
-                                /*
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('タップ座標 (画像内): $dx, $dy'),
-                                  ),
-                                );*/
                               },
                               child: Stack(
                                 children: [
@@ -334,13 +316,13 @@ class _GeneratePageState extends State<GeneratePage> {
                                         '.png',
                                     fit: BoxFit.fill,
                                   ),
-                                  if (localPosition != null)
-                                    Positioned(
-                                      left: localPosition!.dx,
-                                      top: localPosition!.dy,
-                                      child: Icon(Icons.circle,
-                                          color: Colors.red, size: 15),
-                                    ),
+                                  ..._selectedPositions
+                                      .map((position) => Positioned(
+                                            left: position.dx,
+                                            top: position.dy,
+                                            child: Icon(Icons.circle,
+                                                color: Colors.red, size: 15),
+                                          )),
                                 ],
                               ),
                             ),
@@ -410,6 +392,36 @@ class _GeneratePageState extends State<GeneratePage> {
                                   ),
                                 ),
                               ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.undo),
+                                  onPressed: _selectedPositions.isNotEmpty
+                                      ? () {
+                                          setState(() {
+                                            _redoStack.add(
+                                                List.from(_selectedPositions));
+                                            _selectedPositions = List.from(
+                                                _undoStack.removeLast());
+                                          });
+                                        }
+                                      : null,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.redo),
+                                  onPressed: _redoStack.isNotEmpty
+                                      ? () {
+                                          setState(() {
+                                            _undoStack.add(
+                                                List.from(_selectedPositions));
+                                            _selectedPositions = List.from(
+                                                _redoStack.removeLast());
+                                          });
+                                        }
+                                      : null,
+                                ),
+                              ],
                             ),
                           ],
                         ),

@@ -64,7 +64,6 @@ class _DrawingPageState extends State<DrawingPage> {
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
-  List<Offset> _currentCrayonPoints = [];
 
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
@@ -116,26 +115,6 @@ class _DrawingPageState extends State<DrawingPage> {
     }
 
     _currentSprayPoints.addAll(points);
-  }
-
-  void _addCrayonPoints(Offset center, BuildContext context) {
-    double width = MediaQuery.of(context).size.width * 0.1;
-    double height = MediaQuery.of(context).size.height * 0.1;
-    final random = math.Random();
-    final points = <Offset>[];
-
-    // クレヨンのような不規則な描画効果を作成
-    for (int i = 0; i < _sprayDensity; i++) {
-      final radius = _strokeWidth * 0.8 * random.nextDouble();
-      final angle = 2 * math.pi * random.nextDouble();
-      final dx = radius * math.cos(angle);
-      final dy = radius * math.sin(angle);
-
-      // ランダムなオフセットを追加してテクスチャ感を出す
-      points.add(Offset(center.dx + dx - width, center.dy + dy - height));
-    }
-
-    _currentCrayonPoints.addAll(points);
   }
 
   Future<void> _initializeDatabase() async {
@@ -244,26 +223,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                                 20) {
                                       _currentLinePoints.add(correctedPosition);
                                     }
-                                  } else if (edittingmode == 3) {
-                                    if (correctedPosition.dx >= -20 &&
-                                        correctedPosition.dx <=
-                                            renderBox.size.width -
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.4 +
-                                                20 &&
-                                        correctedPosition.dy >= -20 &&
-                                        correctedPosition.dy <=
-                                            renderBox.size.height -
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.4 +
-                                                20) {
-                                      _addCrayonPoints(
-                                          details.localPosition, context);
-                                    }
                                   }
                                 });
                               },
@@ -285,15 +244,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                     _drawItems.add(Line(_currentLinePoints,
                                         _selectedColor, _strokeWidth));
                                     _currentLinePoints = [];
-                                  } else if (edittingmode == 3 &&
-                                      _currentCrayonPoints.isNotEmpty) {
-                                    audioProvider.pauseAudio();
-                                    isDrawing = false;
-                                    _drawItems.add(SprayPoints(
-                                        List.from(_currentCrayonPoints),
-                                        _selectedColor,
-                                        _sprayDensity));
-                                    _currentCrayonPoints = [];
                                   }
                                   _undoneItems.clear();
                                 });
@@ -306,7 +256,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                   _drawItems,
                                   _currentLinePoints,
                                   _currentSprayPoints,
-                                  _currentCrayonPoints,
                                   _strokeWidth,
                                   _selectedColor,
                                 ),
@@ -320,7 +269,6 @@ class _DrawingPageState extends State<DrawingPage> {
                               [],
                               _currentLinePoints,
                               _currentSprayPoints,
-                              _currentCrayonPoints,
                               _strokeWidth,
                               _selectedColor,
                             ),
@@ -387,33 +335,11 @@ class _DrawingPageState extends State<DrawingPage> {
                             splashColor: Color.fromARGB(255, 255, 67, 195),
                             iconSize: MediaQuery.of(context).size.height / 17,
                           ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 3
-                                    ? Icons.auto_fix_high
-                                    : Icons.auto_fix_high,
-                                color: edittingmode == 3
-                                    ? Color.fromARGB(
-                                        255, 255, 67, 195) // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 3;
-                              });
-                            },
-                            tooltip: edittingmode == 3
-                                ? 'Crayon Mode'
-                                : 'Crayon Mode',
-                            splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.height / 17,
-                          ),
                         ],
                       ),
-                    ] else if (selectmode == 3)
-                      ...[]
-                    else if (selectmode == 4) ...[
+                    ] else if (selectmode == 3) ...[
                       _buildPaperColorPicker(
-                          MediaQuery.of(context).size.height / 13),
+                          MediaQuery.of(context).size.height / 13)
                     ],
                     Row(
                       children: [
@@ -465,31 +391,16 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                     SizedBox(height: screenSize.height * 0.01),
                     IconButton(
-                      icon: Icon(Icons.favorite),
+                      icon: Icon(Icons.crop_portrait),
                       onPressed: () {
                         setState(() {
                           selectmode = 3;
                           audioProvider.playSound("tap1.mp3");
                         });
                       },
-                      tooltip: 'stamp',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      color: selectmode == 3
-                          ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
-                          : const Color.fromARGB(255, 199, 198, 198),
-                    ),
-                    SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.crop_portrait),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 4;
-                          audioProvider.playSound("tap1.mp3");
-                        });
-                      },
                       tooltip: 'paper',
                       splashColor: Color.fromARGB(255, 255, 67, 195),
-                      color: selectmode == 4
+                      color: selectmode == 3
                           ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
                           : const Color.fromARGB(255, 199, 198, 198),
                     ),
@@ -889,7 +800,6 @@ class DrawingPainter extends CustomPainter {
   final List<DrawingItem> items;
   final List<Offset?> currentLinePoints;
   final List<Offset> currentSprayPoints;
-  final List<Offset> currentCrayonPoints;
   final double strokeWidth;
   final Color color;
 
@@ -897,7 +807,6 @@ class DrawingPainter extends CustomPainter {
     this.items,
     this.currentLinePoints,
     this.currentSprayPoints,
-    this.currentCrayonPoints,
     this.strokeWidth,
     this.color,
   );
