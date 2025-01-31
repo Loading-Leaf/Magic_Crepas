@@ -292,6 +292,16 @@ class _GeneratePageState extends State<GeneratePage> {
                             width: screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
+                                RenderBox box =
+                                    context.findRenderObject() as RenderBox;
+                                Offset localOffset =
+                                    box.globalToLocal(details.globalPosition);
+
+                                setState(() {
+                                  localPosition = localOffset;
+                                  dx = localPosition!.dx;
+                                  dy = localPosition!.dy;
+                                });
                                 // タッチされた位置を取得
                                 Offset tapPosition = details.localPosition;
                                 // キラキラエフェクトを表示
@@ -309,11 +319,13 @@ class _GeneratePageState extends State<GeneratePage> {
                                   dy = localPosition!.dy;
                                 });
 
+                                /*
+
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('タップ座標 (画像内): $dx, $dy'),
                                   ),
-                                );
+                                );*/
                               },
                               child: Stack(
                                 children: [
