@@ -329,9 +329,15 @@ class _GeneratePageState extends State<GeneratePage> {
                                     context.findRenderObject() as RenderBox;
                                 Offset localOffset =
                                     box.globalToLocal(details.globalPosition);
+                                // 画像がどのように縮尺されているかを考慮するためのスケール係数
+                                double scaleX =
+                                    box.size.width / (screenSize.width * 0.25);
+                                double scaleY =
+                                    box.size.height / (screenSize.width * 0.25);
 
-                                double dx = localOffset.dx;
-                                double dy = localOffset.dy;
+                                // タップ位置をスケーリングする
+                                double dx = localOffset.dx / scaleX;
+                                double dy = localOffset.dy / scaleY;
 
                                 // 画像の左上位置（画像が配置されている座標）を考慮
                                 double imageLeft =
