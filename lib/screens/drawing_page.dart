@@ -140,45 +140,6 @@ class _DrawingPageState extends State<DrawingPage> {
     _currentSprayPoints.addAll(points);
   }
 
-  void handleMode4Drawing(DragUpdateDetails details) {
-    if (!isDrawing) {
-      // 描画開始時の設定
-      _currentStrokeWidth = _strokeWidth * 1.3;
-      _currentAlpha = 255;
-      isDrawing = true;
-    }
-
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    final localPosition = renderBox.globalToLocal(details.globalPosition);
-    final padding_left = MediaQuery.of(context).size.width * 0.1;
-    final padding_top = MediaQuery.of(context).size.height * 0.1;
-    final correctedPosition = Offset(
-      localPosition.dx - padding_left,
-      localPosition.dy - padding_top - 20,
-    );
-
-    setState(() {
-      // 描画中の太さと透明度の変更
-      _currentStrokeWidth =
-          math.max(_strokeWidth * 0.7, _currentStrokeWidth * 0.995);
-      _currentAlpha = math.max(100, (_currentAlpha * 0.995).toInt());
-
-      _currentLinePoints.add(correctedPosition);
-
-      // 現在の線を保存
-      if (_currentLinePoints.length > 1) {
-        _drawItems.add(Line(
-          [
-            _currentLinePoints[_currentLinePoints.length - 2],
-            _currentLinePoints.last
-          ],
-          _selectedColor.withAlpha(_currentAlpha),
-          _currentStrokeWidth,
-        ));
-      }
-    });
-  }
-
   Future<void> _initializeDatabase() async {
     try {
       _database = await DrawingDatabaseHelper.instance.database; // データベースを初期化
@@ -286,10 +247,25 @@ class _DrawingPageState extends State<DrawingPage> {
                                       _currentLinePoints.add(correctedPosition);
                                     }
                                   } else if (edittingmode == 3) {
-                                    _addCrayonPoints(
-                                        details.localPosition, context);
-                                  } else if (edittingmode == 4) {
-                                    handleMode4Drawing(details);
+                                    if (correctedPosition.dx >= -20 &&
+                                        correctedPosition.dx <=
+                                            renderBox.size.width -
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.4 +
+                                                20 &&
+                                        correctedPosition.dy >= -20 &&
+                                        correctedPosition.dy <=
+                                            renderBox.size.height -
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.4 +
+                                                20) {
+                                      _addCrayonPoints(
+                                          details.localPosition, context);
+                                    }
                                   }
                                 });
                               },
@@ -304,12 +280,22 @@ class _DrawingPageState extends State<DrawingPage> {
                                         _selectedColor,
                                         _sprayDensity));
                                     _currentSprayPoints.clear();
-                                  } else {
+                                  } else if (edittingmode == 1 &&
+                                      _currentLinePoints.isNotEmpty) {
                                     audioProvider.pauseAudio();
                                     isDrawing = false;
                                     _drawItems.add(Line(_currentLinePoints,
                                         _selectedColor, _strokeWidth));
                                     _currentLinePoints = [];
+                                  } else if (edittingmode == 3 &&
+                                      _currentCrayonPoints.isNotEmpty) {
+                                    audioProvider.pauseAudio();
+                                    isDrawing = false;
+                                    _drawItems.add(SprayPoints(
+                                        List.from(_currentSprayPoints),
+                                        _selectedColor,
+                                        _sprayDensity));
+                                    _currentCrayonPoints = [];
                                   }
                                   _undoneItems.clear();
                                 });
@@ -386,9 +372,7 @@ class _DrawingPageState extends State<DrawingPage> {
                           ),
                           IconButton(
                             icon: Icon(
-                                edittingmode == 2
-                                    ? Icons.auto_awesome
-                                    : Icons.auto_awesome,
+                                edittingmode == 2 ? Icons.brush : Icons.brush,
                                 color: edittingmode == 2
                                     ? Color.fromARGB(
                                         255, 255, 67, 195) // 選択されたらピンク
@@ -403,10 +387,6 @@ class _DrawingPageState extends State<DrawingPage> {
                             splashColor: Color.fromARGB(255, 255, 67, 195),
                             iconSize: MediaQuery.of(context).size.height / 17,
                           ),
-                        ],
-                      ),
-                      Row(
-                        children: [
                           IconButton(
                             icon: Icon(
                                 edittingmode == 3
@@ -424,23 +404,6 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip: edittingmode == 3
                                 ? 'Crayon Mode'
                                 : 'Crayon Mode',
-                            splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.height / 17,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 4 ? Icons.brush : Icons.brush,
-                                color: edittingmode == 4
-                                    ? Color.fromARGB(
-                                        255, 255, 67, 195) // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 4;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 4 ? 'Brush Mode' : 'Spray Mode',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
                             iconSize: MediaQuery.of(context).size.height / 17,
                           ),

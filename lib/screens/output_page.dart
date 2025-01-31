@@ -23,6 +23,7 @@ import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter/scheduler.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -80,8 +81,6 @@ class _OutputPageState extends State<OutputPage> {
 
   Future<void> shareImages(
       BuildContext context, Uint8List image1, Uint8List image2) async {
-    final box = context.findRenderObject() as RenderBox?;
-
     try {
       final directory = await getApplicationDocumentsDirectory();
 
@@ -95,17 +94,48 @@ class _OutputPageState extends State<OutputPage> {
 
       final files = <XFile>[XFile(outputImagePath)];
 
-      // iPad ではポップアップの位置を適切に指定する
-      await Share.shareXFiles(
-        files,
-        text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
-        subject: 'まじっくくれぱすで作った絵',
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-      );
+      // UIフレームの描画後にRenderBoxを取得
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        final box = context.findRenderObject() as RenderBox?;
+        final mediaQuery = MediaQuery.of(context);
 
-      // 一時ファイルの削除
-      await File(outputImagePath).delete();
-      await File(drawingImagePath).delete();
+        Rect sharePositionOrigin;
+
+        if (box != null && box.hasSize) {
+          // 通常の取得方法
+          sharePositionOrigin = box.localToGlobal(Offset.zero) & box.size;
+        } else {
+          // boxがnullの場合のフォールバック
+          if (mediaQuery.orientation == Orientation.portrait) {
+            // 縦向き：画面下部中央
+            sharePositionOrigin = Rect.fromLTWH(
+              mediaQuery.size.width / 2 - 100,
+              mediaQuery.size.height - 200,
+              200,
+              200,
+            );
+          } else {
+            // 横向き：画面右中央
+            sharePositionOrigin = Rect.fromLTWH(
+              mediaQuery.size.width - 300,
+              mediaQuery.size.height / 2 - 100,
+              200,
+              200,
+            );
+          }
+        }
+
+        Share.shareXFiles(
+          files,
+          text: '写真とお絵描きからこんな絵ができたよ！\n#まじっくくれぱす #思い出',
+          subject: 'まじっくくれぱすで作った絵',
+          sharePositionOrigin: sharePositionOrigin,
+        ).then((_) async {
+          // 共有後に一時ファイルを削除
+          await File(outputImagePath).delete();
+          await File(drawingImagePath).delete();
+        });
+      });
     } catch (e) {
       final snackBar = SnackBar(
         content: Text('画像の共有中にエラーが発生しました: $e'),
