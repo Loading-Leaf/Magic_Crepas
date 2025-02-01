@@ -109,11 +109,6 @@ class _DrawingPageState extends State<DrawingPage> {
   int alpha = 255;
   int _currentAlpha = 255;
 
-  Color? selectedColor1;
-  Color? selectedColor2;
-  Color? mixedResult;
-  List<Color?> _mixedColors = List.filled(6, null);
-
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
@@ -177,177 +172,6 @@ class _DrawingPageState extends State<DrawingPage> {
     } catch (e) {
       print('Error initializing database: $e');
     }
-  }
-
-  Future<void> _showColorMixerDialog(List<Color> colors, int mixIndex) async {
-    Color? selectedColor1;
-    Color? selectedColor2;
-    Color? mixedResult;
-
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Dialog(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('色を混ぜる (${mixIndex + 1}番目)',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: colors.map((color) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (selectedColor1 == null) {
-                                selectedColor1 = color;
-                              } else if (selectedColor2 == null &&
-                                  color != selectedColor1) {
-                                selectedColor2 = color;
-                                mixedResult = _mixColors(
-                                    selectedColor1!, selectedColor2!);
-                              }
-                            });
-                          },
-                          child: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: color,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: (color == selectedColor1 ||
-                                        color == selectedColor2)
-                                    ? Colors.black
-                                    : Colors.grey,
-                                width: (color == selectedColor1 ||
-                                        color == selectedColor2)
-                                    ? 3
-                                    : 1,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    if (mixedResult != null) ...[
-                      SizedBox(height: 20),
-                      Text('混ぜた色:'),
-                      SizedBox(height: 10),
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: mixedResult,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text('キャンセル'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _mixedColors[mixIndex] = mixedResult;
-                              });
-                              Navigator.pop(context);
-                            },
-                            child: Text('決定'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  // HSVでの色の混合
-  Color _mixColors(Color color1, Color color2) {
-    // RGB to HSV conversion for first color
-    final hsv1 = _rgbToHsv(color1);
-    // RGB to HSV conversion for second color
-    final hsv2 = _rgbToHsv(color2);
-
-    // Mix the colors in HSV space
-    double mixedH = (hsv1[0] + hsv2[0]) / 2;
-    double mixedS = (hsv1[1] + hsv2[1]) / 2;
-    double mixedV = (hsv1[2] + hsv2[2]) / 2;
-
-    return _hsvToRgb(mixedH, mixedS, mixedV);
-  }
-
-  List<double> _rgbToHsv(Color color) {
-    double r = color.red / 255;
-    double g = color.green / 255;
-    double b = color.blue / 255;
-
-    double max = [r, g, b].reduce((a, b) => a > b ? a : b);
-    double min = [r, g, b].reduce((a, b) => a > b ? a : b);
-    double delta = max - min;
-
-    double h = 0;
-    if (delta != 0) {
-      if (max == r) {
-        h = 60 * (((g - b) / delta) % 6);
-      } else if (max == g) {
-        h = 60 * (((b - r) / delta) + 2);
-      } else {
-        h = 60 * (((r - g) / delta) + 4);
-      }
-    }
-    if (h < 0) h += 360;
-
-    double s = max == 0 ? 0 : delta / max;
-    double v = max;
-
-    return [h, s, v];
-  }
-
-  Color _hsvToRgb(double h, double s, double v) {
-    double c = v * s;
-    double x = c * (1 - ((h / 60) % 2 - 1).abs());
-    double m = v - c;
-
-    List<double> rgb;
-    if (h < 60) {
-      rgb = [c, x, 0];
-    } else if (h < 120) {
-      rgb = [x, c, 0];
-    } else if (h < 180) {
-      rgb = [0, c, x];
-    } else if (h < 240) {
-      rgb = [0, x, c];
-    } else if (h < 300) {
-      rgb = [x, 0, c];
-    } else {
-      rgb = [c, 0, x];
-    }
-
-    return Color.fromRGBO(
-      ((rgb[0] + m) * 255).round(),
-      ((rgb[1] + m) * 255).round(),
-      ((rgb[2] + m) * 255).round(),
-      255,
-    );
   }
 
   @override
@@ -975,23 +799,6 @@ class _DrawingPageState extends State<DrawingPage> {
 
   // 色を選択するためのウィジェット
   Widget _buildColorPicker(double size) {
-    final List<Color> defaultColors = [
-      Color.fromARGB(255, 244, 67, 54),
-      Color.fromARGB(255, 255, 152, 0),
-      Color.fromARGB(255, 248, 181, 0),
-      Color.fromARGB(255, 255, 235, 59),
-      Color.fromARGB(255, 139, 195, 74),
-      Color.fromARGB(255, 76, 175, 80),
-      Color.fromARGB(255, 3, 169, 244),
-      Color.fromARGB(255, 0, 30, 255),
-      Color.fromARGB(255, 156, 39, 176),
-      Color.fromARGB(255, 255, 130, 171),
-      Color.fromARGB(255, 254, 220, 189),
-      Color.fromARGB(255, 255, 255, 255),
-      Color.fromARGB(255, 125, 125, 125),
-      Color.fromARGB(255, 0, 0, 0),
-    ];
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -999,89 +806,48 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(defaultColors[0], size),
-              _colorCircle(defaultColors[1], size),
-              _colorCircle(defaultColors[2], size),
+              _colorCircle(Color.fromARGB(255, 244, 67, 54), size),
+              _colorCircle(Color.fromARGB(255, 255, 152, 0), size),
+              _colorCircle(Color.fromARGB(255, 248, 181, 0), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(defaultColors[3], size),
-              _colorCircle(defaultColors[4], size),
-              _colorCircle(defaultColors[5], size),
+              _colorCircle(Color.fromARGB(255, 255, 235, 59), size),
+              _colorCircle(Color.fromARGB(255, 139, 195, 74), size),
+              _colorCircle(Color.fromARGB(255, 76, 175, 80), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(defaultColors[6], size),
-              _colorCircle(defaultColors[7], size),
-              _colorCircle(defaultColors[8], size),
+              _colorCircle(Color.fromARGB(255, 3, 169, 244), size),
+              _colorCircle(Color.fromARGB(255, 0, 30, 255), size),
+              _colorCircle(Color.fromARGB(255, 156, 39, 176), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(defaultColors[9], size),
-              _colorCircle(defaultColors[10], size),
-              _colorCircle(defaultColors[11], size),
+              _colorCircle(Color.fromARGB(255, 255, 130, 171), size),
+              _colorCircle(Color.fromARGB(255, 254, 220, 189), size),
+              _colorCircle(Color.fromARGB(255, 255, 255, 255), size),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _colorCircle(defaultColors[12], size),
-              _colorCircle(defaultColors[13], size),
-              _colorCircle(defaultColors[14], size),
+              _colorCircle(Color.fromARGB(255, 125, 125, 125), size),
+              _colorCircle(Color.fromARGB(255, 0, 0, 0), size),
+              _colorCircle(Color.fromARGB(255, 121, 85, 72), size),
             ],
           ),
-          /*
           SizedBox(height: 3),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int i = 0; i < 3; i++)
-                _mixedColors[i] != null
-                    ? _colorCircle(_mixedColors[i]!, size)
-                    : GestureDetector(
-                        onTap: () async {
-                          final audioProvider = Provider.of<AudioProvider>(
-                              context,
-                              listen: false);
-                          audioProvider.playSound("tap1.mp3");
-                          await _showColorMixerDialog(defaultColors, i);
-                          setState(() {});
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
-                          width: size,
-                          height: size,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add, size: size * 0.4),
-                                Text(
-                                  '${i + 1}',
-                                  style: TextStyle(fontSize: size * 0.3),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-            ],
-          ),
-          */
         ],
       ),
     );
