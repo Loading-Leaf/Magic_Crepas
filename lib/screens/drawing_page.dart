@@ -223,8 +223,10 @@ class _DrawingPageState extends State<DrawingPage> {
                                   children: [
                                     TextButton(
                                       onPressed: () {
-                                        audioProvider.playSound("tap1.mp3");
-                                        _mixColors();
+                                        setState(() {
+                                          audioProvider.playSound("tap1.mp3");
+                                          _mixColors();
+                                        });
 
                                         ismixed = true;
                                       },
@@ -243,9 +245,11 @@ class _DrawingPageState extends State<DrawingPage> {
                                     if (ismixed == true) ...[
                                       TextButton(
                                         onPressed: () {
-                                          audioProvider.playSound("tap1.mp3");
+                                          setState(() {
+                                            audioProvider.playSound("tap1.mp3");
 
-                                          ismixed = false;
+                                            ismixed = false;
+                                          });
                                         },
                                         style: TextButton.styleFrom(
                                           backgroundColor:
@@ -1032,6 +1036,7 @@ class _DrawingPageState extends State<DrawingPage> {
             ],
           ),
           SizedBox(height: 3),
+          _buildAllMixedColors(size),
         ],
       ),
     );
@@ -1247,6 +1252,29 @@ class _DrawingPageState extends State<DrawingPage> {
         width: size,
         height: size,
       ),
+    );
+  }
+
+  Widget _buildAllMixedColors(double size) {
+    if (_allmixedColor.isEmpty) return SizedBox(); // 空なら何も表示しない
+
+    List<Color> filteredColors =
+        _allmixedColor.whereType<Color>().toSet().toList();
+
+    int maxColors = 6; // 最大6色表示
+    int colorCount = filteredColors.length.clamp(0, maxColors); // 実際に表示する色数を決定
+
+    return Column(
+      children: [
+        for (int i = 0; i < colorCount; i += 3)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int j = 0; j < 3 && i + j < colorCount; j++)
+                _colorCircle(filteredColors[i + j], size),
+            ],
+          ),
+      ],
     );
   }
 
