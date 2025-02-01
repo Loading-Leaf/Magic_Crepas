@@ -113,8 +113,8 @@ class _DrawingPageState extends State<DrawingPage> {
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
 
-  Color? SelectedColor1;
-  Color? SelectedColor2;
+  Color SelectedColor1 = Colors.black;
+  Color SelectedColor2 = Colors.black;
   Color? MixedColor;
   bool select1 = true;
   bool select2 = false;
@@ -184,6 +184,7 @@ class _DrawingPageState extends State<DrawingPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
+    bool ismixed = false;
 
     showDialog<void>(
       context: context,
@@ -207,16 +208,80 @@ class _DrawingPageState extends State<DrawingPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Column(mainAxisSize: MainAxisSize.min, children: [
-                              _MixedSelectedColorCircle(
-                                  MediaQuery.of(context).size.width / 28, 1),
-                              _MixedSelectedColorCircle(
-                                  MediaQuery.of(context).size.width / 28, 2)
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _MixedSelectedColorCircle(
+                                        MediaQuery.of(context).size.width / 28,
+                                        1),
+                                    _MixedSelectedColorCircle(
+                                        MediaQuery.of(context).size.width / 28,
+                                        2)
+                                  ]),
+                              TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  ismixed = true;
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  '色を混ぜる',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
+                                ),
+                              ),
                             ]),
+                            _buildMixedColorPicker(
+                                MediaQuery.of(context).size.width / 28,
+                                select1,
+                                select2),
                           ]),
-                      _buildMixedColorPicker(
-                          MediaQuery.of(context).size.width / 28,
-                          select1,
-                          select2)
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                audioProvider.playSound("tap1.mp3");
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                '閉じる',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(width: 20),
+                            TextButton(
+                              onPressed: () {
+                                if (ismixed == true) {
+                                  Navigator.of(context).pop();
+                                }
+                                audioProvider.playSound("tap1.mp3");
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                'これでOK',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ]),
                     ])));
           },
         );
