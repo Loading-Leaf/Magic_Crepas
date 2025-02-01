@@ -107,12 +107,18 @@ class _DrawingPageState extends State<DrawingPage> {
   int isPhoto = 0;
   int selectmode = 1; //1: 色選択, 2: 線の太さおよびペンの選択, 3: スタンプ
   int alpha = 255;
-  int _currentAlpha = 255;
 
   double _strokeWidth = 5.0; // 線の太さ
   File? image;
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
+
+  Color? SelectedColor1;
+  Color? SelectedColor2;
+  Color? MixedColor;
+  bool select1 = true;
+  bool select2 = false;
+  List<Color?> _allmixedColor = [];
 
   GlobalKey _globalKey = GlobalKey(); // RepaintBoundary用のキー
   late Database _database; // late修飾子を使用
@@ -172,6 +178,50 @@ class _DrawingPageState extends State<DrawingPage> {
     } catch (e) {
       print('Error initializing database: $e');
     }
+  }
+
+  void _MixColorDialog(BuildContext context) {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
+    final audioProvider = Provider.of<AudioProvider>(context);
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return Dialog(
+                child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Text(
+                        'カラーブレンド',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                        ),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              _MixedSelectedColorCircle(
+                                  MediaQuery.of(context).size.width / 28, 1),
+                              _MixedSelectedColorCircle(
+                                  MediaQuery.of(context).size.width / 28, 2)
+                            ]),
+                          ]),
+                      _buildMixedColorPicker(
+                          MediaQuery.of(context).size.width / 28,
+                          select1,
+                          select2)
+                    ])));
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -386,8 +436,20 @@ class _DrawingPageState extends State<DrawingPage> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize)),
                       ),
-                      _buildColorPicker(
-                          MediaQuery.of(context).size.height / 13),
+                      _buildColorPicker(MediaQuery.of(context).size.width / 28),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              _MixColorDialog(context);
+                            },
+                            tooltip: 'mix color',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.width / 28,
+                          ),
+                        ],
+                      ),
                     ] else if (selectmode == 2) ...[
                       Padding(
                         padding: EdgeInsets.all(3.0),
@@ -397,7 +459,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                 fontSize: fontsize)),
                       ),
                       _buildStrokePicker(
-                          MediaQuery.of(context).size.height / 13),
+                          MediaQuery.of(context).size.width / 28),
                       Padding(
                         padding: EdgeInsets.all(3.0),
                         child: Text('ふで',
@@ -421,7 +483,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip:
                                 edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                           IconButton(
                             icon: Icon(
@@ -437,7 +499,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip:
                                 edittingmode == 2 ? 'Brush Mode' : 'Spray Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                         ],
                       ),
@@ -465,7 +527,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                 ? 'circle Mode'
                                 : 'circle Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                           IconButton(
                             icon: Icon(
@@ -484,7 +546,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                 ? 'triangle Mode'
                                 : 'triangle Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                           IconButton(
                             icon: Icon(
@@ -502,7 +564,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip:
                                 edittingmode == 5 ? 'Rect Mode' : 'Rect Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                         ],
                       ),
@@ -524,7 +586,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip:
                                 edittingmode == 6 ? 'Heart Mode' : 'Heart Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                           IconButton(
                             icon: Icon(
@@ -540,7 +602,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip:
                                 edittingmode == 7 ? 'Star Mode' : 'Star Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                           IconButton(
                             icon: Icon(
@@ -558,13 +620,20 @@ class _DrawingPageState extends State<DrawingPage> {
                             tooltip:
                                 edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
                             splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.height / 17,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                         ],
                       ),
                     ] else if (selectmode == 3) ...[
+                      Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: Text('紙の色',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize)),
+                      ),
                       _buildPaperColorPicker(
-                          MediaQuery.of(context).size.height / 13)
+                          MediaQuery.of(context).size.width / 28)
                     ],
                     Row(
                       children: [
@@ -573,24 +642,20 @@ class _DrawingPageState extends State<DrawingPage> {
                           onPressed: _drawItems.isNotEmpty ? _undo : null,
                           tooltip: 'Undo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.width / 28,
                         ),
                         IconButton(
                           icon: Icon(Icons.redo),
                           onPressed: _undoneItems.isNotEmpty ? _redo : null,
                           tooltip: 'Redo',
                           splashColor: Color.fromARGB(255, 255, 67, 195),
+                          iconSize: MediaQuery.of(context).size.width / 28,
                         ),
                       ],
                     ),
                   ]),
                   Column(children: [
                     SizedBox(height: screenSize.height * 0.01),
-                    Padding(
-                      padding: EdgeInsets.all(3.0),
-                      child: Text('紙の色',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: fontsize)),
-                    ),
                     IconButton(
                       icon: Icon(Icons.palette),
                       onPressed: () {
@@ -871,7 +936,7 @@ class _DrawingPageState extends State<DrawingPage> {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            width: _selectedColor == color ? 3 : 1,
+            width: _selectedColor == color ? 1.5 : 1,
             color: _selectedColor == color ? Colors.black : Colors.grey,
           ),
         ),
@@ -931,6 +996,134 @@ class _DrawingPageState extends State<DrawingPage> {
           ),
           SizedBox(height: 3),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMixedColorPicker(double size, bool select1, bool select2) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _MixedColorCircle(
+                  Color.fromARGB(255, 244, 67, 54), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 255, 152, 0), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 248, 181, 0), size, select1, select2),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _MixedColorCircle(
+                  Color.fromARGB(255, 255, 235, 59), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 139, 195, 74), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 76, 175, 80), size, select1, select2),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _MixedColorCircle(
+                  Color.fromARGB(255, 3, 169, 244), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 0, 30, 255), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 156, 39, 176), size, select1, select2),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _MixedColorCircle(
+                  Color.fromARGB(255, 255, 130, 171), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 254, 220, 189), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 255, 255, 255), size, select1, select2),
+            ],
+          ),
+          SizedBox(height: 3),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _MixedColorCircle(
+                  Color.fromARGB(255, 125, 125, 125), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 0, 0, 0), size, select1, select2),
+              _MixedColorCircle(
+                  Color.fromARGB(255, 121, 85, 72), size, select1, select2),
+            ],
+          ),
+          SizedBox(height: 3),
+        ],
+      ),
+    );
+  }
+
+  Widget _MixedColorCircle(
+      Color color, double size, bool select1, bool select2) {
+    final audioProvider = Provider.of<AudioProvider>(context);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          audioProvider.playSound("tap1.mp3");
+          if (select1 == true) {
+            SelectedColor1 = color; // 色を更新
+          } else if (select2 == true) {
+            SelectedColor2 = color; // 色を更新
+          }
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+            border: Border.all(
+              width: (select1 && SelectedColor1 == color) ||
+                      (select2 && SelectedColor2 == color)
+                  ? 3
+                  : 1,
+              color: (select1 && SelectedColor1 == color) ||
+                      (select2 && SelectedColor2 == color)
+                  ? Colors.black
+                  : Colors.grey,
+            )),
+      ),
+    );
+  }
+
+  Widget _MixedSelectedColorCircle(double size, int selectnum) {
+    final audioProvider = Provider.of<AudioProvider>(context);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          audioProvider.playSound("tap1.mp3");
+          if (selectnum == 1) {
+            select1 = true;
+            select2 = false;
+          } else if (selectnum == 2) {
+            select1 = false;
+            select2 = true;
+          }
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        width: size,
+        height: size,
       ),
     );
   }
