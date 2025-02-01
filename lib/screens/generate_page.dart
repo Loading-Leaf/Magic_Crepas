@@ -293,7 +293,7 @@ class _GeneratePageState extends State<GeneratePage> {
                       ),
                     ),
                     Text(
-                      'まちがいは3つあるよ',
+                      'まちがいは3つあるよ～右の絵のまちがいを見つけたらタッチしてね',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

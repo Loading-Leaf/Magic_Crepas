@@ -295,6 +295,12 @@ class _OutputPageState extends State<OutputPage> {
     List<Circle> _circles = []; // 円を保持するリスト
     List<List<Circle>> _undoStack = [];
     List<List<Circle>> _redoStack = [];
+    String machigaicount = "";
+    if (int.parse(random_num) < 7) {
+      machigaicount = "3";
+    } else if (int.parse(random_num) >= 7) {
+      machigaicount = "5";
+    }
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -316,7 +322,7 @@ class _OutputPageState extends State<OutputPage> {
                       ),
                     ),
                     Text(
-                      'まちがいは3つあるよ',
+                      'まちがいは' + machigaicount + 'つあるよ～右の絵のまちがいを見つけたらタッチしてね',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
