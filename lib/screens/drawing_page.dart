@@ -1040,6 +1040,7 @@ class _DrawingPageState extends State<DrawingPage> {
               _colorCircle(defaultColors[14], size),
             ],
           ),
+          /*
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1080,6 +1081,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
             ],
           ),
+          */
         ],
       ),
     );

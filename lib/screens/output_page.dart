@@ -30,6 +30,37 @@ int randomIntWithRange(int min, int max) {
   return value + min;
 }
 
+class Circle {
+  final Offset center;
+  final double radius;
+  final Color color;
+
+  Circle(this.center, this.radius, this.color);
+}
+
+class CirclePainter extends CustomPainter {
+  final List<Circle> circles;
+
+  CirclePainter(this.circles);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..style = PaintingStyle.stroke // 外枠のみ描画
+      ..strokeWidth = 3.0; // 円の外枠の太さ
+
+    for (var circle in circles) {
+      paint.color = circle.color;
+      canvas.drawCircle(circle.center, circle.radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
 class OutputPage extends StatefulWidget {
   const OutputPage({super.key});
 
@@ -100,7 +131,7 @@ class _OutputPageState extends State<OutputPage> {
         final mediaQuery = MediaQuery.of(context);
 
         Rect sharePositionOrigin = Rect.fromCenter(
-          center: Offset(mediaQuery.size.width / 2, mediaQuery.size.height / 2),
+          center: Offset(mediaQuery.size.width / 3, mediaQuery.size.height / 3),
           width: 200,
           height: 200,
         );
@@ -261,6 +292,9 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
+    List<Circle> _circles = []; // 円を保持するリスト
+    List<List<Circle>> _undoStack = [];
+    List<List<Circle>> _redoStack = [];
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -310,12 +344,37 @@ class _OutputPageState extends State<OutputPage> {
                           child: Container(
                             height: screenSize.width * 0.25,
                             width: screenSize.width * 0.25,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Image.asset('assets/difference/' +
-                                  (is_answer == 1 ? 'joke/' : 'answer/') +
-                                  random_num +
-                                  '.png'),
+                            child: GestureDetector(
+                              onTapUp: (details) {
+                                if (_circles.length >= 3) return;
+
+                                setState(() {
+                                  double dx = details.localPosition.dx;
+                                  double dy = details.localPosition.dy;
+
+                                  _undoStack
+                                      .add(List.from(_circles)); // 変更前の状態を保存
+                                  _circles.add(Circle(Offset(dx, dy), 10.0,
+                                      Colors.red)); // 円を追加
+                                  _redoStack.clear(); // redoをクリア
+                                });
+                              },
+                              child: Stack(
+                                children: [
+                                  Image.asset(
+                                    'assets/difference/' +
+                                        (is_answer == 1 ? 'joke/' : 'answer/') +
+                                        random_num +
+                                        '.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                  CustomPaint(
+                                    size: Size(screenSize.width * 0.25,
+                                        screenSize.width * 0.25),
+                                    painter: CirclePainter(_circles), // 円を描画
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -383,6 +442,34 @@ class _OutputPageState extends State<OutputPage> {
                                   ),
                                 ),
                               ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.undo),
+                                  onPressed: _circles.isNotEmpty
+                                      ? () {
+                                          setState(() {
+                                            _redoStack.add(List.from(_circles));
+                                            _circles = List.from(
+                                                _undoStack.removeLast());
+                                          });
+                                        }
+                                      : null,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.redo),
+                                  onPressed: _redoStack.isNotEmpty
+                                      ? () {
+                                          setState(() {
+                                            _undoStack.add(List.from(_circles));
+                                            _circles = List.from(
+                                                _redoStack.removeLast());
+                                          });
+                                        }
+                                      : null,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -1077,64 +1164,62 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                       ],
                     ),
-                  ]),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () async {
-                            audioProvider.playSound("tap1.mp3");
-                            if (outputImage == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        'Cannot save project: Missing image data')),
-                              );
-                              return;
-                            }
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () async {
+                              audioProvider.playSound("tap1.mp3");
+                              if (outputImage == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'Cannot save project: Missing image data')),
+                                );
+                                return;
+                              }
 
-                            _savemodal(context, audioProvider);
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            'プロジェクトを保存する',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: screenSize.width * 0.1),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            audioProvider.playSound("tap1.mp3");
-                            if (outputImage != null &&
-                                drawingImageData != null) {
-                              shareImages(context, outputImage!,
-                                  drawingImageData!); // 両方の画像をシェアする
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 67, 180, 255),
-                          ),
-                          child: Text(
-                            'シェアする',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
+                              _savemodal(context, audioProvider);
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              'プロジェクトを保存する',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        SizedBox(height: 20),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              audioProvider.playSound("tap1.mp3");
+                              _showmodesDialog(context, audioProvider);
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              '別のモードを使う',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
                       alignment: Alignment.centerRight,
@@ -1161,13 +1246,16 @@ class _OutputPageState extends State<OutputPage> {
                       child: TextButton(
                         onPressed: () {
                           audioProvider.playSound("tap1.mp3");
-                          _showmodesDialog(context, audioProvider);
+                          if (outputImage != null && drawingImageData != null) {
+                            shareImages(context, outputImage!,
+                                drawingImageData!); // 両方の画像をシェアする
+                          }
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          backgroundColor: Color.fromARGB(255, 67, 180, 255),
                         ),
                         child: Text(
-                          '別のモードを使う',
+                          'シェアする',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,
