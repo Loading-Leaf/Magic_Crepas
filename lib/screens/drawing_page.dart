@@ -213,10 +213,12 @@ class _DrawingPageState extends State<DrawingPage> {
                                   children: [
                                     _MixedSelectedColorCircle(
                                         MediaQuery.of(context).size.width / 28,
-                                        1),
+                                        1,
+                                        setState),
                                     _MixedSelectedColorCircle(
                                         MediaQuery.of(context).size.width / 28,
-                                        2)
+                                        2,
+                                        setState)
                                   ]),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -281,7 +283,8 @@ class _DrawingPageState extends State<DrawingPage> {
                             _buildMixedColorPicker(
                                 MediaQuery.of(context).size.width / 28,
                                 select1,
-                                select2),
+                                select2,
+                                setState),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1060,8 +1063,8 @@ class _DrawingPageState extends State<DrawingPage> {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            width: _selectedColor == color ? 1.5 : 1,
-            color: _selectedColor == color ? Colors.black : Colors.grey,
+            width: _selectedColor == color ? 1 : 1,
+            color: _selectedColor == color ? Colors.black : _selectedColor,
           ),
         ),
       ),
@@ -1124,7 +1127,8 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
-  Widget _buildMixedColorPicker(double size, bool select1, bool select2) {
+  Widget _buildMixedColorPicker(
+      double size, bool select1, bool select2, Function setState) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -1132,60 +1136,60 @@ class _DrawingPageState extends State<DrawingPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _MixedColorCircle(
-                  Color.fromARGB(255, 244, 67, 54), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 255, 152, 0), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 248, 181, 0), size, select1, select2),
+              _MixedColorCircle(Color.fromARGB(255, 244, 67, 54), size, select1,
+                  select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 255, 152, 0), size, select1,
+                  select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 248, 181, 0), size, select1,
+                  select2, setState),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _MixedColorCircle(
-                  Color.fromARGB(255, 255, 235, 59), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 139, 195, 74), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 76, 175, 80), size, select1, select2),
+              _MixedColorCircle(Color.fromARGB(255, 255, 235, 59), size,
+                  select1, select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 139, 195, 74), size,
+                  select1, select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 76, 175, 80), size, select1,
+                  select2, setState),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _MixedColorCircle(
-                  Color.fromARGB(255, 3, 169, 244), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 0, 30, 255), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 156, 39, 176), size, select1, select2),
+              _MixedColorCircle(Color.fromARGB(255, 3, 169, 244), size, select1,
+                  select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 0, 30, 255), size, select1,
+                  select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 156, 39, 176), size,
+                  select1, select2, setState),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _MixedColorCircle(
-                  Color.fromARGB(255, 255, 130, 171), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 254, 220, 189), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 255, 255, 255), size, select1, select2),
+              _MixedColorCircle(Color.fromARGB(255, 255, 130, 171), size,
+                  select1, select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 254, 220, 189), size,
+                  select1, select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 255, 255, 255), size,
+                  select1, select2, setState),
             ],
           ),
           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _MixedColorCircle(
-                  Color.fromARGB(255, 125, 125, 125), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 0, 0, 0), size, select1, select2),
-              _MixedColorCircle(
-                  Color.fromARGB(255, 121, 85, 72), size, select1, select2),
+              _MixedColorCircle(Color.fromARGB(255, 125, 125, 125), size,
+                  select1, select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 0, 0, 0), size, select1,
+                  select2, setState),
+              _MixedColorCircle(Color.fromARGB(255, 121, 85, 72), size, select1,
+                  select2, setState),
             ],
           ),
           SizedBox(height: 3),
@@ -1195,7 +1199,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   Widget _MixedColorCircle(
-      Color color, double size, bool select1, bool select2) {
+      Color color, double size, bool select1, bool select2, Function setState) {
     final audioProvider = Provider.of<AudioProvider>(context);
     return GestureDetector(
       onTap: () {
@@ -1229,7 +1233,7 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
-  Widget _MixedSelectedColorCircle(double size, int selectnum) {
+  Widget _MixedSelectedColorCircle(double size, int selectnum, setState) {
     final audioProvider = Provider.of<AudioProvider>(context);
     Color? selectedColor = (selectnum == 1) ? SelectedColor1 : SelectedColor2;
 
