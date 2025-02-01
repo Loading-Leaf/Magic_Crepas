@@ -218,6 +218,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_color",
+      "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_color-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_launcher_icons",
       "rootUri": "file:///C:/Users/kosuk/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_launcher_icons-0.14.2",
       "packageUri": "lib/",
@@ -836,7 +842,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-30T16:09:27.088228Z",
+  "generated": "2025-02-01T14:52:53.732551Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///C:/Users/kosuk/flutter",
