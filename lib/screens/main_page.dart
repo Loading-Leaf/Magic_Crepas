@@ -342,9 +342,7 @@ class _MainPageState extends State<MainPage> {
                       });
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: audioProvider.isMuted
-                          ? Color.fromARGB(255, 255, 67, 195) // 音あり時は緑
-                          : Colors.grey,
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? 'おとなし' : '音なし',
@@ -363,9 +361,7 @@ class _MainPageState extends State<MainPage> {
                       });
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: !audioProvider.isMuted
-                          ? Color.fromARGB(255, 255, 67, 195) // 音あり時は緑
-                          : Colors.grey,
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? 'おとあり' : '音あり',
@@ -388,14 +384,12 @@ class _MainPageState extends State<MainPage> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        languageProvider.setLanguage(false);
+                        languageProvider.setLanguage(true);
                         audioProvider.playSound("tap1.mp3");
                       });
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: languageProvider.isHiragana
-                          ? Color.fromARGB(255, 255, 67, 195)
-                          : Colors.grey,
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
                       'ひらがなカタカナ',
@@ -409,14 +403,12 @@ class _MainPageState extends State<MainPage> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        languageProvider.setLanguage(true);
+                        languageProvider.setLanguage(false);
                         audioProvider.playSound("tap1.mp3");
                       });
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: !languageProvider.isHiragana
-                          ? Color.fromARGB(255, 255, 67, 195)
-                          : Colors.grey,
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
                       '漢字',

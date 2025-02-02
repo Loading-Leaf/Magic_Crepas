@@ -10,7 +10,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:wifi_info_flutter/wifi_info_flutter.dart';
 import 'dart:math' as math;
-import 'package:audioplayers/audioplayers.dart';
+import 'package:ai_art/artproject/language_provider.dart';
+
 import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';

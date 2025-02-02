@@ -219,12 +219,18 @@ class _OutputPageState extends State<OutputPage> {
 
   // 結果ダイアログを表示する関数
   void _showResultDialog() {
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('絵ができたよー', style: TextStyle(fontWeight: FontWeight.bold)),
-          content: Text('まちがいさがしの答えも見れるよー',
+          title: Text(languageProvider.isHiragana ? 'えができたよー' : '絵ができたよー',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Text(
+              languageProvider.isHiragana
+                  ? 'まちがいさがしのこたえもみれるよー'
+                  : 'まちがいさがしの答えも見れるよー',
               style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             TextButton(
@@ -290,6 +296,8 @@ class _OutputPageState extends State<OutputPage> {
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 7).toString();
     int is_answer = 1;
@@ -316,14 +324,22 @@ class _OutputPageState extends State<OutputPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '絵ができるまで楽しいまちがいさがしで遊んでね',
+                      languageProvider.isHiragana
+                          ? 'えができるまでたのしいまちがいさがしであそんでね'
+                          : '絵ができるまで楽しいまちがいさがしで遊んでね',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                       ),
                     ),
                     Text(
-                      'まちがいは' + machigaicount + 'つあるよ～右の絵のまちがいを見つけたらタッチしてね',
+                      languageProvider.isHiragana
+                          ? 'まちがいは' +
+                              machigaicount +
+                              'つあるよ～みぎのえのまちがいをみつけたらタッチしてね'
+                          : 'まちがいは' +
+                              machigaicount +
+                              'つあるよ～右の絵のまちがいを見つけたらタッチしてね',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -405,7 +421,13 @@ class _OutputPageState extends State<OutputPage> {
                                       Color.fromARGB(255, 255, 67, 195),
                                 ),
                                 child: Text(
-                                  is_answer == 1 ? '答えを見る' : 'もとの絵を見る',
+                                  is_answer == 1
+                                      ? languageProvider.isHiragana
+                                          ? 'こたえをみる'
+                                          : '答えを見る'
+                                      : languageProvider.isHiragana
+                                          ? 'もとのえをみる'
+                                          : 'もとの絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -441,7 +463,9 @@ class _OutputPageState extends State<OutputPage> {
                                       Color.fromARGB(255, 255, 67, 195),
                                 ),
                                 child: Text(
-                                  '完成した絵を見る',
+                                  languageProvider.isHiragana
+                                      ? 'かんせいしたえをみる'
+                                      : '完成した絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -588,7 +612,8 @@ class _OutputPageState extends State<OutputPage> {
     );
   }
 
-  void _savemodal(BuildContext context, AudioProvider audioProvider) {
+  void _savemodal(BuildContext context, AudioProvider audioProvider,
+      LanguageProvider languageProvider) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
@@ -617,7 +642,7 @@ class _OutputPageState extends State<OutputPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'プロジェクトを保存',
+                      languageProvider.isHiragana ? 'プロジェクトをほぞん' : 'プロジェクトを保存',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontsize_big),
                     ),
@@ -628,7 +653,9 @@ class _OutputPageState extends State<OutputPage> {
                         },
                         style: TextStyle(fontSize: fontsize),
                         decoration: InputDecoration(
-                          labelText: '作品タイトルを入力してね～',
+                          labelText: languageProvider.isHiragana
+                              ? 'さくひんタイトルをいれてね～'
+                              : '作品タイトルを入力してね～',
                           labelStyle: TextStyle(fontSize: fontsize),
                         ),
                         maxLength: 20, // 最大文字数を20に設定
@@ -640,7 +667,9 @@ class _OutputPageState extends State<OutputPage> {
                             Column(
                               children: [
                                 Text(
-                                  "作った絵だよ！",
+                                  languageProvider.isHiragana
+                                      ? "つくったえだよ！"
+                                      : "作った絵だよ！",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontsize),
@@ -680,7 +709,9 @@ class _OutputPageState extends State<OutputPage> {
                             Column(
                               children: [
                                 Text(
-                                  "お絵描きした絵だよ！",
+                                  languageProvider.isHiragana
+                                      ? "おえかきしたえだよ！"
+                                      : "お絵描きした絵だよ！",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontsize),
@@ -717,7 +748,9 @@ class _OutputPageState extends State<OutputPage> {
                         ),
                     ] else if (screen_num == 2) ...[
                       Text(
-                        '絵を描いた時の気持ちを選んでね',
+                        languageProvider.isHiragana
+                            ? 'えをかいたときのきもちをえらんでね'
+                            : '絵を描いた時の気持ちを選んでね',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize_big),
@@ -779,7 +812,9 @@ class _OutputPageState extends State<OutputPage> {
                             },
                             style: TextStyle(fontSize: fontsize),
                             decoration: InputDecoration(
-                              labelText: 'さらに感じた気持ちがあったら描いてね～',
+                              labelText: languageProvider.isHiragana
+                                  ? 'さらにかんじたきもちがあったらかいてね～'
+                                  : 'さらに感じた気持ちがあったら書いてね～',
                               labelStyle: TextStyle(fontSize: fontsize),
                             ),
                             maxLength: 40,
@@ -806,7 +841,7 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            '戻る',
+                            languageProvider.isHiragana ? 'もどる' : '戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -850,7 +885,7 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            '進む',
+                            languageProvider.isHiragana ? 'すすむ' : '進む',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -869,7 +904,8 @@ class _OutputPageState extends State<OutputPage> {
     );
   }
 
-  void _showmodesDialog(BuildContext context, AudioProvider audioProvider) {
+  void _showmodesDialog(BuildContext context, AudioProvider audioProvider,
+      LanguageProvider languageProvider) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
@@ -881,7 +917,7 @@ class _OutputPageState extends State<OutputPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            '別のモードを使う',
+            languageProvider.isHiragana ? 'べつのモードをつかう' : '別のモードを使う',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -995,7 +1031,7 @@ class _OutputPageState extends State<OutputPage> {
                         backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        '閉じる',
+                        languageProvider.isHiragana ? 'とじる' : '閉じる',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
@@ -1200,7 +1236,8 @@ class _OutputPageState extends State<OutputPage> {
                                 return;
                               }
 
-                              _savemodal(context, audioProvider);
+                              _savemodal(
+                                  context, audioProvider, languageProvider);
                             },
                             style: TextButton.styleFrom(
                               backgroundColor:
@@ -1223,7 +1260,8 @@ class _OutputPageState extends State<OutputPage> {
                           child: TextButton(
                             onPressed: () {
                               audioProvider.playSound("tap1.mp3");
-                              _showmodesDialog(context, audioProvider);
+                              _showmodesDialog(
+                                  context, audioProvider, languageProvider);
                             },
                             style: TextButton.styleFrom(
                               backgroundColor:
