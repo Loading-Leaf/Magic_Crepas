@@ -138,6 +138,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                       child: TextButton(
                         onPressed: () {
                           setState(() {
+                            audioProvider.playSound("tap1.mp3");
                             Navigator.pushNamed(context, '/tutorial');
                           });
                         },

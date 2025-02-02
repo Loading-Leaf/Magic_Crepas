@@ -197,6 +197,8 @@ class _GeneratePageState extends State<GeneratePage> {
   void _showResultDialog() {
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
+
+    final audioProvider = Provider.of<AudioProvider>(context);
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -211,6 +213,7 @@ class _GeneratePageState extends State<GeneratePage> {
           actions: [
             TextButton(
               onPressed: () {
+                audioProvider.playSound("tap1.mp3");
                 Navigator.of(dialogContext).pop();
               },
               style: TextButton.styleFrom(
@@ -232,6 +235,7 @@ class _GeneratePageState extends State<GeneratePage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
+    final audioProvider = Provider.of<AudioProvider>(context);
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -249,6 +253,7 @@ class _GeneratePageState extends State<GeneratePage> {
           actions: [
             TextButton(
               onPressed: () {
+                audioProvider.playSound("tap1.mp3");
                 Navigator.of(dialogContext).pop();
               },
               style: TextButton.styleFrom(

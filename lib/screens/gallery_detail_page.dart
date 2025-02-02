@@ -419,7 +419,10 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => {
+                    Navigator.pop(context),
+                    audioProvider.playSound("tap1.mp3"),
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
@@ -433,7 +436,10 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
                 SizedBox(width: 20),
                 TextButton(
-                  onPressed: _showPhotoAndEmotionModal,
+                  onPressed: () => {
+                    _showPhotoAndEmotionModal,
+                    audioProvider.playSound("tap1.mp3"),
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
@@ -447,7 +453,10 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
                 SizedBox(width: 20),
                 TextButton(
-                  onPressed: _showDeleteConfirmDialog,
+                  onPressed: () => {
+                    _showDeleteConfirmDialog,
+                    audioProvider.playSound("tap1.mp3"),
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),

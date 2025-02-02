@@ -140,7 +140,10 @@ class _TutorialPageState extends State<TutorialPage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.arrow_back),
-                  onPressed: page > 1 ? _undopage : null,
+                  onPressed: () {
+                    page > 1 ? _undopage : null;
+                    audioProvider.playSound("tap1.mp3");
+                  },
                   tooltip: 'left',
                   splashColor: Color.fromARGB(255, 255, 67, 195),
                   iconSize: MediaQuery.of(context).size.width / 28,
@@ -373,7 +376,10 @@ class _TutorialPageState extends State<TutorialPage> {
                     ]),
                 IconButton(
                   icon: Icon(Icons.arrow_forward),
-                  onPressed: page < 2 ? _redopage : null,
+                  onPressed: () {
+                    page < 2 ? _redopage : null;
+                    audioProvider.playSound("tap1.mp3");
+                  },
                   tooltip: 'right',
                   splashColor: Color.fromARGB(255, 255, 67, 195),
                   iconSize: MediaQuery.of(context).size.width / 28,
