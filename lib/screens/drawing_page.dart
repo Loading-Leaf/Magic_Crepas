@@ -228,6 +228,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                         setState(() {
                                           audioProvider.playSound("tap1.mp3");
                                           _mixColors();
+
+                                          _allmixedColor.add(MixedColor);
                                         });
 
                                         ismixed = true;
@@ -249,6 +251,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                         onPressed: () {
                                           setState(() {
                                             audioProvider.playSound("tap1.mp3");
+                                            _allmixedColor.removeLast();
 
                                             ismixed = false;
                                           });
@@ -295,6 +298,11 @@ class _DrawingPageState extends State<DrawingPage> {
                           children: [
                             TextButton(
                               onPressed: () {
+                                if (ismixed == true) {
+                                  setState(() {
+                                    _allmixedColor.removeLast();
+                                  });
+                                }
                                 Navigator.of(context).pop();
                                 audioProvider.playSound("tap1.mp3");
                               },
@@ -314,15 +322,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             TextButton(
                               onPressed: () {
                                 if (ismixed == true) {
-                                  MixedColor = MixedColor; // 確認のため同じ値を代入
                                   Navigator.of(context).pop(); // ダイアログを閉じる
-
-                                  Future.delayed(Duration(milliseconds: 100),
-                                      () {
-                                    setState(() {
-                                      _allmixedColor.add(MixedColor);
-                                    });
-                                  });
                                 }
                                 audioProvider.playSound("tap1.mp3");
                               },
@@ -347,46 +347,22 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   void _mixColors() {
-    // 選択した色をHSVに変換
-    HSVColor hsv1 = HSVColor.fromColor(SelectedColor1);
-    HSVColor hsv2 = HSVColor.fromColor(SelectedColor2);
+    // RGB の値を取得
+    int r1 = SelectedColor1.red;
+    int g1 = SelectedColor1.green;
+    int b1 = SelectedColor1.blue;
 
-    // 無彩色 (彩度が低い色) の判定をしきい値を設けて調整
-    bool isGray1 = hsv1.saturation < 0.1;
-    bool isGray2 = hsv2.saturation < 0.1;
+    int r2 = SelectedColor2.red;
+    int g2 = SelectedColor2.green;
+    int b2 = SelectedColor2.blue;
 
-    double newHue;
-    double newSaturation;
-    double newValue;
+    // RGB の加重平均
+    int mixedR = ((r1 + r2) / 2).round();
+    int mixedG = ((g1 + g2) / 2).round();
+    int mixedB = ((b1 + b2) / 2).round();
 
-    if (isGray1 && isGray2) {
-      // 両方が無彩色なら、単純に明度 (Value) の平均を取る
-      newHue = 0;
-      newSaturation = 0;
-      newValue = (hsv1.value + hsv2.value) / 2;
-    } else if (isGray1) {
-      // 片方が無彩色なら、色の彩度を維持しつつ、影響を考慮
-      newHue = hsv2.hue;
-      newSaturation = hsv2.saturation * 0.75; // 無彩色と混ぜるので彩度をやや低下
-      newValue = (hsv1.value * 0.4 + hsv2.value * 0.6); // 彩度のある色の影響を大きくする
-    } else if (isGray2) {
-      newHue = hsv1.hue;
-      newSaturation = hsv1.saturation * 0.75;
-      newValue = (hsv1.value * 0.6 + hsv2.value * 0.4);
-    } else {
-      // 両方に彩度がある色なら、加重平均で混ぜる
-      double weight1 = hsv1.saturation;
-      double weight2 = hsv2.saturation;
-      double totalWeight = weight1 + weight2;
-
-      newHue = (hsv1.hue * weight1 + hsv2.hue * weight2) / totalWeight;
-      newSaturation = (hsv1.saturation + hsv2.saturation) / 2;
-      newValue = (hsv1.value + hsv2.value) / 2;
-    }
-
-    // HSV から Color に変換
-    HSVColor mixedHSV = HSVColor.fromAHSV(1.0, newHue, newSaturation, newValue);
-    MixedColor = mixedHSV.toColor();
+    // 新しい色を作成
+    MixedColor = Color.fromARGB(alpha, mixedR, mixedG, mixedB);
   }
 
   @override
