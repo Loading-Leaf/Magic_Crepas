@@ -116,6 +116,14 @@ flutter:
     - assets/difference/original/
     - assets/difference/joke/
     - assets/tutorial/
+    - assets/tutorial/1/
+    - assets/tutorial/2/
+    - assets/tutorial/3/
+    - assets/tutorial/4/
+    - assets/tutorial/5/
+    - assets/tutorial/6/
+    - assets/tutorial/7/
+    - assets/tutorial/8/
 
 flutter_embedding_v2: # Add this line
     sdk: flutter

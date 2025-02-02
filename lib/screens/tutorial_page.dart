@@ -13,6 +13,8 @@ class TutorialPage extends StatefulWidget {
 }
 
 class _TutorialPageState extends State<TutorialPage> {
+  int page = 1;
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -20,7 +22,6 @@ class _TutorialPageState extends State<TutorialPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
-    int page = 1;
 
     List<String> chapters1 = [
       languageProvider.isHiragana ? "これはさいしょのがめんだよ" : "これは最初の画面だよ",
@@ -161,13 +162,13 @@ class _TutorialPageState extends State<TutorialPage> {
                                         border: Border.all(
                                             color: Colors.black, width: 3),
                                       ),
-                                      height: screenSize.width * 0.1175,
-                                      width: screenSize.width * 0.25,
+                                      height: screenSize.width * 0.094,
+                                      width: screenSize.width * 0.20,
                                       child: FittedBox(
                                         fit: BoxFit.fill,
                                         child: Image.asset(
                                           'assets/tutorial/' +
-                                              (page * 4 - 4).toString() +
+                                              (page * 4 - 3).toString() +
                                               '.png',
                                         ),
                                       ),
@@ -214,13 +215,13 @@ class _TutorialPageState extends State<TutorialPage> {
                                         border: Border.all(
                                             color: Colors.black, width: 3),
                                       ),
-                                      height: screenSize.width * 0.1175,
-                                      width: screenSize.width * 0.25,
+                                      height: screenSize.width * 0.094,
+                                      width: screenSize.width * 0.20,
                                       child: FittedBox(
                                         fit: BoxFit.fill,
                                         child: Image.asset(
                                           'assets/tutorial/' +
-                                              (page * 4 - 3).toString() +
+                                              (page * 4 - 2).toString() +
                                               '.png',
                                         ),
                                       ),
@@ -271,13 +272,13 @@ class _TutorialPageState extends State<TutorialPage> {
                                         border: Border.all(
                                             color: Colors.black, width: 3),
                                       ),
-                                      height: screenSize.width * 0.1175,
-                                      width: screenSize.width * 0.25,
+                                      height: screenSize.width * 0.094,
+                                      width: screenSize.width * 0.20,
                                       child: FittedBox(
                                         fit: BoxFit.fill,
                                         child: Image.asset(
                                           'assets/tutorial/' +
-                                              (page * 4 - 2).toString() +
+                                              (page * 4 - 1).toString() +
                                               '.png',
                                         ),
                                       ),
@@ -324,13 +325,13 @@ class _TutorialPageState extends State<TutorialPage> {
                                         border: Border.all(
                                             color: Colors.black, width: 3),
                                       ),
-                                      height: screenSize.width * 0.1175,
-                                      width: screenSize.width * 0.25,
+                                      height: screenSize.width * 0.094,
+                                      width: screenSize.width * 0.20,
                                       child: FittedBox(
                                         fit: BoxFit.fill,
                                         child: Image.asset(
                                           'assets/tutorial/' +
-                                              (page * 4 - 1).toString() +
+                                              (page * 4).toString() +
                                               '.png',
                                         ),
                                       ),

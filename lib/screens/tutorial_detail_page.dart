@@ -133,6 +133,26 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
+                    Container(
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            Navigator.pushNamed(context, '/tutorial');
+                          });
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          'やめる',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
