@@ -268,7 +268,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     ]
                                   ]),
                               if (ismixed == true &&
-                                  _allmixedColor.length == 6) ...[
+                                  _allmixedColor.length <= 6) ...[
                                 Container(
                                   width: MediaQuery.of(context).size.width / 28,
                                   height:
@@ -276,6 +276,10 @@ class _DrawingPageState extends State<DrawingPage> {
                                   decoration: BoxDecoration(
                                     color: MixedColor,
                                     shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1255,6 +1259,19 @@ class _DrawingPageState extends State<DrawingPage> {
         color: selectedColor,
         width: size,
         height: size,
+        decoration: BoxDecoration(
+            color: selectedColor,
+            shape: BoxShape.circle,
+            border: Border.all(
+              width: (select1 && SelectedColor1 == selectedColor) ||
+                      (select2 && SelectedColor2 == selectedColor)
+                  ? 3
+                  : 1,
+              color: (select1 && SelectedColor1 == selectedColor) ||
+                      (select2 && SelectedColor2 == selectedColor)
+                  ? Colors.black
+                  : Colors.grey,
+            )),
       ),
     );
   }
@@ -1278,6 +1295,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 _colorCircle(filteredColors[i + j], size),
             ],
           ),
+        SizedBox(height: 3),
       ],
     );
   }
@@ -1362,7 +1380,8 @@ class _DrawingPageState extends State<DrawingPage> {
               shape: BoxShape.circle,
               border: Border.all(
                 width: _strokeWidth == strokesize ? 3 : 1,
-                color: _strokeWidth == strokesize ? Colors.black : Colors.grey,
+                color:
+                    _strokeWidth == strokesize ? Colors.black : _selectedColor,
               ),
             ),
           ),
