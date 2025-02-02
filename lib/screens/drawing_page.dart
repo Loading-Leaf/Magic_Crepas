@@ -13,6 +13,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
+import 'package:ai_art/artproject/language_provider.dart';
+
 import 'dart:async';
 
 import 'dart:math' as math;
@@ -185,6 +187,7 @@ class _DrawingPageState extends State<DrawingPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     bool ismixed = false;
+    final languageProvider = Provider.of<LanguageProvider>(context);
 
     showDialog<void>(
       context: context,
@@ -237,7 +240,9 @@ class _DrawingPageState extends State<DrawingPage> {
                                             Color.fromARGB(255, 255, 67, 195),
                                       ),
                                       child: Text(
-                                        '色を混ぜる',
+                                        languageProvider.isHiragana
+                                            ? 'いろをまぜる'
+                                            : '色を混ぜる',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: fontsize,
@@ -258,7 +263,9 @@ class _DrawingPageState extends State<DrawingPage> {
                                               Color.fromARGB(255, 255, 67, 195),
                                         ),
                                         child: Text(
-                                          'やり直す',
+                                          languageProvider.isHiragana
+                                              ? 'やりなおす'
+                                              : 'やり直す',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: fontsize,
@@ -303,7 +310,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     Color.fromARGB(255, 255, 67, 195),
                               ),
                               child: Text(
-                                '閉じる',
+                                languageProvider.isHiragana ? 'とじる' : '閉じる',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -370,6 +377,7 @@ class _DrawingPageState extends State<DrawingPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
 
     return Scaffold(
       body: GestureDetector(
@@ -452,13 +460,13 @@ class _DrawingPageState extends State<DrawingPage> {
                                   if (!isDrawing) {
                                     //audioProvider.playSound("drawing.mp3");
                                     isDrawing = true;
+                                    if (edittingmode == 1) {
+                                      audioProvider.playSound("drawing.mp3");
+                                    } else if (edittingmode == 2) {
+                                      audioProvider.playSound("drawing2.mp3");
+                                    }
                                   }
 
-                                  if (edittingmode == 1) {
-                                    audioProvider.playSound("drawing.mp3");
-                                  } else if (edittingmode == 2) {
-                                    audioProvider.playSound("drawing2.mp3");
-                                  }
                                   final RenderBox renderBox =
                                       context.findRenderObject() as RenderBox;
                                   final localPosition = renderBox
@@ -594,7 +602,8 @@ class _DrawingPageState extends State<DrawingPage> {
                     ] else if (selectmode == 2) ...[
                       Padding(
                         padding: EdgeInsets.all(3.0),
-                        child: Text('筆の大きさ',
+                        child: Text(
+                            languageProvider.isHiragana ? 'ふでのおおきさ' : '筆の大きさ',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize)),
@@ -603,7 +612,8 @@ class _DrawingPageState extends State<DrawingPage> {
                           MediaQuery.of(context).size.width / 28),
                       Padding(
                         padding: EdgeInsets.all(3.0),
-                        child: Text('ふで',
+                        child: Text(
+                            languageProvider.isHiragana ? 'ふでのしゅるい' : '筆の種類',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize)),
@@ -860,7 +870,8 @@ class _DrawingPageState extends State<DrawingPage> {
                     ] else if (selectmode == 3) ...[
                       Padding(
                         padding: EdgeInsets.all(3.0),
-                        child: Text('紙の色',
+                        child: Text(
+                            languageProvider.isHiragana ? 'かみのいろ' : '紙の色',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize)),
@@ -950,7 +961,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    '閉じる',
+                    languageProvider.isHiragana ? 'とじる' : '閉じる',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -968,7 +979,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    '写真から選ぶ',
+                    languageProvider.isHiragana ? 'しゃしんからえらぶ' : '写真から選ぶ',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

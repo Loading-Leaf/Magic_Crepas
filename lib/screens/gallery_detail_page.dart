@@ -7,6 +7,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ai_art/artproject/gallery_database_helper.dart';
+import 'package:ai_art/artproject/language_provider.dart';
 
 class GalleryDetailPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -102,6 +103,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
 
     return showDialog(
       context: context,
@@ -109,14 +112,16 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            '削除の確認',
+            languageProvider.isHiragana ? 'さくじょする' : '削除する',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: fontsize,
             ),
           ),
           content: Text(
-            'この作品を削除してもだいじょうぶ？',
+            languageProvider.isHiragana
+                ? 'このさくひんをさくじょしてもだいじょうぶ？'
+                : 'この作品を削除しても大丈夫？',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: fontsize,
@@ -125,7 +130,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
           actions: <Widget>[
             TextButton(
               child: Text(
-                '戻る',
+                languageProvider.isHiragana ? 'もどる' : '戻る',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -141,7 +146,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             ),
             TextButton(
               child: Text(
-                '削除',
+                languageProvider.isHiragana ? 'さくじょする' : '削除する',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -183,6 +188,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
 
     showDialog(
       context: context,
@@ -197,7 +204,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "詳細な気持ち",
+                  languageProvider.isHiragana ? 'しょうさいなきもち' : "詳細な気持ち",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
@@ -214,7 +221,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 SizedBox(height: 20),
                 if (photoImage != null && photoImage!.isNotEmpty) ...[
                   Text(
-                    "参考にした写真",
+                    languageProvider.isHiragana ? "つかったしゃしん" : "使った写真",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: fontsize,
@@ -240,7 +247,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    '閉じる',
+                    languageProvider.isHiragana ? 'とじる' : '閉じる',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -258,6 +265,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   @override
   Widget build(BuildContext context) {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     outputImage = widget.data['outputimage'];
     drawingImage = widget.data['drawingimage'];
     photoImage = widget.data['photoimage'];
@@ -283,7 +292,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                "作成日時: $time",
+                languageProvider.isHiragana ? "さくせいにちじ" : "作成日時: $time",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,
@@ -291,7 +300,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               ),
               SizedBox(width: 50),
               Text(
-                "感情: $emotion",
+                languageProvider.isHiragana
+                    ? "かんじょう: $emotion"
+                    : "感情: $emotion",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,
@@ -302,7 +313,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("作った絵だよ！",
+                  Text(languageProvider.isHiragana ? "つくったえだよ！" : "作った絵だよ！",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontsize)),
                   Padding(
@@ -340,7 +351,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '作った絵を保存する',
+                      languageProvider.isHiragana ? 'つくったえをほぞんする' : '作った絵を保存する',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -353,7 +364,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("お絵描きした絵だよ！",
+                  Text(
+                      languageProvider.isHiragana ? 'おえかきしたえだよ！' : "お絵描きした絵だよ！",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontsize)),
                   Padding(
@@ -390,7 +402,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      'お絵描きした絵を保存する',
+                      languageProvider.isHiragana
+                          ? 'おえかきしたえをほぞんする'
+                          : 'お絵描きした絵を保存する',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -410,7 +424,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    "戻る",
+                    languageProvider.isHiragana ? "もどる" : "戻る",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -424,7 +438,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    "詳細を見る",
+                    languageProvider.isHiragana ? "くわしくみる" : "詳しく見る",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -438,7 +452,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
                   ),
                   child: Text(
-                    "削除する",
+                    languageProvider.isHiragana ? "さくじょする" : "削除する",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

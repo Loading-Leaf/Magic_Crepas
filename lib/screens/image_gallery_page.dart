@@ -4,6 +4,7 @@ import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'dart:typed_data';
 import 'gallery_detail_page.dart'; // ← 追加
+import 'package:ai_art/artproject/language_provider.dart';
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({super.key});
@@ -30,6 +31,8 @@ class _GalleryPageState extends State<GalleryPage> {
 
     double imageWidth = screenSize.width / 6 - 10;
     double imageHeight = imageWidth;
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
 
     return Scaffold(
       body: GestureDetector(
@@ -39,7 +42,9 @@ class _GalleryPageState extends State<GalleryPage> {
             children: <Widget>[
               const SizedBox(height: 20),
               Text(
-                '今まで作った絵を見れるよ～',
+                languageProvider.isHiragana
+                    ? 'いままでつくったえをみれるよ～'
+                    : '今まで作った絵を見れるよ～',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsizeBig,
@@ -53,7 +58,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('まだ保存してないよ～');
+                    return const Text('まだないよ～');
                   } else {
                     List<Map<String, dynamic>> drawings = snapshot.data!;
                     return Expanded(
@@ -113,7 +118,7 @@ class _GalleryPageState extends State<GalleryPage> {
                       backgroundColor: const Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '閉じる',
+                      languageProvider.isHiragana ? 'とじる' : '閉じる',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
