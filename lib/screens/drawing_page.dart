@@ -197,11 +197,21 @@ class _DrawingPageState extends State<DrawingPage> {
           builder: (BuildContext context, setState) {
             return Dialog(
                 child: Container(
-                    width: double.infinity,
+                    width: screenSize.width * 0.8,
+                    height: screenSize.height * 0.9,
                     padding: const EdgeInsets.all(10.0),
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       Text(
                         'カラーブレンド',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                        ),
+                      ),
+                      Text(
+                        languageProvider.isHiragana
+                            ? 'パレットのよこにある2つのいろをせっていしてね～'
+                            : 'パレットの横にある2つの色を選んでね～',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -214,14 +224,46 @@ class _DrawingPageState extends State<DrawingPage> {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    _MixedSelectedColorCircle(
-                                        MediaQuery.of(context).size.width / 28,
-                                        1,
-                                        setState),
-                                    _MixedSelectedColorCircle(
-                                        MediaQuery.of(context).size.width / 28,
-                                        2,
-                                        setState)
+                                    Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            languageProvider.isHiragana
+                                                ? 'いろ１'
+                                                : '色1',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: fontsize,
+                                            ),
+                                          ),
+                                          _MixedSelectedColorCircle(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  28,
+                                              1,
+                                              setState),
+                                        ]),
+                                    Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            languageProvider.isHiragana
+                                                ? 'いろ２'
+                                                : '色2',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: fontsize,
+                                            ),
+                                          ),
+                                          _MixedSelectedColorCircle(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  28,
+                                              2,
+                                              setState),
+                                        ]),
                                   ]),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -291,11 +333,20 @@ class _DrawingPageState extends State<DrawingPage> {
                                 ),
                               ],
                             ]),
-                            _buildMixedColorPicker(
-                                MediaQuery.of(context).size.width / 28,
-                                select1,
-                                select2,
-                                setState),
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                              Text(
+                                'パレット',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                              _buildMixedColorPicker(
+                                  MediaQuery.of(context).size.width / 28,
+                                  select1,
+                                  select2,
+                                  setState),
+                            ]),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -322,13 +373,15 @@ class _DrawingPageState extends State<DrawingPage> {
                               onPressed: () {
                                 if (ismixed == true) {
                                   MixedColor = MixedColor; // 確認のため同じ値を代入
-                                  Navigator.of(context).pop(); // ダイアログを閉じる
 
-                                  Future.delayed(Duration(milliseconds: 100),
-                                      () {
-                                    setState(() {
-                                      _allmixedColor.add(MixedColor);
-                                    });
+                                  setState(() {
+                                    _allmixedColor.add(MixedColor);
+                                  });
+                                  Navigator.of(context).pop(); // ダイアログを閉じる
+                                  Future.microtask(() {
+                                    if (mounted) {
+                                      setState(() {});
+                                    }
                                   });
                                 }
                                 audioProvider.playSound("tap1.mp3");
@@ -1392,24 +1445,31 @@ class _DrawingPageState extends State<DrawingPage> {
   Widget _buildAllMixedColors(double size) {
     if (_allmixedColor.isEmpty) return SizedBox(); // 空なら何も表示しない
 
-    List<Color> filteredColors =
-        _allmixedColor.whereType<Color>().toSet().toList();
+    final List<Color> filteredColors = _allmixedColor
+        .where((color) => color != null)
+        .map((color) => color!)
+        .toSet()
+        .toList();
 
     int maxColors = 6; // 最大6色表示
     int colorCount = filteredColors.length.clamp(0, maxColors); // 実際に表示する色数を決定
 
     return Column(
-      children: [
-        for (int i = 0; i < colorCount; i += 3)
-          Row(
+      children: List.generate((colorCount / 3).ceil(), (rowIndex) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 3),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int j = 0; j < 3 && i + j < colorCount; j++)
-                _colorCircle(filteredColors[i + j], size),
-            ],
+            children: List.generate(3, (colIndex) {
+              final index = rowIndex * 3 + colIndex;
+              if (index < colorCount) {
+                return _colorCircle(filteredColors[index], size);
+              }
+              return const SizedBox(width: 0);
+            }),
           ),
-        SizedBox(height: 3),
-      ],
+        );
+      }),
     );
   }
 

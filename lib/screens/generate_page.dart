@@ -315,10 +315,10 @@ class _GeneratePageState extends State<GeneratePage> {
                       languageProvider.isHiragana
                           ? 'まちがいは' +
                               machigaicount +
-                              'つあるよ～みぎのえのまちがいをみつけたらタッチしてね'
+                              'つあるよ～\nみぎのえのまちがいをみつけたらタッチしてね'
                           : 'まちがいは' +
                               machigaicount +
-                              'つあるよ～右の絵のまちがいを見つけたらタッチしてね',
+                              'つあるよ～\n右の絵のまちがいを見つけたらタッチしてね',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
