@@ -1053,6 +1053,8 @@ class _OutputPageState extends State<OutputPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
+
     return Scaffold(
       body: GestureDetector(
         onTapUp: (details) {
@@ -1071,7 +1073,10 @@ class _OutputPageState extends State<OutputPage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("作った絵だよ！",
+                        Text(
+                            languageProvider.isHiragana
+                                ? "つくったえだよ！"
+                                : "作った絵だよ！",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize)),
@@ -1110,7 +1115,9 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            '作った絵を保存する',
+                            languageProvider.isHiragana
+                                ? 'つくったえをほぞんする'
+                                : '作った絵を保存する',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -1123,7 +1130,10 @@ class _OutputPageState extends State<OutputPage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("お絵描きした絵だよ！",
+                        Text(
+                            languageProvider.isHiragana
+                                ? "おえかきしたえだよ！"
+                                : "お絵描きした絵だよ！",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize)),
@@ -1162,7 +1172,9 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            'お絵描きした絵を保存する',
+                            languageProvider.isHiragana
+                                ? 'おえかきしたえをほぞんする'
+                                : 'お絵描きした絵を保存する',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -1195,7 +1207,9 @@ class _OutputPageState extends State<OutputPage> {
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              'プロジェクトを保存する',
+                              languageProvider.isHiragana
+                                  ? 'プロジェクトをほぞんする'
+                                  : 'プロジェクトを保存する',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1216,7 +1230,9 @@ class _OutputPageState extends State<OutputPage> {
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              '別のモードを使う',
+                              languageProvider.isHiragana
+                                  ? 'べつのモードをつかう'
+                                  : '別のモードを使う',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1239,7 +1255,7 @@ class _OutputPageState extends State<OutputPage> {
                           backgroundColor: Color.fromARGB(255, 255, 67, 195),
                         ),
                         child: Text(
-                          'ホームに戻る',
+                          languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,

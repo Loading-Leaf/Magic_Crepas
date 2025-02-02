@@ -8,6 +8,7 @@ class LanguageProvider with ChangeNotifier {
 
   LanguageProvider() {
     _loadLanguage(); // 初期化時に設定を読み込む
+    notifyListeners();
   }
 
   // 言語を変更する

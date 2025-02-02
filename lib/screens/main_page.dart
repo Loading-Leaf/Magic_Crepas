@@ -336,8 +336,10 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(0.0);
-                      audioProvider.playSound("tap1.mp3");
+                      setState(() {
+                        audioProvider.setVolume(0.0);
+                        audioProvider.playSound("tap1.mp3");
+                      });
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: audioProvider.isMuted
@@ -355,8 +357,10 @@ class _MainPageState extends State<MainPage> {
                   SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(1.0);
-                      audioProvider.playSound("tap1.mp3");
+                      setState(() {
+                        audioProvider.setVolume(1.0);
+                        audioProvider.playSound("tap1.mp3");
+                      });
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: !audioProvider.isMuted
@@ -383,8 +387,10 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      languageProvider.setLanguage(false);
-                      audioProvider.playSound("tap1.mp3");
+                      setState(() {
+                        languageProvider.setLanguage(false);
+                        audioProvider.playSound("tap1.mp3");
+                      });
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: languageProvider.isHiragana
@@ -402,8 +408,10 @@ class _MainPageState extends State<MainPage> {
                   SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
-                      languageProvider.setLanguage(true);
-                      audioProvider.playSound("tap1.mp3");
+                      setState(() {
+                        languageProvider.setLanguage(true);
+                        audioProvider.playSound("tap1.mp3");
+                      });
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: !languageProvider.isHiragana
