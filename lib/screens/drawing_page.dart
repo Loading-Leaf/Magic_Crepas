@@ -346,10 +346,39 @@ class _DrawingPageState extends State<DrawingPage> {
     HSVColor hsv1 = HSVColor.fromColor(SelectedColor1);
     HSVColor hsv2 = HSVColor.fromColor(SelectedColor2);
 
-    // 色相(Hue)、彩度(Saturation)、明度(Value)を平均化
-    double newHue = (hsv1.hue + hsv2.hue) / 2;
-    double newSaturation = (hsv1.saturation + hsv2.saturation) / 2;
-    double newValue = (hsv1.value + hsv2.value) / 2;
+    // 無彩色 (S = 0) の判定
+    bool isGray1 = hsv1.saturation == 0;
+    bool isGray2 = hsv2.saturation == 0;
+
+    double newHue;
+    double newSaturation;
+    double newValue;
+
+    if (isGray1 && isGray2) {
+      // 両方無彩色なら、単純に Value の平均
+      newHue = 0; // Hueは意味がない
+      newSaturation = 0; // 無彩色
+      newValue = (hsv1.value + hsv2.value) / 2;
+    } else if (isGray1) {
+      // hsv1 が無彩色なら、hsv2 の色相を維持
+      newHue = hsv2.hue;
+      newSaturation = hsv2.saturation / 2; // 無彩色と混ぜるので少し彩度を下げる
+      newValue = (hsv1.value + hsv2.value) / 2;
+    } else if (isGray2) {
+      // hsv2 が無彩色なら、hsv1 の色相を維持
+      newHue = hsv1.hue;
+      newSaturation = hsv1.saturation / 2;
+      newValue = (hsv1.value + hsv2.value) / 2;
+    } else {
+      // 両方彩度がある色なら、通常の加重平均
+      double weight1 = hsv1.saturation;
+      double weight2 = hsv2.saturation;
+      double totalWeight = weight1 + weight2;
+
+      newHue = (hsv1.hue * weight1 + hsv2.hue * weight2) / totalWeight;
+      newSaturation = (hsv1.saturation + hsv2.saturation) / 2;
+      newValue = (hsv1.value + hsv2.value) / 2;
+    }
 
     // 新しいHSVからRGBに変換
     HSVColor mixedHSV = HSVColor.fromAHSV(1.0, newHue, newSaturation, newValue);
