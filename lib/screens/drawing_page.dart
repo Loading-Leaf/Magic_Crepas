@@ -316,30 +316,49 @@ class _DrawingPageState extends State<DrawingPage> {
                                       ),
                                     ]
                                   ]),
-                              if (ismixed == true &&
-                                  _allmixedColor.length <= 6) ...[
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 28,
-                                  height:
-                                      MediaQuery.of(context).size.width / 28,
-                                  decoration: BoxDecoration(
-                                    color: MixedColor,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
+                              if (ismixed == true) ...[
+                                Text(
+                                  languageProvider.isHiragana
+                                      ? '「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ'
+                                      : '「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
                                   ),
                                 ),
                               ],
                             ]),
+                            if (ismixed == true) ...[
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    audioProvider.playSound("tap1.mp3");
+
+                                    ismixed = false;
+                                  });
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  languageProvider.isHiragana
+                                      ? 'やりなおす'
+                                      : 'やり直す',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ],
                             Column(mainAxisSize: MainAxisSize.min, children: [
                               Text(
                                 'パレット',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
-                                    color: Colors.white),
+                                    color: Colors.black),
                               ),
                               _buildMixedColorPicker(
                                   MediaQuery.of(context).size.width / 28,
