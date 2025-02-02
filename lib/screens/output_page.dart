@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
+import 'package:ai_art/artproject/language_provider.dart';
 //import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';

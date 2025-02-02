@@ -5,6 +5,8 @@ import "package:ai_art/artproject/terms_of_service.dart";
 import 'package:audioplayers/audioplayers.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
+import 'package:ai_art/artproject/language_provider.dart';
+
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 //import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 
@@ -58,6 +60,7 @@ class _MainPageState extends State<MainPage> {
     double fontsize = screenSize.width / 74.6;
     final url = Uri.parse('https://forms.gle/JAR2RYDkzbzFwdei6');
     final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
 
     return Scaffold(
       body: GestureDetector(
@@ -99,14 +102,15 @@ class _MainPageState extends State<MainPage> {
                           child: TextButton(
                             onPressed: () {
                               audioProvider.playSound("tap1.mp3");
-                              _showSettingsDialog(context, audioProvider);
+                              _showSettingsDialog(
+                                  context, audioProvider, languageProvider);
                             },
                             style: TextButton.styleFrom(
                               backgroundColor:
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              '設定',
+                              languageProvider.isHiragana ? 'せってい' : '設定',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -126,7 +130,9 @@ class _MainPageState extends State<MainPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'AIが絵と写真で新しいアートを作ってくれるよ',
+                      languageProvider.isHiragana
+                          ? 'AIがえとしゃしんであたらしいアートをつくってくれるよ'
+                          : 'AIが絵と写真で新しいアートを作ってくれるよ',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize_big,
@@ -161,7 +167,31 @@ class _MainPageState extends State<MainPage> {
                                       Color.fromARGB(255, 255, 67, 195),
                                 ),
                                 child: Text(
-                                  'AIでアートを作る',
+                                  languageProvider.isHiragana
+                                      ? 'AIでアートをつくる'
+                                      : 'AIでアートを作る',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  Navigator.pushNamed(context, '/gallery');
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 67, 195),
+                                ),
+                                child: Text(
+                                  languageProvider.isHiragana
+                                      ? 'ギャラリーをみる'
+                                      : 'ギャラリーを見る',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontsize,
@@ -181,27 +211,9 @@ class _MainPageState extends State<MainPage> {
                                       Color.fromARGB(255, 0, 164, 14),
                                 ),
                                 child: Text(
-                                  'あそび方',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontsize,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  Navigator.pushNamed(context, '/gallery');
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 0, 164, 14),
-                                ),
-                                child: Text(
-                                  'ギャラリー',
+                                  languageProvider.isHiragana
+                                      ? 'あそびかたをみる'
+                                      : 'あそび方を見る',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: fontsize,
@@ -216,7 +228,9 @@ class _MainPageState extends State<MainPage> {
                     Padding(
                       padding: EdgeInsets.all(3.0),
                       child: Text(
-                        '好きなものとアートを組み合わせると？？？',
+                        languageProvider.isHiragana
+                            ? 'すきなものとアートをあわせると？？？'
+                            : '好きなものとアートを組み合わせると？？？',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -296,7 +310,8 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  void _showSettingsDialog(BuildContext context, AudioProvider audioProvider) {
+  void _showSettingsDialog(BuildContext context, AudioProvider audioProvider,
+      LanguageProvider languageProvider) {
     double fontsize_big = 20;
     double fontsize = 12;
     showDialog(
@@ -304,7 +319,7 @@ class _MainPageState extends State<MainPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            '設定',
+            languageProvider.isHiragana ? 'せってい' : '設定',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -312,7 +327,7 @@ class _MainPageState extends State<MainPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '音量調整ボタン',
+                languageProvider.isHiragana ? 'おんりょうボタン' : '音量ボタン',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
               ),
@@ -325,10 +340,12 @@ class _MainPageState extends State<MainPage> {
                       audioProvider.playSound("tap1.mp3");
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      backgroundColor: audioProvider.isMuted
+                          ? Color.fromARGB(255, 255, 67, 195) // 音あり時は緑
+                          : Colors.grey,
                     ),
                     child: Text(
-                      '音なし',
+                      languageProvider.isHiragana ? 'おとなし' : '音なし',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -342,10 +359,12 @@ class _MainPageState extends State<MainPage> {
                       audioProvider.playSound("tap1.mp3");
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      backgroundColor: !audioProvider.isMuted
+                          ? Color.fromARGB(255, 255, 67, 195) // 音あり時は緑
+                          : Colors.grey,
                     ),
                     child: Text(
-                      '音あり',
+                      languageProvider.isHiragana ? 'おとあり' : '音あり',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -355,14 +374,51 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
               Text(
-                '年齢設定ボタン',
+                '漢字・ひらがなカタカナボタン',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
               ),
-              Text(
-                '準備中です',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      languageProvider.setLanguage(false);
+                      audioProvider.playSound("tap1.mp3");
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: languageProvider.isHiragana
+                          ? Color.fromARGB(255, 255, 67, 195)
+                          : Colors.grey,
+                    ),
+                    child: Text(
+                      'ひらがなカタカナ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  TextButton(
+                    onPressed: () {
+                      languageProvider.setLanguage(true);
+                      audioProvider.playSound("tap1.mp3");
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: !languageProvider.isHiragana
+                          ? Color.fromARGB(255, 255, 67, 195)
+                          : Colors.grey,
+                    ),
+                    child: Text(
+                      '漢字',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -376,7 +432,7 @@ class _MainPageState extends State<MainPage> {
                 backgroundColor: Color.fromARGB(255, 255, 67, 195),
               ),
               child: Text(
-                '閉じる',
+                languageProvider.isHiragana ? 'とじる' : '閉じる',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,

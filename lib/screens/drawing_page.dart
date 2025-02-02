@@ -228,8 +228,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                         setState(() {
                                           audioProvider.playSound("tap1.mp3");
                                           _mixColors();
-
-                                          _allmixedColor.add(MixedColor);
                                         });
 
                                         ismixed = true;
@@ -251,7 +249,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                         onPressed: () {
                                           setState(() {
                                             audioProvider.playSound("tap1.mp3");
-                                            _allmixedColor.removeLast();
 
                                             ismixed = false;
                                           });
@@ -298,11 +295,6 @@ class _DrawingPageState extends State<DrawingPage> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                if (ismixed == true) {
-                                  setState(() {
-                                    _allmixedColor.removeLast();
-                                  });
-                                }
                                 Navigator.of(context).pop();
                                 audioProvider.playSound("tap1.mp3");
                               },
@@ -322,7 +314,15 @@ class _DrawingPageState extends State<DrawingPage> {
                             TextButton(
                               onPressed: () {
                                 if (ismixed == true) {
+                                  MixedColor = MixedColor; // 確認のため同じ値を代入
                                   Navigator.of(context).pop(); // ダイアログを閉じる
+
+                                  Future.delayed(Duration(milliseconds: 100),
+                                      () {
+                                    setState(() {
+                                      _allmixedColor.add(MixedColor);
+                                    });
+                                  });
                                 }
                                 audioProvider.playSound("tap1.mp3");
                               },

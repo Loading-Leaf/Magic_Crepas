@@ -9,6 +9,7 @@ import "package:ai_art/screens/output_page.dart";
 import "package:ai_art/screens/tutorial_page.dart";
 import "package:ai_art/screens/image_gallery_page.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
+import 'package:ai_art/artproject/language_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +18,11 @@ void main() {
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
       .then((_) {
     runApp(
-      ChangeNotifierProvider(
-        create: (context) => AudioProvider(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => AudioProvider()),
+          ChangeNotifierProvider(create: (context) => LanguageProvider()), // 追加
+        ],
         child: MyApp(),
       ),
     );
