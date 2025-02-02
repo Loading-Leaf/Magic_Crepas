@@ -314,9 +314,14 @@ class _DrawingPageState extends State<DrawingPage> {
                             TextButton(
                               onPressed: () {
                                 if (ismixed == true) {
-                                  setState(() {
-                                    _allmixedColor.add(MixedColor);
-                                    Navigator.of(context).pop();
+                                  MixedColor = MixedColor; // 確認のため同じ値を代入
+                                  Navigator.of(context).pop(); // ダイアログを閉じる
+
+                                  Future.delayed(Duration(milliseconds: 100),
+                                      () {
+                                    setState(() {
+                                      _allmixedColor.add(MixedColor);
+                                    });
                                   });
                                 }
                                 audioProvider.playSound("tap1.mp3");
@@ -342,35 +347,34 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   void _mixColors() {
-    // SelectedColor1とSelectedColor2をHSVに変換
+    // 選択した色をHSVに変換
     HSVColor hsv1 = HSVColor.fromColor(SelectedColor1);
     HSVColor hsv2 = HSVColor.fromColor(SelectedColor2);
 
-    // 無彩色 (S = 0) の判定
-    bool isGray1 = hsv1.saturation == 0;
-    bool isGray2 = hsv2.saturation == 0;
+    // 無彩色 (彩度が低い色) の判定をしきい値を設けて調整
+    bool isGray1 = hsv1.saturation < 0.1;
+    bool isGray2 = hsv2.saturation < 0.1;
 
     double newHue;
     double newSaturation;
     double newValue;
 
     if (isGray1 && isGray2) {
-      // 両方無彩色なら、単純に Value の平均
-      newHue = 0; // Hueは意味がない
-      newSaturation = 0; // 無彩色
+      // 両方が無彩色なら、単純に明度 (Value) の平均を取る
+      newHue = 0;
+      newSaturation = 0;
       newValue = (hsv1.value + hsv2.value) / 2;
     } else if (isGray1) {
-      // hsv1 が無彩色なら、hsv2 の色相を維持
+      // 片方が無彩色なら、色の彩度を維持しつつ、影響を考慮
       newHue = hsv2.hue;
-      newSaturation = hsv2.saturation / 2; // 無彩色と混ぜるので少し彩度を下げる
-      newValue = (hsv1.value + hsv2.value) / 2;
+      newSaturation = hsv2.saturation * 0.75; // 無彩色と混ぜるので彩度をやや低下
+      newValue = (hsv1.value * 0.4 + hsv2.value * 0.6); // 彩度のある色の影響を大きくする
     } else if (isGray2) {
-      // hsv2 が無彩色なら、hsv1 の色相を維持
       newHue = hsv1.hue;
-      newSaturation = hsv1.saturation / 2;
-      newValue = (hsv1.value + hsv2.value) / 2;
+      newSaturation = hsv1.saturation * 0.75;
+      newValue = (hsv1.value * 0.6 + hsv2.value * 0.4);
     } else {
-      // 両方彩度がある色なら、通常の加重平均
+      // 両方に彩度がある色なら、加重平均で混ぜる
       double weight1 = hsv1.saturation;
       double weight2 = hsv2.saturation;
       double totalWeight = weight1 + weight2;
@@ -380,7 +384,7 @@ class _DrawingPageState extends State<DrawingPage> {
       newValue = (hsv1.value + hsv2.value) / 2;
     }
 
-    // 新しいHSVからRGBに変換
+    // HSV から Color に変換
     HSVColor mixedHSV = HSVColor.fromAHSV(1.0, newHue, newSaturation, newValue);
     MixedColor = mixedHSV.toColor();
   }
