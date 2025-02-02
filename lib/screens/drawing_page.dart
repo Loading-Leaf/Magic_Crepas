@@ -314,8 +314,10 @@ class _DrawingPageState extends State<DrawingPage> {
                             TextButton(
                               onPressed: () {
                                 if (ismixed == true) {
-                                  _allmixedColor.add(MixedColor);
-                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    _allmixedColor.add(MixedColor);
+                                    Navigator.of(context).pop();
+                                  });
                                 }
                                 audioProvider.playSound("tap1.mp3");
                               },
@@ -599,37 +601,62 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 1 ? Icons.create : Icons.create,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 1
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 1;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 1 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 1
+                                      ? Icons.create
+                                      : Icons.create,
+                                  color: edittingmode == 1
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 1;
+                                });
+                              },
+                              tooltip:
+                                  edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 2 ? Icons.brush : Icons.brush,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 2
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 2;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 2 ? 'Brush Mode' : 'Spray Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 2 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 2 ? Icons.brush : Icons.brush,
+                                  color: edittingmode == 2
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 2;
+                                });
+                              },
+                              tooltip: edittingmode == 2
+                                  ? 'Brush Mode'
+                                  : 'Spray Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
                         ],
                       ),
@@ -642,115 +669,182 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            icon: Icon(
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: edittingmode == 3
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 3 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
                                 edittingmode == 3 ? Icons.circle : Icons.circle,
                                 color: edittingmode == 3
                                     ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 3;
-                              });
-                            },
-                            tooltip: edittingmode == 3
-                                ? 'circle Mode'
-                                : 'circle Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    : const Color.fromARGB(255, 199, 198, 198),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 3;
+                                });
+                              },
+                              tooltip: edittingmode == 3
+                                  ? 'circle Mode'
+                                  : 'circle Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 4
-                                    ? Icons.change_history
-                                    : Icons.change_history,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 4
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 4;
-                              });
-                            },
-                            tooltip: edittingmode == 4
-                                ? 'triangle Mode'
-                                : 'triangle Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 4 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 4
+                                      ? Icons.change_history
+                                      : Icons.change_history,
+                                  color: edittingmode == 4
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 4;
+                                });
+                              },
+                              tooltip: edittingmode == 4
+                                  ? 'triangle Mode'
+                                  : 'triangle Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 5
-                                    ? Icons.rectangle
-                                    : Icons.rectangle,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 5
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 5;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 5 ? 'Rect Mode' : 'Rect Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 5 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 5
+                                      ? Icons.rectangle
+                                      : Icons.rectangle,
+                                  color: edittingmode == 5
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 5;
+                                });
+                              },
+                              tooltip:
+                                  edittingmode == 5 ? 'Rect Mode' : 'Rect Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
                         ],
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 6
-                                    ? Icons.favorite
-                                    : Icons.favorite,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 6
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 6;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 6 ? 'Heart Mode' : 'Heart Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 6 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 6
+                                      ? Icons.favorite
+                                      : Icons.favorite,
+                                  color: edittingmode == 6
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 6;
+                                });
+                              },
+                              tooltip: edittingmode == 6
+                                  ? 'Heart Mode'
+                                  : 'Heart Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 7 ? Icons.star : Icons.star,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 7
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 7;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 7 ? 'Star Mode' : 'Star Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 7 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 7 ? Icons.star : Icons.star,
+                                  color: edittingmode == 7
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 7;
+                                });
+                              },
+                              tooltip:
+                                  edittingmode == 7 ? 'Star Mode' : 'Star Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                                edittingmode == 8
-                                    ? Icons.diamond
-                                    : Icons.diamond,
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
                                 color: edittingmode == 8
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198)),
-                            onPressed: () {
-                              setState(() {
-                                edittingmode = 8;
-                              });
-                            },
-                            tooltip:
-                                edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
-                            splashColor: _selectedColor,
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                                    ? Colors.black
+                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
+                                width: edittingmode == 8 ? 1 : 0, //枠線の太さ
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                  edittingmode == 8
+                                      ? Icons.diamond
+                                      : Icons.diamond,
+                                  color: edittingmode == 8
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198)),
+                              onPressed: () {
+                                setState(() {
+                                  edittingmode = 8;
+                                });
+                              },
+                              tooltip:
+                                  edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
+                              splashColor: _selectedColor,
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
                           ),
                         ],
                       ),
@@ -1068,7 +1162,7 @@ class _DrawingPageState extends State<DrawingPage> {
           shape: BoxShape.circle,
           border: Border.all(
             width: _selectedColor == color ? 1 : 1,
-            color: _selectedColor == color ? Colors.black : _selectedColor,
+            color: _selectedColor == color ? Colors.black : Colors.grey,
           ),
         ),
       ),
@@ -1260,18 +1354,17 @@ class _DrawingPageState extends State<DrawingPage> {
         width: size,
         height: size,
         decoration: BoxDecoration(
-            color: selectedColor,
-            shape: BoxShape.circle,
-            border: Border.all(
-              width: (select1 && SelectedColor1 == selectedColor) ||
-                      (select2 && SelectedColor2 == selectedColor)
-                  ? 3
-                  : 1,
-              color: (select1 && SelectedColor1 == selectedColor) ||
-                      (select2 && SelectedColor2 == selectedColor)
-                  ? Colors.black
-                  : Colors.grey,
-            )),
+          color: selectedColor,
+          shape: BoxShape.circle,
+          border: Border.all(
+            width: (selectnum == 1 && select1) || (selectnum == 2 && select2)
+                ? 3
+                : 1,
+            color: (selectnum == 1 && select1) || (selectnum == 2 && select2)
+                ? Colors.black
+                : Colors.grey,
+          ),
+        ),
       ),
     );
   }
@@ -1379,9 +1472,8 @@ class _DrawingPageState extends State<DrawingPage> {
               color: _selectedColor,
               shape: BoxShape.circle,
               border: Border.all(
-                width: _strokeWidth == strokesize ? 3 : 1,
-                color:
-                    _strokeWidth == strokesize ? Colors.black : _selectedColor,
+                width: _strokeWidth == strokesize ? 1.5 : 1,
+                color: _strokeWidth == strokesize ? Colors.black : Colors.black,
               ),
             ),
           ),
@@ -1443,8 +1535,8 @@ class DrawingPainter extends CustomPainter {
       } else if (item is Rectangle) {
         paint.color = item.color;
         canvas.drawRect(
-          Rect.fromLTWH(
-              item.topLeft.dx, item.topLeft.dy, item.width, item.height),
+          Rect.fromLTWH(item.topLeft.dx - item.width / 2,
+              item.topLeft.dy - item.height / 2, item.width, item.height),
           paint,
         );
       } else if (item is Heart) {
