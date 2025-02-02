@@ -316,30 +316,38 @@ class _DrawingPageState extends State<DrawingPage> {
                                       ),
                                     ]
                                   ]),
-                              if (ismixed == true) ...[
-                                Text(
-                                  languageProvider.isHiragana
-                                      ? '「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ'
-                                      : '「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
+                              Text(
+                                languageProvider.isHiragana ? 'まぜたいろ' : '混ぜた色',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                ),
+                              ),
+                              if (ismixed == true &&
+                                  _allmixedColor.length <= 6) ...[
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 28,
+                                  height:
+                                      MediaQuery.of(context).size.width / 28,
+                                  decoration: BoxDecoration(
+                                    color: MixedColor,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ],
                             ]),
-                            if (ismixed == true &&
-                                _allmixedColor.length <= 6) ...[
-                              Container(
-                                width: MediaQuery.of(context).size.width / 28,
-                                height: MediaQuery.of(context).size.width / 28,
-                                decoration: BoxDecoration(
-                                  color: MixedColor,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Colors.black,
-                                  ),
+                            if (ismixed == true) ...[
+                              Text(
+                                languageProvider.isHiragana
+                                    ? '「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ'
+                                    : '「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
                                 ),
                               ),
                             ],

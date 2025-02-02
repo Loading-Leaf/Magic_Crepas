@@ -141,7 +141,9 @@ class _TutorialPageState extends State<TutorialPage> {
                 IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    page > 1 ? _undopage : null;
+                    if (page > 1) {
+                      _undopage();
+                    }
                     audioProvider.playSound("tap1.mp3");
                   },
                   tooltip: 'left',
@@ -377,7 +379,9 @@ class _TutorialPageState extends State<TutorialPage> {
                 IconButton(
                   icon: Icon(Icons.arrow_forward),
                   onPressed: () {
-                    page < 2 ? _redopage : null;
+                    if (page < 2) {
+                      _redopage();
+                    }
                     audioProvider.playSound("tap1.mp3");
                   },
                   tooltip: 'right',
