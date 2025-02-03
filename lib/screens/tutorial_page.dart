@@ -411,7 +411,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
-                          'assets/tutorial/${itemIndex + 1}.png',
+                          'assets/tutorial/${itemIndex + 1 + (page - 1) * 4}.png',
                         ),
                       ),
                     ),
