@@ -15,6 +15,8 @@ import 'package:ai_art/artproject/language_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
+import 'package:ai_art/artproject/modal_provider.dart';
+
 import 'dart:async'; // Timer を利用するために追加
 
 int randomIntWithRange(int min, int max) {
@@ -277,7 +279,7 @@ class _GeneratePageState extends State<GeneratePage> {
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    String random_num = randomIntWithRange(1, 7).toString();
+    String random_num = randomIntWithRange(1, 10).toString();
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     int is_answer = 1;
     List<Circle> _circles = []; // 円を保持するリスト
@@ -797,16 +799,28 @@ class _GeneratePageState extends State<GeneratePage> {
                         onPressed: () async {
                           if (wifiName != null) {
                             audioProvider.playSound("tap1.mp3");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Wi-Fiつながってないよ')),
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const SomethingDisconnectDialog(
+                                message1: 'Wi-Fiがつながっていないよ',
+                                message2: 'Wi-Fiがつながっていないよ',
+                              ),
                             );
+
                             return; // 早期リターン
                           } else if (image == null ||
                               drawingImageData == null) {
                             audioProvider.playSound("tap1.mp3");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('写真と絵を選択してね')),
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const SomethingDisconnectDialog(
+                                message1: 'しゃしんとえをえらんでね',
+                                message2: '写真と絵を選んでね',
+                              ),
                             );
+
                             return; // 早期リターン
                           }
                           audioProvider.playSound("tap2.mp3");
@@ -851,13 +865,19 @@ class _GeneratePageState extends State<GeneratePage> {
                                 resultbytes2 = resultbytes;
                               });
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('作ったアートが空だよ')),
+                              showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    const SomethingDisconnectDialog(
+                                  message1: 'つくったえがないよ',
+                                  message2: '作った絵がないよ',
+                                ),
                               );
                             }
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('アート生成に失敗したよ')),
+                            showDialog(
+                              context: context,
+                              builder: (context) => WifiDisconnectDialog(),
                             );
                           }
                         },

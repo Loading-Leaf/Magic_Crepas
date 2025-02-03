@@ -316,15 +316,17 @@ class _DrawingPageState extends State<DrawingPage> {
                                       ),
                                     ]
                                   ]),
-                              Text(
-                                languageProvider.isHiragana ? 'まぜたいろ' : '混ぜた色',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                ),
-                              ),
                               if (ismixed == true &&
                                   _allmixedColor.length <= 6) ...[
+                                Text(
+                                  languageProvider.isHiragana
+                                      ? 'まぜたいろ'
+                                      : '混ぜた色',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                  ),
+                                ),
                                 Container(
                                   width: MediaQuery.of(context).size.width / 28,
                                   height:
@@ -340,17 +342,6 @@ class _DrawingPageState extends State<DrawingPage> {
                                 ),
                               ],
                             ]),
-                            if (ismixed == true) ...[
-                              Text(
-                                languageProvider.isHiragana
-                                    ? '「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ'
-                                    : '「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                ),
-                              ),
-                            ],
                             Column(mainAxisSize: MainAxisSize.min, children: [
                               Text(
                                 'パレット',
@@ -365,6 +356,15 @@ class _DrawingPageState extends State<DrawingPage> {
                                   select2,
                                   setState),
                             ]),
+                            Text(
+                              languageProvider.isHiragana
+                                  ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ\n6しょくつくれるよ'
+                                  : '色を混ぜたら\n「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ\n6色作れるよ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                              ),
+                            ),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -15,7 +15,7 @@ class TutorialPage extends StatefulWidget {
 class _TutorialPageState extends State<TutorialPage> {
   int page = 1;
   final int itemsPerPage = 4;
-  final int totalItems = 8; // 総アイテム数を設定
+  final int totalItems = 4; // 総アイテム数を設定
 
   @override
   Widget build(BuildContext context) {
@@ -439,8 +439,9 @@ class _TutorialPageState extends State<TutorialPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TutorialDetailPage(
-                            tutorialnumber: 1,
-                            chapters: chapters1,
+                            tutorialnumber: tutorialItems[itemIndex]
+                                ["tutorialNumber"],
+                            chapters: tutorialItems[itemIndex]["chapters"],
                           ),
                         ),
                       );

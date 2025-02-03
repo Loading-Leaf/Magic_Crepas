@@ -7,6 +7,7 @@ import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:ai_art/artproject/language_provider.dart';
+import 'package:ai_art/artproject/modal_provider.dart';
 //import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -305,7 +306,7 @@ class _OutputPageState extends State<OutputPage> {
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
     double fontsize = screenSize.width / 74.6;
-    String random_num = randomIntWithRange(1, 7).toString();
+    String random_num = randomIntWithRange(1, 10).toString();
     int is_answer = 1;
     List<Circle> _circles = []; // 円を保持するリスト
     List<List<Circle>> _undoStack = [];
@@ -559,17 +560,33 @@ class _OutputPageState extends State<OutputPage> {
         name: 'output_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
       );
 
-      final snackBar = SnackBar(
-        content: Text(result['isSuccess'] ? '作った絵を保存しました！' : '作った絵の保存に失敗しました'),
+      showDialog(
+        context: context,
+        builder: (context) => SomethingDisconnectDialog(
+          message1: result['isSuccess']
+              ? 'つくったえをほぞんしたよ！'
+              : 'つくったえのほぞんにしっぱいしたよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: result['isSuccess']
+              ? '作った絵を保存したよ！'
+              : '作った絵の保存に失敗しました。\n設定を確認してください。',
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      audioProvider.playSound("established.mp3");
     } else {
+      showDialog(
+        context: context,
+        builder: (context) => const SomethingDisconnectDialog(
+          message1:
+              'しゃしんライブラリへのアクセスができないよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
+        ),
+      );
+      /*
       // 権限が拒否された場合、警告メッセージを表示
       final snackBar = SnackBar(
         content: Text('写真ライブラリへのアクセスが許可されていません。設定を確認してください。'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      */
     }
   }
 
@@ -589,18 +606,35 @@ class _OutputPageState extends State<OutputPage> {
         name: 'drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
       );
 
+      /*
+
       final snackBar = SnackBar(
         content:
             Text(result['isSuccess'] ? 'お絵描きした絵を保存しました！' : 'お絵描きした絵の保存に失敗しました'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      */
+      showDialog(
+        context: context,
+        builder: (context) => SomethingDisconnectDialog(
+          message1: result['isSuccess']
+              ? 'おえかきしたえをほぞんしたよ'
+              : 'おえかきしたえのほぞんにしっぱいしたよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: result['isSuccess']
+              ? 'お絵描きした絵を保存したよ！'
+              : 'お絵描きした絵の保存に失敗しました。\n設定を確認してください。',
+        ),
+      );
       audioProvider.playSound("established.mp3");
     } else {
       // 権限が拒否された場合、警告メッセージを表示
-      final snackBar = SnackBar(
-        content: Text('写真ライブラリへのアクセスが許可されていません。設定を確認してください。'),
+      showDialog(
+        context: context,
+        builder: (context) => const SomethingDisconnectDialog(
+          message1: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
+          message2: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -957,8 +991,13 @@ class _OutputPageState extends State<OutputPage> {
                               onPressed: () async {
                                 if (wifiName != null) {
                                   audioProvider.playSound("tap1.mp3");
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Wi-Fiつながってないよ')),
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        const SomethingDisconnectDialog(
+                                      message1: 'Wi-Fiがつながっていないよ',
+                                      message2: 'Wi-Fiがつながっていないよ',
+                                    ),
                                   );
                                   return; // 早期リターン
                                 }
@@ -1000,13 +1039,20 @@ class _OutputPageState extends State<OutputPage> {
                                       resultbytes2 = resultbytes;
                                     });
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('作ったアートが空だよ')),
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          const SomethingDisconnectDialog(
+                                        message1: 'つくったえがないよ',
+                                        message2: '作った絵がないよ',
+                                      ),
                                     );
                                   }
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('アート生成に失敗したよ')),
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        WifiDisconnectDialog(),
                                   );
                                 }
                               },
@@ -1074,18 +1120,29 @@ class _OutputPageState extends State<OutputPage> {
           await GalleryDatabaseHelper.instance.insertDrawing(drawingData);
 
       if (result > 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('保存に成功しました')),
+        showDialog(
+          context: context,
+          builder: (context) => const SomethingDisconnectDialog(
+            message1: 'プロジェクトをほぞんしたよ',
+            message2: 'プロジェクトを保存したよ',
+          ),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('保存に失敗しました')),
+        showDialog(
+          context: context,
+          builder: (context) => const SomethingDisconnectDialog(
+            message1: 'ほぞんにしっぱいしたよ。おとうさんとおかあさんにはなしてね。',
+            message2: '保存に失敗しました',
+          ),
         );
       }
     } catch (e) {
-      print('Error saving to gallery DB: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('エラーが発生しました: $e')),
+      showDialog(
+        context: context,
+        builder: (context) => const SomethingDisconnectDialog(
+          message1: 'エラーがはっせいしたよ',
+          message2: 'エラーが発生しました',
+        ),
       );
     }
   }
