@@ -437,8 +437,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 SizedBox(width: 20),
                 TextButton(
                   onPressed: () => {
-                    _showPhotoAndEmotionModal,
                     audioProvider.playSound("tap1.mp3"),
+                    _showPhotoAndEmotionModal(),
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
@@ -454,8 +454,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 SizedBox(width: 20),
                 TextButton(
                   onPressed: () => {
-                    _showDeleteConfirmDialog,
                     audioProvider.playSound("tap1.mp3"),
+                    _showDeleteConfirmDialog(),
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 67, 195),
