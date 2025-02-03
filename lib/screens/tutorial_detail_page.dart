@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/language_provider.dart';
+import 'package:ai_art/artproject/modal_provider.dart';
 
 class TutorialDetailPage extends StatefulWidget {
   final List<String> chapters;

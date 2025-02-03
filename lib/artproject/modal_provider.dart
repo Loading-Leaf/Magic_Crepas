@@ -79,7 +79,7 @@ class _SomethingDisconnectDialogState extends State<SomethingDisconnectDialog> {
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontsize,
-            color: Colors.white),
+            color: Colors.black),
       ),
       content: const SizedBox.shrink(),
       actions: <Widget>[

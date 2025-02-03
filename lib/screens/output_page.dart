@@ -312,10 +312,13 @@ class _OutputPageState extends State<OutputPage> {
     List<List<Circle>> _undoStack = [];
     List<List<Circle>> _redoStack = [];
     String machigaicount = "";
+    int machigaitotal = 0;
     if (int.parse(random_num) < 7) {
       machigaicount = "3";
+      machigaitotal = 3;
     } else if (int.parse(random_num) >= 7) {
       machigaicount = "5";
+      machigaitotal = 5;
     }
     showDialog<void>(
       context: context,
@@ -376,7 +379,7 @@ class _OutputPageState extends State<OutputPage> {
                             width: screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
-                                if (_circles.length >= 3) return;
+                                if (_circles.length >= machigaitotal) return;
 
                                 setState(() {
                                   double dx = details.localPosition.dx;
@@ -631,7 +634,8 @@ class _OutputPageState extends State<OutputPage> {
       showDialog(
         context: context,
         builder: (context) => const SomethingDisconnectDialog(
-          message1: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
+          message1:
+              'しゃしんライブラリへのアクセスができないよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
           message2: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
         ),
       );

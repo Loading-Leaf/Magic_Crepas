@@ -8,6 +8,7 @@ import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のイ�
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'package:ai_art/artproject/language_provider.dart';
+import 'package:ai_art/artproject/modal_provider.dart';
 
 class GalleryDetailPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -40,17 +41,28 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
         name: 'output_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
       );
 
-      final snackBar = SnackBar(
-        content: Text(result['isSuccess'] ? '作った絵を保存しました！' : '作った絵の保存に失敗しました'),
+      showDialog(
+        context: context,
+        builder: (context) => SomethingDisconnectDialog(
+          message1: result['isSuccess']
+              ? 'つくったえをほぞんしたよ！'
+              : 'つくったえのほぞんにしっぱいしたよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: result['isSuccess']
+              ? '作った絵を保存したよ！'
+              : '作った絵の保存に失敗しました。\n設定を確認してください。',
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       audioProvider.playSound("established.mp3");
     } else {
       // 権限が拒否された場合、警告メッセージを表示
-      final snackBar = SnackBar(
-        content: Text('写真ライブラリへのアクセスが許可されていません。設定を確認してください。'),
+      showDialog(
+        context: context,
+        builder: (context) => const SomethingDisconnectDialog(
+          message1:
+              'しゃしんライブラリへのアクセスができないよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -70,18 +82,28 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
         name: 'drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg',
       );
 
-      final snackBar = SnackBar(
-        content:
-            Text(result['isSuccess'] ? 'お絵描きした絵を保存しました！' : 'お絵描きした絵の保存に失敗しました'),
+      showDialog(
+        context: context,
+        builder: (context) => SomethingDisconnectDialog(
+          message1: result['isSuccess']
+              ? 'おえかきしたえをほぞんしたよ'
+              : 'おえかきしたえのほぞんにしっぱいしたよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: result['isSuccess']
+              ? 'お絵描きした絵を保存したよ！'
+              : 'お絵描きした絵の保存に失敗しました。\n設定を確認してください。',
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       audioProvider.playSound("established.mp3");
     } else {
       // 権限が拒否された場合、警告メッセージを表示
-      final snackBar = SnackBar(
-        content: Text('写真ライブラリへのアクセスが許可されていません。設定を確認してください。'),
+      showDialog(
+        context: context,
+        builder: (context) => const SomethingDisconnectDialog(
+          message1:
+              'しゃしんライブラリへのアクセスができないよ。\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね。',
+          message2: '写真ライブラリへのアクセスが許可されていません。設定を確認してください。',
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

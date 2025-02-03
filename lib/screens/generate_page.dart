@@ -287,10 +287,13 @@ class _GeneratePageState extends State<GeneratePage> {
     List<List<Circle>> _redoStack = [];
 
     String machigaicount = "";
+    int machigaitotal = 0;
     if (int.parse(random_num) < 7) {
       machigaicount = "3";
+      machigaitotal = 3;
     } else if (int.parse(random_num) >= 7) {
       machigaicount = "5";
+      machigaitotal = 5;
     }
 
     final languageProvider =
@@ -355,7 +358,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             width: screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
-                                if (_circles.length >= 3) return;
+                                if (_circles.length >= machigaitotal) return;
 
                                 setState(() {
                                   double dx = details.localPosition.dx;
