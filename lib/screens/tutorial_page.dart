@@ -47,6 +47,7 @@ class _TutorialPageState extends State<TutorialPage> {
         languageProvider.isHiragana
             ? "うえからパレット、ふで、かみのいろをえらぶことができるよ\nくわしくは「おえかき」のあそびかたをみてね"
             : "上からパレット、筆、紙の色を選ぶことができるよ\n詳しくは「お絵描き」のあそび方を見てね",
+        languageProvider.isHiragana ? "えをかいてみたよ" : "絵を描いてみたよ",
         languageProvider.isHiragana
             ? "えをかきおわったら「できたよ」をおしてね"
             : "絵を描き終わったら「できたよ」を押してね",
@@ -86,8 +87,8 @@ class _TutorialPageState extends State<TutorialPage> {
             ? "おとがなったらえがかんせいするよ！\nえがかんせいすると、まちがいさがしのこたえもみれるよ"
             : "音が鳴ったら絵が完成するよ！\n絵が完成すると、間違いさがしの答えも見れるよ",
         languageProvider.isHiragana
-            ? "おとがなったらえがかんせいしたよ！\n「かんせいしたえをみる」をおしてね"
-            : "音が鳴ったら絵が完成したよ！\n「完成した絵を見る」を押してね",
+            ? "おとがなったらえがかんせいするよ！\n「かんせいしたえをみる」をおしてね"
+            : "音が鳴ったら絵が完成するよ！\n「完成した絵を見る」を押してね",
         languageProvider.isHiragana
             ? "つくったえとおえかきしたえがみられるよ"
             : "作った絵とお絵描きした絵が見られるよ",
@@ -487,7 +488,10 @@ class _TutorialPageState extends State<TutorialPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back,
+                      color: page > 1
+                          ? Color.fromARGB(255, 255, 67, 195)
+                          : const Color.fromARGB(255, 199, 198, 198)),
                   onPressed: () {
                     if (page > 1) {
                       setState(() => page -= 1);
@@ -503,7 +507,10 @@ class _TutorialPageState extends State<TutorialPage> {
                   children: buildTutorialGrid(),
                 ),
                 IconButton(
-                  icon: Icon(Icons.arrow_forward),
+                  icon: Icon(Icons.arrow_forward,
+                      color: page < 2
+                          ? Color.fromARGB(255, 255, 67, 195)
+                          : const Color.fromARGB(255, 199, 198, 198)),
                   onPressed: () {
                     if (page * itemsPerPage < totalItems) {
                       setState(() => page += 1);
