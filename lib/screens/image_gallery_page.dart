@@ -34,102 +34,108 @@ class _GalleryPageState extends State<GalleryPage> {
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
 
-    return Scaffold(
-      body: GestureDetector(
-        child: SizedBox.expand(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 20),
-              Text(
-                languageProvider.isHiragana
-                    ? 'いままでつくったえをみれるよ～'
-                    : '今まで作った絵を見れるよ～',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsizeBig,
-                ),
-              ),
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: _drawingsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('まだないよ～');
-                  } else {
-                    List<Map<String, dynamic>> drawings = snapshot.data!;
-                    return Expanded(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 6,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: drawings.length,
-                        itemBuilder: (context, index) {
-                          Uint8List? outputImage =
-                              drawings[index]['outputimage'];
-                          if (outputImage == null || outputImage.isEmpty) {
-                            return Container(
-                              color: Colors.grey,
-                              child: const Center(child: Text("Invalid Image")),
-                            );
-                          }
-                          return GestureDetector(
-                            onTap: () {
-                              audioProvider.playSound("tap1.mp3");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      GalleryDetailPage(data: drawings[index]),
-                                ),
-                              );
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.memory(
-                                outputImage,
-                                width: imageWidth,
-                                height: imageHeight,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      audioProvider.playSound("tap1.mp3");
-                      Navigator.pushNamed(context, '/');
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 255, 67, 195),
-                    ),
-                    child: Text(
-                      languageProvider.isHiragana ? 'とじる' : '閉じる',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white,
-                      ),
-                    ),
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          child: SizedBox.expand(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 20),
+                Text(
+                  languageProvider.isHiragana
+                      ? 'いままでつくったえをみれるよ～'
+                      : '今まで作った絵を見れるよ～',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsizeBig,
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
+                ),
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  future: _drawingsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text('まだないよ～');
+                    } else {
+                      List<Map<String, dynamic>> drawings = snapshot.data!;
+                      return Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 6,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: drawings.length,
+                          itemBuilder: (context, index) {
+                            Uint8List? outputImage =
+                                drawings[index]['outputimage'];
+                            if (outputImage == null || outputImage.isEmpty) {
+                              return Container(
+                                color: Colors.grey,
+                                child:
+                                    const Center(child: Text("Invalid Image")),
+                              );
+                            }
+                            return GestureDetector(
+                              onTap: () {
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GalleryDetailPage(
+                                        data: drawings[index]),
+                                  ),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.memory(
+                                  outputImage,
+                                  width: imageWidth,
+                                  height: imageHeight,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        audioProvider.playSound("tap1.mp3");
+                        Navigator.pushNamed(context, '/');
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        languageProvider.isHiragana ? 'とじる' : '閉じる',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

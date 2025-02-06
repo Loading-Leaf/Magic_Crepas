@@ -36,136 +36,140 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
-    return Scaffold(
-      body: GestureDetector(
-        onTapUp: (details) {
-          // タッチされた位置を取得
-          Offset tapPosition = details.localPosition;
-          // キラキラエフェクトを表示
-          showSparkleEffect(context, tapPosition);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // 中央寄せ
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Text(
-                languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize_big,
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            // タッチされた位置を取得
+            Offset tapPosition = details.localPosition;
+            // キラキラエフェクトを表示
+            showSparkleEffect(context, tapPosition);
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // 中央寄せ
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize_big,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 3),
-                    ),
-                    height: screenSize.width * 0.2585,
-                    width: screenSize.width * 0.55,
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Image.asset(
-                        'assets/tutorial/' +
-                            tutorialnum.toString() +
-                            "/" +
-                            chapter.toString() +
-                            '.png',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 3),
+                      ),
+                      height: screenSize.width * 0.2585,
+                      width: screenSize.width * 0.55,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Image.asset(
+                          'assets/tutorial/' +
+                              tutorialnum.toString() +
+                              "/" +
+                              chapter.toString() +
+                              '.png',
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            if (chapter >= chapters.length) {
-                              audioProvider.playSound("tap2.mp3");
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              if (chapter >= chapters.length) {
+                                audioProvider.playSound("tap2.mp3");
+                                Navigator.pushNamed(context, '/tutorial');
+                              } else {
+                                audioProvider.playSound("tap1.mp3");
+                                chapter += 1; // 章を進める
+                              }
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.isHiragana ? 'すすむ' : '進む',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              if (chapter <= 1) {
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/tutorial');
+                              } else {
+                                audioProvider.playSound("tap1.mp3");
+                                chapter -= 1; // 章を戻す
+                              }
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.isHiragana ? 'もどる' : '戻る',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              audioProvider.playSound("tap1.mp3");
                               Navigator.pushNamed(context, '/tutorial');
-                            } else {
-                              audioProvider.playSound("tap1.mp3");
-                              chapter += 1; // 章を進める
-                            }
-                          });
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          languageProvider.isHiragana ? 'すすむ' : '進む',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            'やめる',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            if (chapter <= 1) {
-                              audioProvider.playSound("tap1.mp3");
-                              Navigator.pushNamed(context, '/tutorial');
-                            } else {
-                              audioProvider.playSound("tap1.mp3");
-                              chapter -= 1; // 章を戻す
-                            }
-                          });
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          languageProvider.isHiragana ? 'もどる' : '戻る',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            audioProvider.playSound("tap1.mp3");
-                            Navigator.pushNamed(context, '/tutorial');
-                          });
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          'やめる',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Text(chapters[chapter - 1],
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: fontsize)),
-            ),
-          ],
+                    ],
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(chapters[chapter - 1],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: fontsize)),
+              ),
+            ],
+          ),
         ),
       ),
     );

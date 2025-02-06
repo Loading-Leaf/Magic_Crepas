@@ -450,131 +450,114 @@ class _DrawingPageState extends State<DrawingPage> {
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
-    return Scaffold(
-      body: GestureDetector(
-        onTapUp: (details) {
-          // タッチされた位置を取得
-          Offset tapPosition = details.localPosition;
-          // キラキラエフェクトを表示
-          showSparkleEffect(context, tapPosition);
-        },
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.height * 0.1), // 左辺だけに余白を追加
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width *
-                            0.1), // 左辺だけに余白を追加
-                  ),
-                  // 描画エリア
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        // RepaintBoundaryを追加
-                        RepaintBoundary(
-                          key: _globalKey, // スクリーンショットを取るためのキー
-                          child: Container(
-                            color: _selectedpaperColor,
-                            child: GestureDetector(
-                              onTapUp: (details) {
-                                setState(() {
-                                  Offset tapPosition = details.localPosition;
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            // タッチされた位置を取得
+            Offset tapPosition = details.localPosition;
+            // キラキラエフェクトを表示
+            showSparkleEffect(context, tapPosition);
+          },
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    left:
+                        MediaQuery.of(context).size.height * 0.1), // 左辺だけに余白を追加
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width *
+                              0.1), // 左辺だけに余白を追加
+                    ),
+                    // 描画エリア
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          // RepaintBoundaryを追加
+                          RepaintBoundary(
+                            key: _globalKey, // スクリーンショットを取るためのキー
+                            child: Container(
+                              color: _selectedpaperColor,
+                              child: GestureDetector(
+                                onTapUp: (details) {
+                                  setState(() {
+                                    Offset tapPosition = details.localPosition;
 
-                                  if (edittingmode == 3) {
-                                    audioProvider.playSound("stamp.mp3");
-                                    _drawItems.add(Circle(
-                                        tapPosition,
-                                        20 * (_strokeWidth / 10),
-                                        _selectedColor));
-                                  } else if (edittingmode == 4) {
-                                    audioProvider.playSound("stamp.mp3");
-                                    _drawItems.add(Triangle(
-                                        tapPosition,
-                                        30 * (_strokeWidth / 10),
-                                        _selectedColor));
-                                  } else if (edittingmode == 5) {
-                                    audioProvider.playSound("stamp.mp3");
-                                    _drawItems.add(Rectangle(
-                                        tapPosition,
-                                        40 * (_strokeWidth / 10),
-                                        40 * (_strokeWidth / 10),
-                                        _selectedColor));
-                                  } else if (edittingmode == 6) {
-                                    audioProvider.playSound("stamp.mp3");
-                                    _drawItems.add(Heart(
-                                        tapPosition,
-                                        30 * (_strokeWidth / 10),
-                                        _selectedColor));
-                                  } else if (edittingmode == 7) {
-                                    audioProvider.playSound("stamp.mp3");
-                                    _drawItems.add(Star(
-                                        tapPosition,
-                                        30 * (_strokeWidth / 10),
-                                        _selectedColor));
-                                  } else if (edittingmode == 8) {
-                                    audioProvider.playSound("stamp.mp3");
-                                    _drawItems.add(Diamond(
-                                        tapPosition,
-                                        30 * (_strokeWidth / 10),
-                                        _selectedColor));
-                                  }
-                                });
-                              },
-                              onPanUpdate: (details) {
-                                setState(() {
-                                  if (!isDrawing) {
-                                    //audioProvider.playSound("drawing.mp3");
-                                    isDrawing = true;
-                                    if (edittingmode == 1) {
-                                      audioProvider.playSound("drawing.mp3");
-                                    } else if (edittingmode == 2) {
-                                      audioProvider.playSound("drawing2.mp3");
+                                    if (edittingmode == 3) {
+                                      audioProvider.playSound("stamp.mp3");
+                                      _drawItems.add(Circle(
+                                          tapPosition,
+                                          20 * (_strokeWidth / 10),
+                                          _selectedColor));
+                                    } else if (edittingmode == 4) {
+                                      audioProvider.playSound("stamp.mp3");
+                                      _drawItems.add(Triangle(
+                                          tapPosition,
+                                          30 * (_strokeWidth / 10),
+                                          _selectedColor));
+                                    } else if (edittingmode == 5) {
+                                      audioProvider.playSound("stamp.mp3");
+                                      _drawItems.add(Rectangle(
+                                          tapPosition,
+                                          40 * (_strokeWidth / 10),
+                                          40 * (_strokeWidth / 10),
+                                          _selectedColor));
+                                    } else if (edittingmode == 6) {
+                                      audioProvider.playSound("stamp.mp3");
+                                      _drawItems.add(Heart(
+                                          tapPosition,
+                                          30 * (_strokeWidth / 10),
+                                          _selectedColor));
+                                    } else if (edittingmode == 7) {
+                                      audioProvider.playSound("stamp.mp3");
+                                      _drawItems.add(Star(
+                                          tapPosition,
+                                          30 * (_strokeWidth / 10),
+                                          _selectedColor));
+                                    } else if (edittingmode == 8) {
+                                      audioProvider.playSound("stamp.mp3");
+                                      _drawItems.add(Diamond(
+                                          tapPosition,
+                                          30 * (_strokeWidth / 10),
+                                          _selectedColor));
                                     }
-                                  }
+                                  });
+                                },
+                                onPanUpdate: (details) {
+                                  setState(() {
+                                    if (!isDrawing) {
+                                      //audioProvider.playSound("drawing.mp3");
+                                      isDrawing = true;
+                                      if (edittingmode == 1) {
+                                        audioProvider.playSound("drawing.mp3");
+                                      } else if (edittingmode == 2) {
+                                        audioProvider.playSound("drawing2.mp3");
+                                      }
+                                    }
 
-                                  final RenderBox renderBox =
-                                      context.findRenderObject() as RenderBox;
-                                  final localPosition = renderBox
-                                      .globalToLocal(details.globalPosition);
-                                  // 左側の余白を考慮して座標補正
-                                  final padding_left =
-                                      MediaQuery.of(context).size.width * 0.1;
-                                  final padding_top =
-                                      MediaQuery.of(context).size.height * 0.1;
-                                  final correctedPosition = Offset(
-                                    localPosition.dx - padding_left,
-                                    localPosition.dy - padding_top - 20,
-                                  );
-                                  if (edittingmode == 2 &&
-                                      correctedPosition.dx >= -20 &&
-                                      correctedPosition.dx <=
-                                          renderBox.size.width -
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.4 +
-                                              20 &&
-                                      correctedPosition.dy >= -20 &&
-                                      correctedPosition.dy <=
-                                          renderBox.size.height -
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.4 +
-                                              20) {
                                     final RenderBox renderBox =
                                         context.findRenderObject() as RenderBox;
                                     final localPosition = renderBox
                                         .globalToLocal(details.globalPosition);
-                                    _addSprayPoints(localPosition, context);
-                                  } else if (edittingmode == 1) {
-                                    if (correctedPosition.dx >= -20 &&
+                                    // 左側の余白を考慮して座標補正
+                                    final padding_left =
+                                        MediaQuery.of(context).size.width * 0.1;
+                                    final padding_top =
+                                        MediaQuery.of(context).size.height *
+                                            0.1;
+                                    final correctedPosition = Offset(
+                                      localPosition.dx - padding_left,
+                                      localPosition.dy - padding_top - 20,
+                                    );
+                                    if (edittingmode == 2 &&
+                                        correctedPosition.dx >= -20 &&
                                         correctedPosition.dx <=
                                             renderBox.size.width -
                                                 MediaQuery.of(context)
@@ -590,496 +573,545 @@ class _DrawingPageState extends State<DrawingPage> {
                                                         .height *
                                                     0.4 +
                                                 20) {
-                                      _currentLinePoints.add(correctedPosition);
+                                      final RenderBox renderBox = context
+                                          .findRenderObject() as RenderBox;
+                                      final localPosition =
+                                          renderBox.globalToLocal(
+                                              details.globalPosition);
+                                      _addSprayPoints(localPosition, context);
+                                    } else if (edittingmode == 1) {
+                                      if (correctedPosition.dx >= -20 &&
+                                          correctedPosition.dx <=
+                                              renderBox.size.width -
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.4 +
+                                                  20 &&
+                                          correctedPosition.dy >= -20 &&
+                                          correctedPosition.dy <=
+                                              renderBox.size.height -
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.4 +
+                                                  20) {
+                                        _currentLinePoints
+                                            .add(correctedPosition);
+                                      }
                                     }
-                                  }
-                                });
-                              },
-                              onPanEnd: (details) {
-                                setState(() {
-                                  if (edittingmode == 2 &&
-                                      _currentSprayPoints.isNotEmpty) {
-                                    audioProvider.pauseAudio();
-                                    isDrawing = false;
-                                    _drawItems.add(SprayPoints(
-                                        List.from(_currentSprayPoints),
-                                        _selectedColor,
-                                        _sprayDensity));
-                                    _currentSprayPoints.clear();
-                                  } else if (edittingmode == 1 &&
-                                      _currentLinePoints.isNotEmpty) {
-                                    audioProvider.pauseAudio();
-                                    isDrawing = false;
-                                    _drawItems.add(Line(_currentLinePoints,
-                                        _selectedColor, _strokeWidth));
-                                    _currentLinePoints = [];
-                                  }
-                                  _undoneItems.clear();
-                                });
-                              },
-                              child: CustomPaint(
-                                size: Size(
-                                    MediaQuery.of(context).size.width * 0.6,
-                                    MediaQuery.of(context).size.height * 0.6),
-                                painter: DrawingPainter(
-                                  _drawItems,
-                                  _currentLinePoints,
-                                  _currentSprayPoints,
-                                  _strokeWidth,
-                                  _selectedColor,
+                                  });
+                                },
+                                onPanEnd: (details) {
+                                  setState(() {
+                                    if (edittingmode == 2 &&
+                                        _currentSprayPoints.isNotEmpty) {
+                                      audioProvider.pauseAudio();
+                                      isDrawing = false;
+                                      _drawItems.add(SprayPoints(
+                                          List.from(_currentSprayPoints),
+                                          _selectedColor,
+                                          _sprayDensity));
+                                      _currentSprayPoints.clear();
+                                    } else if (edittingmode == 1 &&
+                                        _currentLinePoints.isNotEmpty) {
+                                      audioProvider.pauseAudio();
+                                      isDrawing = false;
+                                      _drawItems.add(Line(_currentLinePoints,
+                                          _selectedColor, _strokeWidth));
+                                      _currentLinePoints = [];
+                                    }
+                                    _undoneItems.clear();
+                                  });
+                                },
+                                child: CustomPaint(
+                                  size: Size(
+                                      MediaQuery.of(context).size.width * 0.6,
+                                      MediaQuery.of(context).size.height * 0.6),
+                                  painter: DrawingPainter(
+                                    _drawItems,
+                                    _currentLinePoints,
+                                    _currentSprayPoints,
+                                    _strokeWidth,
+                                    _selectedColor,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        if (_currentLinePoints.isNotEmpty)
-                          CustomPaint(
-                            painter: DrawingPainter(
-                              [],
-                              _currentLinePoints,
-                              _currentSprayPoints,
-                              _strokeWidth,
-                              _selectedColor,
+                          if (_currentLinePoints.isNotEmpty)
+                            CustomPaint(
+                              painter: DrawingPainter(
+                                [],
+                                _currentLinePoints,
+                                _currentSprayPoints,
+                                _strokeWidth,
+                                _selectedColor,
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  Column(children: [
-                    SizedBox(height: screenSize.height * 0.01),
-                    if (selectmode == 1) ...[
-                      // 色選択用のウィジェット
-                      Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: Text('パレット',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
+                        ],
                       ),
-                      _buildColorPicker(MediaQuery.of(context).size.width / 28),
+                    ),
+                    Column(children: [
+                      SizedBox(height: screenSize.height * 0.01),
+                      if (selectmode == 1) ...[
+                        // 色選択用のウィジェット
+                        Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Text('パレット',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
+                        ),
+                        _buildColorPicker(
+                            MediaQuery.of(context).size.width / 28),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                _MixColorDialog(context);
+                              },
+                              tooltip: 'mix color',
+                              splashColor: Color.fromARGB(255, 255, 67, 195),
+                              iconSize: MediaQuery.of(context).size.width / 28,
+                            ),
+                          ],
+                        ),
+                      ] else if (selectmode == 2) ...[
+                        Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Text(
+                              languageProvider.isHiragana ? 'ふでのおおきさ' : '筆の大きさ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
+                        ),
+                        _buildStrokePicker(
+                            MediaQuery.of(context).size.width / 28),
+                        Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Text(
+                              languageProvider.isHiragana ? 'ふでのしゅるい' : '筆の種類',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 1
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 1 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 1
+                                        ? Icons.create
+                                        : Icons.create,
+                                    color: edittingmode == 1
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 1;
+                                  });
+                                },
+                                tooltip:
+                                    edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 2
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 2 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 2
+                                        ? Icons.brush
+                                        : Icons.brush,
+                                    color: edittingmode == 2
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 2;
+                                  });
+                                },
+                                tooltip: edittingmode == 2
+                                    ? 'Brush Mode'
+                                    : 'Spray Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Text('スタンプ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 3
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 3 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                  edittingmode == 3
+                                      ? Icons.circle
+                                      : Icons.circle,
+                                  color: edittingmode == 3
+                                      ? _selectedColor // 選択されたらピンク
+                                      : const Color.fromARGB(
+                                          255, 199, 198, 198),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 3;
+                                  });
+                                },
+                                tooltip: edittingmode == 3
+                                    ? 'circle Mode'
+                                    : 'circle Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 4
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 4 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 4
+                                        ? Icons.change_history
+                                        : Icons.change_history,
+                                    color: edittingmode == 4
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 4;
+                                  });
+                                },
+                                tooltip: edittingmode == 4
+                                    ? 'triangle Mode'
+                                    : 'triangle Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 5
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 5 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 5
+                                        ? Icons.rectangle
+                                        : Icons.rectangle,
+                                    color: edittingmode == 5
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 5;
+                                  });
+                                },
+                                tooltip: edittingmode == 5
+                                    ? 'Rect Mode'
+                                    : 'Rect Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 6
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 6 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 6
+                                        ? Icons.favorite
+                                        : Icons.favorite,
+                                    color: edittingmode == 6
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 6;
+                                  });
+                                },
+                                tooltip: edittingmode == 6
+                                    ? 'Heart Mode'
+                                    : 'Heart Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 7
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 7 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 7 ? Icons.star : Icons.star,
+                                    color: edittingmode == 7
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 7;
+                                  });
+                                },
+                                tooltip: edittingmode == 7
+                                    ? 'Star Mode'
+                                    : 'Star Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: edittingmode == 8
+                                      ? Colors.black
+                                      : Color.fromARGB(
+                                          255, 199, 198, 198), //枠線の色
+                                  width: edittingmode == 8 ? 1 : 0, //枠線の太さ
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                    edittingmode == 8
+                                        ? Icons.diamond
+                                        : Icons.diamond,
+                                    color: edittingmode == 8
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198)),
+                                onPressed: () {
+                                  setState(() {
+                                    edittingmode = 8;
+                                  });
+                                },
+                                tooltip:
+                                    edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
+                                splashColor: _selectedColor,
+                                iconSize:
+                                    MediaQuery.of(context).size.width / 28,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ] else if (selectmode == 3) ...[
+                        Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Text(
+                              languageProvider.isHiragana ? 'かみのいろ' : '紙の色',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
+                        ),
+                        _buildPaperColorPicker(
+                            MediaQuery.of(context).size.width / 28)
+                      ],
                       Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              audioProvider.playSound("tap1.mp3");
-                              _MixColorDialog(context);
-                            },
-                            tooltip: 'mix color',
+                            icon: Icon(Icons.undo),
+                            onPressed: _drawItems.isNotEmpty ? _undo : null,
+                            tooltip: 'Undo',
+                            splashColor: Color.fromARGB(255, 255, 67, 195),
+                            iconSize: MediaQuery.of(context).size.width / 28,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.redo),
+                            onPressed: _undoneItems.isNotEmpty ? _redo : null,
+                            tooltip: 'Redo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
                             iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                         ],
                       ),
-                    ] else if (selectmode == 2) ...[
-                      Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: Text(
-                            languageProvider.isHiragana ? 'ふでのおおきさ' : '筆の大きさ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
+                    ]),
+                    Column(children: [
+                      SizedBox(height: screenSize.height * 0.01),
+                      IconButton(
+                        icon: Icon(Icons.palette),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 1;
+                            audioProvider.playSound("tap1.mp3");
+                          });
+                        },
+                        tooltip: 'palette',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        color: selectmode == 1
+                            ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
+                            : const Color.fromARGB(255, 199, 198, 198),
                       ),
-                      _buildStrokePicker(
-                          MediaQuery.of(context).size.width / 28),
-                      Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: Text(
-                            languageProvider.isHiragana ? 'ふでのしゅるい' : '筆の種類',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
+                      SizedBox(height: screenSize.height * 0.01),
+                      IconButton(
+                        icon: Icon(Icons.brush),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 2;
+                            audioProvider.playSound("tap1.mp3");
+                          });
+                        },
+                        tooltip: 'pen',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        color: selectmode == 2
+                            ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
+                            : const Color.fromARGB(255, 199, 198, 198),
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 1
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 1 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 1
-                                      ? Icons.create
-                                      : Icons.create,
-                                  color: edittingmode == 1
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 1;
-                                });
-                              },
-                              tooltip:
-                                  edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 2
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 2 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 2 ? Icons.brush : Icons.brush,
-                                  color: edittingmode == 2
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 2;
-                                });
-                              },
-                              tooltip: edittingmode == 2
-                                  ? 'Brush Mode'
-                                  : 'Spray Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                        ],
+                      SizedBox(height: screenSize.height * 0.01),
+                      IconButton(
+                        icon: Icon(Icons.crop_portrait),
+                        onPressed: () {
+                          setState(() {
+                            selectmode = 3;
+                            audioProvider.playSound("tap1.mp3");
+                          });
+                        },
+                        tooltip: 'paper',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        color: selectmode == 3
+                            ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
+                            : const Color.fromARGB(255, 199, 198, 198),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: Text('スタンプ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 3
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 3 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                edittingmode == 3 ? Icons.circle : Icons.circle,
-                                color: edittingmode == 3
-                                    ? _selectedColor // 選択されたらピンク
-                                    : const Color.fromARGB(255, 199, 198, 198),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 3;
-                                });
-                              },
-                              tooltip: edittingmode == 3
-                                  ? 'circle Mode'
-                                  : 'circle Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 4
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 4 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 4
-                                      ? Icons.change_history
-                                      : Icons.change_history,
-                                  color: edittingmode == 4
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 4;
-                                });
-                              },
-                              tooltip: edittingmode == 4
-                                  ? 'triangle Mode'
-                                  : 'triangle Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 5
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 5 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 5
-                                      ? Icons.rectangle
-                                      : Icons.rectangle,
-                                  color: edittingmode == 5
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 5;
-                                });
-                              },
-                              tooltip:
-                                  edittingmode == 5 ? 'Rect Mode' : 'Rect Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 6
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 6 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 6
-                                      ? Icons.favorite
-                                      : Icons.favorite,
-                                  color: edittingmode == 6
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 6;
-                                });
-                              },
-                              tooltip: edittingmode == 6
-                                  ? 'Heart Mode'
-                                  : 'Heart Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 7
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 7 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 7 ? Icons.star : Icons.star,
-                                  color: edittingmode == 7
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 7;
-                                });
-                              },
-                              tooltip:
-                                  edittingmode == 7 ? 'Star Mode' : 'Star Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: edittingmode == 8
-                                    ? Colors.black
-                                    : Color.fromARGB(255, 199, 198, 198), //枠線の色
-                                width: edittingmode == 8 ? 1 : 0, //枠線の太さ
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: Icon(
-                                  edittingmode == 8
-                                      ? Icons.diamond
-                                      : Icons.diamond,
-                                  color: edittingmode == 8
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198)),
-                              onPressed: () {
-                                setState(() {
-                                  edittingmode = 8;
-                                });
-                              },
-                              tooltip:
-                                  edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
-                              splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ] else if (selectmode == 3) ...[
-                      Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: Text(
-                            languageProvider.isHiragana ? 'かみのいろ' : '紙の色',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
-                      ),
-                      _buildPaperColorPicker(
-                          MediaQuery.of(context).size.width / 28)
-                    ],
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.undo),
-                          onPressed: _drawItems.isNotEmpty ? _undo : null,
-                          tooltip: 'Undo',
-                          splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.width / 28,
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.redo),
-                          onPressed: _undoneItems.isNotEmpty ? _redo : null,
-                          tooltip: 'Redo',
-                          splashColor: Color.fromARGB(255, 255, 67, 195),
-                          iconSize: MediaQuery.of(context).size.width / 28,
-                        ),
-                      ],
+                    ]),
+                    SizedBox(width: screenSize.width * 0.05),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      audioProvider.playSound("tap1.mp3");
+                      Navigator.pushNamed(context, '/generate');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
-                  ]),
-                  Column(children: [
-                    SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.palette),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 1;
-                          audioProvider.playSound("tap1.mp3");
-                        });
-                      },
-                      tooltip: 'palette',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      color: selectmode == 1
-                          ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
-                          : const Color.fromARGB(255, 199, 198, 198),
+                    child: Text(
+                      languageProvider.isHiragana ? 'とじる' : '閉じる',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
                     ),
-                    SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.brush),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 2;
-                          audioProvider.playSound("tap1.mp3");
-                        });
-                      },
-                      tooltip: 'pen',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      color: selectmode == 2
-                          ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
-                          : const Color.fromARGB(255, 199, 198, 198),
+                  ),
+
+                  SizedBox(width: 10), // スペースを追加
+                  TextButton(
+                    onPressed: () async {
+                      audioProvider.playSound("tap2.mp3");
+                      pickAndProcessImage();
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
-                    SizedBox(height: screenSize.height * 0.01),
-                    IconButton(
-                      icon: Icon(Icons.crop_portrait),
-                      onPressed: () {
-                        setState(() {
-                          selectmode = 3;
-                          audioProvider.playSound("tap1.mp3");
-                        });
-                      },
-                      tooltip: 'paper',
-                      splashColor: Color.fromARGB(255, 255, 67, 195),
-                      color: selectmode == 3
-                          ? Color.fromARGB(255, 255, 67, 195) // 選択されたらピンク
-                          : const Color.fromARGB(255, 199, 198, 198),
+                    child: Text(
+                      languageProvider.isHiragana ? 'しゃしんからえらぶ' : '写真から選ぶ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
                     ),
-                  ]),
-                  SizedBox(width: screenSize.width * 0.05),
+                  ),
+                  SizedBox(width: 10), // スペースを追加
+                  TextButton(
+                    onPressed: () async {
+                      await _takeScreenshot();
+                      audioProvider.playSound("tap2.mp3");
+                      Navigator.pushNamed(context, '/generate');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      'できたよ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    audioProvider.playSound("tap1.mp3");
-                    Navigator.pushNamed(context, '/generate');
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    languageProvider.isHiragana ? 'とじる' : '閉じる',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-
-                SizedBox(width: 10), // スペースを追加
-                TextButton(
-                  onPressed: () async {
-                    audioProvider.playSound("tap2.mp3");
-                    pickAndProcessImage();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    languageProvider.isHiragana ? 'しゃしんからえらぶ' : '写真から選ぶ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-                SizedBox(width: 10), // スペースを追加
-                TextButton(
-                  onPressed: () async {
-                    await _takeScreenshot();
-                    audioProvider.playSound("tap2.mp3");
-                    Navigator.pushNamed(context, '/generate');
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    'できたよ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20), // スペースを追加
-          ],
+              SizedBox(height: 20), // スペースを追加
+            ],
+          ),
         ),
       ),
     );

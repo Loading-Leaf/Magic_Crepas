@@ -1158,243 +1158,250 @@ class _OutputPageState extends State<OutputPage> {
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
-    return Scaffold(
-      body: GestureDetector(
-        onTapUp: (details) {
-          // タッチされた位置を取得
-          Offset tapPosition = details.localPosition;
-          // キラキラエフェクトを表示
-          showSparkleEffect(context, tapPosition);
-        },
-        child: Center(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                            languageProvider.isHiragana
-                                ? "つくったえだよ！"
-                                : "作った絵だよ！",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (outputImage != null) {
-                                // 画像が存在する場合、タップしてモーダルを表示
-                                _showImageModal(
-                                    context, MemoryImage(outputImage!));
-                              } else {
-                                // デフォルト画像の場合
-                                _showImageModal(context,
-                                    AssetImage('assets/output_style.png'));
-                              }
-                            },
-                            child: Container(
-                              height: (screenSize.width ~/ 5.79).toDouble(),
-                              width: (screenSize.width ~/ 4.34).toDouble(),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: outputImage != null
-                                    ? Image.memory(outputImage!) // 画像を表示
-                                    : Image.asset(
-                                        'assets/output_style.png'), // デフォルト画像
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            saveImage();
-                          }, // 画像を保存するボタン
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            languageProvider.isHiragana
-                                ? 'つくったえをほぞんする'
-                                : '作った絵を保存する',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: screenSize.width * 0.1),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                            languageProvider.isHiragana
-                                ? "おえかきしたえだよ！"
-                                : "お絵描きした絵だよ！",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize)),
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (drawingImageData != null) {
-                                // 画像が存在する場合、タップしてモーダルを表示
-                                _showImageModal(
-                                    context, MemoryImage(drawingImageData!));
-                              } else {
-                                // デフォルト画像の場合
-                                _showImageModal(
-                                    context, AssetImage('assets/content.png'));
-                              }
-                            },
-                            child: Container(
-                              height: (screenSize.width ~/ 5.79).toDouble(),
-                              width: (screenSize.width ~/ 4.34).toDouble(),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: drawingImageData != null
-                                    ? Image.memory(drawingImageData!) // 画像を表示
-                                    : Image.asset(
-                                        'assets/content.png'), // デフォルト画像
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            saveDrawing();
-                          }, // 画像を保存するボタン
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                          ),
-                          child: Text(
-                            languageProvider.isHiragana
-                                ? 'おえかきしたえをほぞんする'
-                                : 'お絵描きした絵を保存する',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () async {
-                              audioProvider.playSound("tap1.mp3");
-                              if (outputImage == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          'Cannot save project: Missing image data')),
-                                );
-                                return;
-                              }
-
-                              _savemodal(
-                                  context, audioProvider, languageProvider);
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 255, 67, 195),
-                            ),
-                            child: Text(
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            // タッチされた位置を取得
+            Offset tapPosition = details.localPosition;
+            // キラキラエフェクトを表示
+            showSparkleEffect(context, tapPosition);
+          },
+          child: Center(
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
                               languageProvider.isHiragana
-                                  ? 'プロジェクトをほぞんする'
-                                  : 'プロジェクトを保存する',
+                                  ? "つくったえだよ！"
+                                  : "作った絵だよ！",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                  color: Colors.white),
+                                  fontSize: fontsize)),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (outputImage != null) {
+                                  // 画像が存在する場合、タップしてモーダルを表示
+                                  _showImageModal(
+                                      context, MemoryImage(outputImage!));
+                                } else {
+                                  // デフォルト画像の場合
+                                  _showImageModal(context,
+                                      AssetImage('assets/output_style.png'));
+                                }
+                              },
+                              child: Container(
+                                height: (screenSize.width ~/ 5.79).toDouble(),
+                                width: (screenSize.width ~/ 4.34).toDouble(),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: outputImage != null
+                                      ? Image.memory(outputImage!) // 画像を表示
+                                      : Image.asset(
+                                          'assets/output_style.png'), // デフォルト画像
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
+                          TextButton(
                             onPressed: () {
-                              audioProvider.playSound("tap1.mp3");
-                              _showmodesDialog(
-                                  context, audioProvider, languageProvider);
-                            },
+                              saveImage();
+                            }, // 画像を保存するボタン
                             style: TextButton.styleFrom(
                               backgroundColor:
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
                               languageProvider.isHiragana
-                                  ? 'べつのモードをつかう'
-                                  : '別のモードを使う',
+                                  ? 'つくったえをほぞんする'
+                                  : '作った絵を保存する',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
                                   color: Colors.white),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ]),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          Navigator.pushNamed(context, '/');
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+                        ],
+                      ),
+                      SizedBox(width: screenSize.width * 0.1),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                              languageProvider.isHiragana
+                                  ? "おえかきしたえだよ！"
+                                  : "お絵描きした絵だよ！",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize)),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (drawingImageData != null) {
+                                  // 画像が存在する場合、タップしてモーダルを表示
+                                  _showImageModal(
+                                      context, MemoryImage(drawingImageData!));
+                                } else {
+                                  // デフォルト画像の場合
+                                  _showImageModal(context,
+                                      AssetImage('assets/content.png'));
+                                }
+                              },
+                              child: Container(
+                                height: (screenSize.width ~/ 5.79).toDouble(),
+                                width: (screenSize.width ~/ 4.34).toDouble(),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: drawingImageData != null
+                                      ? Image.memory(drawingImageData!) // 画像を表示
+                                      : Image.asset(
+                                          'assets/content.png'), // デフォルト画像
+                                ),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              saveDrawing();
+                            }, // 画像を保存するボタン
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 255, 67, 195),
+                            ),
+                            child: Text(
+                              languageProvider.isHiragana
+                                  ? 'おえかきしたえをほぞんする'
+                                  : 'お絵描きした絵を保存する',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () async {
+                                audioProvider.playSound("tap1.mp3");
+                                if (outputImage == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Cannot save project: Missing image data')),
+                                  );
+                                  return;
+                                }
+
+                                _savemodal(
+                                    context, audioProvider, languageProvider);
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                languageProvider.isHiragana
+                                    ? 'プロジェクトをほぞんする'
+                                    : 'プロジェクトを保存する',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                _showmodesDialog(
+                                    context, audioProvider, languageProvider);
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                languageProvider.isHiragana
+                                    ? 'べつのモードをつかう'
+                                    : '別のモードを使う',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            Navigator.pushNamed(context, '/');
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          if (outputImage != null && drawingImageData != null) {
-                            shareImages(context, outputImage!,
-                                drawingImageData!); // 両方の画像をシェアする
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 67, 180, 255),
-                        ),
-                        child: Text(
-                          'シェアする',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+                      SizedBox(width: 20),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            if (outputImage != null &&
+                                drawingImageData != null) {
+                              shareImages(context, outputImage!,
+                                  drawingImageData!); // 両方の画像をシェアする
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 67, 180, 255),
+                          ),
+                          child: Text(
+                            'シェアする',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                  ]),
-                ],
-              );
-            },
+                    ]),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

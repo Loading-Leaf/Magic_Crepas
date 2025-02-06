@@ -466,87 +466,91 @@ class _TutorialPageState extends State<TutorialPage> {
       return rows;
     }
 
-    return Scaffold(
-      body: GestureDetector(
-        onTapUp: (details) {
-          showSparkleEffect(context, details.localPosition);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Text(
-                languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize_big,
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            showSparkleEffect(context, details.localPosition);
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize_big,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: page > 1
-                          ? Color.fromARGB(255, 255, 67, 195)
-                          : const Color.fromARGB(255, 199, 198, 198)),
-                  onPressed: () {
-                    if (page > 1) {
-                      setState(() => page -= 1);
-                      audioProvider.playSound("tap1.mp3");
-                    }
-                  },
-                  tooltip: 'left',
-                  splashColor: Color.fromARGB(255, 255, 67, 195),
-                  iconSize: MediaQuery.of(context).size.width / 28,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: buildTutorialGrid(),
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_forward,
-                      color: page < 2
-                          ? Color.fromARGB(255, 255, 67, 195)
-                          : const Color.fromARGB(255, 199, 198, 198)),
-                  onPressed: () {
-                    if (page * itemsPerPage < totalItems) {
-                      setState(() => page += 1);
-                      audioProvider.playSound("tap1.mp3");
-                    }
-                  },
-                  tooltip: 'right',
-                  splashColor: Color.fromARGB(255, 255, 67, 195),
-                  iconSize: MediaQuery.of(context).size.width / 28,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    audioProvider.playSound("tap1.mp3");
-                    Navigator.pushNamed(context, '/');
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 67, 195),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back,
+                        color: page > 1
+                            ? Color.fromARGB(255, 255, 67, 195)
+                            : const Color.fromARGB(255, 199, 198, 198)),
+                    onPressed: () {
+                      if (page > 1) {
+                        setState(() => page -= 1);
+                        audioProvider.playSound("tap1.mp3");
+                      }
+                    },
+                    tooltip: 'left',
+                    splashColor: Color.fromARGB(255, 255, 67, 195),
+                    iconSize: MediaQuery.of(context).size.width / 28,
                   ),
-                  child: Text(
-                    languageProvider.isHiragana ? 'とじる' : '閉じる',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontsize,
-                      color: Colors.white,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: buildTutorialGrid(),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward,
+                        color: page < 2
+                            ? Color.fromARGB(255, 255, 67, 195)
+                            : const Color.fromARGB(255, 199, 198, 198)),
+                    onPressed: () {
+                      if (page * itemsPerPage < totalItems) {
+                        setState(() => page += 1);
+                        audioProvider.playSound("tap1.mp3");
+                      }
+                    },
+                    tooltip: 'right',
+                    splashColor: Color.fromARGB(255, 255, 67, 195),
+                    iconSize: MediaQuery.of(context).size.width / 28,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      audioProvider.playSound("tap1.mp3");
+                      Navigator.pushNamed(context, '/');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.isHiragana ? 'とじる' : '閉じる',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-          ],
+                ],
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

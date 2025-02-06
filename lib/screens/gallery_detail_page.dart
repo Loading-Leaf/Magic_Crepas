@@ -300,80 +300,198 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
 
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              "タイトル: $title",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: fontsize,
-              ),
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
               Text(
-                languageProvider.isHiragana ? "さくせいにちじ" : "作成日時: $time",
+                "タイトル: $title",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,
                 ),
               ),
-              SizedBox(width: 50),
-              Text(
-                languageProvider.isHiragana
-                    ? "かんじょう: $emotion"
-                    : "感情: $emotion",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  languageProvider.isHiragana ? "さくせいにちじ" : "作成日時: $time",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                  ),
                 ),
-              ),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(languageProvider.isHiragana ? "つくったえだよ！" : "作った絵だよ！",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: fontsize)),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (outputImage != null) {
-                          // 画像が存在する場合、タップしてモーダルを表示
-                          _showImageModal(context, MemoryImage(outputImage!));
-                        } else {
-                          // デフォルト画像の場合
-                          _showImageModal(
-                              context, AssetImage('assets/output_style.png'));
-                        }
-                      },
-                      child: Container(
-                        height: (screenSize.width ~/ 6.948).toDouble(),
-                        width: (screenSize.width ~/ 5.208).toDouble(),
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: outputImage != null
-                              ? Image.memory(outputImage!) // 画像を表示
-                              : Image.asset(
-                                  'assets/output_style.png'), // デフォルト画像
+                SizedBox(width: 50),
+                Text(
+                  languageProvider.isHiragana
+                      ? "かんじょう: $emotion"
+                      : "感情: $emotion",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize,
+                  ),
+                ),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(languageProvider.isHiragana ? "つくったえだよ！" : "作った絵だよ！",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (outputImage != null) {
+                            // 画像が存在する場合、タップしてモーダルを表示
+                            _showImageModal(context, MemoryImage(outputImage!));
+                          } else {
+                            // デフォルト画像の場合
+                            _showImageModal(
+                                context, AssetImage('assets/output_style.png'));
+                          }
+                        },
+                        child: Container(
+                          height: (screenSize.width ~/ 6.948).toDouble(),
+                          width: (screenSize.width ~/ 5.208).toDouble(),
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: outputImage != null
+                                ? Image.memory(outputImage!) // 画像を表示
+                                : Image.asset(
+                                    'assets/output_style.png'), // デフォルト画像
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    TextButton(
+                      onPressed: () {
+                        audioProvider.playSound("established.mp3");
+                        saveImage();
+                      }, // 画像を保存するボタン
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        languageProvider.isHiragana
+                            ? 'つくったえをほぞんする'
+                            : '作った絵を保存する',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                        languageProvider.isHiragana
+                            ? 'おえかきしたえだよ！'
+                            : "お絵描きした絵だよ！",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: fontsize)),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (drawingImage != null) {
+                            // 画像が存在する場合、タップしてモーダルを表示
+                            _showImageModal(
+                                context, MemoryImage(drawingImage!));
+                          } else {
+                            // デフォルト画像の場合
+                            _showImageModal(
+                                context, AssetImage('assets/content.png'));
+                          }
+                        },
+                        child: Container(
+                          height: (screenSize.width ~/ 6.948).toDouble(),
+                          width: (screenSize.width ~/ 5.208).toDouble(),
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: drawingImage != null
+                                ? Image.memory(drawingImage!) // 画像を表示
+                                : Image.asset('assets/content.png'), // デフォルト画像
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        audioProvider.playSound("established.mp3");
+                        saveDrawing();
+                      }, // 画像を保存するボタン
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        languageProvider.isHiragana
+                            ? 'おえかきしたえをほぞんする'
+                            : 'お絵描きした絵を保存する',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   TextButton(
-                    onPressed: () {
-                      audioProvider.playSound("established.mp3");
-                      saveImage();
-                    }, // 画像を保存するボタン
+                    onPressed: () => {
+                      Navigator.pop(context),
+                      audioProvider.playSound("tap1.mp3"),
+                    },
                     style: TextButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? 'つくったえをほぞんする' : '作った絵を保存する',
+                      languageProvider.isHiragana ? "もどる" : "戻る",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  TextButton(
+                    onPressed: () => {
+                      audioProvider.playSound("tap1.mp3"),
+                      _showPhotoAndEmotionModal(),
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.isHiragana ? "くわしくみる" : "詳しく見る",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  TextButton(
+                    onPressed: () => {
+                      audioProvider.playSound("tap1.mp3"),
+                      _showDeleteConfirmDialog(),
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.isHiragana ? "さくじょする" : "削除する",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -383,117 +501,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ],
               ),
               SizedBox(height: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                      languageProvider.isHiragana ? 'おえかきしたえだよ！' : "お絵描きした絵だよ！",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: fontsize)),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (drawingImage != null) {
-                          // 画像が存在する場合、タップしてモーダルを表示
-                          _showImageModal(context, MemoryImage(drawingImage!));
-                        } else {
-                          // デフォルト画像の場合
-                          _showImageModal(
-                              context, AssetImage('assets/content.png'));
-                        }
-                      },
-                      child: Container(
-                        height: (screenSize.width ~/ 6.948).toDouble(),
-                        width: (screenSize.width ~/ 5.208).toDouble(),
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: drawingImage != null
-                              ? Image.memory(drawingImage!) // 画像を表示
-                              : Image.asset('assets/content.png'), // デフォルト画像
-                        ),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      audioProvider.playSound("established.mp3");
-                      saveDrawing();
-                    }, // 画像を保存するボタン
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                    ),
-                    child: Text(
-                      languageProvider.isHiragana
-                          ? 'おえかきしたえをほぞんする'
-                          : 'お絵描きした絵を保存する',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ]),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () => {
-                    Navigator.pop(context),
-                    audioProvider.playSound("tap1.mp3"),
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    languageProvider.isHiragana ? "もどる" : "戻る",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-                SizedBox(width: 20),
-                TextButton(
-                  onPressed: () => {
-                    audioProvider.playSound("tap1.mp3"),
-                    _showPhotoAndEmotionModal(),
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    languageProvider.isHiragana ? "くわしくみる" : "詳しく見る",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-                SizedBox(width: 20),
-                TextButton(
-                  onPressed: () => {
-                    audioProvider.playSound("tap1.mp3"),
-                    _showDeleteConfirmDialog(),
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                  ),
-                  child: Text(
-                    languageProvider.isHiragana ? "さくじょする" : "削除する",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-          ],
+            ],
+          ),
         ),
       ),
     );

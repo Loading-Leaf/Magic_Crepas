@@ -624,282 +624,286 @@ class _GeneratePageState extends State<GeneratePage> {
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
-    return Scaffold(
-      body: GestureDetector(
-        onTapUp: (details) {
-          // タッチされた位置を取得
-          Offset tapPosition = details.localPosition;
-          // キラキラエフェクトを表示
-          showSparkleEffect(context, tapPosition);
-        },
-        child: Center(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // 1つ目の画像
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                              languageProvider.isHiragana
-                                  ? "えらんだしゃしん"
-                                  : "選んだ写真",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize)),
-                          //Text(_images.length.toString()), //結局格納すらできていない
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Container(
-                              // 画面のサイズに基づいて縮小したサイズで表示
-                              height: (screenSize.width ~/ 5.79).toDouble(),
-                              width: (screenSize.width ~/ 4.34).toDouble(),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: image != null
-                                    ? Image.file(image ??
-                                        File(_images[_images.length - 1][
-                                            'path'])) // 選択された画像またはDBから取得した画像を表示
-                                    : Image.asset(
-                                        'assets/style.png'), // どちらもない場合はデフォルト画像を表示
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // 2つ目の画像
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                              languageProvider.isHiragana
-                                  ? "おえかきしたえ"
-                                  : "お絵描きした絵",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize)),
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Container(
-                              // 画面のサイズに基づいて縮小したサイズで表示
-                              height: (screenSize.width ~/ 5.79).toDouble(),
-                              width: (screenSize.width ~/ 5.79).toDouble(),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: drawingImageData != null
-                                    ? Image.memory(Uint8List.fromList(
-                                        drawingImageData!)) // SQLiteから取得した描画データを表示
-                                    : Image.asset(
-                                        'assets/content.png'), // それ以外はデフォルト画像を表示
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            // タッチされた位置を取得
+            Offset tapPosition = details.localPosition;
+            // キラキラエフェクトを表示
+            showSparkleEffect(context, tapPosition);
+          },
+          child: Center(
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // 1つ目の画像
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  Navigator.pushNamed(context, '/drawing');
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                ),
-                                child: Text(
-                                  languageProvider.isHiragana
-                                      ? 'おえかきをする'
-                                      : 'お絵描きをする',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontsize,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap2.mp3");
-                                  pickImage();
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                ),
-                                child: Text(
-                                  languageProvider.isHiragana
-                                      ? 'しゃしんをえらぶ'
-                                      : '写真を選ぶ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontsize,
-                                      color: Colors.white),
+                            Text(
+                                languageProvider.isHiragana
+                                    ? "えらんだしゃしん"
+                                    : "選んだ写真",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize)),
+                            //Text(_images.length.toString()), //結局格納すらできていない
+                            Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Container(
+                                // 画面のサイズに基づいて縮小したサイズで表示
+                                height: (screenSize.width ~/ 5.79).toDouble(),
+                                width: (screenSize.width ~/ 4.34).toDouble(),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: image != null
+                                      ? Image.file(image ??
+                                          File(_images[_images.length - 1][
+                                              'path'])) // 選択された画像またはDBから取得した画像を表示
+                                      : Image.asset(
+                                          'assets/style.png'), // どちらもない場合はデフォルト画像を表示
                                 ),
                               ),
                             ),
-                            SizedBox(height: 5),
-                            typelists(context),
-                            SizedBox(height: 5),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  _showmodesDialog(context, audioProvider);
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                ),
-                                child: Text(
-                                  'モードについて',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontsize,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ]),
-                    ],
-                  ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          Navigator.pushNamed(context, '/');
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ],
                         ),
-                        child: Text(
-                          languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+                        // 2つ目の画像
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                                languageProvider.isHiragana
+                                    ? "おえかきしたえ🖼"
+                                    : "お絵描きした絵🖼",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize)),
+                            Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Container(
+                                // 画面のサイズに基づいて縮小したサイズで表示
+                                height: (screenSize.width ~/ 5.79).toDouble(),
+                                width: (screenSize.width ~/ 5.79).toDouble(),
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: drawingImageData != null
+                                      ? Image.memory(Uint8List.fromList(
+                                          drawingImageData!)) // SQLiteから取得した描画データを表示
+                                      : Image.asset(
+                                          'assets/content.png'), // それ以外はデフォルト画像を表示
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap1.mp3");
+                                    Navigator.pushNamed(context, '/drawing');
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                  child: Text(
+                                    languageProvider.isHiragana
+                                        ? 'おえかきをする'
+                                        : 'お絵描きをする',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap2.mp3");
+                                    pickImage();
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                  child: Text(
+                                    languageProvider.isHiragana
+                                        ? 'しゃしんをえらぶ'
+                                        : '写真を選ぶ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              typelists(context),
+                              SizedBox(height: 5),
+                              Container(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap1.mp3");
+                                    _showmodesDialog(context, audioProvider);
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                  child: Text(
+                                    'モードについて',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ],
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            Navigator.pushNamed(context, '/');
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () async {
-                          if (wifiName != null) {
-                            audioProvider.playSound("tap1.mp3");
-                            showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  const SomethingDisconnectDialog(
-                                message1: 'Wi-Fiがつながっていないよ',
-                                message2: 'Wi-Fiがつながっていないよ',
-                              ),
-                            );
-
-                            return; // 早期リターン
-                          } else if (image == null ||
-                              drawingImageData == null) {
-                            audioProvider.playSound("tap1.mp3");
-                            showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  const SomethingDisconnectDialog(
-                                message1: 'しゃしんとえをえらんでね',
-                                message2: '写真と絵を選んでね',
-                              ),
-                            );
-
-                            return; // 早期リターン
-                          }
-                          audioProvider.playSound("tap2.mp3");
-
-                          List<int> photoBytes = image!.readAsBytesSync();
-                          //base64にエンコード
-                          String base64Image = base64Encode(photoBytes);
-                          String base64Drawing = base64Encode(
-                              Uint8List.fromList(drawingImageData!));
-                          print(typeValue);
-                          String body = json.encode({
-                            'post_photo': base64Image,
-                            'post_drawing': base64Drawing,
-                            'photo_type': typeValue,
-                            'is_photo_flag': is_photo_flag,
-                          });
-                          Uri url = Uri.parse(
-                              'https://imakoh.pythonanywhere.com/generate_arts2');
-                          //192.168.68.58
-                          _showDialog(context);
-                          final response = await http.post(
-                            url,
-                            body: body,
-                            headers: {'Content-Type': 'application/json'},
-                          );
-
-                          /// base64 -> file
-                          if (response.statusCode == 200) {
-                            audioProvider.playSound("generated.mp3");
-                            final data = json.decode(response.body);
-                            String resultimageBase64 = data['result'];
-                            is_photo_flag = data["is_photo_flag"];
-
-                            // バイトのリストに変換
-                            Uint8List resultbytes =
-                                base64Decode(resultimageBase64);
-
-                            // バイトから画像を生成
-                            if (resultbytes.isNotEmpty) {
-                              setState(() {
-                                isresult_exist = true;
-                                resultbytes2 = resultbytes;
-                              });
-                            } else {
+                      SizedBox(width: 20),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () async {
+                            if (wifiName != null) {
+                              audioProvider.playSound("tap1.mp3");
                               showDialog(
                                 context: context,
                                 builder: (context) =>
                                     const SomethingDisconnectDialog(
-                                  message1: 'つくったえがないよ',
-                                  message2: '作った絵がないよ',
+                                  message1: 'Wi-Fiがつながっていないよ',
+                                  message2: 'Wi-Fiがつながっていないよ',
                                 ),
                               );
+
+                              return; // 早期リターン
+                            } else if (image == null ||
+                                drawingImageData == null) {
+                              audioProvider.playSound("tap1.mp3");
+                              showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    const SomethingDisconnectDialog(
+                                  message1: 'しゃしんとえをえらんでね',
+                                  message2: '写真と絵を選んでね',
+                                ),
+                              );
+
+                              return; // 早期リターン
                             }
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) => WifiDisconnectDialog(),
+                            audioProvider.playSound("tap2.mp3");
+
+                            List<int> photoBytes = image!.readAsBytesSync();
+                            //base64にエンコード
+                            String base64Image = base64Encode(photoBytes);
+                            String base64Drawing = base64Encode(
+                                Uint8List.fromList(drawingImageData!));
+                            print(typeValue);
+                            String body = json.encode({
+                              'post_photo': base64Image,
+                              'post_drawing': base64Drawing,
+                              'photo_type': typeValue,
+                              'is_photo_flag': is_photo_flag,
+                            });
+                            Uri url = Uri.parse(
+                                'https://imakoh.pythonanywhere.com/generate_arts2');
+                            //192.168.68.58
+                            _showDialog(context);
+                            final response = await http.post(
+                              url,
+                              body: body,
+                              headers: {'Content-Type': 'application/json'},
                             );
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          languageProvider.isHiragana ? 'アートをつくる' : 'アートを作る',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
+
+                            /// base64 -> file
+                            if (response.statusCode == 200) {
+                              audioProvider.playSound("generated.mp3");
+                              final data = json.decode(response.body);
+                              String resultimageBase64 = data['result'];
+                              is_photo_flag = data["is_photo_flag"];
+
+                              // バイトのリストに変換
+                              Uint8List resultbytes =
+                                  base64Decode(resultimageBase64);
+
+                              // バイトから画像を生成
+                              if (resultbytes.isNotEmpty) {
+                                setState(() {
+                                  isresult_exist = true;
+                                  resultbytes2 = resultbytes;
+                                });
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      const SomethingDisconnectDialog(
+                                    message1: 'つくったえがないよ',
+                                    message2: '作った絵がないよ',
+                                  ),
+                                );
+                              }
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) => WifiDisconnectDialog(),
+                              );
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.isHiragana ? 'アートをつくる' : 'アートを作る',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                  ]),
-                ],
-              );
-            },
+                    ]),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
