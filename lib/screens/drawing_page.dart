@@ -303,7 +303,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                         },
                                         style: TextButton.styleFrom(
                                           backgroundColor:
-                                              Color.fromARGB(255, 0, 204, 255),
+                                              Color.fromARGB(255, 0, 81, 255),
                                         ),
                                         child: Text(
                                           languageProvider.isHiragana
@@ -377,7 +377,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 0, 204, 255),
+                                    Color.fromARGB(255, 0, 81, 255),
                               ),
                               child: Text(
                                 languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -665,7 +665,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   fontSize: fontsize)),
                         ),
                         _buildColorPicker(
-                            MediaQuery.of(context).size.width / 42),
+                            MediaQuery.of(context).size.width / 28),
                         Row(
                           children: [
                             IconButton(
@@ -676,7 +676,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               tooltip: 'mix color',
                               splashColor: Color.fromARGB(255, 255, 67, 195),
-                              iconSize: MediaQuery.of(context).size.width / 42,
+                              iconSize: MediaQuery.of(context).size.width / 28,
                             ),
                           ],
                         ),
@@ -706,6 +706,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         Row(
                           children: [
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 1
@@ -737,6 +739,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               ),
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 2
@@ -780,6 +784,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         Row(
                           children: [
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 3
@@ -813,6 +819,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               ),
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 4
@@ -845,6 +853,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               ),
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 5
@@ -881,6 +891,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         Row(
                           children: [
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 6
@@ -913,6 +925,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               ),
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 7
@@ -943,6 +957,8 @@ class _DrawingPageState extends State<DrawingPage> {
                               ),
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width / 42,
+                              height: MediaQuery.of(context).size.width / 42,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 8
@@ -1066,7 +1082,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       Navigator.pushNamed(context, '/generate');
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 0, 204, 255),
+                      backgroundColor: Color.fromARGB(255, 0, 81, 255),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
