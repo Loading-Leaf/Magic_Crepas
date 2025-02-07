@@ -292,6 +292,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                       ),
                                     ),
                                     if (ismixed == true) ...[
+                                      SizedBox(width: 10),
                                       TextButton(
                                         onPressed: () {
                                           setState(() {
@@ -302,7 +303,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                         },
                                         style: TextButton.styleFrom(
                                           backgroundColor:
-                                              Color.fromARGB(255, 255, 67, 195),
+                                              Color.fromARGB(255, 0, 81, 255),
                                         ),
                                         child: Text(
                                           languageProvider.isHiragana
@@ -376,7 +377,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor:
-                                    Color.fromARGB(255, 255, 67, 195),
+                                    Color.fromARGB(255, 0, 81, 255),
                               ),
                               child: Text(
                                 languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -1065,7 +1066,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       Navigator.pushNamed(context, '/generate');
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      backgroundColor: Color.fromARGB(255, 0, 81, 255),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',

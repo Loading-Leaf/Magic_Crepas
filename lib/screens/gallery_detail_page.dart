@@ -28,10 +28,29 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   String your_platform = "";
 
   Future<void> checkDevice() async {
+    final deviceInfo = DeviceInfoPlugin();
+
     if (Platform.isIOS) {
-      final deviceInfo = await DeviceInfoPlugin().iosInfo;
+      final iosInfo = await deviceInfo.iosInfo;
       setState(() {
-        if (deviceInfo.model.toLowerCase().contains("ipad") == true) {
+        if (iosInfo.model.toLowerCase().contains("ipad")) {
+          your_platform = "タブレット";
+        } else {
+          your_platform = "スマホ";
+        }
+      });
+    } else if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      setState(() {
+        if (androidInfo.systemFeatures
+                .contains("android.hardware.type.television") ||
+            androidInfo.systemFeatures
+                .contains("android.hardware.type.watch") ||
+            androidInfo.systemFeatures
+                .contains("android.hardware.type.automotive")) {
+          your_platform = "その他";
+        } else if (androidInfo.model.toLowerCase().contains("tablet") ||
+            androidInfo.product.toLowerCase().contains("tablet")) {
           your_platform = "タブレット";
         } else {
           your_platform = "スマホ";
@@ -174,7 +193,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     color: Colors.white),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                backgroundColor: Color.fromARGB(255, 0, 81, 255),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -266,13 +285,30 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       fontSize: fontsize,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: (screenSize.width ~/ 6.948).toDouble(),
-                    width: (screenSize.width ~/ 5.208).toDouble(),
-                    child: Image.memory(
-                      photoImage!,
-                      fit: BoxFit.contain,
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (photoImage != null) {
+                          // 画像が存在する場合、タップしてモーダルを表示
+                          _showImageModal(context, MemoryImage(photoImage!));
+                        } else {
+                          // デフォルト画像の場合
+                          _showImageModal(
+                              context, AssetImage('assets/content.png'));
+                        }
+                      },
+                      child: Container(
+                        height: (screenSize.width ~/ 6.948).toDouble(),
+                        width: (screenSize.width ~/ 5.208).toDouble(),
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: photoImage != null
+                              ? Image.memory(photoImage!) // 画像を表示
+                              : Image.asset('assets/content.png'), // デフォルト画像
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -283,7 +319,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    backgroundColor: Color.fromARGB(255, 0, 81, 255),
                   ),
                   child: Text(
                     languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -468,7 +504,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       audioProvider.playSound("tap1.mp3"),
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      backgroundColor: Color.fromARGB(255, 0, 81, 255),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? "もどる🔙" : "戻る🔙",

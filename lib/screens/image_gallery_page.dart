@@ -126,8 +126,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         Navigator.pushNamed(context, '/');
                       },
                       style: TextButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 67, 195),
+                        backgroundColor: Color.fromARGB(255, 0, 81, 255),
                       ),
                       child: Text(
                         languageProvider.isHiragana ? 'ホームに戻る🔙' : 'ホームに戻る🔙',

@@ -59,11 +59,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  tutorial_title +
-                      "の" +
-                      (languageProvider.isHiragana
-                          ? 'あそびかた👩‍🏫'
-                          : 'あそび方👩‍🏫'),
+                  tutorial_title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize_big,
@@ -136,7 +132,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             });
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
                           ),
                           child: Text(
                             languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
@@ -157,7 +153,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             });
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
                           ),
                           child: Text(
                             'やめる🔚',
@@ -178,6 +174,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: fontsize)),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),

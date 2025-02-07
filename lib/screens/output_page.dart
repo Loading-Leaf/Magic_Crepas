@@ -114,10 +114,29 @@ class _OutputPageState extends State<OutputPage> {
   }
 
   Future<void> checkDevice() async {
+    final deviceInfo = DeviceInfoPlugin();
+
     if (Platform.isIOS) {
-      final deviceInfo = await DeviceInfoPlugin().iosInfo;
+      final iosInfo = await deviceInfo.iosInfo;
       setState(() {
-        if (deviceInfo.model.toLowerCase().contains("ipad") == true) {
+        if (iosInfo.model.toLowerCase().contains("ipad")) {
+          your_platform = "タブレット";
+        } else {
+          your_platform = "スマホ";
+        }
+      });
+    } else if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      setState(() {
+        if (androidInfo.systemFeatures
+                .contains("android.hardware.type.television") ||
+            androidInfo.systemFeatures
+                .contains("android.hardware.type.watch") ||
+            androidInfo.systemFeatures
+                .contains("android.hardware.type.automotive")) {
+          your_platform = "その他";
+        } else if (androidInfo.model.toLowerCase().contains("tablet") ||
+            androidInfo.product.toLowerCase().contains("tablet")) {
           your_platform = "タブレット";
         } else {
           your_platform = "スマホ";
@@ -315,7 +334,8 @@ class _OutputPageState extends State<OutputPage> {
           builder: (BuildContext context, setState) {
             return Dialog(
               child: Container(
-                width: double.infinity,
+                width: screenSize.width * 0.8,
+                height: screenSize.height * 0.95,
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -875,8 +895,7 @@ class _OutputPageState extends State<OutputPage> {
                               }
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 255, 67, 195),
+                              backgroundColor: Color.fromARGB(255, 0, 81, 255),
                             ),
                             child: Text(
                               languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
@@ -895,6 +914,14 @@ class _OutputPageState extends State<OutputPage> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text('保存することができませんでした😭'),
+                                    ),
+                                  );
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        SomethingDisconnectDialog(
+                                      message1: 'ほぞんすることができませんでした😭',
+                                      message2: "保存することができませんでした😭",
                                     ),
                                   );
                                 } else {
@@ -1099,7 +1126,7 @@ class _OutputPageState extends State<OutputPage> {
                         Navigator.pop(context);
                       },
                       style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        backgroundColor: Color.fromARGB(255, 0, 81, 255),
                       ),
                       child: Text(
                         languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -1374,7 +1401,7 @@ class _OutputPageState extends State<OutputPage> {
                             Navigator.pushNamed(context, '/');
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
                           ),
                           child: Text(
                             languageProvider.isHiragana
@@ -1403,7 +1430,7 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 67, 180, 255),
                           ),
                           child: Text(
-                            'シェアする📨',
+                            'シェアする💬',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,

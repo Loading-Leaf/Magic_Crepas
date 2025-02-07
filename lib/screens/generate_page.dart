@@ -307,7 +307,8 @@ class _GeneratePageState extends State<GeneratePage> {
           builder: (BuildContext context, setState) {
             return Dialog(
               child: Container(
-                width: double.infinity,
+                width: screenSize.width * 0.8,
+                height: screenSize.height * 0.95,
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -606,7 +607,7 @@ class _GeneratePageState extends State<GeneratePage> {
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                  backgroundColor: Color.fromARGB(255, 0, 81, 255),
                 ),
                 child: Text(
                   languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -792,7 +793,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             Navigator.pushNamed(context, '/');
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
                           ),
                           child: Text(
                             languageProvider.isHiragana
@@ -909,6 +910,7 @@ class _GeneratePageState extends State<GeneratePage> {
                         ),
                       ),
                     ]),
+                    SizedBox(height: 20),
                   ],
                 );
               },

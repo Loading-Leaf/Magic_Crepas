@@ -91,7 +91,7 @@ class _SomethingDisconnectDialogState extends State<SomethingDisconnectDialog> {
           style: TextButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 255, 67, 195),
           ),
-          child: Text(languageProvider.isHiragana ? 'とじる' : '閉じる',
+          child: Text(languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,
