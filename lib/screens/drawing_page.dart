@@ -706,8 +706,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         Row(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 1
@@ -717,30 +717,33 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 1 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 1
-                                        ? Icons.create
-                                        : Icons.create,
-                                    color: edittingmode == 1
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 1;
-                                  });
-                                },
-                                tooltip:
-                                    edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 1
+                                          ? Icons.create
+                                          : Icons.create,
+                                      color: edittingmode == 1
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 1;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 1
+                                      ? 'Pen Mode'
+                                      : 'Pen Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 2
@@ -750,26 +753,28 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 2 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 2
-                                        ? Icons.brush
-                                        : Icons.brush,
-                                    color: edittingmode == 2
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 2;
-                                  });
-                                },
-                                tooltip: edittingmode == 2
-                                    ? 'Brush Mode'
-                                    : 'Spray Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 2
+                                          ? Icons.brush
+                                          : Icons.brush,
+                                      color: edittingmode == 2
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 2;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 2
+                                      ? 'Brush Mode'
+                                      : 'Spray Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                           ],
@@ -784,8 +789,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         Row(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 3
@@ -795,32 +800,34 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 3 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                  edittingmode == 3
-                                      ? Icons.circle
-                                      : Icons.circle,
-                                  color: edittingmode == 3
-                                      ? _selectedColor // 選択されたらピンク
-                                      : const Color.fromARGB(
-                                          255, 199, 198, 198),
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                    edittingmode == 3
+                                        ? Icons.circle
+                                        : Icons.circle,
+                                    color: edittingmode == 3
+                                        ? _selectedColor // 選択されたらピンク
+                                        : const Color.fromARGB(
+                                            255, 199, 198, 198),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 3;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 3
+                                      ? 'circle Mode'
+                                      : 'circle Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 3;
-                                  });
-                                },
-                                tooltip: edittingmode == 3
-                                    ? 'circle Mode'
-                                    : 'circle Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 4
@@ -830,31 +837,33 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 4 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 4
-                                        ? Icons.change_history
-                                        : Icons.change_history,
-                                    color: edittingmode == 4
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 4;
-                                  });
-                                },
-                                tooltip: edittingmode == 4
-                                    ? 'triangle Mode'
-                                    : 'triangle Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 4
+                                          ? Icons.change_history
+                                          : Icons.change_history,
+                                      color: edittingmode == 4
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 4;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 4
+                                      ? 'triangle Mode'
+                                      : 'triangle Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 5
@@ -864,26 +873,28 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 5 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 5
-                                        ? Icons.rectangle
-                                        : Icons.rectangle,
-                                    color: edittingmode == 5
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 5;
-                                  });
-                                },
-                                tooltip: edittingmode == 5
-                                    ? 'Rect Mode'
-                                    : 'Rect Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 5
+                                          ? Icons.rectangle
+                                          : Icons.rectangle,
+                                      color: edittingmode == 5
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 5;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 5
+                                      ? 'Rect Mode'
+                                      : 'Rect Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                           ],
@@ -891,8 +902,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         Row(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 6
@@ -902,31 +913,33 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 6 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 6
-                                        ? Icons.favorite
-                                        : Icons.favorite,
-                                    color: edittingmode == 6
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 6;
-                                  });
-                                },
-                                tooltip: edittingmode == 6
-                                    ? 'Heart Mode'
-                                    : 'Heart Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 6
+                                          ? Icons.favorite
+                                          : Icons.favorite,
+                                      color: edittingmode == 6
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 6;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 6
+                                      ? 'Heart Mode'
+                                      : 'Heart Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 7
@@ -936,29 +949,33 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 7 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 7 ? Icons.star : Icons.star,
-                                    color: edittingmode == 7
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 7;
-                                  });
-                                },
-                                tooltip: edittingmode == 7
-                                    ? 'Star Mode'
-                                    : 'Star Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 7
+                                          ? Icons.star
+                                          : Icons.star,
+                                      color: edittingmode == 7
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 7;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 7
+                                      ? 'Star Mode'
+                                      : 'Star Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 42,
-                              height: MediaQuery.of(context).size.width / 42,
+                              width: MediaQuery.of(context).size.width / 28,
+                              height: MediaQuery.of(context).size.width / 28,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: edittingmode == 8
@@ -968,25 +985,28 @@ class _DrawingPageState extends State<DrawingPage> {
                                   width: edittingmode == 8 ? 1 : 0, //枠線の太さ
                                 ),
                               ),
-                              child: IconButton(
-                                icon: Icon(
-                                    edittingmode == 8
-                                        ? Icons.diamond
-                                        : Icons.diamond,
-                                    color: edittingmode == 8
-                                        ? _selectedColor // 選択されたらピンク
-                                        : const Color.fromARGB(
-                                            255, 199, 198, 198)),
-                                onPressed: () {
-                                  setState(() {
-                                    edittingmode = 8;
-                                  });
-                                },
-                                tooltip:
-                                    edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
-                                splashColor: _selectedColor,
-                                iconSize:
-                                    MediaQuery.of(context).size.width / 42,
+                              child: Center(
+                                child: IconButton(
+                                  icon: Icon(
+                                      edittingmode == 8
+                                          ? Icons.diamond
+                                          : Icons.diamond,
+                                      color: edittingmode == 8
+                                          ? _selectedColor // 選択されたらピンク
+                                          : const Color.fromARGB(
+                                              255, 199, 198, 198)),
+                                  onPressed: () {
+                                    setState(() {
+                                      edittingmode = 8;
+                                    });
+                                  },
+                                  tooltip: edittingmode == 8
+                                      ? 'Dia Mode'
+                                      : 'Dia Mode',
+                                  splashColor: _selectedColor,
+                                  iconSize:
+                                      MediaQuery.of(context).size.width / 28,
+                                ),
                               ),
                             ),
                           ],
@@ -1010,14 +1030,14 @@ class _DrawingPageState extends State<DrawingPage> {
                             onPressed: _drawItems.isNotEmpty ? _undo : null,
                             tooltip: 'Undo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 42,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                           IconButton(
                             icon: Icon(Icons.redo),
                             onPressed: _undoneItems.isNotEmpty ? _redo : null,
                             tooltip: 'Redo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 42,
+                            iconSize: MediaQuery.of(context).size.width / 28,
                           ),
                         ],
                       ),
