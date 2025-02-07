@@ -59,6 +59,12 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    checkDevice();
+  }
+
   Future<void> saveImage() async {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
 
@@ -193,7 +199,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     color: Colors.white),
               ),
               style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                backgroundColor: Color.fromARGB(255, 0, 204, 255),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -319,7 +325,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                    backgroundColor: Color.fromARGB(255, 0, 204, 255),
                   ),
                   child: Text(
                     languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -504,7 +510,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       audioProvider.playSound("tap1.mp3"),
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                      backgroundColor: Color.fromARGB(255, 0, 204, 255),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? "もどる🔙" : "戻る🔙",

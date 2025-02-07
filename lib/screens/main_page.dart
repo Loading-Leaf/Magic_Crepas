@@ -434,7 +434,7 @@ class _MainPageState extends State<MainPage> {
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                backgroundColor: Color.fromARGB(255, 0, 204, 255),
               ),
               child: Text(
                 languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',

@@ -536,7 +536,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       Navigator.pushNamed(context, '/');
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                      backgroundColor: Color.fromARGB(255, 0, 204, 255),
                     ),
                     child: Text(
                       languageProvider.isHiragana ? 'ホームにもどる🔙' : 'ホームに戻る🔙',

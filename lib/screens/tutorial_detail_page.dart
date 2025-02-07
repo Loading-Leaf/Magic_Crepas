@@ -132,7 +132,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             });
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                            backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
                             languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
@@ -153,7 +153,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             });
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                            backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
                             'やめる🔚',

@@ -543,6 +543,7 @@ class _OutputPageState extends State<OutputPage> {
     super.initState();
     _getWifiName();
     _startResultCheckTimer();
+    checkDevice();
   }
 
   @override
@@ -895,7 +896,7 @@ class _OutputPageState extends State<OutputPage> {
                               }
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                              backgroundColor: Color.fromARGB(255, 0, 204, 255),
                             ),
                             child: Text(
                               languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
@@ -1022,6 +1023,7 @@ class _OutputPageState extends State<OutputPage> {
                           children: [
                             TextButton(
                               onPressed: () async {
+                                _getWifiName();
                                 if (wifiName != null) {
                                   audioProvider.playSound("tap1.mp3");
                                   showDialog(
@@ -1126,7 +1128,7 @@ class _OutputPageState extends State<OutputPage> {
                         Navigator.pop(context);
                       },
                       style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                        backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
                         languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -1401,7 +1403,7 @@ class _OutputPageState extends State<OutputPage> {
                             Navigator.pushNamed(context, '/');
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                            backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
                             languageProvider.isHiragana
@@ -1427,7 +1429,7 @@ class _OutputPageState extends State<OutputPage> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 67, 180, 255),
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
                             'シェアする💬',

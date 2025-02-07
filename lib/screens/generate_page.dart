@@ -607,7 +607,7 @@ class _GeneratePageState extends State<GeneratePage> {
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                  backgroundColor: Color.fromARGB(255, 0, 204, 255),
                 ),
                 child: Text(
                   languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
@@ -793,7 +793,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             Navigator.pushNamed(context, '/');
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 0, 81, 255),
+                            backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
                             languageProvider.isHiragana
@@ -811,6 +811,7 @@ class _GeneratePageState extends State<GeneratePage> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () async {
+                            _getWifiName();
                             if (wifiName != null) {
                               audioProvider.playSound("tap1.mp3");
                               showDialog(
