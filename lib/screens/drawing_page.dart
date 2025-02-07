@@ -665,7 +665,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   fontSize: fontsize)),
                         ),
                         _buildColorPicker(
-                            MediaQuery.of(context).size.width / 28),
+                            MediaQuery.of(context).size.width / 42),
                         Row(
                           children: [
                             IconButton(
@@ -676,7 +676,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               tooltip: 'mix color',
                               splashColor: Color.fromARGB(255, 255, 67, 195),
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 42,
                             ),
                           ],
                         ),
@@ -733,7 +733,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                             Container(
@@ -765,7 +765,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     : 'Spray Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                           ],
@@ -809,7 +809,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     : 'circle Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                             Container(
@@ -841,7 +841,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     : 'triangle Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                             Container(
@@ -873,7 +873,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     : 'Rect Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                           ],
@@ -909,7 +909,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     : 'Heart Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                             Container(
@@ -939,7 +939,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     : 'Star Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                             Container(
@@ -970,7 +970,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
                                 splashColor: _selectedColor,
                                 iconSize:
-                                    MediaQuery.of(context).size.width / 28,
+                                    MediaQuery.of(context).size.width / 42,
                               ),
                             ),
                           ],
@@ -994,14 +994,14 @@ class _DrawingPageState extends State<DrawingPage> {
                             onPressed: _drawItems.isNotEmpty ? _undo : null,
                             tooltip: 'Undo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                            iconSize: MediaQuery.of(context).size.width / 42,
                           ),
                           IconButton(
                             icon: Icon(Icons.redo),
                             onPressed: _undoneItems.isNotEmpty ? _redo : null,
                             tooltip: 'Redo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                            iconSize: MediaQuery.of(context).size.width / 42,
                           ),
                         ],
                       ),
