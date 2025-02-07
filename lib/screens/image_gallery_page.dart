@@ -45,9 +45,16 @@ class _GalleryPageState extends State<GalleryPage> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Text(
+                  'ギャラリー📔',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsizeBig,
+                  ),
+                ),
+                Text(
                   languageProvider.isHiragana
-                      ? 'いままでつくったえをみれるよ～'
-                      : '今まで作った絵を見れるよ～',
+                      ? 'いままでつくったえをみれるよ😊'
+                      : '今まで作った絵を見れるよ😊',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
@@ -61,7 +68,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Text('まだないよ～');
+                      return const Text('まだないよ😢');
                     } else {
                       List<Map<String, dynamic>> drawings = snapshot.data!;
                       return Expanded(
@@ -123,7 +130,7 @@ class _GalleryPageState extends State<GalleryPage> {
                             const Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'とじる' : '閉じる',
+                        languageProvider.isHiragana ? 'ホームに戻る🔙' : 'ホームに戻る🔙',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

@@ -202,7 +202,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       Text(
-                        'カラーブレンド',
+                        'カラーブレンド🎨',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -210,8 +210,8 @@ class _DrawingPageState extends State<DrawingPage> {
                       ),
                       Text(
                         languageProvider.isHiragana
-                            ? 'パレットのよこにある2つのいろをせっていしてね～'
-                            : 'パレットの横にある2つの色を選んでね～',
+                            ? 'パレットのよこにある2つのいろをせっていしてね🎨'
+                            : 'パレットの横にある2つの色を選んでね🎨',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -229,8 +229,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                         children: [
                                           Text(
                                             languageProvider.isHiragana
-                                                ? 'いろ１'
-                                                : '色1',
+                                                ? 'いろ1🖌️'
+                                                : '色1🖌️',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: fontsize,
@@ -249,8 +249,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                         children: [
                                           Text(
                                             languageProvider.isHiragana
-                                                ? 'いろ２'
-                                                : '色2',
+                                                ? 'いろ2🖌️'
+                                                : '色2🖌️',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: fontsize,
@@ -283,8 +283,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                       ),
                                       child: Text(
                                         languageProvider.isHiragana
-                                            ? 'いろをまぜる'
-                                            : '色を混ぜる',
+                                            ? 'いろをまぜる🪄'
+                                            : '色を混ぜる🪄',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: fontsize,
@@ -306,8 +306,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                         ),
                                         child: Text(
                                           languageProvider.isHiragana
-                                              ? 'やりなおす'
-                                              : 'やり直す',
+                                              ? 'やりなおす🔙'
+                                              : 'やり直す🔙',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: fontsize,
@@ -320,8 +320,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                   _allmixedColor.length <= 6) ...[
                                 Text(
                                   languageProvider.isHiragana
-                                      ? 'まぜたいろ'
-                                      : '混ぜた色',
+                                      ? 'まぜたいろ🖌️'
+                                      : '混ぜた色🖌️',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -344,7 +344,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             ]),
                             Column(mainAxisSize: MainAxisSize.min, children: [
                               Text(
-                                'パレット',
+                                'パレット🎨',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -358,8 +358,8 @@ class _DrawingPageState extends State<DrawingPage> {
                             ]),
                             Text(
                               languageProvider.isHiragana
-                                  ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ\n6しょくつくれるよ'
-                                  : '色を混ぜたら\n「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ\n6色作れるよ',
+                                  ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ🎨\n6しょくつくれるよ😊'
+                                  : '色を混ぜたら\n「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ🎨\n6色作れるよ😊',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -379,7 +379,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     Color.fromARGB(255, 255, 67, 195),
                               ),
                               child: Text(
-                                languageProvider.isHiragana ? 'とじる' : '閉じる',
+                                languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -409,7 +409,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     Color.fromARGB(255, 255, 67, 195),
                               ),
                               child: Text(
-                                'これでOK',
+                                'これでOK🪄',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -658,7 +658,7 @@ class _DrawingPageState extends State<DrawingPage> {
                         // 色選択用のウィジェット
                         Padding(
                           padding: EdgeInsets.all(3.0),
-                          child: Text('パレット',
+                          child: Text('パレット🎨',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
@@ -683,7 +683,9 @@ class _DrawingPageState extends State<DrawingPage> {
                         Padding(
                           padding: EdgeInsets.all(3.0),
                           child: Text(
-                              languageProvider.isHiragana ? 'ふでのおおきさ' : '筆の大きさ',
+                              languageProvider.isHiragana
+                                  ? 'ふでのおおきさ🖌️'
+                                  : '筆の大きさ🖌️',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
@@ -693,7 +695,9 @@ class _DrawingPageState extends State<DrawingPage> {
                         Padding(
                           padding: EdgeInsets.all(3.0),
                           child: Text(
-                              languageProvider.isHiragana ? 'ふでのしゅるい' : '筆の種類',
+                              languageProvider.isHiragana
+                                  ? 'ふでのしゅるい✏️'
+                                  : '筆の種類✏️',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
@@ -767,7 +771,7 @@ class _DrawingPageState extends State<DrawingPage> {
                         ),
                         Padding(
                           padding: EdgeInsets.all(3.0),
-                          child: Text('スタンプ',
+                          child: Text('スタンプ🔴',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
@@ -974,7 +978,7 @@ class _DrawingPageState extends State<DrawingPage> {
                         Padding(
                           padding: EdgeInsets.all(3.0),
                           child: Text(
-                              languageProvider.isHiragana ? 'かみのいろ' : '紙の色',
+                              languageProvider.isHiragana ? 'かみのいろ📃' : '紙の色📃',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
@@ -1064,7 +1068,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? 'とじる' : '閉じる',
+                      languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -1082,7 +1086,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? 'しゃしんからえらぶ' : '写真から選ぶ',
+                      languageProvider.isHiragana ? 'しゃしんからえらぶ🖼' : '写真から選ぶ🖼',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -1100,7 +1104,7 @@ class _DrawingPageState extends State<DrawingPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      'できたよ',
+                      'できたよ🪄',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

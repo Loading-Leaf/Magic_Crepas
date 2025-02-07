@@ -8,9 +8,13 @@ import 'package:ai_art/artproject/modal_provider.dart';
 class TutorialDetailPage extends StatefulWidget {
   final List<String> chapters;
   final int tutorialnumber;
+  final String title;
 
   const TutorialDetailPage(
-      {super.key, required this.tutorialnumber, required this.chapters});
+      {super.key,
+      required this.tutorialnumber,
+      required this.chapters,
+      required this.title});
 
   @override
   _TutorialDetailPageState createState() => _TutorialDetailPageState();
@@ -20,12 +24,14 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
   int chapter = 1; // 現在の章を保持する変数
   late int tutorialnum; // 修正: late を使用して初期化を遅延
   late List<String> chapters;
+  late String tutorial_title;
 
   @override
   void initState() {
     super.initState();
     tutorialnum = widget.tutorialnumber; // 修正: widget. をつける
     chapters = widget.chapters;
+    tutorial_title = widget.title;
   }
 
   @override
@@ -53,7 +59,11 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
+                  tutorial_title +
+                      "の" +
+                      (languageProvider.isHiragana
+                          ? 'あそびかた👩‍🏫'
+                          : 'あそび方👩‍🏫'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize_big,
@@ -103,7 +113,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'すすむ' : '進む',
+                            languageProvider.isHiragana ? 'すすむ🔜' : '進む🔜',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -129,7 +139,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'もどる' : '戻る',
+                            languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -150,7 +160,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            'やめる',
+                            'やめる🔚',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,

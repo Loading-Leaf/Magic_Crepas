@@ -438,6 +438,7 @@ class _TutorialPageState extends State<TutorialPage> {
                             tutorialnumber: tutorialItems[itemIndex]
                                 ["tutorialNumber"],
                             chapters: tutorialItems[itemIndex]["chapters"],
+                            title: tutorialItems[itemIndex]["title"],
                           ),
                         ),
                       );
@@ -480,7 +481,7 @@ class _TutorialPageState extends State<TutorialPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
+                  languageProvider.isHiragana ? 'あそびかた👩‍🏫' : 'あそび方👩‍🏫',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize_big,
@@ -538,7 +539,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       backgroundColor: const Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? 'とじる' : '閉じる',
+                      languageProvider.isHiragana ? 'ホームにもどる🔙' : 'ホームに戻る🔙',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
