@@ -109,7 +109,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'すすむ🔜' : '進む🔜',
+                            languageProvider.isHiragana ? 'すすむ' : '進む',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -135,7 +135,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
+                            languageProvider.isHiragana ? 'もどる' : '戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -156,7 +156,7 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            'やめる🔚',
+                            'やめる',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,

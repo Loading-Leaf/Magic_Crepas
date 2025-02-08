@@ -45,7 +45,7 @@ class _GalleryPageState extends State<GalleryPage> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Text(
-                  'ギャラリー📔',
+                  'ギャラリー',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
@@ -129,7 +129,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'ホームに戻る🔙' : 'ホームに戻る🔙',
+                        languageProvider.isHiragana ? 'ホームに戻る' : 'ホームに戻る',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

@@ -104,7 +104,7 @@ class TermsOfServiceDialog extends StatelessWidget {
           style: TextButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 255, 67, 195),
           ),
-          child: Text('閉じる🔙',
+          child: Text('閉じる',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,

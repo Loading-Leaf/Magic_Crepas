@@ -292,7 +292,7 @@ class _OutputPageState extends State<OutputPage> {
                 backgroundColor: Color.fromARGB(255, 255, 67, 195),
               ),
               child: Text(
-                'OK✅',
+                'OK',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -445,11 +445,11 @@ class _OutputPageState extends State<OutputPage> {
                                 child: Text(
                                   is_answer == 1
                                       ? languageProvider.isHiragana
-                                          ? 'こたえをみる👀'
-                                          : '答えを見る👀'
+                                          ? 'こたえをみる'
+                                          : '答えを見る'
                                       : languageProvider.isHiragana
-                                          ? 'もとのえをみる👀'
-                                          : 'もとの絵を見る👀',
+                                          ? 'もとのえをみる'
+                                          : 'もとの絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -699,9 +699,7 @@ class _OutputPageState extends State<OutputPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      languageProvider.isHiragana
-                          ? 'ギャラリーにほぞん🪄'
-                          : 'ギャラリーに保存🪄',
+                      languageProvider.isHiragana ? 'ギャラリーにほぞん' : 'ギャラリーに保存',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontsize_big),
                     ),
@@ -899,7 +897,7 @@ class _OutputPageState extends State<OutputPage> {
                               backgroundColor: Color.fromARGB(255, 0, 204, 255),
                             ),
                             child: Text(
-                              languageProvider.isHiragana ? 'もどる🔙' : '戻る🔙',
+                              languageProvider.isHiragana ? 'もどる' : '戻る',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -959,7 +957,7 @@ class _OutputPageState extends State<OutputPage> {
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              languageProvider.isHiragana ? 'すすむ🔜' : '進む🔜',
+                              languageProvider.isHiragana ? 'すすむ' : '進む',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -991,7 +989,7 @@ class _OutputPageState extends State<OutputPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            languageProvider.isHiragana ? 'べつのモードをつかう🪄' : '別のモードを使う🪄',
+            languageProvider.isHiragana ? 'べつのモードをつかう' : '別のモードを使う',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -1109,7 +1107,7 @@ class _OutputPageState extends State<OutputPage> {
                                     Color.fromARGB(255, 255, 67, 195),
                               ),
                               child: Text(
-                                buttonLabels[index] + "🪄",
+                                buttonLabels[index] + "",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1131,7 +1129,7 @@ class _OutputPageState extends State<OutputPage> {
                         backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
+                        languageProvider.isHiragana ? 'とじる' : '閉じる',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
@@ -1264,8 +1262,8 @@ class _OutputPageState extends State<OutputPage> {
                             ),
                             child: Text(
                               languageProvider.isHiragana
-                                  ? your_platform + 'にほぞんする📱'
-                                  : your_platform + 'に保存する📱',
+                                  ? your_platform + 'にほぞんする'
+                                  : your_platform + 'に保存する',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1322,8 +1320,8 @@ class _OutputPageState extends State<OutputPage> {
                             ),
                             child: Text(
                               languageProvider.isHiragana
-                                  ? your_platform + 'にほぞんする📱'
-                                  : your_platform + 'に保存する📱',
+                                  ? your_platform + 'にほぞんする'
+                                  : your_platform + 'に保存する',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1358,8 +1356,8 @@ class _OutputPageState extends State<OutputPage> {
                               ),
                               child: Text(
                                 languageProvider.isHiragana
-                                    ? 'ギャラリーにほぞんする🪄'
-                                    : 'ギャラリーに保存する🪄',
+                                    ? 'ギャラリーにほぞんする'
+                                    : 'ギャラリーに保存する',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -1382,8 +1380,8 @@ class _OutputPageState extends State<OutputPage> {
                               ),
                               child: Text(
                                 languageProvider.isHiragana
-                                    ? 'べつのモードをつかう🪄'
-                                    : '別のモードを使う🪄',
+                                    ? 'べつのモードをつかう'
+                                    : '別のモードを使う',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -1406,9 +1404,7 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            languageProvider.isHiragana
-                                ? 'ホームにもどる🔙'
-                                : 'ホームに戻る🔙',
+                            languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -1432,7 +1428,7 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            'シェアする💬',
+                            'シェアする',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,

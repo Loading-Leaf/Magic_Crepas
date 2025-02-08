@@ -481,7 +481,7 @@ class _TutorialPageState extends State<TutorialPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  languageProvider.isHiragana ? 'あそびかた👩‍🏫' : 'あそび方👩‍🏫',
+                  languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize_big,
@@ -539,7 +539,7 @@ class _TutorialPageState extends State<TutorialPage> {
                       backgroundColor: Color.fromARGB(255, 0, 204, 255),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? 'ホームにもどる🔙' : 'ホームに戻る🔙',
+                      languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

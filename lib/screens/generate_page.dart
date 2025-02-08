@@ -222,7 +222,7 @@ class _GeneratePageState extends State<GeneratePage> {
                 backgroundColor: Color.fromARGB(255, 255, 67, 195),
               ),
               child: Text(
-                'OK✅',
+                'OK',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
@@ -262,7 +262,7 @@ class _GeneratePageState extends State<GeneratePage> {
                 backgroundColor: Color.fromARGB(255, 255, 67, 195),
               ),
               child: Text(
-                'OK✅',
+                'OK',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -418,11 +418,11 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: Text(
                                   is_answer == 1
                                       ? languageProvider.isHiragana
-                                          ? 'こたえをみる👀'
-                                          : '答えを見る👀'
+                                          ? 'こたえをみる'
+                                          : '答えを見る'
                                       : languageProvider.isHiragana
-                                          ? 'もとのえをみる👀'
-                                          : 'もとの絵を見る👀',
+                                          ? 'もとのえをみる'
+                                          : 'もとの絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -459,8 +459,8 @@ class _GeneratePageState extends State<GeneratePage> {
                                 ),
                                 child: Text(
                                   languageProvider.isHiragana
-                                      ? 'かんせいしたえをみる🪄'
-                                      : '完成した絵を見る🪄',
+                                      ? 'かんせいしたえをみる'
+                                      : '完成した絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -578,7 +578,7 @@ class _GeneratePageState extends State<GeneratePage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'モードについてℹ️',
+            'モードについて',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -610,7 +610,7 @@ class _GeneratePageState extends State<GeneratePage> {
                   backgroundColor: Color.fromARGB(255, 0, 204, 255),
                 ),
                 child: Text(
-                  languageProvider.isHiragana ? 'とじる🔙' : '閉じる🔙',
+                  languageProvider.isHiragana ? 'とじる' : '閉じる',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: fontsize,
@@ -726,8 +726,8 @@ class _GeneratePageState extends State<GeneratePage> {
                                   ),
                                   child: Text(
                                     languageProvider.isHiragana
-                                        ? 'おえかきをする🖌️'
-                                        : 'お絵描きをする🖌️',
+                                        ? 'おえかきをする'
+                                        : 'お絵描きをする',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: fontsize,
@@ -749,8 +749,8 @@ class _GeneratePageState extends State<GeneratePage> {
                                   ),
                                   child: Text(
                                     languageProvider.isHiragana
-                                        ? 'しゃしんをえらぶ🖼'
-                                        : '写真を選ぶ🖼',
+                                        ? 'しゃしんをえらぶ'
+                                        : '写真を選ぶ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: fontsize,
@@ -773,7 +773,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                         Color.fromARGB(255, 255, 67, 195),
                                   ),
                                   child: Text(
-                                    'モードについてℹ️',
+                                    'モードについて',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: fontsize,
@@ -796,9 +796,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            languageProvider.isHiragana
-                                ? 'ホームにもどる🔙'
-                                : 'ホームに戻る🔙',
+                            languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -818,8 +816,8 @@ class _GeneratePageState extends State<GeneratePage> {
                                 context: context,
                                 builder: (context) =>
                                     const SomethingDisconnectDialog(
-                                  message1: 'Wi-Fiがつながっていないよ⚙️',
-                                  message2: 'Wi-Fiがつながっていないよ⚙️',
+                                  message1: 'Wi-Fiがつながっていないよ💦',
+                                  message2: 'Wi-Fiがつながっていないよ💦',
                                 ),
                               );
 
@@ -900,9 +898,7 @@ class _GeneratePageState extends State<GeneratePage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            languageProvider.isHiragana
-                                ? 'アートをつくる🪄'
-                                : 'アートを作る🪄',
+                            languageProvider.isHiragana ? 'アートをつくる' : 'アートを作る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
