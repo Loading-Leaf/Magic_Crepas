@@ -880,24 +880,6 @@ class _DrawingPageState extends State<DrawingPage> {
                         _buildPaperColorPicker(
                             MediaQuery.of(context).size.width / 28)
                       ],
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.undo),
-                            onPressed: _drawItems.isNotEmpty ? _undo : null,
-                            tooltip: 'Undo',
-                            splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 32,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.redo),
-                            onPressed: _undoneItems.isNotEmpty ? _redo : null,
-                            tooltip: 'Redo',
-                            splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 32,
-                          ),
-                        ],
-                      ),
                     ]),
                     Column(children: [
                       SizedBox(height: screenSize.height * 0.01),
@@ -1004,6 +986,25 @@ class _DrawingPageState extends State<DrawingPage> {
                           fontSize: fontsize,
                           color: Colors.white),
                     ),
+                  ),
+                  SizedBox(width: 20),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.undo),
+                        onPressed: _drawItems.isNotEmpty ? _undo : null,
+                        tooltip: 'Undo',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.width / 32,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.redo),
+                        onPressed: _undoneItems.isNotEmpty ? _redo : null,
+                        tooltip: 'Redo',
+                        splashColor: Color.fromARGB(255, 255, 67, 195),
+                        iconSize: MediaQuery.of(context).size.width / 32,
+                      ),
+                    ],
                   ),
                 ],
               ),
