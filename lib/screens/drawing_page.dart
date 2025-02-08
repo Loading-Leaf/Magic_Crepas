@@ -676,7 +676,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               },
                               tooltip: 'mix color',
                               splashColor: Color.fromARGB(255, 255, 67, 195),
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                           ],
                         ),
@@ -692,7 +692,7 @@ class _DrawingPageState extends State<DrawingPage> {
                         _buildStrokePicker(
                             MediaQuery.of(context).size.width / 28),
                         Padding(
-                          padding: EdgeInsets.all(3.0),
+                          padding: EdgeInsets.all(1.0),
                           child: Text(
                               languageProvider.isHiragana ? 'ふでのしゅるい' : '筆の種類',
                               style: TextStyle(
@@ -718,7 +718,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               tooltip:
                                   edittingmode == 1 ? 'Pen Mode' : 'Pen Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                             IconButton(
                               icon: Icon(
@@ -736,12 +736,12 @@ class _DrawingPageState extends State<DrawingPage> {
                                   ? 'Brush Mode'
                                   : 'Spray Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.all(3.0),
+                          padding: EdgeInsets.all(1.0),
                           child: Text('スタンプ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -765,7 +765,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   ? 'circle Mode'
                                   : 'circle Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                             IconButton(
                               icon: Icon(
@@ -785,7 +785,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   ? 'triangle Mode'
                                   : 'triangle Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                             IconButton(
                               icon: Icon(
@@ -804,7 +804,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               tooltip:
                                   edittingmode == 5 ? 'Rect Mode' : 'Rect Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                           ],
                         ),
@@ -828,7 +828,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   ? 'Heart Mode'
                                   : 'Heart Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                             IconButton(
                               icon: Icon(
@@ -845,7 +845,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               tooltip:
                                   edittingmode == 7 ? 'Star Mode' : 'Star Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                             IconButton(
                               icon: Icon(
@@ -864,7 +864,7 @@ class _DrawingPageState extends State<DrawingPage> {
                               tooltip:
                                   edittingmode == 8 ? 'Dia Mode' : 'Dia Mode',
                               splashColor: _selectedColor,
-                              iconSize: MediaQuery.of(context).size.width / 28,
+                              iconSize: MediaQuery.of(context).size.width / 32,
                             ),
                           ],
                         ),
@@ -887,14 +887,14 @@ class _DrawingPageState extends State<DrawingPage> {
                             onPressed: _drawItems.isNotEmpty ? _undo : null,
                             tooltip: 'Undo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                            iconSize: MediaQuery.of(context).size.width / 32,
                           ),
                           IconButton(
                             icon: Icon(Icons.redo),
                             onPressed: _undoneItems.isNotEmpty ? _redo : null,
                             tooltip: 'Redo',
                             splashColor: Color.fromARGB(255, 255, 67, 195),
-                            iconSize: MediaQuery.of(context).size.width / 28,
+                            iconSize: MediaQuery.of(context).size.width / 32,
                           ),
                         ],
                       ),
