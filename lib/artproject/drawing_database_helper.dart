@@ -80,4 +80,17 @@ class DrawingDatabaseHelper {
     Database db = await instance.database;
     return await db.query(table);
   }
+
+  Future<int> clearNonIdColumns(int id) async {
+    Database db = await instance.database;
+    return await db.update(
+      table,
+      {
+        columnDrawing: null,
+        is_photo_flag: null,
+      },
+      where: '$columnId = ?',
+      whereArgs: [id],
+    );
+  }
 }

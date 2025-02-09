@@ -129,11 +129,15 @@ class _GeneratePageState extends State<GeneratePage> {
         }).toList();
       });
       print(_images[_images.length - 1]);
+
       // 最後に保存した描画データをセット
       if (_images.isNotEmpty) {
         drawingImageData = _images.last['drawing']; // 最後の画像を使用
         setState(() {
           image = File(_images[_images.length - 1]['path']);
+          if (_images.length > 1) {
+            DatabaseHelper.instance.clearNonIdColumns(_images.length);
+          }
         });
       }
 
@@ -157,6 +161,9 @@ class _GeneratePageState extends State<GeneratePage> {
           is_photo_flag = drawings.last["is_photo_flag"];
           drawingImageData =
               List<int>.from(drawings.last['drawing']); // 描画データを取得
+          if (drawings.length > 1) {
+            DrawingDatabaseHelper.instance.clearNonIdColumns(drawings.length);
+          }
         }
       });
     } catch (e) {

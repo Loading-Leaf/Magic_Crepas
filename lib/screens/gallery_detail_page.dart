@@ -360,39 +360,41 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
                 SizedBox(width: 20),
                 if (photoImage != null && photoImage!.isNotEmpty) ...[
-                  Text(
-                    languageProvider.isHiragana ? "つかったしゃしん" : "使った写真",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontsize,
+                  Row(mainAxisSize: MainAxisSize.min, children: [
+                    Text(
+                      languageProvider.isHiragana ? "つかったしゃしん" : "使った写真",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 5),
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (photoImage != null) {
-                          // 画像が存在する場合、タップしてモーダルを表示
-                          _showImageModal(context, MemoryImage(photoImage!));
-                        } else {
-                          // デフォルト画像の場合
-                          _showImageModal(
-                              context, AssetImage('assets/content.png'));
-                        }
-                      },
-                      child: Container(
-                        height: (screenSize.width ~/ 6.948).toDouble(),
-                        width: (screenSize.width ~/ 5.208).toDouble(),
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: photoImage != null
-                              ? Image.memory(photoImage!) // 画像を表示
-                              : Image.asset('assets/content.png'), // デフォルト画像
+                    SizedBox(width: 5),
+                    Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (photoImage != null) {
+                            // 画像が存在する場合、タップしてモーダルを表示
+                            _showImageModal(context, MemoryImage(photoImage!));
+                          } else {
+                            // デフォルト画像の場合
+                            _showImageModal(
+                                context, AssetImage('assets/content.png'));
+                          }
+                        },
+                        child: Container(
+                          height: (screenSize.width ~/ 6.948).toDouble(),
+                          width: (screenSize.width ~/ 5.208).toDouble(),
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: photoImage != null
+                                ? Image.memory(photoImage!) // 画像を表示
+                                : Image.asset('assets/content.png'), // デフォルト画像
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ]),
                 ],
                 SizedBox(width: 20),
                 TextButton(

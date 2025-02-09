@@ -1373,7 +1373,6 @@ class _DrawingPageState extends State<DrawingPage> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 4.0),
-        color: selectedColor,
         width: size,
         height: size,
         decoration: BoxDecoration(
