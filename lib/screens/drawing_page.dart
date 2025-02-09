@@ -115,8 +115,8 @@ class _DrawingPageState extends State<DrawingPage> {
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
 
-  Color SelectedColor1 = Colors.black;
-  Color SelectedColor2 = Colors.black;
+  Color SelectedColor1 = Colors.white;
+  Color SelectedColor2 = Colors.white;
   Color? MixedColor;
   bool select1 = true;
   bool select2 = false;
