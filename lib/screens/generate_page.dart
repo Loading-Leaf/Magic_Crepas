@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 import 'dart:async'; // Timer を利用するために追加
 
@@ -75,6 +76,7 @@ class _GeneratePageState extends State<GeneratePage> {
 
   String? wifiName; // Wi-Fi名を保存する変数
   int typeValue = 1;
+  bool isipad = false;
 
   Future<void> _getWifiName() async {
     try {
@@ -108,6 +110,19 @@ class _GeneratePageState extends State<GeneratePage> {
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+    }
+  }
+
+  Future<void> checkDevice() async {
+    final deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      setState(() {
+        if (iosInfo.model.toLowerCase().contains("ipad")) {
+          isipad = true;
+        }
+      });
     }
   }
 
@@ -179,6 +194,7 @@ class _GeneratePageState extends State<GeneratePage> {
     loadDrawings(); // 描画データを読み込む
     _getWifiName();
     _startResultCheckTimer();
+    checkDevice();
   }
 
   // 状態監視を定期的に行うタイマー
@@ -286,7 +302,7 @@ class _GeneratePageState extends State<GeneratePage> {
   void _showDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    String random_num = randomIntWithRange(1, 10).toString();
+    String random_num = randomIntWithRange(1, 13).toString();
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     int is_answer = 1;
     List<Circle> _circles = []; // 円を保持するリスト
@@ -314,7 +330,7 @@ class _GeneratePageState extends State<GeneratePage> {
           builder: (BuildContext context, setState) {
             return Dialog(
               child: Container(
-                width: screenSize.width * 0.8,
+                width: screenSize.width * 0.9,
                 height: screenSize.height * 0.95,
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -354,8 +370,12 @@ class _GeneratePageState extends State<GeneratePage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.25,
-                            width: screenSize.width * 0.25,
+                            height: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
+                            width: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/difference/original/' +
@@ -367,8 +387,12 @@ class _GeneratePageState extends State<GeneratePage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.25,
-                            width: screenSize.width * 0.25,
+                            height: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
+                            width: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
                                 if (_circles.length >= machigaitotal) return;
@@ -394,8 +418,11 @@ class _GeneratePageState extends State<GeneratePage> {
                                     fit: BoxFit.fill,
                                   ),
                                   CustomPaint(
-                                    size: Size(screenSize.width * 0.25,
-                                        screenSize.width * 0.25),
+                                    size: isipad == true
+                                        ? Size(screenSize.width * 0.35,
+                                            screenSize.width * 0.35)
+                                        : Size(screenSize.width * 0.25,
+                                            screenSize.width * 0.25),
                                     painter: CirclePainter(_circles), // 円を描画
                                   ),
                                 ],

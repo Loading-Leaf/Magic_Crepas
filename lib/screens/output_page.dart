@@ -108,6 +108,7 @@ class _OutputPageState extends State<OutputPage> {
   String formattedDate = "";
 
   String your_platform = "";
+  bool isipad = false;
   String getFormattedDate() {
     DateTime now = DateTime.now();
     return DateFormat('yyyy/M/d HH:mm').format(now);
@@ -121,6 +122,7 @@ class _OutputPageState extends State<OutputPage> {
       setState(() {
         if (iosInfo.model.toLowerCase().contains("ipad")) {
           your_platform = "タブレット";
+          isipad = true;
         } else {
           your_platform = "スマホ";
         }
@@ -312,7 +314,7 @@ class _OutputPageState extends State<OutputPage> {
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
     double fontsize = screenSize.width / 74.6;
-    String random_num = randomIntWithRange(1, 10).toString();
+    String random_num = randomIntWithRange(1, 13).toString();
     int is_answer = 1;
     List<Circle> _circles = []; // 円を保持するリスト
     List<List<Circle>> _undoStack = [];
@@ -322,7 +324,7 @@ class _OutputPageState extends State<OutputPage> {
     if (int.parse(random_num) < 7) {
       machigaicount = "3";
       machigaitotal = 3;
-    } else if (int.parse(random_num) >= 7) {
+    } else if ((13 > int.parse(random_num)) && (int.parse(random_num) >= 7)) {
       machigaicount = "5";
       machigaitotal = 5;
     }
@@ -334,7 +336,7 @@ class _OutputPageState extends State<OutputPage> {
           builder: (BuildContext context, setState) {
             return Dialog(
               child: Container(
-                width: screenSize.width * 0.8,
+                width: screenSize.width * 0.9,
                 height: screenSize.height * 0.95,
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -374,8 +376,12 @@ class _OutputPageState extends State<OutputPage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.25,
-                            width: screenSize.width * 0.25,
+                            height: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
+                            width: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Image.asset('assets/difference/original/' +
@@ -387,8 +393,12 @@ class _OutputPageState extends State<OutputPage> {
                         Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Container(
-                            height: screenSize.width * 0.25,
-                            width: screenSize.width * 0.25,
+                            height: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
+                            width: isipad == true
+                                ? screenSize.width * 0.35
+                                : screenSize.width * 0.25,
                             child: GestureDetector(
                               onTapUp: (details) {
                                 if (_circles.length >= machigaitotal) return;
@@ -414,8 +424,11 @@ class _OutputPageState extends State<OutputPage> {
                                     fit: BoxFit.fill,
                                   ),
                                   CustomPaint(
-                                    size: Size(screenSize.width * 0.25,
-                                        screenSize.width * 0.25),
+                                    size: isipad == true
+                                        ? Size(screenSize.width * 0.35,
+                                            screenSize.width * 0.35)
+                                        : Size(screenSize.width * 0.25,
+                                            screenSize.width * 0.25),
                                     painter: CirclePainter(_circles), // 円を描画
                                   ),
                                 ],

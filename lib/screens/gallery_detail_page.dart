@@ -106,7 +106,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
       }
 
       if (detail_emotion != "") {
-        content += "詳細な気持ち: " + your_emotion + "\n";
+        content += "詳細な気持ち: " + detail_emotion + "\n";
       }
 
       // UIフレームの描画後にRenderBoxを取得
