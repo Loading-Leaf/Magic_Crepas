@@ -11,6 +11,12 @@ import 'package:ai_art/artproject/language_provider.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
+//画像シェア用
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter/scheduler.dart';
+import 'dart:io' show Platform;
+import 'package:path_provider/path_provider.dart';
+
 class GalleryDetailPage extends StatefulWidget {
   final Map<String, dynamic> data;
 
@@ -63,6 +69,73 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
   void initState() {
     super.initState();
     checkDevice();
+  }
+
+  Future<void> shareImages(
+      BuildContext context,
+      Uint8List image1,
+      Uint8List image2,
+      String time,
+      String title,
+      String your_emotion,
+      String detail_emotion) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+
+      final outputImagePath =
+          '${directory.path}/output_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final drawingImagePath =
+          '${directory.path}/drawing_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+      await File(outputImagePath).writeAsBytes(image1);
+      await File(drawingImagePath).writeAsBytes(image2);
+
+      final files = <XFile>[XFile(outputImagePath), XFile(drawingImagePath)];
+
+      String content = "";
+
+      if (time != "") {
+        content += "作成日時: " + time + "\n";
+      }
+
+      if (title != "") {
+        content += "タイトル: " + title + "\n";
+      }
+      if (your_emotion != "") {
+        content += "あなたの気持ち: " + your_emotion + "\n";
+      }
+
+      if (detail_emotion != "") {
+        content += "詳細な気持ち: " + your_emotion + "\n";
+      }
+
+      // UIフレームの描画後にRenderBoxを取得
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        final mediaQuery = MediaQuery.of(context);
+
+        Rect sharePositionOrigin = Rect.fromCenter(
+          center: Offset(mediaQuery.size.width / 3, mediaQuery.size.height / 3),
+          width: 200,
+          height: 200,
+        );
+        Share.shareXFiles(
+          files,
+          text: '写真とお絵描きからこんな絵ができたよ！' + content + '\n#まじっくくれぱす #思い出',
+          subject: 'まじっくくれぱすで作った絵',
+          sharePositionOrigin: sharePositionOrigin,
+        ).then((_) async {
+          // 共有後に一時ファイルを削除
+          await File(outputImagePath).delete();
+          await File(drawingImagePath).delete();
+        });
+      });
+    } catch (e) {
+      final snackBar = SnackBar(
+        content: Text('画像の共有中にエラーが発生しました: $e'),
+        duration: Duration(seconds: 3),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   Future<void> saveImage() async {
@@ -170,7 +243,6 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
     return showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
@@ -257,32 +329,36 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
     showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            width: screenSize.width * 0.6,
+            width: screenSize.width * 0.8,
             height: screenSize.height * 0.95,
             padding: EdgeInsets.all(20),
-            child: Column(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  languageProvider.isHiragana ? 'しょうさいなきもち' : "詳細な気持ち",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontsize,
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      languageProvider.isHiragana ? 'しょうさいなきもち' : "詳細な気持ち",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      _getFormattedText(your_detailemotion, 15),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  _getFormattedText(your_detailemotion, 20),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontsize,
-                  ),
-                ),
-                SizedBox(height: 20),
+                SizedBox(width: 20),
                 if (photoImage != null && photoImage!.isNotEmpty) ...[
                   Text(
                     languageProvider.isHiragana ? "つかったしゃしん" : "使った写真",
@@ -291,7 +367,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       fontSize: fontsize,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(width: 5),
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: GestureDetector(
@@ -306,8 +382,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         }
                       },
                       child: Container(
-                        height: (screenSize.width ~/ 7.6428).toDouble(),
-                        width: (screenSize.width ~/ 5.7288).toDouble(),
+                        height: (screenSize.width ~/ 6.948).toDouble(),
+                        width: (screenSize.width ~/ 5.208).toDouble(),
                         child: FittedBox(
                           fit: BoxFit.fill,
                           child: photoImage != null
@@ -318,7 +394,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     ),
                   ),
                 ],
-                SizedBox(height: 20),
+                SizedBox(width: 20),
                 TextButton(
                   onPressed: () async {
                     audioProvider.playSound("tap1.mp3");
@@ -446,7 +522,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(width: 20),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -499,6 +575,44 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                     ),
                   ],
                 ),
+                SizedBox(width: 20),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        onPressed: () => {
+                          audioProvider.playSound("tap1.mp3"),
+                          _showPhotoAndEmotionModal(),
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          languageProvider.isHiragana ? "くわしくみる" : "詳しく見る",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextButton(
+                        onPressed: () => {
+                          audioProvider.playSound("tap1.mp3"),
+                          _showDeleteConfirmDialog(),
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          languageProvider.isHiragana ? "さくじょする" : "削除する",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ]),
               ]),
               const SizedBox(height: 20),
               Row(
@@ -522,32 +636,18 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   ),
                   SizedBox(width: 20),
                   TextButton(
-                    onPressed: () => {
-                      audioProvider.playSound("tap1.mp3"),
-                      _showPhotoAndEmotionModal(),
+                    onPressed: () {
+                      audioProvider.playSound("tap1.mp3");
+                      if (outputImage != null && drawingImage != null) {
+                        shareImages(context, outputImage!, drawingImage!, time,
+                            title, emotion, detailemotion); // 両方の画像をシェアする
+                      }
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? "くわしくみる" : "詳しく見る",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  TextButton(
-                    onPressed: () => {
-                      audioProvider.playSound("tap1.mp3"),
-                      _showDeleteConfirmDialog(),
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                    ),
-                    child: Text(
-                      languageProvider.isHiragana ? "さくじょする" : "削除する",
+                      'シェアする',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -556,7 +656,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
             ],
           ),
         ),

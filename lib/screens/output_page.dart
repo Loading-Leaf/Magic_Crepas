@@ -486,8 +486,8 @@ class _OutputPageState extends State<OutputPage> {
                                 ),
                                 child: Text(
                                   languageProvider.isHiragana
-                                      ? 'かんせいしたえをみる🪄'
-                                      : '完成した絵を見る🪄',
+                                      ? 'かんせいしたえをみる'
+                                      : '完成した絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -1272,7 +1272,7 @@ class _OutputPageState extends State<OutputPage> {
                           ),
                         ],
                       ),
-                      SizedBox(width: screenSize.width * 0.1),
+                      SizedBox(width: screenSize.width * 0.05),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

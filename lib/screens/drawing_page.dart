@@ -191,7 +191,7 @@ class _DrawingPageState extends State<DrawingPage> {
 
     showDialog<void>(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
@@ -1184,7 +1184,7 @@ class _DrawingPageState extends State<DrawingPage> {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            width: _selectedColor == color ? 1 : 1,
+            width: _selectedColor == color ? 3 : 1,
             color: _selectedColor == color ? Colors.black : Colors.grey,
           ),
         ),
@@ -1493,6 +1493,10 @@ class _DrawingPageState extends State<DrawingPage> {
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 255, 255, 255),
           shape: BoxShape.rectangle, // 矩形の形状に変更
+          border: Border.all(
+            width: _strokeWidth == strokesize ? 3 : 1,
+            color: _strokeWidth == strokesize ? Colors.black : Colors.white,
+          ),
         ),
         child: Center(
           child: Container(
@@ -1501,10 +1505,6 @@ class _DrawingPageState extends State<DrawingPage> {
             decoration: BoxDecoration(
               color: _selectedColor,
               shape: BoxShape.circle,
-              border: Border.all(
-                width: _strokeWidth == strokesize ? 1.5 : 1,
-                color: _strokeWidth == strokesize ? Colors.black : Colors.black,
-              ),
             ),
           ),
         ),
