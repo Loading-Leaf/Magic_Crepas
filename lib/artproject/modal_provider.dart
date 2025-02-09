@@ -25,7 +25,7 @@ class WifiDisconnectDialog extends StatelessWidget {
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontsize,
-            color: Colors.white),
+            color: Colors.black),
       ),
       content: Text(""),
       actions: <Widget>[
