@@ -251,7 +251,7 @@ class _OutputPageState extends State<OutputPage> {
                 backgroundColor: Color.fromARGB(255, 255, 67, 195),
               ),
               child: Text(
-                'OK✅',
+                'OK',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),

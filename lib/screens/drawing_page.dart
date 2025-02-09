@@ -1008,7 +1008,7 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20), // スペースを追加
+              SizedBox(height: 30), // スペースを追加
             ],
           ),
         ),
