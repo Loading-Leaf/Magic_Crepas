@@ -360,7 +360,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 ),
                 SizedBox(width: 20),
                 if (photoImage != null && photoImage!.isNotEmpty) ...[
-                  Row(mainAxisSize: MainAxisSize.min, children: [
+                  Column(mainAxisSize: MainAxisSize.min, children: [
                     Text(
                       languageProvider.isHiragana ? "つかったしゃしん" : "使った写真",
                       style: TextStyle(
@@ -454,7 +454,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
-                  languageProvider.isHiragana ? "さくせいにちじ" : "作成日時: $time",
+                  languageProvider.isHiragana
+                      ? "さくせいにちじ: $time"
+                      : "作成日時: $time",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,
