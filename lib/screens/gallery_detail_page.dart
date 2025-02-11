@@ -120,7 +120,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
         );
         Share.shareXFiles(
           files,
-          text: '写真とお絵描きからこんな絵ができたよ！' + content + '\n#まじっくくれぱす #思い出',
+          text: '写真とお絵描きからこんなアートができたよ！\n' + content + '\n#まじっくくれぱす #思い出',
           subject: 'まじっくくれぱすで作った絵',
           sharePositionOrigin: sharePositionOrigin,
         ).then((_) async {
