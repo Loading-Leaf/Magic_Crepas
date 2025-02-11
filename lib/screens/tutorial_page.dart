@@ -152,7 +152,7 @@ class _TutorialPageState extends State<TutorialPage> {
             ? "スタンプつかって\nひととおりかいたら、いっかいいろをまぜるカラーブレンドをつかってみよう"
             : "スタンプ使って\n一通り描いたら、一回色を混ぜるカラーブレンドを使ってみよう",
         languageProvider.isHiragana ? "ここではふたつのいろをまぜるよ" : "ここでは2つの色を混ぜるよ",
-        languageProvider.isHiragana ? "いろ1のしかくをおしてみよう" : "色1の四角を押してみよう",
+        languageProvider.isHiragana ? "いろ1のまるをおしてみよう" : "色1の丸を押してみよう",
         languageProvider.isHiragana
             ? "おしたらみぎのパレットからすきないろをえらぶよ"
             : "押したら右のパレットから好きな色を選ぶよ",
@@ -217,8 +217,8 @@ class _TutorialPageState extends State<TutorialPage> {
       List<String> chapters4 = [
         languageProvider.isHiragana ? "かんせいしたあとのがめんだよ" : "完成した後の画面だよ",
         languageProvider.isHiragana
-            ? "もしえなどをほぞんしてきろくしたいばあいは\n「プロジェクトをほぞん」をおしてね"
-            : "もし絵などを保存して記録したい場合は\n「プロジェクトを保存」を押してね",
+            ? "もしアートなどをほぞんしてきろくしたいばあいは\n「ギャラリーにほぞんする」をおしてね"
+            : "もしアートなどを保存して記録したい場合は\n「ギャラリーに保存する」を押してね",
         languageProvider.isHiragana
             ? "そうするとほぞんようのウインドウがでてくるよ"
             : "そうすると保存用のウィンドウが出てくるよ",
@@ -256,8 +256,8 @@ class _TutorialPageState extends State<TutorialPage> {
         languageProvider.isHiragana ? "できたら「すすむ」をおすよ" : "できたら「進む」を押すよ",
         languageProvider.isHiragana ? "そうするとほぞんできたよ" : "そうすると保存できたよ",
         languageProvider.isHiragana
-            ? "さいご、ギャラリーにてほぞんしたプロジェクトがみれるよ\nくわしくはギャラリーのあそびかたをみてね\nこれであそびかたはおわりだよ！"
-            : "最後、ギャラリーにて保存したプロジェクトが見れるよ\n詳しくはギャラリーの遊び方を見てね\nこれで遊び方は終わりだよ！"
+            ? "さいご、ギャラリーにてほぞんしたアートがみれるよ\nくわしくはギャラリーのあそびかたをみてね\nこれであそびかたはおわりだよ！"
+            : "最後、ギャラリーにて保存したアートが見れるよ\n詳しくはギャラリーの遊び方を見てね\nこれで遊び方は終わりだよ！"
       ];
 
       List<String> chapters5 = [
@@ -287,12 +287,12 @@ class _TutorialPageState extends State<TutorialPage> {
 
       List<String> chapters6 = [
         languageProvider.isHiragana
-            ? "ほぞんしたプロジェクトがあるギャラリーはホームがめんからいけるよ"
-            : "保存したプロジェクトがあるギャラリーはホーム画面から行けるよ",
+            ? "ほぞんしたアートがあるギャラリーはホームがめんからいけるよ"
+            : "保存したアートがあるギャラリーはホーム画面から行けるよ",
         languageProvider.isHiragana ? "「ギャラリーをみる」をおしてね" : "「ギャラリーを見る」を押してね",
         languageProvider.isHiragana
-            ? "ギャラリーにはいままでほぞんしたプロジェクトがあるよ"
-            : "ギャラリーには今まで保存したプロジェクトがあるよ",
+            ? "ギャラリーにはいままでほぞんしたアートがあるよ"
+            : "ギャラリーには今まで保存したアートがあるよ",
         languageProvider.isHiragana
             ? "きろくしたえをひとつえらぶよ\nためしにひだりの「ゆうやけシャーベット」をえらんでみるね"
             : "記録した絵を１つ選ぶよ\n試しに左の「夕焼けシャーベット」を選んでみるね",
@@ -313,11 +313,11 @@ class _TutorialPageState extends State<TutorialPage> {
             ? "そうするとしょうさいなきもちとえをつくったときにつかったしゃしんがみれるよ"
             : "そうすると詳細な気持ちと絵を作った時に使った写真が見れるよ",
         languageProvider.isHiragana
-            ? "プロジェクトをさくじょすることもできるよ"
-            : "プロジェクトを削除することもできるよ",
+            ? "ほぞんしたえをさくじょすることもできるよ"
+            : "保存した絵を削除することもできるよ",
         languageProvider.isHiragana
-            ? "そうすると、さくじょのかくにんがくるよ\n「さくじょする」をおしたらそのプロジェクトがきえるよ"
-            : "そうすると、削除の確認がくるよ\n「削除する」を押したらそのプロジェクトが消えるよ",
+            ? "そうすると、さくじょのかくにんがくるよ\n「さくじょする」をおしたらそのほぞんしたえやタイトルがきえるよ"
+            : "そうすると、削除の確認がくるよ\n「削除する」を押したらその保存した絵やタイトルが消えるよ",
         languageProvider.isHiragana ? "これであそびかたはおわりだよ！" : "これで遊び方は終わりだよ！"
       ];
 
