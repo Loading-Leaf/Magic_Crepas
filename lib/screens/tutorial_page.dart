@@ -92,8 +92,12 @@ class _TutorialPageState extends State<TutorialPage> {
         languageProvider.isHiragana
             ? "つくったえとおえかきしたえがみられるよ"
             : "作った絵とお絵描きした絵が見られるよ",
-        languageProvider.isHiragana ? "つくったえをほぞんしてみよう" : "作った絵を保存してみよう",
-        languageProvider.isHiragana ? "おえかきしたえもほぞんしてみよう" : "お絵描きした絵も保存してみよう",
+        languageProvider.isHiragana
+            ? "つくったえをスマホとタブレットにほぞんしてみよう\nスマホには「スマホにほぞん」、タブレットには「タブレットにほぞん」とでるよ"
+            : "作った絵を保存してみよう\nスマホには「スマホに保存」、タブレットには「タブレットに保存」とでるよ",
+        languageProvider.isHiragana
+            ? "おえかきしたえもほぞんしてみよう\nスマホには「スマホにほぞん」、タブレットには「タブレットにほぞん」とでるよ"
+            : "お絵描きした絵も保存してみよう\nスマホには「スマホに保存」、タブレットには「タブレットに保存」とでるよ",
         languageProvider.isHiragana
             ? "つくったえとおえかきしたえをタッチしてみよう\nそうするとおおきくみれるよ"
             : "作った絵とお絵描きした絵をタッチしてみよう\nそうすると大きく見れるよ",
@@ -131,7 +135,9 @@ class _TutorialPageState extends State<TutorialPage> {
             : "右の四角を押すと、紙の色の設定ができるよ",
         languageProvider.isHiragana ? "このなかからかみのいろをかえれるよ" : "この中から紙の色を変えれるよ",
         languageProvider.isHiragana ? "さっそくおえかきをしてみよう" : "さっそくお絵描きをしてみよう",
-        languageProvider.isHiragana ? "まず、あかをえらんで、" : "まず、赤を選んで、",
+        languageProvider.isHiragana
+            ? "まず、あかをえらんで、\n※えらんだいろはふとくかこわれるよ"
+            : "まず、赤を選んで、\n※選んだ色は太く囲われるよ",
         languageProvider.isHiragana
             ? "ペンをせんたくして、ひだりのかみにかいてみよう"
             : "ペンを選択して、左の紙に描いてみよう",
@@ -143,8 +149,8 @@ class _TutorialPageState extends State<TutorialPage> {
             : "次、ブラシで描いてみよう\n点だらけだね",
         languageProvider.isHiragana ? "いっかい、あおいかみにかえてみよう" : "一回、青い紙に変えてみよう",
         languageProvider.isHiragana
-            ? "ひととおりかいたら、いっかいいろをまぜるカラーブレンドをつかってみよう"
-            : "一通り描いたら、一回色を混ぜるカラーブレンドを使ってみよう",
+            ? "スタンプつかって\nひととおりかいたら、いっかいいろをまぜるカラーブレンドをつかってみよう"
+            : "スタンプ使って\n一通り描いたら、一回色を混ぜるカラーブレンドを使ってみよう",
         languageProvider.isHiragana ? "ここではふたつのいろをまぜるよ" : "ここでは2つの色を混ぜるよ",
         languageProvider.isHiragana ? "いろ1のしかくをおしてみよう" : "色1の四角を押してみよう",
         languageProvider.isHiragana
@@ -216,7 +222,10 @@ class _TutorialPageState extends State<TutorialPage> {
         languageProvider.isHiragana
             ? "そうするとほぞんようのウインドウがでてくるよ"
             : "そうすると保存用のウィンドウが出てくるよ",
-        languageProvider.isHiragana ? "いっかいタイトルをかいてみよう" : "一回タイトルを書いてみよう",
+        languageProvider.isHiragana
+            ? "さいしょはえのかくにんでOKだったら「すすむ」をおしてね"
+            : "最初は絵の確認でOKだったら「進む」を押してね",
+        languageProvider.isHiragana ? "つぎタイトルをかいてみよう" : "次タイトルを書いてみよう",
         languageProvider.isHiragana
             ? "ゆうやけとシャーベットのくみあわせなので\n「ゆうやけシャーベット」にするよ"
             : "夕焼けとシャーベットの組み合わせなので\n「夕焼けシャーベット」にするよ",
@@ -269,11 +278,11 @@ class _TutorialPageState extends State<TutorialPage> {
             ? "モードCでかいたえだよ\nつくったえをタップしてみよう"
             : "モードCで描いた絵だよ\n作った絵をタップしてみよう",
         languageProvider.isHiragana
-            ? "クレヨンのようにアートができているね"
-            : "クレヨンのようにアートができているね",
+            ? "クレヨンのようにアートができているね\nえのそとがわをおすとがぞうとじるよ"
+            : "クレヨンのようにアートができているね\n絵の外側を押すと画像閉じるよ",
         languageProvider.isHiragana
-            ? "いろえんぴつやクレヨン、パステルなどでもためしてみてね\nこれであそびかたはおわりだよ！"
-            : "色鉛筆やクレヨン、パステルなどでも試してみてね\nこれで遊び方は終わりだよ！"
+            ? "いろえんぴつやクレヨン、えのぐなどでもためしてみてね\nこれであそびかたはおわりだよ！"
+            : "色鉛筆やクレヨン、絵の具などでも試してみてね\nこれで遊び方は終わりだよ！"
       ];
 
       List<String> chapters6 = [
@@ -282,8 +291,8 @@ class _TutorialPageState extends State<TutorialPage> {
             : "保存したプロジェクトがあるギャラリーはホーム画面から行けるよ",
         languageProvider.isHiragana ? "「ギャラリーをみる」をおしてね" : "「ギャラリーを見る」を押してね",
         languageProvider.isHiragana
-            ? "ギャラリーにはいままでほぞんしたプロジェクトがいっぱいあるよ"
-            : "ギャラリーには今まで保存したプロジェクトがいっぱいあるよ",
+            ? "ギャラリーにはいままでほぞんしたプロジェクトがあるよ"
+            : "ギャラリーには今まで保存したプロジェクトがあるよ",
         languageProvider.isHiragana
             ? "きろくしたえをひとつえらぶよ\nためしにひだりの「ゆうやけシャーベット」をえらんでみるね"
             : "記録した絵を１つ選ぶよ\n試しに左の「夕焼けシャーベット」を選んでみるね",
@@ -293,11 +302,13 @@ class _TutorialPageState extends State<TutorialPage> {
         languageProvider.isHiragana
             ? "また、つくったえなどをタップすると、かくだいしてみれるよ"
             : "また、作った絵などをタップすると、拡大して見れるよ",
-        languageProvider.isHiragana ? "そうすると、おおきくなったよ" : "そうすると、大きくなったよ",
+        languageProvider.isHiragana
+            ? "そうすると、おおきくなったよ\nえのそとがわをおすとがぞうとじるよ"
+            : "そうすると、大きくなったよ\n絵の外側を押すと画像閉じるよ",
         languageProvider.isHiragana
             ? "AIによってできたあとのおなじようにえなどをほぞんできるよ"
             : "AIによってできた後と同じように絵などを保存できるよ",
-        languageProvider.isHiragana ? "「くわしくみる」をおしてみるね" : "「詳しく見る」を押してみるね",
+        languageProvider.isHiragana ? "「くわしくみる」をおしてみてね" : "「詳しく見る」を押してみてね",
         languageProvider.isHiragana
             ? "そうするとしょうさいなきもちとえをつくったときにつかったしゃしんがみれるよ"
             : "そうすると詳細な気持ちと絵を作った時に使った写真が見れるよ",
@@ -319,8 +330,8 @@ class _TutorialPageState extends State<TutorialPage> {
             ? "そうするとほかのモードのひかくがぞうとモードせんたくができるよ"
             : "そうすると他のモードの比較画像とモード選択ができるよ",
         languageProvider.isHiragana
-            ? "ためしたいモードをえらぶよ\nここではモードCでやるよ"
-            : "試したいモードを選ぶよ\nここではモードCでやるよ",
+            ? "ためしたいモードをえらぶよ\nここではモードBでやるよ"
+            : "試したいモードを選ぶよ\nここではモードBでやるよ",
         languageProvider.isHiragana
             ? "おなじようにつくっているあいだはまちがいさがしをするよ"
             : "同じように作っている間はまちがいさがしをするよ",
@@ -341,7 +352,7 @@ class _TutorialPageState extends State<TutorialPage> {
             ? "つぎ、「ひらがなカタカナ」をえらんでよみがなへんこうできるよ"
             : "次、「ひらがなカタカナ」を選んで読み仮名変更できるよ",
         languageProvider.isHiragana
-            ? "そうするとうしろはひらがなになったよ\n※りようきやくとおといあわせはいじょう"
+            ? "そうするとうしろはひらがなになったよ\n※りようきやくとおといあわせはのぞく"
             : "そうすると後ろはひらがなになったよ\n※利用規約とお問い合わせは除く",
         languageProvider.isHiragana
             ? "すべてひらがなになったホームがめんだよ"
