@@ -5,6 +5,8 @@ import "package:ai_art/artproject/terms_of_service.dart";
 import 'package:audioplayers/audioplayers.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
+import 'package:ai_art/artproject/language_provider.dart';
+
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 //import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
 
@@ -56,190 +58,243 @@ class _MainPageState extends State<MainPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
-    final url = Uri.parse('https://forms.gle/JAR2RYDkzbzFwdei6');
+    final url = Uri.parse(
+        'https://forms.gle/JAR2RYDkzbzFwdei6'); //バグや疑問点などの指摘の際にformを準備
     final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
 
-    return Scaffold(
-      body: GestureDetector(
-        onTapUp: (details) {
-          // タッチされた位置を取得
-          Offset tapPosition = details.localPosition;
-          // キラキラエフェクトを表示
-          showSparkleEffect(context, tapPosition);
-        },
-        child: SizedBox.expand(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Padding(
-                  padding: EdgeInsets.all(7.0),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      height: screenSize.height * 0.15 * 0.75,
-                      width: screenSize.width * 0.20 * 0.75,
-                      child: Image.asset('assets/title_logo_main.png'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(7.0),
-                  child: Container(
-                    child: TextButton(
-                      onPressed: () {
-                        audioProvider.playSound("tap1.mp3");
-                        _showSettingsDialog(context, audioProvider);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                      ),
-                      child: Text(
-                        '設定',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontsize,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ]),
-              Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return PopScope(
+      // ここを追加
+      canPop: false, // false で無効化
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            // タッチされた位置を取得
+            Offset tapPosition = details.localPosition;
+            // キラキラエフェクトを表示
+            showSparkleEffect(context, tapPosition);
+          },
+          child: SizedBox.expand(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'AIが絵と写真で新しいアートを作ってくれるよ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize_big,
-                      ),
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        SizedBox(width: 10),
+                        //画面の中央にまじっくくれぱすの画像を添付
                         Padding(
-                          padding: EdgeInsets.all(3.0),
+                          padding: EdgeInsets.all(7.0),
                           child: Container(
-                            height: screenSize.width * 0.15, // 縦長の場合
-                            width: screenSize.width * 0.6, // 縦長の場合
-
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Image.asset('assets/title_image.png'),
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              height: screenSize.height * 0.15 * 0.75,
+                              width: screenSize.width * 0.20 * 0.75,
+                              child: Image.asset('assets/title_logo_main.png'),
                             ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  Navigator.pushNamed(context, '/generate');
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 255, 67, 195),
-                                ),
-                                child: Text(
-                                  'AIでアートを作る',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontsize,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  Navigator.pushNamed(context, '/tutorial');
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 0, 164, 14),
-                                ),
-                                child: Text(
-                                  'あそび方',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontsize,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(3.0),
-                      child: Text(
-                        '好きなものとアートを組み合わせると？？？',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.black,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(7.0),
+                          child: Container(
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                _showSettingsDialog(
+                                    context, audioProvider, languageProvider);
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                languageProvider.isHiragana ? 'せってい' : '設定',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 10),
+                      ],
                     ),
                   ],
                 ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
+                Padding(
+                  padding: EdgeInsets.all(1.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Text(
+                        languageProvider.isHiragana
+                            ? 'AIがえとしゃしんであたらしいアートをつくってくれるよ🪄'
+                            : 'AIが絵と写真で新しいアートを作ってくれるよ🪄',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize_big,
+                        ),
+                      ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: screenSize.height * 0.1),
-                          Container(
-                            child: TextButton(
-                              onPressed: () {
-                                audioProvider.playSound("tap1.mp3");
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => TermsOfServiceDialog(),
-                                );
-                              },
-                              child: Text(
-                                '利用規約',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                  color:
-                                      const Color.fromARGB(255, 255, 67, 195),
-                                ),
+                          Padding(
+                            padding: EdgeInsets.all(3.0),
+                            child: Container(
+                              height: screenSize.width * 0.15, // 縦長の場合
+                              width: screenSize.width * 0.6, // 縦長の場合
+
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset('assets/title_image.png'),
                               ),
                             ),
                           ),
-                          // Display the banner ad next to the buttons
-                          Container(
-                            child: TextButton(
-                              onPressed: () {
-                                audioProvider.playSound("tap1.mp3");
-                                launchUrl(url);
-                              },
-                              child: Text(
-                                'お問い合わせ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontsize,
-                                  color:
-                                      const Color.fromARGB(255, 255, 67, 195),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap1.mp3");
+                                    Navigator.pushNamed(context, '/generate');
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                  child: Text(
+                                    languageProvider.isHiragana
+                                        ? 'AIでアートをつくる'
+                                        : 'AIでアートを作る',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap1.mp3");
+                                    Navigator.pushNamed(context, '/gallery');
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                  child: Text(
+                                    languageProvider.isHiragana
+                                        ? 'ギャラリーをみる'
+                                        : 'ギャラリーを見る',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap1.mp3");
+                                    Navigator.pushNamed(context, '/tutorial');
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 0, 164, 14),
+                                  ),
+                                  child: Text(
+                                    languageProvider.isHiragana
+                                        ? 'あそびかたをみる'
+                                        : 'あそび方を見る',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: Text(
+                          languageProvider.isHiragana
+                              ? 'すきなものとアートをあわせると？？？'
+                              : '好きなものとアートを組み合わせると？？？',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: screenSize.height * 0.1),
+                            Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        TermsOfServiceDialog(),
+                                  );
+                                },
+                                child: Text(
+                                  '利用規約',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color:
+                                        const Color.fromARGB(255, 255, 67, 195),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          /*
+                            // Display the banner ad next to the buttons
+                            Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  audioProvider.playSound("tap1.mp3");
+                                  launchUrl(url);
+                                },
+                                child: Text(
+                                  'お問い合わせ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color:
+                                        const Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            /*
                           if (_isBannerAdReady)
                             Container(
                               alignment: Alignment.center,
@@ -247,21 +302,24 @@ class _MainPageState extends State<MainPage> {
                               height: _bannerAd.size.height.toDouble(),
                               child: AdWidget(ad: _bannerAd),
                             ),*/
-                        ],
-                      ),
-                      SizedBox(height: screenSize.height * 0.05),
-                    ],
+                          ],
+                        ),
+                        SizedBox(height: screenSize.height * 0.05),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _showSettingsDialog(BuildContext context, AudioProvider audioProvider) {
+  //設定用のダイアログ(音声と仮名読み)
+  void _showSettingsDialog(BuildContext context, AudioProvider audioProvider,
+      LanguageProvider languageProvider) {
     double fontsize_big = 20;
     double fontsize = 12;
     showDialog(
@@ -269,7 +327,7 @@ class _MainPageState extends State<MainPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            '設定',
+            languageProvider.isHiragana ? 'せってい' : '設定',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -277,7 +335,7 @@ class _MainPageState extends State<MainPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '音量調整ボタン',
+                languageProvider.isHiragana ? 'おんりょうボタン' : '音量ボタン',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
               ),
@@ -286,14 +344,16 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(0.0);
-                      audioProvider.playSound("tap1.mp3");
+                      setState(() {
+                        audioProvider.setVolume(0.0);
+                        audioProvider.playSound("tap1.mp3");
+                      });
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '音なし',
+                      languageProvider.isHiragana ? 'おとなし🔈' : '音なし🔈',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -303,14 +363,16 @@ class _MainPageState extends State<MainPage> {
                   SizedBox(width: 10),
                   TextButton(
                     onPressed: () {
-                      audioProvider.setVolume(1.0);
-                      audioProvider.playSound("tap1.mp3");
+                      setState(() {
+                        audioProvider.setVolume(1.0);
+                        audioProvider.playSound("tap1.mp3");
+                      });
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '音あり',
+                      languageProvider.isHiragana ? 'おとあり🔊' : '音あり🔊',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -320,14 +382,53 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
               Text(
-                '年齢設定ボタン',
+                '漢字・ひらがなカタカナボタン',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
               ),
-              Text(
-                '準備中です',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
+              //languageProviderにisHiraganaという変数を準備
+              //「ひらがなカタカナ」と選択されたらtrueと返す→全ての文字がひらがなカタカナのみになる
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        languageProvider.setLanguage(true);
+                        audioProvider.playSound("tap1.mp3");
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      'ひらがなカタカナ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        languageProvider.setLanguage(false);
+                        audioProvider.playSound("tap1.mp3");
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      '漢字',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -338,10 +439,10 @@ class _MainPageState extends State<MainPage> {
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                backgroundColor: Color.fromARGB(255, 0, 204, 255),
               ),
               child: Text(
-                '閉じる',
+                languageProvider.isHiragana ? 'とじる' : '閉じる',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,

@@ -4,12 +4,14 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 
+//描いた絵を保存するためのデータベース
 class DrawingDatabaseHelper {
   static final _databaseName = "DrawingDatabase.db";
   static final _databaseVersion = 1;
   static final table = 'drawings';
   static final columnId = '_id'; // 列1
-  static final columnDrawing = 'drawing'; // 列2
+  static final columnDrawing = 'drawing'; // 列2(描いた絵)
+  static final is_photo_flag = "is_photo_flag"; //列3(スクショで選んだ絵の場合は1, そうでない場合は0)
   // シングルトンパターン
   DrawingDatabaseHelper._privateConstructor();
   static final DrawingDatabaseHelper instance =
@@ -36,14 +38,16 @@ class DrawingDatabaseHelper {
     await db.execute('''
       CREATE TABLE $table (
         $columnId INTEGER PRIMARY KEY,
-        $columnDrawing BLOB NOT NULL
+        $columnDrawing BLOB NOT NULL,
+        $is_photo_flag INTEGER
       )
     ''');
   }
 
-  Future<int> insertDrawing(Uint8List drawingData) async {
+  Future<int> insertDrawing(Uint8List drawingData, int photo_flag) async {
     Database db = await instance.database;
-    return await db.insert(table, {'drawing': drawingData});
+    return await db
+        .insert(table, {'drawing': drawingData, "is_photo_flag": photo_flag});
   }
 
   // 他のメソッド（取得、更新、削除）を必要に応じて追加
@@ -76,5 +80,18 @@ class DrawingDatabaseHelper {
   Future<List<Map<String, dynamic>>> fetchDrawings() async {
     Database db = await instance.database;
     return await db.query(table);
+  }
+
+  Future<int> clearNonIdColumns(int id) async {
+    Database db = await instance.database;
+    return await db.update(
+      table,
+      {
+        columnDrawing: null,
+        is_photo_flag: null,
+      },
+      where: '$columnId = ?',
+      whereArgs: [id],
+    );
   }
 }

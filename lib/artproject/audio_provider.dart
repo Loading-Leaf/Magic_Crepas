@@ -5,10 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AudioProvider with ChangeNotifier {
   double _volume = 1.0; // 音量（1.0 は最大、0.0 はミュート）
+  bool _isMuted = false; // ミュート状態
   final AudioPlayer _audioPlayer = AudioPlayer(); // AudioPlayerのインスタンス
   AudioSession? _audioSession;
 
   double get volume => _volume;
+  bool get isMuted => _isMuted;
   AudioPlayer get audioPlayer => _audioPlayer; // AudioPlayerのインスタンスを提供
 
   AudioProvider() {
@@ -23,7 +25,8 @@ class AudioProvider with ChangeNotifier {
 
   // 音量を変更するメソッド
   void setVolume(double volume) async {
-    _volume = volume;
+    _volume = volume; //音量のボリュームを設定
+    _isMuted = (volume == 0.0);
     _audioPlayer.setVolume(volume); // AudioPlayerの音量を更新
     notifyListeners(); // 音量が変更されたことを通知
     _saveVolume(volume); // 音量を保存
@@ -39,6 +42,7 @@ class AudioProvider with ChangeNotifier {
   Future<void> _loadVolume() async {
     final prefs = await SharedPreferences.getInstance();
     _volume = prefs.getDouble('volume') ?? 1.0; // 保存されている音量を読み込み、デフォルトは1.0
+    _isMuted = (_volume == 0.0); // 保存された音量が 0.0 の場合ミュート
     _audioPlayer.setVolume(_volume); // 読み込んだ音量をAudioPlayerに反映
     notifyListeners(); // 音量が設定されたことを通知
   }
