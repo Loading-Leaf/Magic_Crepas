@@ -73,15 +73,16 @@ class OutputPage extends StatefulWidget {
 }
 
 class _OutputPageState extends State<OutputPage> {
-  Uint8List outputImage = Uint8List(0);
-  Uint8List drawingImageData = Uint8List(0);
-  File? image;
-  int typeValue = 1;
-  String? wifiName;
-  bool isresult_exist = false;
-  String outputimage_title = "";
-  int? emotion_num;
-  String? your_emotions;
+  Uint8List outputImage = Uint8List(0); //生成した後の画像
+  Uint8List drawingImageData = Uint8List(0); //描画した絵
+  File? image; //端末の写真アプリで選んだ写真
+  String? wifiName; //Wifiが切れた時の処理を施す
+  bool isresult_exist = false; //結果があるかないか表示
+  String outputimage_title = ""; //ギャラリーの保存する際のタイトル
+  int? emotion_num; //以下のemotionsで保存する際に使用する配列番号
+  String? your_emotions; //String型として感情を保存する際に使用
+
+  //設定した感情
   List<String> emotions = [
     "うれしい😁",
     "たのしい😄",
@@ -99,7 +100,7 @@ class _OutputPageState extends State<OutputPage> {
     "こわい😱",
     "さびしい😨"
   ];
-  String Detail_emotion = "";
+  String Detail_emotion = ""; //詳しい気持ち
 
   Uint8List? resultbytes2;
   List<int>? photoBytes;
@@ -107,8 +108,8 @@ class _OutputPageState extends State<OutputPage> {
 
   String formattedDate = "";
 
-  String your_platform = "";
-  bool isipad = false;
+  String your_platform = ""; //使用している端末
+  bool isipad = false; //iPadかどうか
   String getFormattedDate() {
     DateTime now = DateTime.now();
     return DateFormat('yyyy/M/d HH:mm').format(now);
@@ -116,6 +117,9 @@ class _OutputPageState extends State<OutputPage> {
 
   Future<void> checkDevice() async {
     final deviceInfo = DeviceInfoPlugin();
+    //保存時、それぞれの端末ごとに文言を変更
+    //例えばiPhoneの場合は「スマホ」,iPadの場合は「アイパッド」と表示
+    //使用する場面は「○○に保存」と記載するボタンで使用
 
     if (Platform.isIOS) {
       final iosInfo = await deviceInfo.iosInfo;
@@ -166,6 +170,9 @@ class _OutputPageState extends State<OutputPage> {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         final mediaQuery = MediaQuery.of(context);
 
+        //iPadでシェアする際、場所を設定しないとshare_plusが使えなくなる
+        //sharePositionOriginで画面の位置を設定しないと右下に表示されて画面上にシェアするUIが表示されない
+        //中央に設置する際、画面の3分の1の座標に設置
         Rect sharePositionOrigin = Rect.fromCenter(
           center: Offset(mediaQuery.size.width / 3, mediaQuery.size.height / 3),
           width: 200,

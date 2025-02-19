@@ -4,13 +4,14 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 
+//描いた絵を保存するためのデータベース
 class DrawingDatabaseHelper {
   static final _databaseName = "DrawingDatabase.db";
   static final _databaseVersion = 1;
   static final table = 'drawings';
   static final columnId = '_id'; // 列1
-  static final columnDrawing = 'drawing'; // 列2
-  static final is_photo_flag = "is_photo_flag";
+  static final columnDrawing = 'drawing'; // 列2(描いた絵)
+  static final is_photo_flag = "is_photo_flag"; //列3(スクショで選んだ絵の場合は1, そうでない場合は0)
   // シングルトンパターン
   DrawingDatabaseHelper._privateConstructor();
   static final DrawingDatabaseHelper instance =

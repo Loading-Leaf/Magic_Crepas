@@ -80,10 +80,12 @@ class _GalleryPageState extends State<GalleryPage> {
                             mainAxisSpacing: 10,
                           ),
                           itemCount: drawings.length,
+                          //indexは作品を削除する際に使用
                           itemBuilder: (context, index) {
-                            Uint8List? outputImage =
-                                drawings[index]['outputimage'];
+                            Uint8List? outputImage = drawings[index]
+                                ['outputimage']; //ここでは生成画像のみをディスプレイに表示
                             if (outputImage == null || outputImage.isEmpty) {
+                              //もしなかったらgreyのみの画像を表示
                               return Container(
                                 color: Colors.grey,
                                 child:
@@ -98,7 +100,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                   MaterialPageRoute(
                                     builder: (context) => GalleryDetailPage(
                                         data: drawings[index]),
-                                  ),
+                                  ), //GalleryDetailPageという個別化したページに遷移する→その際、取得したindexを指定してページ遷移
                                 );
                               },
                               child: ClipRRect(

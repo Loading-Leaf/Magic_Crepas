@@ -177,6 +177,20 @@
             </list>
           </value>
         </entry>
+        <entry key="device_info_plus">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/device_info_plus-11.2.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="device_info_plus_platform_interface">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/device_info_plus_platform_interface-7.0.2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="fake_async">
           <value>
             <list>
@@ -237,6 +251,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../flutter/packages/flutter/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_color">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_color-2.1.0/lib" />
             </list>
           </value>
         </entry>
@@ -387,6 +408,13 @@
             </list>
           </value>
         </entry>
+        <entry key="intl">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="json_annotation">
           <value>
             <list>
@@ -513,6 +541,48 @@
             </list>
           </value>
         </entry>
+        <entry key="permission_handler">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler-11.3.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="permission_handler_android">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_android-12.0.13/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="permission_handler_apple">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_apple-9.4.5/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="permission_handler_html">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_html-0.1.3+5/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="permission_handler_platform_interface">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_platform_interface-4.2.3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="permission_handler_windows">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_windows-0.2.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="petitparser">
           <value>
             <list>
@@ -566,6 +636,20 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/share-2.0.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="share_plus">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/share_plus-10.1.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="share_plus_platform_interface">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/share_plus_platform_interface-5.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -856,6 +940,20 @@
             </list>
           </value>
         </entry>
+        <entry key="win32">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.10.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="win32_registry">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/win32_registry-1.1.5/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="xdg_directories">
           <value>
             <list>
@@ -905,6 +1003,8 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/csslib-1.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/cupertino_icons-1.0.8/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/dbus-0.7.10/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/device_info_plus-11.2.2/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/device_info_plus_platform_interface-7.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/fake_async-1.3.1/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/ffi-2.1.3/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/file-7.0.1/lib" />
@@ -913,6 +1013,7 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/file_selector_platform_interface-2.6.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/file_selector_windows-0.9.3+3/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/fixnum-1.1.1/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_color-2.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_launcher_icons-0.14.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-5.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/flutter_native_splash-2.4.3/lib" />
@@ -932,6 +1033,7 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_macos-0.2.1+1/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_platform_interface-2.10.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_windows-0.2.1+1/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.7/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.8/lib" />
@@ -950,6 +1052,12 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_linux-2.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_platform_interface-2.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_windows-2.3.0/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler-11.3.1/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_android-12.0.13/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_apple-9.4.5/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_html-0.1.3+5/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_platform_interface-4.2.3/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_windows-0.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/petitparser-6.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/photo_manager-3.6.3/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.6/lib" />
@@ -958,6 +1066,8 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/rxdart-0.28.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/share-2.0.4/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/share_plus-10.1.4/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/share_plus_platform_interface-5.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences-2.3.4/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_android-2.4.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_foundation-2.5.4/lib" />
@@ -998,6 +1108,8 @@
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_wkwebview-3.16.3/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/wifi_info_flutter-2.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/wifi_info_flutter_platform_interface-2.0.1/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.10.1/lib" />
+      <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/win32_registry-1.1.5/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.5.0/lib" />
       <root url="file://$PROJECT_DIR$/../AppData/Local/Pub/Cache/hosted/pub.dev/yaml-3.1.3/lib" />

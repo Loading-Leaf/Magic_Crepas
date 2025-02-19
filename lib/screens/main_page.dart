@@ -58,7 +58,8 @@ class _MainPageState extends State<MainPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
-    final url = Uri.parse('https://forms.gle/JAR2RYDkzbzFwdei6');
+    final url = Uri.parse(
+        'https://forms.gle/JAR2RYDkzbzFwdei6'); //バグや疑問点などの指摘の際にformを準備
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
@@ -83,6 +84,7 @@ class _MainPageState extends State<MainPage> {
                     Row(
                       children: [
                         SizedBox(width: 10),
+                        //画面の中央にまじっくくれぱすの画像を添付
                         Padding(
                           padding: EdgeInsets.all(7.0),
                           child: Container(
@@ -315,6 +317,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  //設定用のダイアログ(音声と仮名読み)
   void _showSettingsDialog(BuildContext context, AudioProvider audioProvider,
       LanguageProvider languageProvider) {
     double fontsize_big = 20;
@@ -383,6 +386,8 @@ class _MainPageState extends State<MainPage> {
                 style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
               ),
+              //languageProviderにisHiraganaという変数を準備
+              //「ひらがなカタカナ」と選択されたらtrueと返す→全ての文字がひらがなカタカナのみになる
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

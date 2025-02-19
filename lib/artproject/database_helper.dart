@@ -4,6 +4,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 
+//写真をSQLiteに保存するためのクラス
+//※ダミーデータはSQLiteを使用する練習として使用
 class DatabaseHelper {
   static final _databaseName = "MyDatabase.db"; // DB名
   static final _databaseVersion = 2; // バージョン番号
@@ -11,9 +13,9 @@ class DatabaseHelper {
   static final table = 'generate_arts'; // テーブル名
 
   static final columnId = '_id'; // 列1
-  static final columnDrawing = 'drawing'; // 列2
-  static final columnPhoto = 'photo'; // 列3
-  static final columnSelectedPhoto = 'selectedphoto'; // 列4
+  static final columnDrawing = 'drawing'; // 列2(現時点ではダミーデータ)
+  static final columnPhoto = 'photo'; // 列3(写真を保存するためのpathを保存)
+  static final columnSelectedPhoto = 'selectedphoto'; // 列4(現時点ではダミーデータ)
 
   // DatabaseHelperクラスをシングルトンにするためのコンストラクタ
   DatabaseHelper._privateConstructor();
@@ -73,7 +75,7 @@ class DatabaseHelper {
 
 // insert メソッドは削除するか、必要に応じて残す
 
-  // 挿入
+  // 挿入, 写真選択後に使用
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
     return await db.insert(table, row);
@@ -92,7 +94,7 @@ class DatabaseHelper {
     return await db.update(table, row, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  // 削除
+  // 削除→保存している写真が多いとパフォーマンスが悪くなるため、保存及び画面遷移するたびに最後の配列番号以外の要素は削除
   Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);

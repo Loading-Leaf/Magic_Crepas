@@ -25,7 +25,7 @@ class AudioProvider with ChangeNotifier {
 
   // 音量を変更するメソッド
   void setVolume(double volume) async {
-    _volume = volume;
+    _volume = volume; //音量のボリュームを設定
     _isMuted = (volume == 0.0);
     _audioPlayer.setVolume(volume); // AudioPlayerの音量を更新
     notifyListeners(); // 音量が変更されたことを通知

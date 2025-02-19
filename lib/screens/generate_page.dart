@@ -67,7 +67,7 @@ class _GeneratePageState extends State<GeneratePage> {
   List<Map<String, dynamic>> _images = []; // ここで _images を定義
   late Database _database; // late修飾子を使用
   File? image;
-  bool isresult_exist = false;
+  bool isresult_exist = false; // 結果が存在するかどうかのフラグ→まちがいさがしで画面遷移と答えが見れるか判断するため
   @override
   List<int>? drawingImageData;
   int? is_photo_flag;

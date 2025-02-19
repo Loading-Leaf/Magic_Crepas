@@ -27,9 +27,10 @@ class _TutorialPageState extends State<TutorialPage> {
 
     List<Widget> buildTutorialGrid() {
       List<Widget> rows = [];
-      int startIndex = (page - 1) * itemsPerPage;
+      int startIndex = (page - 1) * itemsPerPage; //1ページごと4個のあそび方を準備
       int endIndex = startIndex + itemsPerPage;
 
+      //chaptersn: それぞれのあそび方で使用する文章
       List<String> chapters1 = [
         languageProvider.isHiragana ? "これはさいしょのがめんだよ" : "これは最初の画面だよ",
         languageProvider.isHiragana
@@ -366,6 +367,8 @@ class _TutorialPageState extends State<TutorialPage> {
         languageProvider.isHiragana ? "これであそびかたはおわりだよ" : "これで遊び方は終わりだよ"
       ];
 
+      //tutorialItems: それぞれあそび方を格納する。
+      //主に準備する説明とチュートリアルの番号(説明用の画像を格納するディレクトリを準備してる)、チュートリアル名を準備
       List<Map<String, dynamic>> tutorialItems = [
         {
           'title': page == 1
@@ -509,7 +512,7 @@ class _TutorialPageState extends State<TutorialPage> {
                             : const Color.fromARGB(255, 199, 198, 198)),
                     onPressed: () {
                       if (page > 1) {
-                        setState(() => page -= 1);
+                        setState(() => page -= 1); //ページ移動できる場合は押すことが可能
                         audioProvider.playSound("tap1.mp3");
                       }
                     },
@@ -528,7 +531,7 @@ class _TutorialPageState extends State<TutorialPage> {
                             : const Color.fromARGB(255, 199, 198, 198)),
                     onPressed: () {
                       if (page * itemsPerPage < totalItems) {
-                        setState(() => page += 1);
+                        setState(() => page += 1); //ページ移動できる場合は押すことが可能
                         audioProvider.playSound("tap1.mp3");
                       }
                     },

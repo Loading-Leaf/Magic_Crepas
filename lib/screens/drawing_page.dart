@@ -26,22 +26,22 @@ class DrawingPage extends StatefulWidget {
   _DrawingPageState createState() => _DrawingPageState();
 }
 
-// スプレーポイントを表現するクラスを追加
-
+//DrawingItemはペンやスタンプなど全て格納する際に使用
 abstract class DrawingItem {
   Color color;
   DrawingItem(this.color);
 }
 
+//ペンを表現するためのクラス
 class Line extends DrawingItem {
   List<Offset?> points;
   double strokeWidth;
   int alpha;
-
   Line(this.points, Color color, this.strokeWidth, {this.alpha = 255})
       : super(color);
 }
 
+// スプレーポイントを表現するクラス
 class SprayPoints extends DrawingItem {
   List<Offset> points;
   double density;
@@ -49,7 +49,7 @@ class SprayPoints extends DrawingItem {
   SprayPoints(this.points, Color color, this.density) : super(color);
 }
 
-// 図形の追加
+// 以下は図形を追加するためのクラス
 class Circle extends DrawingItem {
   final Offset center;
   final double radius;
@@ -100,7 +100,7 @@ class Diamond extends DrawingItem {
 }
 
 class _DrawingPageState extends State<DrawingPage> {
-  List<DrawingItem> _drawItems = []; // DrawingItem型のリスト
+  List<DrawingItem> _drawItems = []; // DrawingItem型のリスト→線やスプレーなど様々な描画アイテムがある
   List<DrawingItem> _undoneItems = []; // undoされたアイテムを保持するリスト
   Color _selectedColor = Colors.black; // 選択された色
   Color _selectedpaperColor = Colors.white;
@@ -115,9 +115,11 @@ class _DrawingPageState extends State<DrawingPage> {
   List<Offset?> _currentLinePoints = []; // 現在の線の点
   List<Offset> _currentSprayPoints = []; // 現在のスプレーの点
 
+//色をませる際に使用
   Color SelectedColor1 = Colors.white;
   Color SelectedColor2 = Colors.white;
   Color? MixedColor;
+  //色1か色2が選ばれたときに設定
   bool select1 = true;
   bool select2 = false;
   List<Color?> _allmixedColor = [];
@@ -272,10 +274,10 @@ class _DrawingPageState extends State<DrawingPage> {
                                       onPressed: () {
                                         setState(() {
                                           audioProvider.playSound("tap1.mp3");
-                                          _mixColors();
+                                          _mixColors(); //色を混ぜるための関数
                                         });
 
-                                        ismixed = true;
+                                        ismixed = true; //色を混ぜた場合のフラグ
                                       },
                                       style: TextButton.styleFrom(
                                         backgroundColor:
@@ -291,6 +293,8 @@ class _DrawingPageState extends State<DrawingPage> {
                                             color: Colors.white),
                                       ),
                                     ),
+                                    //色を混ぜた時に表示
+                                    //以下のボタンは
                                     if (ismixed == true) ...[
                                       SizedBox(width: 10),
                                       TextButton(
@@ -328,6 +332,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                     fontSize: fontsize,
                                   ),
                                 ),
+                                //混ぜた色を追加
                                 Container(
                                   width: MediaQuery.of(context).size.width / 28,
                                   height:
@@ -351,12 +356,14 @@ class _DrawingPageState extends State<DrawingPage> {
                                     fontSize: fontsize,
                                     color: Colors.black),
                               ),
+                              //色を混ぜる用のパレット
                               _buildMixedColorPicker(
                                   MediaQuery.of(context).size.width / 28,
                                   select1,
                                   select2,
                                   setState),
                             ]),
+                            //Flutterのelementの影響でモーダルを閉じた後、パレットに即時新たな色が表示されないので以下の文言を追加
                             Text(
                               languageProvider.isHiragana
                                   ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ🎨\n6しょくつくれるよ😊'
@@ -425,6 +432,7 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
+  //色の三原色を活用して色を混ぜる関数
   void _mixColors() {
     // RGB の値を取得
     int r1 = SelectedColor1.red;
@@ -484,9 +492,11 @@ class _DrawingPageState extends State<DrawingPage> {
                           // RepaintBoundaryを追加
                           RepaintBoundary(
                             key: _globalKey, // スクリーンショットを取るためのキー
+                            //ペンなどで描いた絵は線で表現してるので、スクリーンショットを利用する
                             child: Container(
                               color: _selectedpaperColor,
                               child: GestureDetector(
+                                //画面をタッチする際にスタンプを使用
                                 onTapUp: (details) {
                                   setState(() {
                                     Offset tapPosition = details.localPosition;
@@ -553,10 +563,12 @@ class _DrawingPageState extends State<DrawingPage> {
                                     final padding_top =
                                         MediaQuery.of(context).size.height *
                                             0.1;
+                                    //UIのテスト時、指の位置とズレて描画していたので、位置をずらした
                                     final correctedPosition = Offset(
                                       localPosition.dx - padding_left,
                                       localPosition.dy - padding_top - 20,
                                     );
+                                    //描画範囲※キャンバスから20pixelずつはみ出しても描画可能
                                     if (edittingmode == 2 &&
                                         correctedPosition.dx >= -20 &&
                                         correctedPosition.dx <=
@@ -604,6 +616,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                   });
                                 },
                                 onPanEnd: (details) {
+                                  //ペン類を描画する際、格納するために
                                   setState(() {
                                     if (edittingmode == 2 &&
                                         _currentSprayPoints.isNotEmpty) {
@@ -653,6 +666,8 @@ class _DrawingPageState extends State<DrawingPage> {
                         ],
                       ),
                     ),
+                    //アップデート後、パレットやペンの種類など機能が増えるので、
+                    //パレットやペンの種類などジャンルに分けて表示させる
                     Column(children: [
                       SizedBox(height: screenSize.height * 0.01),
                       if (selectmode == 1) ...[
@@ -898,6 +913,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             : const Color.fromARGB(255, 199, 198, 198),
                       ),
                       SizedBox(height: screenSize.height * 0.01),
+                      //画面の右端にジャンルを分けるためのアイコンを使用
                       IconButton(
                         icon: Icon(Icons.brush),
                         onPressed: () {
@@ -953,6 +969,7 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
 
                   SizedBox(width: 10), // スペースを追加
+                  //写真から選ぶ際、端末上の写真ライブラリから選んで、描画の準備画面に遷移するようにしている
                   TextButton(
                     onPressed: () async {
                       audioProvider.playSound("tap2.mp3");
@@ -970,6 +987,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                   ),
                   SizedBox(width: 10), // スペースを追加
+                  //できた場合、スクリーンショットを取得して絵を格納するSQLiteに格納
                   TextButton(
                     onPressed: () async {
                       await _takeScreenshot();
@@ -988,6 +1006,9 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                   ),
                   SizedBox(width: 20),
+                  //undo, redoの機能を追加→配列自体はundo,redo専用のものを使用
+                  //配置では、パレットや筆の設定などと同じ場所に配置していたが、画面遷移専用のボタンの高さに配置されていたことが多い
+                  //→そうすると、undo,redoが反応しないバグが発生した。そのため、場所を変更して対応した。
                   Row(
                     children: [
                       IconButton(
@@ -1016,30 +1037,8 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
-  Future<void> _initDatabase() async {
-    try {
-      _database = await openDatabase(
-        'genart_database.db',
-        version: 2, // バージョンを上げる
-        onCreate: (Database db, int version) async {
-          await db.execute(
-            'CREATE TABLE drawings (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, columnDrawing BLOB NOT NULL)', // BLOB型のカラムを追加
-          );
-        },
-        onUpgrade: (Database db, int oldVersion, int newVersion) async {
-          if (oldVersion < 2) {
-            await db.execute(
-              'ALTER TABLE drawings ADD COLUMN columnDrawing BLOB NOT NULL', // 新しいカラムを追加
-            );
-          }
-        },
-      );
-    } catch (e) {
-      print('Error opening database: $e');
-    }
-  }
-
 // スクリーンショットを取得するメソッド
+//キャンバスの領域で保存できるようにした。
   Future<void> _takeScreenshot() async {
     await _initializeDatabase();
 
@@ -1068,7 +1067,6 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
 // 画像を処理する関数
-  // 画像を処理する関数を改良
   Future<void> pickAndProcessImage() async {
     try {
       // 画像をギャラリーから選択
@@ -1160,6 +1158,7 @@ class _DrawingPageState extends State<DrawingPage> {
             ],
           ),
           SizedBox(height: 3),
+          //１５色以下の場所は混ぜた色を表示するためのボタンを追加
           _buildAllMixedColors(size),
         ],
       ),
@@ -1167,6 +1166,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 
   // 色選択用のボタン
+  //押されたら、選択された色に関数で設定した色を格納する
   Widget _colorCircle(Color color, double size) {
     final audioProvider = Provider.of<AudioProvider>(context);
     return GestureDetector(
@@ -1185,7 +1185,9 @@ class _DrawingPageState extends State<DrawingPage> {
           shape: BoxShape.circle,
           border: Border.all(
             width: _selectedColor == color ? 3 : 1,
-            color: _selectedColor == color ? Colors.black : Colors.grey,
+            color: _selectedColor == color
+                ? Colors.black
+                : Colors.grey, //明示できるように黒い太線で明示する
           ),
         ),
       ),
@@ -1248,6 +1250,7 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
+  //混ぜた色を設定するためのパレット
   Widget _buildMixedColorPicker(
       double size, bool select1, bool select2, Function setState) {
     return Padding(
@@ -1319,6 +1322,7 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
+  //色1,2で混ぜた色を設定する。
   Widget _MixedColorCircle(
       Color color, double size, bool select1, bool select2, Function setState) {
     final audioProvider = Provider.of<AudioProvider>(context);
@@ -1356,8 +1360,8 @@ class _DrawingPageState extends State<DrawingPage> {
 
   Widget _MixedSelectedColorCircle(double size, int selectnum, setState) {
     final audioProvider = Provider.of<AudioProvider>(context);
+    //色1,2のコンポーネントを合わせるために選択された色を設定する変数を使用
     Color? selectedColor = (selectnum == 1) ? SelectedColor1 : SelectedColor2;
-
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -1409,6 +1413,7 @@ class _DrawingPageState extends State<DrawingPage> {
           padding: const EdgeInsets.only(bottom: 3),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            //3列で表示できるように設定
             children: List.generate(3, (colIndex) {
               final index = rowIndex * 3 + colIndex;
               if (index < colorCount) {
@@ -1422,7 +1427,7 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
-  // 色選択用のボタン
+  // 紙の色選択用のボタン
   Widget _papercolorCircle(Color color, double size) {
     final audioProvider = Provider.of<AudioProvider>(context);
     return GestureDetector(
@@ -1447,7 +1452,7 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
-  // 太さを選択するためのウィジェット
+  // 筆やスタンプの太さを選択するためのウィジェット
   Widget _buildStrokePicker(double size) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -1474,7 +1479,6 @@ class _DrawingPageState extends State<DrawingPage> {
     );
   }
 
-  // 色選択用のボタン
   // 太さを選択するためのウィジェット
   Widget _strokeCircle(double strokesize, double size) {
     final audioProvider = Provider.of<AudioProvider>(context);
@@ -1502,7 +1506,7 @@ class _DrawingPageState extends State<DrawingPage> {
             width: strokesize,
             height: strokesize,
             decoration: BoxDecoration(
-              color: _selectedColor,
+              color: _selectedColor, //パレットとは別のページで、色を明示できないので選択された色を使用
               shape: BoxShape.circle,
             ),
           ),
@@ -1512,8 +1516,7 @@ class _DrawingPageState extends State<DrawingPage> {
   }
 }
 
-// カスタムペインタークラス
-// CustomPainterの修正
+// カスタムペインタークラスと描画処理を施す設定
 class DrawingPainter extends CustomPainter {
   final List<DrawingItem> items;
   final List<Offset?> currentLinePoints;
@@ -1532,7 +1535,6 @@ class DrawingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..style = PaintingStyle.fill;
-
     for (var item in items) {
       if (item is Line) {
         paint

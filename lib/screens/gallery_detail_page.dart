@@ -27,15 +27,17 @@ class GalleryDetailPage extends StatefulWidget {
 }
 
 class _GalleryDetailPageState extends State<GalleryDetailPage> {
-  Uint8List? outputImage = Uint8List(0);
-  Uint8List? drawingImage = Uint8List(0);
-  Uint8List? photoImage = Uint8List(0);
-  String your_detailemotion = "";
-  String your_platform = "";
+  Uint8List? outputImage = Uint8List(0); //生成した後の画像
+  Uint8List? drawingImage = Uint8List(0); //描画した絵
+  Uint8List? photoImage = Uint8List(0); //端末の写真アプリで選んだ写真
+  String your_detailemotion = ""; //詳しい気持ち
+  String your_platform = ""; //使用している端末
 
   Future<void> checkDevice() async {
     final deviceInfo = DeviceInfoPlugin();
-
+    //保存時、それぞれの端末ごとに文言を変更
+    //例えばiPhoneの場合は「スマホ」,iPadの場合は「アイパッド」と表示
+    //使用する場面は「○○に保存」と記載するボタンで使用
     if (Platform.isIOS) {
       final iosInfo = await deviceInfo.iosInfo;
       setState(() {
@@ -73,12 +75,13 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
   Future<void> shareImages(
       BuildContext context,
-      Uint8List image1,
-      Uint8List image2,
-      String time,
-      String title,
-      String your_emotion,
-      String detail_emotion) async {
+      Uint8List image1, //生成画像
+      Uint8List image2, //描画した絵
+      String time, //ライブラリに保存した日時
+      String title, //作品名
+      String your_emotion, //描いた時の気持ち
+      String detail_emotion //描いた時の詳細な気持ち→言葉で表現
+      ) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
 
@@ -93,7 +96,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
       final files = <XFile>[XFile(outputImagePath), XFile(drawingImagePath)];
 
       String content = "";
-
+      //見やすくするために改行を用意
       if (time != "") {
         content += "作成日時: " + time + "\n";
       }
@@ -113,6 +116,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         final mediaQuery = MediaQuery.of(context);
 
+        //iPadでシェアする際、場所を設定しないとshare_plusが使えなくなる
+        //sharePositionOriginで画面の位置を設定しないと右下に表示されて画面上にシェアするUIが表示されない
+        //中央に設置する際、画面の3分の1の座標に設置
         Rect sharePositionOrigin = Rect.fromCenter(
           center: Offset(mediaQuery.size.width / 3, mediaQuery.size.height / 3),
           width: 200,
@@ -144,6 +150,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     if (outputImage == null) return;
 
     // 写真ライブラリの権限を確認・リクエスト
+    //設定アプリで写真のアクセスを全て許可しなければいけない
     final PermissionState permission =
         await PhotoManager.requestPermissionExtend();
     if (permission.isAuth) {
@@ -168,6 +175,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
       audioProvider.playSound("established.mp3");
     } else {
       // 権限が拒否された場合、警告メッセージを表示
+      //保存できない際、保護者に尋ねる文言を追加
       showDialog(
         context: context,
         builder: (context) => const SomethingDisconnectDialog(
@@ -220,6 +228,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     }
   }
 
+  //アプリのUIの都合上、写真を大きくすることは困難
+  //そこで写真をタップしたら大きく見れるかつ拡大縮小できるInteractiveViewerを実装
   void _showImageModal(BuildContext context, ImageProvider image) {
     showDialog(
       context: context,
@@ -234,6 +244,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     );
   }
 
+  //削除確認のためのモーダル
   Future<void> _showDeleteConfirmDialog() async {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
@@ -291,6 +302,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               ),
               onPressed: () async {
                 // データベースから削除
+                //削除する際は、保存したアートに該当する配列番号ごと削除
                 await GalleryDatabaseHelper.instance.delete(widget.data['_id']);
                 audioProvider.playSound("tap1.mp3");
 
@@ -311,6 +323,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     );
   }
 
+  //UIによる漏れを防ぐため、詳細な気持ちを改行して表示
   String _getFormattedText(String input, int maxLength) {
     List<String> lines = [];
     for (int i = 0; i < input.length; i += maxLength) {
@@ -320,13 +333,13 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     return lines.join('\n'); // Join lines with a newline
   }
 
+  //詳細な気持ちと元写真を使用すると画面に収まりきらないので、別途モーダルを用意
   void _showPhotoAndEmotionModal() {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -335,6 +348,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             width: screenSize.width * 0.8,
             height: screenSize.height * 0.95,
             padding: EdgeInsets.all(20),
+            //Columnにすると見れなくなるエラーが発生する。
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -349,8 +363,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       ),
                     ),
                     SizedBox(height: 10),
+                    //詳細な気持ちを表示
                     Text(
-                      _getFormattedText(your_detailemotion, 15),
+                      _getFormattedText(your_detailemotion, 15), //１行ごと15文字まで表示
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -426,14 +441,14 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
-    outputImage = widget.data['outputimage'];
-    drawingImage = widget.data['drawingimage'];
-    photoImage = widget.data['photoimage'];
-    String title = widget.data['title'] ?? "無題";
-    String emotion = widget.data['emotion'] ?? "無題";
-    String detailemotion = widget.data['detailemotion'] ?? "無題";
-    your_detailemotion = detailemotion;
-    String time = widget.data['time'] ?? "不明";
+    outputImage = widget.data['outputimage']; //生成した絵
+    drawingImage = widget.data['drawingimage']; //描画した絵
+    photoImage = widget.data['photoimage']; //選んだ写真
+    String title = widget.data['title'] ?? "無題"; //タイトル
+    String emotion = widget.data['emotion'] ?? "無題"; //感情
+    String detailemotion = widget.data['detailemotion'] ?? "無題"; //詳細な気持ち
+    your_detailemotion = detailemotion; //現時点ではグローバル変数として使用しているが、後に修正予定
+    String time = widget.data['time'] ?? "不明"; //保存した時間帯
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
 
