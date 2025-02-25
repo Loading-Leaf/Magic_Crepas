@@ -131,7 +131,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'ホームに戻る' : 'ホームに戻る',
+                        languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

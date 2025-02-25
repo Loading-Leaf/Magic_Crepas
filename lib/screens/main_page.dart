@@ -382,19 +382,17 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
               Text(
-                '漢字・ひらがなカタカナボタン',
+                languageProvider.isHiragana ? "げんごボタン" : '言語ボタン',
                 style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize),
               ),
-              //languageProviderにisHiraganaという変数を準備
-              //「ひらがなカタカナ」と選択されたらtrueと返す→全ての文字がひらがなカタカナのみになる
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        languageProvider.setLanguage(true);
+                        languageProvider.setlocalLanguage(1);
                         audioProvider.playSound("tap1.mp3");
                       });
                     },
@@ -402,7 +400,11 @@ class _MainPageState extends State<MainPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      'ひらがなカタカナ',
+                      languageProvider.locallanguage == 2
+                          ? "Japanese"
+                          : languageProvider.isHiragana
+                              ? 'にほんご'
+                              : "日本語",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -413,7 +415,7 @@ class _MainPageState extends State<MainPage> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        languageProvider.setLanguage(false);
+                        languageProvider.setlocalLanguage(2);
                         audioProvider.playSound("tap1.mp3");
                       });
                     },
@@ -421,7 +423,11 @@ class _MainPageState extends State<MainPage> {
                       backgroundColor: Color.fromARGB(255, 255, 67, 195),
                     ),
                     child: Text(
-                      '漢字',
+                      languageProvider.locallanguage == 2
+                          ? "English"
+                          : languageProvider.isHiragana
+                              ? 'えいご'
+                              : "英語",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -430,6 +436,57 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
+              if (languageProvider.locallanguage == 2) ...[
+                Text(
+                  '漢字・ひらがなカタカナボタン',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: fontsize),
+                ),
+                //languageProviderにisHiraganaという変数を準備
+                //「ひらがなカタカナ」と選択されたらtrueと返す→全ての文字がひらがなカタカナのみになる
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          languageProvider.setLanguage(true);
+                          audioProvider.playSound("tap1.mp3");
+                        });
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        'ひらがなカタカナ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          languageProvider.setLanguage(false);
+                          audioProvider.playSound("tap1.mp3");
+                        });
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                      ),
+                      child: Text(
+                        '漢字',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontsize,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ]
             ],
           ),
           actions: [
