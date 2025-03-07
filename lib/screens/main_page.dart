@@ -245,9 +245,11 @@ class _MainPageState extends State<MainPage> {
                       Padding(
                         padding: EdgeInsets.all(3.0),
                         child: Text(
-                          languageProvider.isHiragana
-                              ? 'すきなものとアートをあわせると？？？'
-                              : '好きなものとアートを組み合わせると？？？',
+                          languageProvider.locallanguage == 2
+                              ? "What happens when you combine your favorite things with art???"
+                              : languageProvider.isHiragana
+                                  ? 'すきなものとアートをあわせると？？？'
+                                  : '好きなものとアートを組み合わせると？？？',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
@@ -278,7 +280,11 @@ class _MainPageState extends State<MainPage> {
                                   );
                                 },
                                 child: Text(
-                                  '利用規約',
+                                  languageProvider.locallanguage == 2
+                                      ? "Terms of Service"
+                                      : languageProvider.isHiragana
+                                          ? 'りようきやく'
+                                          : '利用規約',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -296,7 +302,11 @@ class _MainPageState extends State<MainPage> {
                                   launchUrl(url);
                                 },
                                 child: Text(
-                                  'お問い合わせ',
+                                  languageProvider.locallanguage == 2
+                                      ? "Contact form"
+                                      : languageProvider.isHiragana
+                                          ? 'おといあわせ'
+                                          : 'お問い合わせ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -348,7 +358,11 @@ class _MainPageState extends State<MainPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  languageProvider.isHiragana ? 'おんりょうボタン' : '音量ボタン',
+                  languageProvider.locallanguage == 2
+                      ? "Volume button"
+                      : languageProvider.isHiragana
+                          ? 'おんりょうボタン'
+                          : '音量ボタン',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: fontsize),
                 ),
@@ -366,7 +380,11 @@ class _MainPageState extends State<MainPage> {
                         backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'おとなし🔈' : '音なし🔈',
+                        languageProvider.locallanguage == 2
+                            ? "Mute🔈"
+                            : languageProvider.isHiragana
+                                ? 'おとなし🔈'
+                                : '音なし🔈',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
@@ -385,7 +403,11 @@ class _MainPageState extends State<MainPage> {
                         backgroundColor: Color.fromARGB(255, 255, 67, 195),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'おとあり🔊' : '音あり🔊',
+                        languageProvider.locallanguage == 2
+                            ? "Sound🔊"
+                            : languageProvider.isHiragana
+                                ? 'おとあり🔊'
+                                : '音あり🔊',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
@@ -517,7 +539,11 @@ class _MainPageState extends State<MainPage> {
                 backgroundColor: Color.fromARGB(255, 0, 204, 255),
               ),
               child: Text(
-                languageProvider.isHiragana ? 'とじる' : '閉じる',
+                languageProvider.locallanguage == 2
+                    ? "Close"
+                    : languageProvider.isHiragana
+                        ? 'とじる'
+                        : '閉じる',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize,

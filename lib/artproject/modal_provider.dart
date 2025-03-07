@@ -19,9 +19,11 @@ class WifiDisconnectDialog extends StatelessWidget {
 
     return AlertDialog(
       title: Text(
-        languageProvider.isHiragana
-            ? 'wifiがきれてえのさくせいしっぱいしたよ😭'
-            : 'wifiがきれて絵の作成失敗したよ😭',
+        languageProvider.locallanguage == 2
+            ? "Failed to generate due to wifi error😭"
+            : languageProvider.isHiragana
+                ? 'wifiがきれてえのさくせいしっぱいしたよ😭'
+                : 'wifiがきれて絵の作成失敗したよ😭',
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontsize,
@@ -37,7 +39,12 @@ class WifiDisconnectDialog extends StatelessWidget {
           style: TextButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 255, 67, 195),
           ),
-          child: Text(languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
+          child: Text(
+              languageProvider.locallanguage == 2
+                  ? "Back to Home"
+                  : languageProvider.isHiragana
+                      ? 'ホームにもどる'
+                      : 'ホームに戻る',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,
@@ -51,11 +58,13 @@ class WifiDisconnectDialog extends StatelessWidget {
 class SomethingDisconnectDialog extends StatefulWidget {
   final String message1;
   final String message2;
+  final String message3;
 
   const SomethingDisconnectDialog({
     super.key,
     required this.message1,
     required this.message2,
+    required this.message3,
   });
 
   @override
@@ -75,7 +84,11 @@ class _SomethingDisconnectDialogState extends State<SomethingDisconnectDialog> {
 
     return AlertDialog(
       title: Text(
-        languageProvider.isHiragana ? widget.message1 : widget.message2,
+        languageProvider.locallanguage == 2
+            ? widget.message3
+            : languageProvider.isHiragana
+                ? widget.message1
+                : widget.message2,
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontsize,
@@ -91,7 +104,12 @@ class _SomethingDisconnectDialogState extends State<SomethingDisconnectDialog> {
           style: TextButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 255, 67, 195),
           ),
-          child: Text(languageProvider.isHiragana ? 'とじる' : '閉じる',
+          child: Text(
+              languageProvider.locallanguage == 2
+                  ? "Close"
+                  : languageProvider.isHiragana
+                      ? 'とじる'
+                      : '閉じる',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: fontsize,

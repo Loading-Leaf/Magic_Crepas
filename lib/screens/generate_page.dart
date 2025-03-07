@@ -228,12 +228,19 @@ class _GeneratePageState extends State<GeneratePage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(languageProvider.isHiragana ? 'えができたよ😄' : '絵ができたよ😄',
+          title: Text(
+              languageProvider.locallanguage == 2
+                  ? "The art is ready😄"
+                  : languageProvider.isHiragana
+                      ? 'えができたよ😄'
+                      : '絵ができたよ😄',
               style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text(
-              languageProvider.isHiragana
-                  ? 'まちがいさがしのこたえもみれるよ😊'
-                  : 'まちがいさがしの答えも見れるよ😊',
+              languageProvider.locallanguage == 2
+                  ? "You can see the generated art😊"
+                  : languageProvider.isHiragana
+                      ? 'まちがいさがしのこたえもみれるよ😊'
+                      : 'まちがいさがしの答えも見れるよ😊',
               style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             TextButton(
@@ -261,16 +268,24 @@ class _GeneratePageState extends State<GeneratePage> {
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('ちょっとまってね💦',
+          title: Text(
+              languageProvider.locallanguage == 2
+                  ? "Wait a moment💦"
+                  : 'ちょっとまってね💦',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize_big,
               )),
-          content: Text('まだできてないよ💦',
+          content: Text(
+              languageProvider.locallanguage == 2
+                  ? "It's not ready yet💦"
+                  : 'まだできてないよ💦',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize,
@@ -337,27 +352,33 @@ class _GeneratePageState extends State<GeneratePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      languageProvider.isHiragana
-                          ? 'えができるまでたのしいまちがいさがしであそんでね✨'
-                          : '絵ができるまで楽しいまちがいさがしで遊んでね✨',
+                      languageProvider.locallanguage == 2
+                          ? "Have fun playing spot the differences until you complete the picture✨"
+                          : languageProvider.isHiragana
+                              ? 'えができるまでたのしいまちがいさがしであそんでね✨'
+                              : '絵ができるまで楽しいまちがいさがしで遊んでね✨',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                       ),
                     ),
                     Text(
-                      languageProvider.isHiragana
-                          ? 'まちがいは' + machigaicount + 'つあるよ～'
-                          : 'まちがいは' + machigaicount + 'つあるよ～',
+                      languageProvider.locallanguage == 2
+                          ? "There are $machigaicount mistakes!"
+                          : languageProvider.isHiragana
+                              ? 'まちがいは$machigaicountつあるよ～'
+                              : 'まちがいは$machigaicountつあるよ～',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                       ),
                     ),
                     Text(
-                      languageProvider.isHiragana
-                          ? 'みぎのえのまちがいをみつけたらタッチしてね👆'
-                          : '右の絵のまちがいを見つけたらタッチしてね👆',
+                      languageProvider.locallanguage == 2
+                          ? "Tap differencea in right image👆"
+                          : languageProvider.isHiragana
+                              ? 'みぎのえのまちがいをみつけたらタッチしてね👆'
+                              : '右の絵のまちがいを見つけたらタッチしてね👆',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -451,12 +472,16 @@ class _GeneratePageState extends State<GeneratePage> {
                                 ),
                                 child: Text(
                                   is_answer == 1
-                                      ? languageProvider.isHiragana
-                                          ? 'こたえをみる'
-                                          : '答えを見る'
-                                      : languageProvider.isHiragana
-                                          ? 'もとのえをみる'
-                                          : 'もとの絵を見る',
+                                      ? languageProvider.locallanguage == 2
+                                          ? "Watch answer"
+                                          : languageProvider.isHiragana
+                                              ? 'こたえをみる'
+                                              : '答えを見る'
+                                      : languageProvider.locallanguage == 2
+                                          ? "Watch original"
+                                          : languageProvider.isHiragana
+                                              ? 'もとのえをみる'
+                                              : 'もとの絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -492,9 +517,11 @@ class _GeneratePageState extends State<GeneratePage> {
                                       Color.fromARGB(255, 255, 67, 195),
                                 ),
                                 child: Text(
-                                  languageProvider.isHiragana
-                                      ? 'かんせいしたえをみる'
-                                      : '完成した絵を見る',
+                                  languageProvider.locallanguage == 2
+                                      ? "Watch the generated art"
+                                      : languageProvider.isHiragana
+                                          ? 'かんせいしたえをみる'
+                                          : '完成した絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -553,14 +580,14 @@ class _GeneratePageState extends State<GeneratePage> {
     }
   }
 
-  Widget typelists(BuildContext context) {
+  Widget typelists(BuildContext context, LanguageProvider languageProvider) {
     final Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     return DropdownButton(
       items: [
         DropdownMenuItem(
           value: 1,
-          child: Text('モードA',
+          child: Text(languageProvider.locallanguage == 2 ? "Mode A" : 'モードA',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize,
@@ -568,7 +595,7 @@ class _GeneratePageState extends State<GeneratePage> {
         ),
         DropdownMenuItem(
           value: 2,
-          child: Text('モードB',
+          child: Text(languageProvider.locallanguage == 2 ? "Mode B" : 'モードB',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize,
@@ -576,7 +603,7 @@ class _GeneratePageState extends State<GeneratePage> {
         ),
         DropdownMenuItem(
           value: 3,
-          child: Text('モードC',
+          child: Text(languageProvider.locallanguage == 2 ? "Mode C" : 'モードC',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize,
@@ -584,7 +611,7 @@ class _GeneratePageState extends State<GeneratePage> {
         ),
         DropdownMenuItem(
           value: 4,
-          child: Text('モードD',
+          child: Text(languageProvider.locallanguage == 2 ? "Mode D" : 'モードD',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize,
@@ -612,7 +639,7 @@ class _GeneratePageState extends State<GeneratePage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            'モードについて',
+            languageProvider.locallanguage == 2 ? "About mode" : 'モードについて',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -644,7 +671,11 @@ class _GeneratePageState extends State<GeneratePage> {
                   backgroundColor: Color.fromARGB(255, 0, 204, 255),
                 ),
                 child: Text(
-                  languageProvider.isHiragana ? 'とじる' : '閉じる',
+                  languageProvider.locallanguage == 2
+                      ? "Close"
+                      : languageProvider.isHiragana
+                          ? 'とじる'
+                          : '閉じる',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: fontsize,
@@ -689,9 +720,11 @@ class _GeneratePageState extends State<GeneratePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                                languageProvider.isHiragana
-                                    ? "えらんだしゃしん"
-                                    : "選んだ写真",
+                                languageProvider.locallanguage == 2
+                                    ? "Selected photo"
+                                    : languageProvider.isHiragana
+                                        ? "えらんだしゃしん"
+                                        : "選んだ写真",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize)),
@@ -720,9 +753,11 @@ class _GeneratePageState extends State<GeneratePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                                languageProvider.isHiragana
-                                    ? "おえかきしたえ"
-                                    : "お絵描きした絵",
+                                languageProvider.locallanguage == 2
+                                    ? "Drawing"
+                                    : languageProvider.isHiragana
+                                        ? "おえかきしたえ"
+                                        : "お絵描きした絵",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize)),
@@ -759,9 +794,11 @@ class _GeneratePageState extends State<GeneratePage> {
                                         Color.fromARGB(255, 255, 67, 195),
                                   ),
                                   child: Text(
-                                    languageProvider.isHiragana
-                                        ? 'おえかきをする'
-                                        : 'お絵描きをする',
+                                    languageProvider.locallanguage == 2
+                                        ? "Drawing"
+                                        : languageProvider.isHiragana
+                                            ? 'おえかきをする'
+                                            : 'お絵描きをする',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: fontsize,
@@ -782,9 +819,11 @@ class _GeneratePageState extends State<GeneratePage> {
                                         Color.fromARGB(255, 255, 67, 195),
                                   ),
                                   child: Text(
-                                    languageProvider.isHiragana
-                                        ? 'しゃしんをえらぶ'
-                                        : '写真を選ぶ',
+                                    languageProvider.locallanguage == 2
+                                        ? "Select Photo"
+                                        : languageProvider.isHiragana
+                                            ? 'しゃしんをえらぶ'
+                                            : '写真を選ぶ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: fontsize,
@@ -793,7 +832,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                 ),
                               ),
                               SizedBox(height: 5),
-                              typelists(context),
+                              typelists(context, languageProvider),
                               SizedBox(height: 5),
                               Container(
                                 alignment: Alignment.centerRight,
@@ -807,7 +846,9 @@ class _GeneratePageState extends State<GeneratePage> {
                                         Color.fromARGB(255, 255, 67, 195),
                                   ),
                                   child: Text(
-                                    'モードについて',
+                                    languageProvider.locallanguage == 2
+                                        ? "About mode"
+                                        : 'モードについて',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: fontsize,
@@ -830,7 +871,11 @@ class _GeneratePageState extends State<GeneratePage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
+                            languageProvider.locallanguage == 2
+                                ? "Back"
+                                : languageProvider.isHiragana
+                                    ? 'ホームにもどる'
+                                    : 'ホームに戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -852,6 +897,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                     const SomethingDisconnectDialog(
                                   message1: 'Wi-Fiがつながっていないよ💦',
                                   message2: 'Wi-Fiがつながっていないよ💦',
+                                  message3: "Wi-Fi isn't connected💦",
                                 ),
                               );
 
@@ -865,6 +911,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                     const SomethingDisconnectDialog(
                                   message1: 'しゃしんとえをえらんでね💦',
                                   message2: '写真と絵を選んでね💦',
+                                  message3: 'Select a photo and a drawing💦',
                                 ),
                               );
 
@@ -918,6 +965,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                       const SomethingDisconnectDialog(
                                     message1: 'つくったえがないよ😢',
                                     message2: '作った絵がないよ😢',
+                                    message3: 'No Generated art😢',
                                   ),
                                 );
                               }
@@ -932,7 +980,11 @@ class _GeneratePageState extends State<GeneratePage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'アートをつくる' : 'アートを作る',
+                            languageProvider.locallanguage == 2
+                                ? "Generate Art"
+                                : languageProvider.isHiragana
+                                    ? 'アートをつくる'
+                                    : 'アートを作る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,

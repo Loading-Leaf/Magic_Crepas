@@ -82,24 +82,6 @@ class _OutputPageState extends State<OutputPage> {
   int? emotion_num; //以下のemotionsで保存する際に使用する配列番号
   String? your_emotions; //String型として感情を保存する際に使用
 
-  //設定した感情
-  List<String> emotions = [
-    "うれしい😁",
-    "たのしい😄",
-    "おもしろい😆",
-    "きもちいい🥰",
-    "しあわせ😍",
-    "なつかしい😊",
-    "ほっとする🙂",
-    "わくわくする😋",
-    "かんどうする😂",
-    "つかれた😪",
-    "むかつく😠",
-    "かなしい😭",
-    "くやしい😢",
-    "こわい😱",
-    "さびしい😨"
-  ];
   String Detail_emotion = ""; //詳しい気持ち
 
   Uint8List? resultbytes2;
@@ -117,18 +99,19 @@ class _OutputPageState extends State<OutputPage> {
 
   Future<void> checkDevice() async {
     final deviceInfo = DeviceInfoPlugin();
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     //保存時、それぞれの端末ごとに文言を変更
     //例えばiPhoneの場合は「スマホ」,iPadの場合は「アイパッド」と表示
     //使用する場面は「○○に保存」と記載するボタンで使用
-
     if (Platform.isIOS) {
       final iosInfo = await deviceInfo.iosInfo;
       setState(() {
         if (iosInfo.model.toLowerCase().contains("ipad")) {
-          your_platform = "タブレット";
-          isipad = true;
+          your_platform =
+              languageProvider.locallanguage == 2 ? "Tablet" : "タブレット";
         } else {
-          your_platform = "スマホ";
+          your_platform = languageProvider.locallanguage == 2 ? "Phone" : "スマホ";
         }
       });
     } else if (Platform.isAndroid) {
@@ -140,19 +123,20 @@ class _OutputPageState extends State<OutputPage> {
                 .contains("android.hardware.type.watch") ||
             androidInfo.systemFeatures
                 .contains("android.hardware.type.automotive")) {
-          your_platform = "その他";
+          your_platform = languageProvider.locallanguage == 2 ? "Other" : "その他";
         } else if (androidInfo.model.toLowerCase().contains("tablet") ||
             androidInfo.product.toLowerCase().contains("tablet")) {
-          your_platform = "タブレット";
+          your_platform =
+              languageProvider.locallanguage == 2 ? "Tablet" : "タブレット";
         } else {
-          your_platform = "スマホ";
+          your_platform = languageProvider.locallanguage == 2 ? "Phone" : "スマホ";
         }
       });
     }
   }
 
-  Future<void> shareImages(
-      BuildContext context, Uint8List image1, Uint8List image2) async {
+  Future<void> shareImages(BuildContext context, Uint8List image1,
+      Uint8List image2, LanguageProvider languageProvider) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
 
@@ -180,8 +164,12 @@ class _OutputPageState extends State<OutputPage> {
         );
         Share.shareXFiles(
           files,
-          text: '写真とお絵描きからこんなアートができたよ！\n#まじっくくれぱす #思い出',
-          subject: 'まじっくくれぱすで作った絵',
+          text: languageProvider.locallanguage == 2
+              ? "I created this art from photos and drawings!\n"
+              : '写真とお絵描きからこんなアートができたよ！\n#まじっくくれぱす #思い出',
+          subject: languageProvider.locallanguage == 2
+              ? "Generated Art via MagicCrepas\n"
+              : 'まじっくくれぱすで作った絵',
           sharePositionOrigin: sharePositionOrigin,
         ).then((_) async {
           // 共有後に一時ファイルを削除
@@ -243,12 +231,19 @@ class _OutputPageState extends State<OutputPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(languageProvider.isHiragana ? 'えができたよ😄' : '絵ができたよ😄',
+          title: Text(
+              languageProvider.locallanguage == 2
+                  ? "The art is ready😄"
+                  : languageProvider.isHiragana
+                      ? 'えができたよ😄'
+                      : '絵ができたよ😄',
               style: TextStyle(fontWeight: FontWeight.bold)),
           content: Text(
-              languageProvider.isHiragana
-                  ? 'まちがいさがしのこたえもみれるよ😊'
-                  : 'まちがいさがしの答えも見れるよ😊',
+              languageProvider.locallanguage == 2
+                  ? "You can see the generated art😊"
+                  : languageProvider.isHiragana
+                      ? 'まちがいさがしのこたえもみれるよ😊'
+                      : 'まちがいさがしの答えも見れるよ😊',
               style: TextStyle(fontWeight: FontWeight.bold)),
           actions: [
             TextButton(
@@ -277,16 +272,24 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize = screenSize.width / 74.6;
 
     final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('ちょっとまってね💦',
+          title: Text(
+              languageProvider.locallanguage == 2
+                  ? "Wait a moment💦"
+                  : 'ちょっとまってね💦',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize_big,
               )),
-          content: Text('まだできてないよ💦',
+          content: Text(
+              languageProvider.locallanguage == 2
+                  ? "It's not ready yet💦"
+                  : 'まだできてないよ💦',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: fontsize,
@@ -350,27 +353,33 @@ class _OutputPageState extends State<OutputPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      languageProvider.isHiragana
-                          ? 'えができるまでたのしいまちがいさがしであそんでね✨'
-                          : '絵ができるまで楽しいまちがいさがしで遊んでね✨',
+                      languageProvider.locallanguage == 2
+                          ? "Have fun playing spot the differences until you complete the picture✨"
+                          : languageProvider.isHiragana
+                              ? 'えができるまでたのしいまちがいさがしであそんでね✨'
+                              : '絵ができるまで楽しいまちがいさがしで遊んでね✨',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                       ),
                     ),
                     Text(
-                      languageProvider.isHiragana
-                          ? 'まちがいは' + machigaicount + 'つあるよ～'
-                          : 'まちがいは' + machigaicount + 'つあるよ～',
+                      languageProvider.locallanguage == 2
+                          ? "There are $machigaicount mistakes!"
+                          : languageProvider.isHiragana
+                              ? 'まちがいは$machigaicountつあるよ～'
+                              : 'まちがいは$machigaicountつあるよ～',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
                       ),
                     ),
                     Text(
-                      languageProvider.isHiragana
-                          ? 'みぎのえのまちがいをみつけたらタッチしてね👆'
-                          : '右の絵のまちがいを見つけたらタッチしてね👆',
+                      languageProvider.locallanguage == 2
+                          ? "Tap differencea in right image👆"
+                          : languageProvider.isHiragana
+                              ? 'みぎのえのまちがいをみつけたらタッチしてね👆'
+                              : '右の絵のまちがいを見つけたらタッチしてね👆',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
@@ -464,12 +473,16 @@ class _OutputPageState extends State<OutputPage> {
                                 ),
                                 child: Text(
                                   is_answer == 1
-                                      ? languageProvider.isHiragana
-                                          ? 'こたえをみる'
-                                          : '答えを見る'
-                                      : languageProvider.isHiragana
-                                          ? 'もとのえをみる'
-                                          : 'もとの絵を見る',
+                                      ? languageProvider.locallanguage == 2
+                                          ? "Watch answer"
+                                          : languageProvider.isHiragana
+                                              ? 'こたえをみる'
+                                              : '答えを見る'
+                                      : languageProvider.locallanguage == 2
+                                          ? "Watch original"
+                                          : languageProvider.isHiragana
+                                              ? 'もとのえをみる'
+                                              : 'もとの絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -505,9 +518,11 @@ class _OutputPageState extends State<OutputPage> {
                                       Color.fromARGB(255, 255, 67, 195),
                                 ),
                                 child: Text(
-                                  languageProvider.isHiragana
-                                      ? 'かんせいしたえをみる'
-                                      : '完成した絵を見る',
+                                  languageProvider.locallanguage == 2
+                                      ? "Watch the generated art"
+                                      : languageProvider.isHiragana
+                                          ? 'かんせいしたえをみる'
+                                          : '完成した絵を見る',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -605,6 +620,9 @@ class _OutputPageState extends State<OutputPage> {
           message2: result['isSuccess']
               ? '作った絵を保存したよ😊'
               : '作った絵の保存に失敗しました😭\n設定を確認してください⚙️',
+          message3: result['isSuccess']
+              ? 'Success to save😊'
+              : 'Failed to save😭\nPlease check settings⚙️',
         ),
       );
     } else {
@@ -614,6 +632,7 @@ class _OutputPageState extends State<OutputPage> {
           message1:
               'しゃしんライブラリへのアクセスができないよ😢\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね⚙️',
           message2: '写真ライブラリへのアクセスが許可されていません😢\n設定を確認してください⚙️',
+          message3: 'Failed to access😢\nPlease check settings⚙️',
         ),
       );
       /*
@@ -659,6 +678,9 @@ class _OutputPageState extends State<OutputPage> {
           message2: result['isSuccess']
               ? 'お絵描きした絵を保存したよ😊'
               : 'お絵描きした絵の保存に失敗しました😭\n設定を確認してください⚙️',
+          message3: result['isSuccess']
+              ? 'Success to save😊'
+              : 'Failed to save😭\nPlease check settings⚙️',
         ),
       );
       audioProvider.playSound("established.mp3");
@@ -670,6 +692,7 @@ class _OutputPageState extends State<OutputPage> {
           message1:
               'しゃしんライブラリへのアクセスができないよ😢\nおとうさんとおかあさんにはなして、\nいっしょにせっていをかくにんしてね⚙️',
           message2: '写真ライブラリへのアクセスが許可されていません😢\n設定を確認してください⚙️',
+          message3: 'Failed to access😢\nPlease check settings⚙️',
         ),
       );
     }
@@ -696,6 +719,25 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize = screenSize.width / 74.6;
     int screen_num = 0; // 初期値を設定
 
+    //設定した感情
+    List<String> emotions = [
+      languageProvider.locallanguage == 2 ? "Happy😁" : "うれしい😁",
+      languageProvider.locallanguage == 2 ? "Fun😄" : "たのしい😄",
+      languageProvider.locallanguage == 2 ? "Interesting😆" : "おもしろい😆",
+      languageProvider.locallanguage == 2 ? "Exciting🥰" : "きもちいい🥰",
+      languageProvider.locallanguage == 2 ? "Happiness😍" : "しあわせ😍",
+      languageProvider.locallanguage == 2 ? "Nostalgic😊" : "なつかしい😊",
+      languageProvider.locallanguage == 2 ? "Relieved🙂" : "ほっとする🙂",
+      languageProvider.locallanguage == 2 ? "Excited😋" : "わくわくする😋",
+      languageProvider.locallanguage == 2 ? "Moved😂" : "かんどうする😂",
+      languageProvider.locallanguage == 2 ? "Moved😂" : "つかれた😪",
+      languageProvider.locallanguage == 2 ? "Annoyed😠" : "むかつく😠",
+      languageProvider.locallanguage == 2 ? "Sad😭" : "かなしい😭",
+      languageProvider.locallanguage == 2 ? "Frustrated😢" : "くやしい😢",
+      languageProvider.locallanguage == 2 ? "Scared😱" : "こわい😱",
+      languageProvider.locallanguage == 2 ? "Lonely😨" : "さびしい😨"
+    ];
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -719,7 +761,11 @@ class _OutputPageState extends State<OutputPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      languageProvider.isHiragana ? 'ギャラリーにほぞん' : 'ギャラリーに保存',
+                      languageProvider.locallanguage == 2
+                          ? "Save to Gallery"
+                          : languageProvider.isHiragana
+                              ? 'ギャラリーにほぞん'
+                              : 'ギャラリーに保存',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontsize_big),
                     ),
@@ -730,7 +776,11 @@ class _OutputPageState extends State<OutputPage> {
                           Column(
                             children: [
                               Text(
-                                languageProvider.isHiragana ? "つくったえ" : "作った絵",
+                                languageProvider.locallanguage == 2
+                                    ? "Generated Art"
+                                    : languageProvider.isHiragana
+                                        ? "つくったえ"
+                                        : "作った絵",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize),
@@ -770,9 +820,11 @@ class _OutputPageState extends State<OutputPage> {
                           Column(
                             children: [
                               Text(
-                                languageProvider.isHiragana
-                                    ? "おえかきしたえ"
-                                    : "お絵描きした絵",
+                                languageProvider.locallanguage == 2
+                                    ? "Drawing"
+                                    : languageProvider.isHiragana
+                                        ? "おえかきしたえ"
+                                        : "お絵描きした絵",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize),
@@ -814,18 +866,22 @@ class _OutputPageState extends State<OutputPage> {
                         },
                         style: TextStyle(fontSize: fontsize),
                         decoration: InputDecoration(
-                          labelText: languageProvider.isHiragana
-                              ? 'さくひんタイトルをいれてね✍'
-                              : '作品タイトルを入力してね✍',
+                          labelText: languageProvider.locallanguage == 2
+                              ? "Write the title✍"
+                              : languageProvider.isHiragana
+                                  ? 'さくひんタイトルをいれてね✍'
+                                  : '作品タイトルを入力してね✍',
                           labelStyle: TextStyle(fontSize: fontsize),
                         ),
                         maxLength: 20, // 最大文字数を20に設定
                       ),
                     ] else if (screen_num == 2) ...[
                       Text(
-                        languageProvider.isHiragana
-                            ? 'えをかいたときのきもちをえらんでね😊'
-                            : '絵を描いた時の気持ちを選んでね😊',
+                        languageProvider.locallanguage == 2
+                            ? "Choose the emotion when you draw😊"
+                            : languageProvider.isHiragana
+                                ? 'えをかいたときのきもちをえらんでね😊'
+                                : '絵を描いた時の気持ちを選んでね😊',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize_big),
@@ -887,9 +943,11 @@ class _OutputPageState extends State<OutputPage> {
                             },
                             style: TextStyle(fontSize: fontsize),
                             decoration: InputDecoration(
-                              labelText: languageProvider.isHiragana
-                                  ? 'さらにかんじたきもちがあったらかいてね✍'
-                                  : 'さらに感じた気持ちがあったら書いてね✍',
+                              labelText: languageProvider.locallanguage == 2
+                                  ? "Write your detail emotion✍"
+                                  : languageProvider.isHiragana
+                                      ? 'さらにかんじたきもちがあったらかいてね✍'
+                                      : 'さらに感じた気持ちがあったら書いてね✍',
                               labelStyle: TextStyle(fontSize: fontsize),
                             ),
                             maxLength: 40,
@@ -917,7 +975,11 @@ class _OutputPageState extends State<OutputPage> {
                               backgroundColor: Color.fromARGB(255, 0, 204, 255),
                             ),
                             child: Text(
-                              languageProvider.isHiragana ? 'もどる' : '戻る',
+                              languageProvider.locallanguage == 2
+                                  ? "Back"
+                                  : languageProvider.isHiragana
+                                      ? 'もどる'
+                                      : '戻る',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -941,6 +1003,7 @@ class _OutputPageState extends State<OutputPage> {
                                         SomethingDisconnectDialog(
                                       message1: 'ほぞんすることができませんでした😭',
                                       message2: "保存することができませんでした😭",
+                                      message3: "Failed to save😭",
                                     ),
                                   );
                                 } else {
@@ -977,7 +1040,11 @@ class _OutputPageState extends State<OutputPage> {
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              languageProvider.isHiragana ? 'すすむ' : '進む',
+                              languageProvider.locallanguage == 2
+                                  ? "Next"
+                                  : languageProvider.isHiragana
+                                      ? 'すすむ'
+                                      : '進む',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1048,8 +1115,9 @@ class _OutputPageState extends State<OutputPage> {
                                     context: context,
                                     builder: (context) =>
                                         const SomethingDisconnectDialog(
-                                      message1: 'Wi-Fiがつながっていないよ⚙️',
-                                      message2: 'Wi-Fiがつながっていないよ⚙️',
+                                      message1: 'Wi-Fiがつながっていないよ💦',
+                                      message2: 'Wi-Fiがつながっていないよ💦',
+                                      message3: "Wi-Fi isn't connected💦",
                                     ),
                                   );
                                   return; // 早期リターン
@@ -1062,6 +1130,8 @@ class _OutputPageState extends State<OutputPage> {
                                         const SomethingDisconnectDialog(
                                       message1: 'しゃしんとえをえらんでね💦',
                                       message2: '写真と絵を選んでね💦',
+                                      message3:
+                                          'Select a photo and a drawing💦',
                                     ),
                                   );
 
@@ -1111,6 +1181,7 @@ class _OutputPageState extends State<OutputPage> {
                                           const SomethingDisconnectDialog(
                                         message1: 'つくったえがないよ😢',
                                         message2: '作った絵がないよ😢',
+                                        message3: 'No Generated art😢',
                                       ),
                                     );
                                   }
@@ -1149,7 +1220,11 @@ class _OutputPageState extends State<OutputPage> {
                         backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'とじる' : '閉じる',
+                        languageProvider.locallanguage == 2
+                            ? "Back"
+                            : languageProvider.isHiragana
+                                ? 'とじる'
+                                : '閉じる',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: fontsize,
@@ -1191,6 +1266,7 @@ class _OutputPageState extends State<OutputPage> {
           builder: (context) => const SomethingDisconnectDialog(
             message1: 'プロジェクトをほぞんしたよ😄',
             message2: 'プロジェクトを保存したよ😄',
+            message3: "Success to save😄",
           ),
         );
       } else {
@@ -1199,6 +1275,7 @@ class _OutputPageState extends State<OutputPage> {
           builder: (context) => const SomethingDisconnectDialog(
             message1: 'ほぞんにしっぱいしたよ😢おとうさんとおかあさんにはなしてね⚙️',
             message2: '保存に失敗しました😢',
+            message3: "Failed to save😢",
           ),
         );
       }
@@ -1208,6 +1285,7 @@ class _OutputPageState extends State<OutputPage> {
         builder: (context) => const SomethingDisconnectDialog(
           message1: 'エラーがはっせいしたよ😭\nお問い合わせformを使ってください。',
           message2: 'エラーが発生しました😭\nお問い合わせformを使ってください。',
+          message3: "Error has occurred😭 Please use the contact form.",
         ),
       );
     }
@@ -1424,7 +1502,11 @@ class _OutputPageState extends State<OutputPage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
+                            languageProvider.locallanguage == 2
+                                ? "Back to Home"
+                                : languageProvider.isHiragana
+                                    ? 'ホームにもどる'
+                                    : 'ホームに戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -1440,15 +1522,20 @@ class _OutputPageState extends State<OutputPage> {
                             audioProvider.playSound("tap1.mp3");
                             if (outputImage != null &&
                                 drawingImageData != null) {
-                              shareImages(context, outputImage!,
-                                  drawingImageData!); // 両方の画像をシェアする
+                              shareImages(
+                                  context,
+                                  outputImage!,
+                                  drawingImageData!,
+                                  languageProvider); // 両方の画像をシェアする
                             }
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            'シェアする',
+                            languageProvider.locallanguage == 2
+                                ? "Share"
+                                : 'シェアする',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
