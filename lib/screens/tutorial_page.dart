@@ -379,22 +379,42 @@ class _TutorialPageState extends State<TutorialPage> {
         },
         {
           'title': page == 1
-              ? (languageProvider.isHiragana ? 'おえかき' : 'お絵描き')
-              : 'ギャラリー',
+              ? (languageProvider.locallanguage == 2
+                  ? "Drawing"
+                  : languageProvider.isHiragana
+                      ? 'おえかき'
+                      : 'お絵描き')
+              : languageProvider.locallanguage == 2
+                  ? "Gallery"
+                  : 'ギャラリー',
           'chapters': page == 1 ? chapters2 : chapters6,
           'tutorialNumber': page == 1 ? 2 : 6,
         },
         {
           'title': page == 1
-              ? 'まちがいさがし'
-              : (languageProvider.isHiragana ? 'べつのモード' : '別のモード'),
+              ? languageProvider.locallanguage == 2
+                  ? "the Differences"
+                  : 'まちがいさがし'
+              : (languageProvider.locallanguage == 2
+                  ? "Amother Mode"
+                  : languageProvider.isHiragana
+                      ? 'べつのモード'
+                      : '別のモード'),
           'chapters': page == 1 ? chapters3 : chapters7,
           'tutorialNumber': page == 1 ? 3 : 7,
         },
         {
           'title': page == 1
-              ? (languageProvider.isHiragana ? 'プロジェクトほぞん' : 'プロジェクト保存')
-              : (languageProvider.isHiragana ? 'せってい' : "設定"),
+              ? (languageProvider.locallanguage == 2
+                  ? "Save Gallery"
+                  : languageProvider.isHiragana
+                      ? 'ギャラリーほぞん'
+                      : 'ギャラリー保存')
+              : (languageProvider.locallanguage == 2
+                  ? "Setting"
+                  : languageProvider.isHiragana
+                      ? 'せってい'
+                      : "設定"),
           'chapters': page == 1 ? chapters4 : chapters8,
           'tutorialNumber': page == 1 ? 4 : 8,
         },
@@ -495,7 +515,11 @@ class _TutorialPageState extends State<TutorialPage> {
               Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
-                  languageProvider.isHiragana ? 'あそびかた' : 'あそび方',
+                  languageProvider.locallanguage == 2
+                      ? "Tutorial"
+                      : languageProvider.isHiragana
+                          ? 'あそびかた'
+                          : 'あそび方',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsize_big,
@@ -553,7 +577,11 @@ class _TutorialPageState extends State<TutorialPage> {
                       backgroundColor: Color.fromARGB(255, 0, 204, 255),
                     ),
                     child: Text(
-                      languageProvider.isHiragana ? 'ホームにもどる' : 'ホームに戻る',
+                      languageProvider.locallanguage == 2
+                          ? "Back to Home"
+                          : languageProvider.isHiragana
+                              ? 'ホームにもどる'
+                              : 'ホームに戻る',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,

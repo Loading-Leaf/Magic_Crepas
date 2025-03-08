@@ -8,7 +8,6 @@ import 'package:provider/provider.dart'; // Provider のインポート
 import 'package:ai_art/artproject/audio_provider.dart'; // AudioProvider のインポート
 import 'package:ai_art/artproject/language_provider.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
-//import 'package:share/share.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
@@ -1068,7 +1067,12 @@ class _OutputPageState extends State<OutputPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
-    List<String> buttonLabels = ['モードA', 'モードB', 'モードC', 'モードD'];
+    List<String> buttonLabels = [
+      languageProvider.locallanguage == 2 ? "Mode A" : 'モードA',
+      languageProvider.locallanguage == 2 ? "Mode B" : 'モードB',
+      languageProvider.locallanguage == 2 ? "Mode C" : 'モードC',
+      languageProvider.locallanguage == 2 ? "Mode D" : 'モードD'
+    ];
     List<int> photoTypes = [1, 2, 3, 4];
 
     showDialog(
@@ -1076,7 +1080,11 @@ class _OutputPageState extends State<OutputPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            languageProvider.isHiragana ? 'べつのモードをつかう' : '別のモードを使う',
+            languageProvider.locallanguage == 2
+                ? "Try another mode"
+                : languageProvider.isHiragana
+                    ? 'べつのモードをつかう'
+                    : '別のモードを使う',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),
@@ -1359,9 +1367,11 @@ class _OutputPageState extends State<OutputPage> {
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              languageProvider.isHiragana
-                                  ? your_platform + 'にほぞんする'
-                                  : your_platform + 'に保存する',
+                              languageProvider.locallanguage == 2
+                                  ? "Save to $your_platform"
+                                  : languageProvider.isHiragana
+                                      ? your_platform + 'にほぞんする'
+                                      : your_platform + 'に保存する',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1417,9 +1427,11 @@ class _OutputPageState extends State<OutputPage> {
                                   Color.fromARGB(255, 255, 67, 195),
                             ),
                             child: Text(
-                              languageProvider.isHiragana
-                                  ? your_platform + 'にほぞんする'
-                                  : your_platform + 'に保存する',
+                              languageProvider.locallanguage == 2
+                                  ? "Save to $your_platform"
+                                  : languageProvider.isHiragana
+                                      ? your_platform + 'にほぞんする'
+                                      : your_platform + 'に保存する',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize,
@@ -1453,9 +1465,11 @@ class _OutputPageState extends State<OutputPage> {
                                     Color.fromARGB(255, 255, 67, 195),
                               ),
                               child: Text(
-                                languageProvider.isHiragana
-                                    ? 'ギャラリーにほぞんする'
-                                    : 'ギャラリーに保存する',
+                                languageProvider.locallanguage == 2
+                                    ? "Save to Gallery"
+                                    : languageProvider.isHiragana
+                                        ? 'ギャラリーにほぞんする'
+                                        : 'ギャラリーに保存する',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,
@@ -1477,9 +1491,11 @@ class _OutputPageState extends State<OutputPage> {
                                     Color.fromARGB(255, 255, 67, 195),
                               ),
                               child: Text(
-                                languageProvider.isHiragana
-                                    ? 'べつのモードをつかう'
-                                    : '別のモードを使う',
+                                languageProvider.locallanguage == 2
+                                    ? "Try another mode"
+                                    : languageProvider.isHiragana
+                                        ? 'べつのモードをつかう'
+                                        : '別のモードを使う',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: fontsize,

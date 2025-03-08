@@ -23,7 +23,7 @@ class LanguageProvider with ChangeNotifier {
     // 初回起動チェック（`locallanguage` が未設定ならデバイス言語を適用）
     if (!prefs.containsKey('locallanguage')) {
       String deviceLanguage = window.locale.languageCode; // デバイスの言語取得
-      _locallanguage = (deviceLanguage == 'en') ? 2 : 1; // 英語なら2、日本語なら1
+      _locallanguage = (deviceLanguage == 'ja') ? 1 : 2; // 英語なら2、日本語なら1
       await prefs.setInt('locallanguage', _locallanguage); // 初回のみ保存
     } else {
       _locallanguage = prefs.getInt('locallanguage') ?? 1; // 既存の設定を適用

@@ -525,7 +525,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   languageProvider.locallanguage == 2
-                      ? "Date"
+                      ? "Date: $time"
                       : languageProvider.isHiragana
                           ? "さくせいにちじ: $time"
                           : "作成日時: $time",
@@ -537,7 +537,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                 SizedBox(width: 50),
                 Text(
                   languageProvider.locallanguage == 2
-                      ? "Emotion"
+                      ? "Emotion: $emotion"
                       : languageProvider.isHiragana
                           ? "かんじょう: $emotion"
                           : "感情: $emotion",
