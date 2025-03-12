@@ -353,7 +353,7 @@ class _GeneratePageState extends State<GeneratePage> {
                   children: [
                     Text(
                       languageProvider.locallanguage == 2
-                          ? "Have fun playing spot the differences until you complete the picture✨"
+                          ? "Let's have fun playing spot the differences until you complete the picture✨"
                           : languageProvider.isHiragana
                               ? 'えができるまでたのしいまちがいさがしであそんでね✨'
                               : '絵ができるまで楽しいまちがいさがしで遊んでね✨',
@@ -364,7 +364,7 @@ class _GeneratePageState extends State<GeneratePage> {
                     ),
                     Text(
                       languageProvider.locallanguage == 2
-                          ? "There are $machigaicount mistakes!"
+                          ? "There are $machigaicount differences!"
                           : languageProvider.isHiragana
                               ? 'まちがいは$machigaicountつあるよ～'
                               : 'まちがいは$machigaicountつあるよ～',
@@ -820,7 +820,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                   ),
                                   child: Text(
                                     languageProvider.locallanguage == 2
-                                        ? "Select Photo"
+                                        ? "Select photo"
                                         : languageProvider.isHiragana
                                             ? 'しゃしんをえらぶ'
                                             : '写真を選ぶ',

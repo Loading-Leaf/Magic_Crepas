@@ -372,8 +372,16 @@ class _TutorialPageState extends State<TutorialPage> {
       List<Map<String, dynamic>> tutorialItems = [
         {
           'title': page == 1
-              ? (languageProvider.isHiragana ? 'ひととおりのやりかた' : '一通りのやりかた')
-              : (languageProvider.isHiragana ? "おえかき2" : "お絵描き2"),
+              ? (languageProvider.locallanguage == 2
+                  ? "Overview of playing"
+                  : languageProvider.isHiragana
+                      ? 'ひととおりのやりかた'
+                      : '一通りのやりかた')
+              : (languageProvider.locallanguage == 2
+                  ? "Drawing 2"
+                  : languageProvider.isHiragana
+                      ? "おえかき2"
+                      : "お絵描き2"),
           'chapters': page == 1 ? chapters1 : chapters5,
           'tutorialNumber': page == 1 ? 1 : 5,
         },
@@ -393,10 +401,10 @@ class _TutorialPageState extends State<TutorialPage> {
         {
           'title': page == 1
               ? languageProvider.locallanguage == 2
-                  ? "the Differences"
+                  ? "The differences"
                   : 'まちがいさがし'
               : (languageProvider.locallanguage == 2
-                  ? "Amother Mode"
+                  ? "Amother modes"
                   : languageProvider.isHiragana
                       ? 'べつのモード'
                       : '別のモード'),
@@ -406,7 +414,7 @@ class _TutorialPageState extends State<TutorialPage> {
         {
           'title': page == 1
               ? (languageProvider.locallanguage == 2
-                  ? "Save Gallery"
+                  ? "Save gallery"
                   : languageProvider.isHiragana
                       ? 'ギャラリーほぞん'
                       : 'ギャラリー保存')

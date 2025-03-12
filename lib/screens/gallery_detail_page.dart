@@ -425,7 +425,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   Column(mainAxisSize: MainAxisSize.min, children: [
                     Text(
                       languageProvider.locallanguage == 2
-                          ? "Used Photo"
+                          ? "Used photo"
                           : languageProvider.isHiragana
                               ? "つかったしゃしん"
                               : "使った写真",
@@ -553,7 +553,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   children: [
                     Text(
                         languageProvider.locallanguage == 2
-                            ? "Generated Art"
+                            ? "Generated art"
                             : languageProvider.isHiragana
                                 ? "つくったえ"
                                 : "作った絵",

@@ -382,7 +382,7 @@ class _DrawingPageState extends State<DrawingPage> {
                             //Flutterのelementの影響でモーダルを閉じた後、パレットに即時新たな色が表示されないので以下の文言を追加
                             Text(
                               languageProvider.locallanguage == 2
-                                  ? "If you blend colors, let's tap 'OK'!\n Next, if you select colors, blended color appears🎨\nyou can make 6 colors😊"
+                                  ? "If you blend colors, let's tap 'OK'!\n Next, if you select colors, blended color appears🎨\nYou can make 6 colors😊"
                                   : languageProvider.isHiragana
                                       ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ🎨\n6しょくつくれるよ😊'
                                       : '色を混ぜたら\n「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ🎨\n6色作れるよ😊',
@@ -1026,7 +1026,7 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                     child: Text(
                       languageProvider.locallanguage == 2
-                          ? "Select Photo"
+                          ? "Select photo"
                           : languageProvider.isHiragana
                               ? 'しゃしんからえらぶ'
                               : '写真から選ぶ',

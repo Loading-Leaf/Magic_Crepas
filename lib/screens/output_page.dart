@@ -164,7 +164,7 @@ class _OutputPageState extends State<OutputPage> {
         Share.shareXFiles(
           files,
           text: languageProvider.locallanguage == 2
-              ? "I created this art from photos and drawings!\n"
+              ? "I created this art from photos and drawings!\n#Magic Crepas #Memory"
               : '写真とお絵描きからこんなアートができたよ！\n#まじっくくれぱす #思い出',
           subject: languageProvider.locallanguage == 2
               ? "Generated Art via MagicCrepas\n"
@@ -353,7 +353,7 @@ class _OutputPageState extends State<OutputPage> {
                   children: [
                     Text(
                       languageProvider.locallanguage == 2
-                          ? "Have fun playing spot the differences until you complete the picture✨"
+                          ? "Let's have fun playing spot the differences until you complete the picture✨"
                           : languageProvider.isHiragana
                               ? 'えができるまでたのしいまちがいさがしであそんでね✨'
                               : '絵ができるまで楽しいまちがいさがしで遊んでね✨',
@@ -364,7 +364,7 @@ class _OutputPageState extends State<OutputPage> {
                     ),
                     Text(
                       languageProvider.locallanguage == 2
-                          ? "There are $machigaicount mistakes!"
+                          ? "There are $machigaicount differences!"
                           : languageProvider.isHiragana
                               ? 'まちがいは$machigaicountつあるよ～'
                               : 'まちがいは$machigaicountつあるよ～',
@@ -866,7 +866,7 @@ class _OutputPageState extends State<OutputPage> {
                         style: TextStyle(fontSize: fontsize),
                         decoration: InputDecoration(
                           labelText: languageProvider.locallanguage == 2
-                              ? "Write the title✍"
+                              ? "Let’s write the title✍"
                               : languageProvider.isHiragana
                                   ? 'さくひんタイトルをいれてね✍'
                                   : '作品タイトルを入力してね✍',
@@ -877,7 +877,7 @@ class _OutputPageState extends State<OutputPage> {
                     ] else if (screen_num == 2) ...[
                       Text(
                         languageProvider.locallanguage == 2
-                            ? "Choose the emotion when you draw😊"
+                            ? "Let’s choose the emotion when you draw😊"
                             : languageProvider.isHiragana
                                 ? 'えをかいたときのきもちをえらんでね😊'
                                 : '絵を描いた時の気持ちを選んでね😊',
@@ -943,7 +943,7 @@ class _OutputPageState extends State<OutputPage> {
                             style: TextStyle(fontSize: fontsize),
                             decoration: InputDecoration(
                               labelText: languageProvider.locallanguage == 2
-                                  ? "Write your detail emotion✍"
+                                  ? "Let’s write your detail emotion✍"
                                   : languageProvider.isHiragana
                                       ? 'さらにかんじたきもちがあったらかいてね✍'
                                       : 'さらに感じた気持ちがあったら書いてね✍',
@@ -1139,7 +1139,7 @@ class _OutputPageState extends State<OutputPage> {
                                       message1: 'しゃしんとえをえらんでね💦',
                                       message2: '写真と絵を選んでね💦',
                                       message3:
-                                          'Select a photo and a drawing💦',
+                                          'Let’s select a photo and a drawing💦',
                                     ),
                                   );
 
@@ -1189,7 +1189,7 @@ class _OutputPageState extends State<OutputPage> {
                                           const SomethingDisconnectDialog(
                                         message1: 'つくったえがないよ😢',
                                         message2: '作った絵がないよ😢',
-                                        message3: 'No Generated art😢',
+                                        message3: 'No generated art😢',
                                       ),
                                     );
                                   }

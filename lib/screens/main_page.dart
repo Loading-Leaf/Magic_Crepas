@@ -179,7 +179,7 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   child: Text(
                                     languageProvider.locallanguage == 2
-                                        ? "Generate Arts"
+                                        ? "Generate arts"
                                         : languageProvider.isHiragana
                                             ? 'AIでアートをつくる'
                                             : 'AIでアートを作る',
@@ -246,7 +246,7 @@ class _MainPageState extends State<MainPage> {
                         padding: EdgeInsets.all(3.0),
                         child: Text(
                           languageProvider.locallanguage == 2
-                              ? "What happens when you combine your favorite things with art???"
+                              ? "What happens when you combine your favorite things with the art???"
                               : languageProvider.isHiragana
                                   ? 'すきなものとアートをあわせると？？？'
                                   : '好きなものとアートを組み合わせると？？？',
