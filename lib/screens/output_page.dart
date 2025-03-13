@@ -375,7 +375,7 @@ class _OutputPageState extends State<OutputPage> {
                     ),
                     Text(
                       languageProvider.locallanguage == 2
-                          ? "Tap differencea in right image👆"
+                          ? "Tap differences in right image👆"
                           : languageProvider.isHiragana
                               ? 'みぎのえのまちがいをみつけたらタッチしてね👆'
                               : '右の絵のまちがいを見つけたらタッチしてね👆',
