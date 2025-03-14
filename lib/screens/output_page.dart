@@ -1327,7 +1327,12 @@ class _OutputPageState extends State<OutputPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(languageProvider.isHiragana ? "つくったえ" : "作った絵",
+                          Text(
+                              languageProvider.locallanguage == 2
+                                  ? "Generated art"
+                                  : languageProvider.isHiragana
+                                      ? "つくったえ"
+                                      : "作った絵",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),
@@ -1385,9 +1390,11 @@ class _OutputPageState extends State<OutputPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                              languageProvider.isHiragana
-                                  ? "おえかきしたえ"
-                                  : "お絵描きした絵",
+                              languageProvider.locallanguage == 2
+                                  ? "Drawing"
+                                  : languageProvider.isHiragana
+                                      ? "おえかきしたえ"
+                                      : "お絵描きした絵",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: fontsize)),

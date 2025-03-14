@@ -92,7 +92,8 @@ class _MainPageState extends State<MainPage> {
                             child: Container(
                               height: screenSize.height * 0.15 * 0.75,
                               width: screenSize.width * 0.20 * 0.75,
-                              child: Image.asset('assets/title_logo_main.png'),
+                              child: Image.asset(languageProvider.locallanguage == 2
+                                        ?'assets/title_logo_main_en.png':'assets/title_logo_main.png'),
                             ),
                           ),
                         ),
