@@ -404,7 +404,7 @@ class _TutorialPageState extends State<TutorialPage> {
                   ? "The differences"
                   : 'まちがいさがし'
               : (languageProvider.locallanguage == 2
-                  ? "Amother modes"
+                  ? "Another modes"
                   : languageProvider.isHiragana
                       ? 'べつのモード'
                       : '別のモード'),

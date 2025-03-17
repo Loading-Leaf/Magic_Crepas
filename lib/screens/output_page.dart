@@ -1102,7 +1102,9 @@ class _OutputPageState extends State<OutputPage> {
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Image.asset(
-                      'assets/modes.png',
+                      languageProvider.locallanguage == 2
+                          ? 'assets/modes_en.png'
+                          : 'assets/modes.png',
                     ),
                   ),
                 ),
