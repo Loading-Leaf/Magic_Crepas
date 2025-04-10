@@ -16,7 +16,7 @@ class TermsOfServiceDialog extends StatelessWidget {
     double fontsize = 12;
     final String termsOfService = languageProvider.locallanguage == 2
         ? '''
-These Terms of Service (hereinafter referred to as the "Terms") establish the conditions for using "Magic Crepas" (hereinafter referred to as the "Service") provided by Loading Leaves (hereinafter referred to as the "Team"). Users (hereinafter referred to as "Users") are deemed to have agreed to these Terms when using the Service.
+These Terms of Service (hereinafter referred to as the "Terms") establish the conditions for using "Magic Craypas" (hereinafter referred to as the "Service") provided by Loading Leaves (hereinafter referred to as the "Team"). Users (hereinafter referred to as "Users") are deemed to have agreed to these Terms when using the Service.
 Article 1 (Application)
 
 These Terms apply to all relationships between Users and the Team regarding the use of the Service.
