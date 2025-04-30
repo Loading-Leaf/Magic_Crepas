@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import "package:ai_art/artproject/terms_of_service.dart";
-import 'package:audioplayers/audioplayers.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/language_provider.dart';
@@ -92,8 +91,10 @@ class _MainPageState extends State<MainPage> {
                             child: Container(
                               height: screenSize.height * 0.15 * 0.75,
                               width: screenSize.width * 0.20 * 0.75,
-                              child: Image.asset(languageProvider.locallanguage == 2
-                                        ?'assets/title_logo_main_en.png':'assets/title_logo_main.png'),
+                              child: Image.asset(
+                                  languageProvider.locallanguage == 2
+                                      ? 'assets/title_logo_main_en.png'
+                                      : 'assets/title_logo_main.png'),
                             ),
                           ),
                         ),
@@ -350,7 +351,11 @@ class _MainPageState extends State<MainPage> {
       builder: (context) {
         return AlertDialog(
           title: Text(
-            languageProvider.isHiragana ? 'せってい' : '設定',
+            languageProvider.locallanguage == 2
+                ? "Settings"
+                : languageProvider.isHiragana
+                    ? 'せってい'
+                    : '設定',
             style:
                 TextStyle(fontWeight: FontWeight.bold, fontSize: fontsize_big),
           ),

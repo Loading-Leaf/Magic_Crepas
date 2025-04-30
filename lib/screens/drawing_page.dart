@@ -257,7 +257,7 @@ class _DrawingPageState extends State<DrawingPage> {
                                         children: [
                                           Text(
                                             languageProvider.locallanguage == 2
-                                                ? "Color B"
+                                                ? "Color 2"
                                                 : languageProvider.isHiragana
                                                     ? 'いろ2'
                                                     : '色2',

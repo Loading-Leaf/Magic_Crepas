@@ -141,10 +141,10 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
           text: languageProvider.locallanguage == 2
               ? "I created this art from photos and drawings!\n" +
                   content +
-                  "\n #MagicCrepas #Memory"
+                  "\n #MagicCraypas #Memory"
               : '写真とお絵描きからこんなアートができたよ！\n' + content + '\n#まじっくくれぱす #思い出',
           subject: languageProvider.locallanguage == 2
-              ? "Generated Art via MagicCrepas\n"
+              ? "Generated Art via MagicCraypas\n"
               : 'まじっくくれぱすで作った絵',
           sharePositionOrigin: sharePositionOrigin,
         ).then((_) async {
