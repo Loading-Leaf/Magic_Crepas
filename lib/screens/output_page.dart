@@ -729,7 +729,7 @@ class _OutputPageState extends State<OutputPage> {
       languageProvider.locallanguage == 2 ? "Relieved🙂" : "ほっとする🙂",
       languageProvider.locallanguage == 2 ? "Excited😋" : "わくわくする😋",
       languageProvider.locallanguage == 2 ? "Moved😂" : "かんどうする😂",
-      languageProvider.locallanguage == 2 ? "Moved😂" : "つかれた😪",
+      languageProvider.locallanguage == 2 ? "Tired😪" : "つかれた😪",
       languageProvider.locallanguage == 2 ? "Annoyed😠" : "むかつく😠",
       languageProvider.locallanguage == 2 ? "Sad😭" : "かなしい😭",
       languageProvider.locallanguage == 2 ? "Frustrated😢" : "くやしい😢",
