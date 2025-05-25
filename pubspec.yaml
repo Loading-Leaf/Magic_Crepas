@@ -124,6 +124,15 @@ flutter:
     - assets/tutorial/6/
     - assets/tutorial/7/
     - assets/tutorial/8/
+    - assets/tutorial_en/
+    - assets/tutorial_en/1/
+    - assets/tutorial_en/2/
+    - assets/tutorial_en/3/
+    - assets/tutorial_en/4/
+    - assets/tutorial_en/5/
+    - assets/tutorial_en/6/
+    - assets/tutorial_en/7/
+    - assets/tutorial_en/8/
 
 flutter_embedding_v2: # Add this line
     sdk: flutter
