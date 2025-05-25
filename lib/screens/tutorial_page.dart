@@ -760,10 +760,10 @@ class _TutorialPageState extends State<TutorialPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
-                          languageProvider.locallanguage == 2
-                              ? 'assets/tutorial_en/'
-                              : 'assets/tutorial/' +
-                                  '${itemIndex + 1 + (page - 1) * 4}.png',
+                          (languageProvider.locallanguage == 2
+                                  ? 'assets/tutorial_en/'
+                                  : 'assets/tutorial/') +
+                              '${itemIndex + 1 + (page - 1) * 4}.png',
                         ),
                       ),
                     ),

@@ -80,13 +80,13 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
-                          languageProvider.locallanguage == 2
-                              ? 'assets/tutorial_en/'
-                              : 'assets/tutorial/' +
-                                  tutorialnum.toString() +
-                                  "/" +
-                                  chapter.toString() +
-                                  '.png',
+                          (languageProvider.locallanguage == 2
+                                  ? 'assets/tutorial_en/'
+                                  : 'assets/tutorial/') +
+                              tutorialnum.toString() +
+                              "/" +
+                              chapter.toString() +
+                              '.png',
                         ),
                       ),
                     ),
