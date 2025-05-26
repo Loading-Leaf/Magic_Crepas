@@ -95,21 +95,33 @@ class _GeneratePageState extends State<GeneratePage> {
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+      if (image == null) {
+        print('No image selected');
+        return;
+      }
 
       final imageTemp = File(image.path);
+      print('Selected image path: ${image.path}');
+
+      // 画像データをバイトとして読み込んで確認
+      List<int> imageBytes = await imageTemp.readAsBytes();
+      print('Image bytes length: ${imageBytes.length}');
+
       setState(() => this.image = imageTemp);
 
       // 描画データの設定（仮データ）
-      String drawingData = 'your_drawing_data_here'; // 適切な描画データを設定
+      String drawingData = 'your_drawing_data_here';
 
       await DatabaseHelper.instance.insert({
-        'selectedphoto': Uint8List(0),
+        'selectedphoto': Uint8List.fromList(imageBytes), // 空データではなく実際の画像データを保存
         'photo': image.path,
-        'drawing': drawingData // 描画データを渡す
+        'drawing': drawingData
       });
+      print('Image inserted into database successfully');
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+    } catch (e) {
+      print('Unexpected error: $e');
     }
   }
 
@@ -740,9 +752,10 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: FittedBox(
                                   fit: BoxFit.fill,
                                   child: image != null
-                                      ? Image.file(image ??
-                                          File(_images[_images.length - 1][
-                                              'path'])) // 選択された画像またはDBから取得した画像を表示
+                                      ? Image.memory(
+                                          image!.readAsBytesSync(),
+                                          fit: BoxFit.fill,
+                                        )
                                       : Image.asset(
                                           'assets/style.png'), // どちらもない場合はデフォルト画像を表示
                                 ),
