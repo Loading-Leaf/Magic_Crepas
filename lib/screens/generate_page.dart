@@ -17,8 +17,9 @@ import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:heic_to_jpg/heic_to_jpg.dart';
-
+import 'package:image/image.dart' as img;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'dart:async'; // Timer を利用するために追加
 
 int randomIntWithRange(int min, int max) {
@@ -96,51 +97,43 @@ class _GeneratePageState extends State<GeneratePage> {
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        print('No image selected');
-        return;
-      }
+      if (image == null) return;
 
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      File imageTemp = File(image.path);
 
-      // Check if the image is HEIC and convert it
-      if (image.path.toLowerCase().endsWith('.heic')) {
-        final convertedImage = await HeicToJpg.convert(imageTemp.path);
-        if (convertedImage == null) {
-          print('HEIC to JPG conversion failed');
-          // Optionally show a user-facing error
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to convert HEIC image')),
-          );
+      // HEICをJPGに変換
+      if (p.extension(image.path).toLowerCase() == '.heic') {
+        final bytes = await image.readAsBytes();
+        final decodedImage = img.decodeImage(bytes);
+
+        if (decodedImage == null) {
+          print('Failed to decode HEIC image.');
           return;
         }
-        final convertedFile = File(convertedImage);
-        setState(() => this.image = convertedFile);
 
-        // Update the path for database
-        await DatabaseHelper.instance.insert({
-          'selectedphoto': Uint8List(0),
-          'photo': convertedFile.path, // Non-nullable String
-          'drawing': 'your_drawing_data_here'
-        });
-      } else {
-        await DatabaseHelper.instance.insert({
-          'selectedphoto': Uint8List(0),
-          'photo': image.path, // Non-nullable String
-          'drawing': 'your_drawing_data_here'
-        });
+        // 一時保存ディレクトリ取得
+        final dir = await getTemporaryDirectory();
+        final newPath =
+            p.join(dir.path, '${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+        // jpgとして保存
+        final jpgBytes = img.encodeJpg(decodedImage);
+        final jpgFile = await File(newPath).writeAsBytes(jpgBytes);
+
+        imageTemp = jpgFile; // 更新
       }
+
+      setState(() => this.image = imageTemp);
+
+      String drawingData = 'your_drawing_data_here'; // 描画データを設定
+
+      await DatabaseHelper.instance.insert({
+        'selectedphoto': Uint8List(0),
+        'photo': imageTemp.path,
+        'drawing': drawingData
+      });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to pick image: $e')),
-      );
-    } catch (e) {
-      print('Unexpected error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unexpected error: $e')),
-      );
     }
   }
 
