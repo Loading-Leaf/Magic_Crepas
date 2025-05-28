@@ -17,6 +17,7 @@ import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:heic_to_jpg/heic_to_jpg.dart';
 
 import 'dart:async'; // Timer を利用するために追加
 
@@ -100,14 +101,25 @@ class _GeneratePageState extends State<GeneratePage> {
       final imageTemp = File(image.path);
       setState(() => this.image = imageTemp);
 
-      // 描画データの設定（仮データ）
-      String drawingData = 'your_drawing_data_here'; // 適切な描画データを設定
+      // Check if the image is HEIC and convert it
+      if (image.path.toLowerCase().endsWith('.heic')) {
+        final convertedImage = await HeicToJpg.convert(imageTemp.path);
+        final convertedFile = File(convertedImage);
+        setState(() => this.image = convertedFile);
 
-      await DatabaseHelper.instance.insert({
-        'selectedphoto': Uint8List(0),
-        'photo': image.path,
-        'drawing': drawingData // 描画データを渡す
-      });
+        // Update the path for database
+        await DatabaseHelper.instance.insert({
+          'selectedphoto': Uint8List(0),
+          'photo': convertedFile.path,
+          'drawing': 'your_drawing_data_here'
+        });
+      } else {
+        await DatabaseHelper.instance.insert({
+          'selectedphoto': Uint8List(0),
+          'photo': image.path,
+          'drawing': 'your_drawing_data_here'
+        });
+      }
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
