@@ -96,7 +96,10 @@ class _GeneratePageState extends State<GeneratePage> {
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+      if (image == null) {
+        print('No image selected');
+        return;
+      }
 
       final imageTemp = File(image.path);
       setState(() => this.image = imageTemp);
@@ -104,31 +107,40 @@ class _GeneratePageState extends State<GeneratePage> {
       // Check if the image is HEIC and convert it
       if (image.path.toLowerCase().endsWith('.heic')) {
         final convertedImage = await HeicToJpg.convert(imageTemp.path);
-        if (convertedImage != null) {
-          // Only proceed if conversion was successful
-          final convertedFile = File(convertedImage);
-          setState(() => this.image = convertedFile);
-
-          // Update the path for database
-          await DatabaseHelper.instance.insert({
-            'selectedphoto': Uint8List(0),
-            'photo': convertedFile.path,
-            'drawing': 'your_drawing_data_here'
-          });
-        } else {
-          // Handle conversion failure
+        if (convertedImage == null) {
           print('HEIC to JPG conversion failed');
-          return; // Or handle differently based on your app's needs
+          // Optionally show a user-facing error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to convert HEIC image')),
+          );
+          return;
         }
+        final convertedFile = File(convertedImage);
+        setState(() => this.image = convertedFile);
+
+        // Update the path for database
+        await DatabaseHelper.instance.insert({
+          'selectedphoto': Uint8List(0),
+          'photo': convertedFile.path, // Non-nullable String
+          'drawing': 'your_drawing_data_here'
+        });
       } else {
         await DatabaseHelper.instance.insert({
           'selectedphoto': Uint8List(0),
-          'photo': image.path,
+          'photo': image.path, // Non-nullable String
           'drawing': 'your_drawing_data_here'
         });
       }
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick image: $e')),
+      );
+    } catch (e) {
+      print('Unexpected error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unexpected error: $e')),
+      );
     }
   }
 
