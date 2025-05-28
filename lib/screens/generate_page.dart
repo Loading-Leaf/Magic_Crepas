@@ -104,15 +104,22 @@ class _GeneratePageState extends State<GeneratePage> {
       // Check if the image is HEIC and convert it
       if (image.path.toLowerCase().endsWith('.heic')) {
         final convertedImage = await HeicToJpg.convert(imageTemp.path);
-        final convertedFile = File(convertedImage);
-        setState(() => this.image = convertedFile);
+        if (convertedImage != null) {
+          // Only proceed if conversion was successful
+          final convertedFile = File(convertedImage);
+          setState(() => this.image = convertedFile);
 
-        // Update the path for database
-        await DatabaseHelper.instance.insert({
-          'selectedphoto': Uint8List(0),
-          'photo': convertedFile.path,
-          'drawing': 'your_drawing_data_here'
-        });
+          // Update the path for database
+          await DatabaseHelper.instance.insert({
+            'selectedphoto': Uint8List(0),
+            'photo': convertedFile.path,
+            'drawing': 'your_drawing_data_here'
+          });
+        } else {
+          // Handle conversion failure
+          print('HEIC to JPG conversion failed');
+          return; // Or handle differently based on your app's needs
+        }
       } else {
         await DatabaseHelper.instance.insert({
           'selectedphoto': Uint8List(0),
