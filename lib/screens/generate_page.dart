@@ -17,9 +17,7 @@ import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:image/image.dart' as img;
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+
 import 'dart:async'; // Timer を利用するために追加
 
 int randomIntWithRange(int min, int max) {
@@ -99,38 +97,16 @@ class _GeneratePageState extends State<GeneratePage> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
-      File imageTemp = File(image.path);
-
-      // HEICをJPGに変換
-      if (p.extension(image.path).toLowerCase() == '.heic') {
-        final bytes = await image.readAsBytes();
-        final decodedImage = img.decodeImage(bytes);
-
-        if (decodedImage == null) {
-          print('Failed to decode HEIC image.');
-          return;
-        }
-
-        // 一時保存ディレクトリ取得
-        final dir = await getTemporaryDirectory();
-        final newPath =
-            p.join(dir.path, '${DateTime.now().millisecondsSinceEpoch}.jpg');
-
-        // jpgとして保存
-        final jpgBytes = img.encodeJpg(decodedImage);
-        final jpgFile = await File(newPath).writeAsBytes(jpgBytes);
-
-        imageTemp = jpgFile; // 更新
-      }
-
+      final imageTemp = File(image.path);
       setState(() => this.image = imageTemp);
 
-      String drawingData = 'your_drawing_data_here'; // 描画データを設定
+      // 描画データの設定（仮データ）
+      String drawingData = 'your_drawing_data_here'; // 適切な描画データを設定
 
       await DatabaseHelper.instance.insert({
         'selectedphoto': Uint8List(0),
-        'photo': imageTemp.path,
-        'drawing': drawingData
+        'photo': image.path,
+        'drawing': drawingData // 描画データを渡す
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
