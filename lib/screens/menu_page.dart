@@ -99,33 +99,6 @@ class _MenuPageState extends State<MenuPage> {
                             child: TextButton(
                               onPressed: () {
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/gallery');
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 255, 67, 195),
-                              ),
-                              child: Text(
-                                languageProvider.locallanguage == 2
-                                    ? "Gallery"
-                                    : languageProvider.isHiragana
-                                        ? 'ギャラリーをみる'
-                                        : 'ギャラリーを見る',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Padding(
-                          padding: EdgeInsets.all(7.0),
-                          child: Container(
-                            child: TextButton(
-                              onPressed: () {
-                                audioProvider.playSound("tap1.mp3");
                                 Navigator.pushNamed(context, '/tutorial');
                               },
                               style: TextButton.styleFrom(
@@ -151,29 +124,55 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ],
                 ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      audioProvider.playSound("tap1.mp3");
-                      Navigator.pushNamed(context, '/generate');
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                Row(
+                  children: [
+                    Container(
+                      child: TextButton(
+                        onPressed: () {
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/generate');
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          languageProvider.locallanguage == 2
+                              ? "Generate arts"
+                              : languageProvider.isHiragana
+                                  ? 'アートをつくる'
+                                  : 'アートを作る',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      languageProvider.locallanguage == 2
-                          ? "Generate arts"
-                          : languageProvider.isHiragana
-                              ? 'アートをつくる'
-                              : 'アートを作る',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.white),
+                    SizedBox(width: 10),
+                    Container(
+                      child: TextButton(
+                        onPressed: () {
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/gallery');
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                        ),
+                        child: Text(
+                          languageProvider.locallanguage == 2
+                              ? "Gallery"
+                              : languageProvider.isHiragana
+                                  ? 'ギャラリーをみる'
+                                  : 'ギャラリーを見る',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 5),
+                  ],
+                )
               ],
             ),
           ),
