@@ -173,7 +173,7 @@ class _MainPageState extends State<MainPage> {
                                 child: TextButton(
                                   onPressed: () {
                                     audioProvider.playSound("tap1.mp3");
-                                    Navigator.pushNamed(context, '/generate');
+                                    Navigator.pushNamed(context, '/menu');
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:
