@@ -134,6 +134,7 @@ flutter:
     - assets/tutorial_en/6/
     - assets/tutorial_en/7/
     - assets/tutorial_en/8/
+    - assets/bgm/
 
 flutter_embedding_v2: # Add this line
     sdk: flutter

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import Google Mobile Ads
 import 'package:provider/provider.dart';
 import "package:ai_art/screens/main_page.dart";
+import "package:ai_art/screens/menu_page.dart";
 import "package:ai_art/screens/generate_page.dart";
 import "package:ai_art/screens/drawing_page.dart";
 import "package:ai_art/screens/output_page.dart";
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MainPage(),
+        '/menu': (context) => const MenuPage(),
         '/generate': (context) => const GeneratePage(),
         '/drawing': (context) => const DrawingPage(),
         '/output': (context) => const OutputPage(),

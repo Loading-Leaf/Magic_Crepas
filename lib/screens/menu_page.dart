@@ -6,52 +6,14 @@ import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/language_provider.dart';
 
-//import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
-//import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
-
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MenuPage extends StatefulWidget {
+  const MenuPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MenuPage> createState() => _MenuPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  /*
-  late BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the banner ad
-    _bannerAd = BannerAd(
-      size: AdSize.banner,
-      adUnitId: AdHelper.bannerAdUnitId,
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          setState(() {
-            _isBannerAdReady = false;
-          });
-          ad.dispose();
-        },
-      ),
-      request: const AdRequest(),
-    );
-    _bannerAd.load();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bannerAd.dispose();
-  }*/
-
+class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -131,191 +93,87 @@ class _MainPageState extends State<MainPage> {
                           ),
                         ),
                         SizedBox(width: 10),
+                        Padding(
+                          padding: EdgeInsets.all(7.0),
+                          child: Container(
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/gallery');
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 67, 195),
+                              ),
+                              child: Text(
+                                languageProvider.locallanguage == 2
+                                    ? "Gallery"
+                                    : languageProvider.isHiragana
+                                        ? 'ギャラリーをみる'
+                                        : 'ギャラリーを見る',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Padding(
+                          padding: EdgeInsets.all(7.0),
+                          child: Container(
+                            child: TextButton(
+                              onPressed: () {
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/tutorial');
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 0, 164, 14),
+                              ),
+                              child: Text(
+                                languageProvider.locallanguage == 2
+                                    ? "Tutorial"
+                                    : languageProvider.isHiragana
+                                        ? 'あそびかたをみる'
+                                        : 'あそび方を見る',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontsize,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
                       ],
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.all(1.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        languageProvider.locallanguage == 2
-                            ? "AI generates a new art with pictures and drawings🪄"
-                            : languageProvider.isHiragana
-                                ? 'AIがえとしゃしんであたらしいアートをつくってくれるよ🪄'
-                                : 'AIが絵と写真で新しいアートを作ってくれるよ🪄',
-                        style: TextStyle(
+                Container(
+                  child: TextButton(
+                    onPressed: () {
+                      audioProvider.playSound("tap1.mp3");
+                      Navigator.pushNamed(context, '/generate');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.locallanguage == 2
+                          ? "Generate arts"
+                          : languageProvider.isHiragana
+                              ? 'アートをつくる'
+                              : 'アートを作る',
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: fontsize_big,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(3.0),
-                            child: Container(
-                              height: screenSize.width * 0.15, // 縦長の場合
-                              width: screenSize.width * 0.6, // 縦長の場合
-
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image.asset('assets/title_image.png'),
-                              ),
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: TextButton(
-                                  onPressed: () {
-                                    audioProvider.playSound("tap1.mp3");
-                                    Navigator.pushNamed(context, '/generate');
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 255, 67, 195),
-                                  ),
-                                  child: Text(
-                                    languageProvider.locallanguage == 2
-                                        ? "Tap to Start"
-                                        : 'タップしてスタート',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontsize,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                child: TextButton(
-                                  onPressed: () {
-                                    audioProvider.playSound("tap1.mp3");
-                                    Navigator.pushNamed(context, '/gallery');
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 255, 67, 195),
-                                  ),
-                                  child: Text(
-                                    languageProvider.locallanguage == 2
-                                        ? "Gallery"
-                                        : languageProvider.isHiragana
-                                            ? 'ギャラリーをみる'
-                                            : 'ギャラリーを見る',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontsize,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Container(
-                                child: TextButton(
-                                  onPressed: () {
-                                    audioProvider.playSound("tap1.mp3");
-                                    Navigator.pushNamed(context, '/tutorial');
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 0, 164, 14),
-                                  ),
-                                  child: Text(
-                                    languageProvider.locallanguage == 2
-                                        ? "Tutorial"
-                                        : languageProvider.isHiragana
-                                            ? 'あそびかたをみる'
-                                            : 'あそび方を見る',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontsize,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: screenSize.height * 0.1),
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) =>
-                                        TermsOfServiceDialog(),
-                                  );
-                                },
-                                child: Text(
-                                  languageProvider.locallanguage == 2
-                                      ? "Terms of Service"
-                                      : languageProvider.isHiragana
-                                          ? 'りようきやく'
-                                          : '利用規約',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
-                                    color:
-                                        const Color.fromARGB(255, 255, 67, 195),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // Display the banner ad next to the buttons
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  audioProvider.playSound("tap1.mp3");
-                                  launchUrl(url);
-                                },
-                                child: Text(
-                                  languageProvider.locallanguage == 2
-                                      ? "Contact form"
-                                      : languageProvider.isHiragana
-                                          ? 'おといあわせ'
-                                          : 'お問い合わせ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
-                                    color:
-                                        const Color.fromARGB(255, 255, 67, 195),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            /*
-                          if (_isBannerAdReady)
-                            Container(
-                              alignment: Alignment.center,
-                              width: _bannerAd.size.width.toDouble(),
-                              height: _bannerAd.size.height.toDouble(),
-                              child: AdWidget(ad: _bannerAd),
-                            ),*/
-                          ],
-                        ),
-                        SizedBox(height: screenSize.height * 0.05),
-                      ],
+                          fontSize: fontsize,
+                          color: Colors.white),
                     ),
                   ),
                 ),
+                SizedBox(height: 5),
               ],
             ),
           ),
