@@ -24,7 +24,7 @@ class _GalleryPageState extends State<GalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.sizeOf(context);
+    Size screenSize = MediaQuery.sizeOf(context); //画面の情報を習得: MediaQuery.sizeOf
     double fontsizeBig = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
@@ -45,16 +45,18 @@ class _GalleryPageState extends State<GalleryPage> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Text(
-                  'ギャラリー',
+                  languageProvider.locallanguage == 2 ? "Gallery" : 'ギャラリー',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
                   ),
                 ),
                 Text(
-                  languageProvider.isHiragana
-                      ? 'いままでつくったえをみれるよ😊'
-                      : '今まで作った絵を見れるよ😊',
+                  languageProvider.locallanguage == 2
+                      ? "You can see arts😊"
+                      : languageProvider.isHiragana
+                          ? 'いままでつくったえをみれるよ😊'
+                          : '今まで作った絵を見れるよ😊',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
@@ -68,7 +70,9 @@ class _GalleryPageState extends State<GalleryPage> {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Text('まだないよ😢');
+                      return Text(languageProvider.locallanguage == 2
+                          ? "There are no pictures yet😢"
+                          : 'まだないよ😢');
                     } else {
                       List<Map<String, dynamic>> drawings = snapshot.data!;
                       return Expanded(
@@ -131,7 +135,11 @@ class _GalleryPageState extends State<GalleryPage> {
                         backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
-                        languageProvider.isHiragana ? 'ホームに戻る' : 'ホームに戻る',
+                        languageProvider.locallanguage == 2
+                            ? "Back"
+                            : languageProvider.isHiragana
+                                ? 'ホームにもどる'
+                                : 'ホームに戻る',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

@@ -80,7 +80,9 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Image.asset(
-                          'assets/tutorial/' +
+                          (languageProvider.locallanguage == 2
+                                  ? 'assets/tutorial_en/'
+                                  : 'assets/tutorial/') +
                               tutorialnum.toString() +
                               "/" +
                               chapter.toString() +
@@ -109,7 +111,11 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'すすむ' : '進む',
+                            languageProvider.locallanguage == 2
+                                ? "Next"
+                                : languageProvider.isHiragana
+                                    ? 'すすむ'
+                                    : '進む',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -135,7 +141,11 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            languageProvider.isHiragana ? 'もどる' : '戻る',
+                            languageProvider.locallanguage == 2
+                                ? "Back"
+                                : languageProvider.isHiragana
+                                    ? 'もどる'
+                                    : '戻る',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
@@ -156,7 +166,9 @@ class _TutorialDetailPageState extends State<TutorialDetailPage> {
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),
                           ),
                           child: Text(
-                            'やめる',
+                            languageProvider.locallanguage == 2
+                                ? "Quit"
+                                : 'やめる',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,
