@@ -125,6 +125,7 @@ class _MenuPageState extends State<MenuPage> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       child: TextButton(

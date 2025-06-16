@@ -9,6 +9,10 @@ import "package:ai_art/screens/drawing_page.dart";
 import "package:ai_art/screens/output_page.dart";
 import "package:ai_art/screens/tutorial_page.dart";
 import "package:ai_art/screens/image_gallery_page.dart";
+import "package:ai_art/screens/puzzle_page.dart";
+import "package:ai_art/screens/community_page.dart";
+import "package:ai_art/screens/lesson_page.dart";
+import "package:ai_art/screens/record_page.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/language_provider.dart';
 
@@ -41,6 +45,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MainPage(),
+        '/puzzle': (context) => const PuzzlePage(),
+        '/lesson': (context) => const LessonPage(),
+        '/record': (context) => const RecordPage(),
+        '/community': (context) => const CommunityPage(),
         '/menu': (context) => const MenuPage(),
         '/generate': (context) => const GeneratePage(),
         '/drawing': (context) => const DrawingPage(),
