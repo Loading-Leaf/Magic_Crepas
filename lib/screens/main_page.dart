@@ -120,7 +120,7 @@ class _MainPageState extends State<MainPage> {
                             fontSize: fontsize,
                             color: Colors.black),
                       ),
-                      Text(deviceProvider.deviceNumber.toString(),
+                      Text(deviceProvider.yourPlatform,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,
