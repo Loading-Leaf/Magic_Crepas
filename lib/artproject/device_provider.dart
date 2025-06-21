@@ -1,46 +1,54 @@
 import 'package:flutter/material.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:ui';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'dart:io' show Platform;
+import 'package:provider/provider.dart';
+import 'package:ai_art/artproject/language_provider.dart';
 
 class DeviceProvider with ChangeNotifier {
-  String your_platform = ""; //使用している端末
-  bool isipad = false; //iPadかどうか
+  String _yourPlatform = ""; // 使用している端末名
+  int _deviceNumber = 0; // 1: タブレット, 2: スマホ, 3: その他
+
+  final LanguageProvider languageProvider;
+
+  DeviceProvider({required this.languageProvider}) {
+    checkDevice();
+  }
+
+  String get yourPlatform => _yourPlatform;
+  int get deviceNumber => _deviceNumber;
 
   Future<void> checkDevice() async {
     final deviceInfo = DeviceInfoPlugin();
+    int locallanguage = languageProvider.locallanguage;
 
-    //保存時、それぞれの端末ごとに文言を変更
-    //例えばiPhoneの場合は「スマホ」,iPadの場合は「アイパッド」と表示
-    //使用する場面は「○○に保存」と記載するボタンで使用
     if (Platform.isIOS) {
       final iosInfo = await deviceInfo.iosInfo;
-      setState(() {
-        if (iosInfo.model.toLowerCase().contains("ipad")) {
-          your_platform =
-              languageProvider.locallanguage == 2 ? "Tablet" : "タブレット";
-        } else {
-          your_platform = languageProvider.locallanguage == 2 ? "Phone" : "スマホ";
-        }
-      });
+      if (iosInfo.model.toLowerCase().contains("ipad")) {
+        _yourPlatform = locallanguage == 2 ? "Tablet" : "タブレット";
+        _deviceNumber = 1;
+      } else {
+        _yourPlatform = locallanguage == 2 ? "Phone" : "スマホ";
+        _deviceNumber = 2;
+      }
     } else if (Platform.isAndroid) {
       final androidInfo = await deviceInfo.androidInfo;
-      setState(() {
-        if (androidInfo.systemFeatures
-                .contains("android.hardware.type.television") ||
-            androidInfo.systemFeatures
-                .contains("android.hardware.type.watch") ||
-            androidInfo.systemFeatures
-                .contains("android.hardware.type.automotive")) {
-          your_platform = languageProvider.locallanguage == 2 ? "Other" : "その他";
-        } else if (androidInfo.model.toLowerCase().contains("tablet") ||
-            androidInfo.product.toLowerCase().contains("tablet")) {
-          your_platform =
-              languageProvider.locallanguage == 2 ? "Tablet" : "タブレット";
-        } else {
-          your_platform = languageProvider.locallanguage == 2 ? "Phone" : "スマホ";
-        }
-      });
+      if (androidInfo.systemFeatures
+              .contains("android.hardware.type.television") ||
+          androidInfo.systemFeatures.contains("android.hardware.type.watch") ||
+          androidInfo.systemFeatures
+              .contains("android.hardware.type.automotive")) {
+        _yourPlatform = locallanguage == 2 ? "Other" : "その他";
+        _deviceNumber = 3;
+      } else if (androidInfo.model.toLowerCase().contains("tablet") ||
+          androidInfo.product.toLowerCase().contains("tablet")) {
+        _yourPlatform = locallanguage == 2 ? "Tablet" : "タブレット";
+        _deviceNumber = 1;
+      } else {
+        _yourPlatform = locallanguage == 2 ? "Phone" : "スマホ";
+        _deviceNumber = 2;
+      }
     }
+
+    notifyListeners();
   }
 }

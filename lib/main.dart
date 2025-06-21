@@ -15,6 +15,7 @@ import "package:ai_art/screens/lesson_page.dart";
 import "package:ai_art/screens/record_page.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/language_provider.dart';
+import 'package:ai_art/artproject/device_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,13 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => AudioProvider()),
-          ChangeNotifierProvider(create: (context) => LanguageProvider()), // 追加
+          ChangeNotifierProxyProvider<LanguageProvider, DeviceProvider>(
+            create: (context) => DeviceProvider(
+                languageProvider:
+                    Provider.of<LanguageProvider>(context, listen: false)),
+            update: (context, languageProvider, previousDeviceProvider) =>
+                DeviceProvider(languageProvider: languageProvider),
+          ),
         ],
         child: MyApp(),
       ),

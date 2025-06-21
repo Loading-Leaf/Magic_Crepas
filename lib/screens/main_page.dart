@@ -5,6 +5,7 @@ import "package:ai_art/artproject/terms_of_service.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/language_provider.dart';
+import 'package:ai_art/artproject/device_provider.dart';
 
 //import 'package:google_mobile_ads/google_mobile_ads.dart'; // Import the necessary package
 //import 'package:ai_art/artproject/ad_helper.dart'; // Import the AdHelper for Banner Ad
@@ -61,6 +62,7 @@ class _MainPageState extends State<MainPage> {
         'https://forms.gle/JAR2RYDkzbzFwdei6'); //バグや疑問点などの指摘の際にformを準備
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
+    final deviceProvider = Provider.of<DeviceProvider>(context);
 
     return PopScope(
       // ここを追加
@@ -118,6 +120,11 @@ class _MainPageState extends State<MainPage> {
                             fontSize: fontsize,
                             color: Colors.black),
                       ),
+                      Text(deviceProvider.deviceNumber.toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize,
+                              color: Colors.black)),
                     ],
                   ),
                 ),
