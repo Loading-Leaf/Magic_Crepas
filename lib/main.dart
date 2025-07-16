@@ -27,13 +27,11 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => AudioProvider()),
-          ChangeNotifierProxyProvider<LanguageProvider, DeviceProvider>(
-            create: (context) => DeviceProvider(
-                languageProvider:
-                    Provider.of<LanguageProvider>(context, listen: false)),
-            update: (context, languageProvider, previousDeviceProvider) =>
-                DeviceProvider(languageProvider: languageProvider),
-          ),
+          ChangeNotifierProvider(create: (context) => LanguageProvider()),
+          ChangeNotifierProvider(
+              create: (context) => DeviceProvider(
+                  languageProvider:
+                      Provider.of<LanguageProvider>(context, listen: false))),
         ],
         child: MyApp(),
       ),
