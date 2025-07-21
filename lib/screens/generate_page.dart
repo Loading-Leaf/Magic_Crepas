@@ -17,6 +17,7 @@ import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:ai_art/artproject/play_provider.dart';
 
 import 'dart:async'; // Timer を利用するために追加
 
@@ -224,6 +225,7 @@ class _GeneratePageState extends State<GeneratePage> {
         Provider.of<LanguageProvider>(context, listen: false);
 
     final audioProvider = Provider.of<AudioProvider>(context);
+
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -315,6 +317,7 @@ class _GeneratePageState extends State<GeneratePage> {
   }
 
   void _showDialog(BuildContext context) {
+    final playProvider = Provider.of<PlayProvider>(context, listen: false);
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     String random_num = randomIntWithRange(1, 13).toString();
@@ -697,6 +700,8 @@ class _GeneratePageState extends State<GeneratePage> {
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
+    final playProvider = Provider.of<PlayProvider>(context, listen: false);
+    int generateCount = playProvider.generateCount;
     return PopScope(
       // ここを追加
       canPop: false, // false で無効化
@@ -858,6 +863,16 @@ class _GeneratePageState extends State<GeneratePage> {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 5),
+                              Text(
+                                  languageProvider.locallanguage == 2
+                                      ? "Times"
+                                      : languageProvider.isHiragana
+                                          ? "あと$generateCountかい"
+                                          : "あと回",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontsize)),
                             ]),
                       ],
                     ),
@@ -942,6 +957,7 @@ class _GeneratePageState extends State<GeneratePage> {
                               body: body,
                               headers: {'Content-Type': 'application/json'},
                             );
+                            playProvider.generateCount++; // 生成回数をカウント
 
                             /// base64 -> file
                             if (response.statusCode == 200) {

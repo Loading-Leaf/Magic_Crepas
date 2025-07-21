@@ -140,9 +140,9 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.25, // 縦長の場合
-                                  width: screenSize.height * 0.25, // 縦長の場合
-
+                                  height: screenSize.height * 0.35, // 縦長の場合
+                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     // child: Image.asset('assets/title_image.png'),
@@ -160,9 +160,9 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.25, // 縦長の場合
-                                  width: screenSize.height * 0.25, // 縦長の場合
-
+                                  height: screenSize.height * 0.35, // 縦長の場合
+                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     // child: Image.asset('assets/title_image.png'),
@@ -180,9 +180,9 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.25, // 縦長の場合
-                                  width: screenSize.height * 0.25, // 縦長の場合
-
+                                  height: screenSize.height * 0.35, // 縦長の場合
+                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     // child: Image.asset('assets/title_image.png'),
@@ -204,9 +204,9 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.25, // 縦長の場合
-                                  width: screenSize.height * 0.25, // 縦長の場合
-
+                                  height: screenSize.height * 0.35, // 縦長の場合
+                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     // child: Image.asset('assets/title_image.png'),
@@ -224,9 +224,9 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.25, // 縦長の場合
-                                  width: screenSize.height * 0.25, // 縦長の場合
-
+                                  height: screenSize.height * 0.35, // 縦長の場合
+                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     // child: Image.asset('assets/title_image.png'),
@@ -244,9 +244,9 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.25, // 縦長の場合
-                                  width: screenSize.height * 0.25, // 縦長の場合
-
+                                  height: screenSize.height * 0.35, // 縦長の場合
+                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     // child: Image.asset('assets/title_image.png'),
@@ -259,6 +259,7 @@ class _MenuPageState extends State<MenuPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(width: 10),
                     Container(
                       child: TextButton(
                         onPressed: () {

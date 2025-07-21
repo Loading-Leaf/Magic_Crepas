@@ -16,6 +16,7 @@ import "package:ai_art/screens/record_page.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/language_provider.dart';
 import 'package:ai_art/artproject/device_provider.dart';
+import 'package:ai_art/artproject/play_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (context) => AudioProvider()),
           ChangeNotifierProvider(create: (context) => LanguageProvider()),
+          ChangeNotifierProvider(create: (context) => PlayProvider()),
           ChangeNotifierProvider(
               create: (context) => DeviceProvider(
                   languageProvider:

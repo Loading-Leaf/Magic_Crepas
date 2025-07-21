@@ -27,6 +27,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:flutter/scheduler.dart';
 import 'dart:io' show Platform;
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:ai_art/artproject/play_provider.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -1074,6 +1075,7 @@ class _OutputPageState extends State<OutputPage> {
       languageProvider.locallanguage == 2 ? "Mode D" : 'モードD'
     ];
     List<int> photoTypes = [1, 2, 3, 4];
+    final playProvider = Provider.of<PlayProvider>(context, listen: false);
 
     showDialog(
       context: context,
@@ -1167,6 +1169,7 @@ class _OutputPageState extends State<OutputPage> {
                                   body: body,
                                   headers: {'Content-Type': 'application/json'},
                                 );
+                                playProvider.generateCount++; // 生成回数をカウント
 
                                 /// base64 -> file
                                 if (response.statusCode == 200) {
