@@ -10,8 +10,14 @@ class PlayProvider with ChangeNotifier {
       DateTime.now().toUtc().add(Duration(hours: 9)); // JST
 
   PlayProvider() {
+    _loadGenerateCount();
+  }
+
+  Future<void> _loadGenerateCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    generateCount = prefs.getInt('getGenerateCount') ?? 0;
+    // lastGenerateDateも保存・読込したい場合は同様に実装
     _checkAndResetCount();
-    //_Play();
   }
 
   Future<void> _checkAndResetCount() async {

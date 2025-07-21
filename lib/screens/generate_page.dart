@@ -882,7 +882,7 @@ class _GeneratePageState extends State<GeneratePage> {
                         child: TextButton(
                           onPressed: () {
                             audioProvider.playSound("tap1.mp3");
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, '/menu');
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),

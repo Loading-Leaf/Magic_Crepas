@@ -19,6 +19,7 @@ class _MenuPageState extends State<MenuPage> {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
+    double tile_size = screenSize.height * 0.3; //タイルのサイズを画面幅から計算
     final url = Uri.parse(
         'https://forms.gle/JAR2RYDkzbzFwdei6'); //バグや疑問点などの指摘の際にformを準備
     final audioProvider = Provider.of<AudioProvider>(context);
@@ -140,8 +141,8 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.35, // 縦長の場合
-                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  height: tile_size, // 縦長の場合
+                                  width: tile_size, // 縦長の場合
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
@@ -160,8 +161,8 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.35, // 縦長の場合
-                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  height: tile_size, // 縦長の場合
+                                  width: tile_size, // 縦長の場合
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
@@ -180,8 +181,8 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.35, // 縦長の場合
-                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  height: tile_size, // 縦長の場合
+                                  width: tile_size, // 縦長の場合
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
@@ -204,8 +205,8 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.35, // 縦長の場合
-                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  height: tile_size, // 縦長の場合
+                                  width: tile_size, // 縦長の場合
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
@@ -224,8 +225,8 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.35, // 縦長の場合
-                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  height: tile_size, // 縦長の場合
+                                  width: tile_size, // 縦長の場合
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
@@ -244,8 +245,8 @@ class _MenuPageState extends State<MenuPage> {
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Container(
-                                  height: screenSize.height * 0.35, // 縦長の場合
-                                  width: screenSize.height * 0.35, // 縦長の場合
+                                  height: tile_size, // 縦長の場合
+                                  width: tile_size, // 縦長の場合
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
