@@ -124,47 +124,156 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ],
                 ),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //AIによる画像作成
+                            GestureDetector(
+                              onTap: () {
+                                //ここに画面遷移などのイベントを書く。
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/generate');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Container(
+                                  height: screenSize.height * 0.25, // 縦長の場合
+                                  width: screenSize.height * 0.25, // 縦長の場合
+
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    // child: Image.asset('assets/title_image.png'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //ギャラリー
+                            GestureDetector(
+                              onTap: () {
+                                //ここに画面遷移などのイベントを書く。
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/gallery');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Container(
+                                  height: screenSize.height * 0.25, // 縦長の場合
+                                  width: screenSize.height * 0.25, // 縦長の場合
+
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    // child: Image.asset('assets/title_image.png'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //パズル
+                            GestureDetector(
+                              onTap: () {
+                                //ここに画面遷移などのイベントを書く。
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/generate');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Container(
+                                  height: screenSize.height * 0.25, // 縦長の場合
+                                  width: screenSize.height * 0.25, // 縦長の場合
+
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    // child: Image.asset('assets/title_image.png'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //レッスン
+                            GestureDetector(
+                              onTap: () {
+                                //ここに画面遷移などのイベントを書く。
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/generate');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Container(
+                                  height: screenSize.height * 0.25, // 縦長の場合
+                                  width: screenSize.height * 0.25, // 縦長の場合
+
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    // child: Image.asset('assets/title_image.png'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //コミュニティ
+                            GestureDetector(
+                              onTap: () {
+                                //ここに画面遷移などのイベントを書く。
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/generate');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Container(
+                                  height: screenSize.height * 0.25, // 縦長の場合
+                                  width: screenSize.height * 0.25, // 縦長の場合
+
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    // child: Image.asset('assets/title_image.png'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //記録
+                            GestureDetector(
+                              onTap: () {
+                                //ここに画面遷移などのイベントを書く。
+                                audioProvider.playSound("tap1.mp3");
+                                Navigator.pushNamed(context, '/generate');
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Container(
+                                  height: screenSize.height * 0.25, // 縦長の場合
+                                  width: screenSize.height * 0.25, // 縦長の場合
+
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    // child: Image.asset('assets/title_image.png'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                    ]),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
                       child: TextButton(
                         onPressed: () {
                           audioProvider.playSound("tap1.mp3");
-                          Navigator.pushNamed(context, '/generate');
+                          Navigator.pushNamed(context, '/');
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 255, 67, 195),
                         ),
                         child: Text(
                           languageProvider.locallanguage == 2
-                              ? "Generate arts"
+                              ? "Back to Title"
                               : languageProvider.isHiragana
-                                  ? 'アートをつくる'
-                                  : 'アートを作る',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      child: TextButton(
-                        onPressed: () {
-                          audioProvider.playSound("tap1.mp3");
-                          Navigator.pushNamed(context, '/gallery');
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                        ),
-                        child: Text(
-                          languageProvider.locallanguage == 2
-                              ? "Gallery"
-                              : languageProvider.isHiragana
-                                  ? 'ギャラリーをみる'
-                                  : 'ギャラリーを見る',
+                                  ? 'タイトルにもどる'
+                                  : 'タイトルに戻る',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: fontsize,
