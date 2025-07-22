@@ -9,6 +9,7 @@ import "package:ai_art/screens/drawing_page.dart";
 import "package:ai_art/screens/output_page.dart";
 import "package:ai_art/screens/tutorial_page.dart";
 import "package:ai_art/screens/image_gallery_page.dart";
+import "package:ai_art/screens/prepare_drawing_generate.dart";
 import "package:ai_art/screens/puzzle_page.dart";
 import "package:ai_art/screens/community_page.dart";
 import "package:ai_art/screens/lesson_page.dart";
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         '/output': (context) => const OutputPage(),
         '/tutorial': (context) => const TutorialPage(),
         '/gallery': (context) => const GalleryPage(),
+        '/prepare': (context) => const preparePage(),
       },
     );
   }

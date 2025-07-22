@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PlayProvider with ChangeNotifier {
-  int generateCount = 0;
+  int generateCount = 5;
   int get getGenerateCount => generateCount;
   DateTime lastGenerateDate =
       DateTime.now().toUtc().add(Duration(hours: 9)); // JST
@@ -26,7 +26,7 @@ class PlayProvider with ChangeNotifier {
     if (lastGenerateDate.day != nowJST.day ||
         lastGenerateDate.month != nowJST.month ||
         lastGenerateDate.year != nowJST.year) {
-      generateCount = 0;
+      generateCount = 5;
       await prefs.setInt('getGenerateCount', generateCount);
       lastGenerateDate = nowJST;
     }
@@ -35,7 +35,7 @@ class PlayProvider with ChangeNotifier {
 
   Future<void> _Play() async {
     final prefs = await SharedPreferences.getInstance();
-    generateCount++;
+    generateCount--;
     await prefs.setInt('getGenerateCount', generateCount);
     notifyListeners();
   }

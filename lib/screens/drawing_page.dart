@@ -5,6 +5,8 @@ import 'dart:ui' as ui;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import "package:ai_art/artproject/drawing_database_helper.dart";
+import "package:ai_art/artproject/drawing_gallery_database_helper.dart";
+
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io'; // File クラスを使うためのインポート

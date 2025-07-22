@@ -957,7 +957,7 @@ class _GeneratePageState extends State<GeneratePage> {
                               body: body,
                               headers: {'Content-Type': 'application/json'},
                             );
-                            playProvider.generateCount++; // 生成回数をカウント
+                            playProvider.generateCount--; // 生成回数をカウント
 
                             /// base64 -> file
                             if (response.statusCode == 200) {

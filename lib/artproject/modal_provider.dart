@@ -119,3 +119,67 @@ class _SomethingDisconnectDialogState extends State<SomethingDisconnectDialog> {
     );
   }
 }
+
+class DrawingmodeDialog extends StatefulWidget {
+  final String message1;
+  final String message2;
+  final String message3;
+
+  const DrawingmodeDialog({
+    super.key,
+    required this.message1,
+    required this.message2,
+    required this.message3,
+  });
+
+  @override
+  _DrawingmodeDialogState createState() => _DrawingmodeDialogState();
+}
+
+class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
+  @override
+  Widget build(BuildContext context) {
+    final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
+
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
+
+    return AlertDialog(
+      title: Text(
+        languageProvider.locallanguage == 2
+            ? widget.message3
+            : languageProvider.isHiragana
+                ? widget.message1
+                : widget.message2,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: fontsize,
+            color: Colors.black),
+      ),
+      content: const SizedBox.shrink(),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            audioProvider.playSound("tap1.mp3");
+            Navigator.of(context).pop();
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 255, 67, 195),
+          ),
+          child: Text(
+              languageProvider.locallanguage == 2
+                  ? "Close"
+                  : languageProvider.isHiragana
+                      ? 'とじる'
+                      : '閉じる',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize,
+                  color: Colors.white)),
+        ),
+      ],
+    );
+  }
+}
