@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_art/artproject/gallery_database_helper.dart';
+import 'package:ai_art/artproject/drawing_gallery_database_helper.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
-import 'dart:typed_data';
-import 'gallery_detail_page.dart'; // ← 追加
+import 'dart:io';
 import 'package:ai_art/artproject/language_provider.dart';
 
-class GalleryPage extends StatefulWidget {
-  const GalleryPage({super.key});
+class DrawingGalleryPage extends StatefulWidget {
+  const DrawingGalleryPage({super.key});
 
   @override
-  State<GalleryPage> createState() => _GalleryPageState();
+  State<DrawingGalleryPage> createState() => _DrawingGalleryPageState();
 }
 
-class _GalleryPageState extends State<GalleryPage> {
+class _DrawingGalleryPageState extends State<DrawingGalleryPage> {
   late Future<List<Map<String, dynamic>>> _drawingsFuture;
 
   @override
   void initState() {
     super.initState();
-    _drawingsFuture = GalleryDatabaseHelper.instance.fetchDrawings();
+    _drawingsFuture = DrawingGalleryDatabaseHelper.instance.fetchDrawings();
   }
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.sizeOf(context); //画面の情報を習得: MediaQuery.sizeOf
+    Size screenSize = MediaQuery.sizeOf(context);
     double fontsizeBig = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
-    final audioProvider = Provider.of<AudioProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
 
     double imageWidth = screenSize.width / 6 - 10;
     double imageHeight = imageWidth;
@@ -45,18 +44,16 @@ class _GalleryPageState extends State<GalleryPage> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Text(
-                  languageProvider.locallanguage == 2 ? "Gallery" : 'ギャラリー',
+                  'ギャラリー',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
                   ),
                 ),
                 Text(
-                  languageProvider.locallanguage == 2
-                      ? "You can see arts😊"
-                      : languageProvider.isHiragana
-                          ? 'いままでつくったえをみれるよ😊'
-                          : '今まで作った絵を見れるよ😊',
+                  languageProvider.isHiragana
+                      ? 'いままでつくったえをみれるよ😊'
+                      : '今まで作った絵を見れるよ😊',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
@@ -68,11 +65,10 @@ class _GalleryPageState extends State<GalleryPage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
+                      print(snapshot.data);
                       return Text('Error: ${snapshot.error}');
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Text(languageProvider.locallanguage == 2
-                          ? "There are no pictures yet😢"
-                          : 'まだないよ😢');
+                      return const Text('まだないよ😢');
                     } else {
                       List<Map<String, dynamic>> drawings = snapshot.data!;
                       return Expanded(
@@ -84,33 +80,23 @@ class _GalleryPageState extends State<GalleryPage> {
                             mainAxisSpacing: 10,
                           ),
                           itemCount: drawings.length,
-                          //indexは作品を削除する際に使用
                           itemBuilder: (context, index) {
-                            Uint8List? outputImage = drawings[index]
-                                ['outputimage']; //ここでは生成画像のみをディスプレイに表示
-                            if (outputImage == null || outputImage.isEmpty) {
-                              //もしなかったらgreyのみの画像を表示
+                            final outputImagePath =
+                                drawings[index]['drawingimage'] as String?;
+                            print(outputImagePath);
+                            if (outputImagePath == null) {
                               return Container(
                                 color: Colors.grey,
                                 child:
                                     const Center(child: Text("Invalid Image")),
                               );
                             }
+                            final outputImageFile = File(outputImagePath);
                             return GestureDetector(
-                              onTap: () {
-                                audioProvider.playSound("tap1.mp3");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => GalleryDetailPage(
-                                        data: drawings[index]),
-                                  ), //GalleryDetailPageという個別化したページに遷移する→その際、取得したindexを指定してページ遷移
-                                );
-                              },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: Image.memory(
-                                  outputImage,
+                                child: Image.file(
+                                  outputImageFile,
                                   width: imageWidth,
                                   height: imageHeight,
                                   fit: BoxFit.contain,
@@ -135,11 +121,7 @@ class _GalleryPageState extends State<GalleryPage> {
                         backgroundColor: Color.fromARGB(255, 0, 204, 255),
                       ),
                       child: Text(
-                        languageProvider.locallanguage == 2
-                            ? "Back"
-                            : languageProvider.isHiragana
-                                ? 'ホームにもどる'
-                                : 'ホームに戻る',
+                        languageProvider.isHiragana ? 'ホームに戻る' : 'ホームに戻る',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,

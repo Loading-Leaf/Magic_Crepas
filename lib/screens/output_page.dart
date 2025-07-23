@@ -28,6 +28,7 @@ import 'package:flutter/scheduler.dart';
 import 'dart:io' show Platform;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:ai_art/artproject/play_provider.dart';
+import 'package:ai_art/artproject/device_provider.dart';
 
 int randomIntWithRange(int min, int max) {
   int value = math.Random().nextInt(max - min);
@@ -89,50 +90,11 @@ class _OutputPageState extends State<OutputPage> {
   int? is_photo_flag;
 
   String formattedDate = "";
-
-  String your_platform = ""; //使用している端末
+  @override
   bool isipad = false; //iPadかどうか
   String getFormattedDate() {
     DateTime now = DateTime.now();
     return DateFormat('yyyy/M/d HH:mm').format(now);
-  }
-
-  Future<void> checkDevice() async {
-    final deviceInfo = DeviceInfoPlugin();
-    final languageProvider =
-        Provider.of<LanguageProvider>(context, listen: false);
-    //保存時、それぞれの端末ごとに文言を変更
-    //例えばiPhoneの場合は「スマホ」,iPadの場合は「アイパッド」と表示
-    //使用する場面は「○○に保存」と記載するボタンで使用
-    if (Platform.isIOS) {
-      final iosInfo = await deviceInfo.iosInfo;
-      setState(() {
-        if (iosInfo.model.toLowerCase().contains("ipad")) {
-          your_platform =
-              languageProvider.locallanguage == 2 ? "Tablet" : "タブレット";
-        } else {
-          your_platform = languageProvider.locallanguage == 2 ? "Phone" : "スマホ";
-        }
-      });
-    } else if (Platform.isAndroid) {
-      final androidInfo = await deviceInfo.androidInfo;
-      setState(() {
-        if (androidInfo.systemFeatures
-                .contains("android.hardware.type.television") ||
-            androidInfo.systemFeatures
-                .contains("android.hardware.type.watch") ||
-            androidInfo.systemFeatures
-                .contains("android.hardware.type.automotive")) {
-          your_platform = languageProvider.locallanguage == 2 ? "Other" : "その他";
-        } else if (androidInfo.model.toLowerCase().contains("tablet") ||
-            androidInfo.product.toLowerCase().contains("tablet")) {
-          your_platform =
-              languageProvider.locallanguage == 2 ? "Tablet" : "タブレット";
-        } else {
-          your_platform = languageProvider.locallanguage == 2 ? "Phone" : "スマホ";
-        }
-      });
-    }
   }
 
   Future<void> shareImages(BuildContext context, Uint8List image1,
@@ -578,7 +540,6 @@ class _OutputPageState extends State<OutputPage> {
     super.initState();
     _getWifiName();
     _startResultCheckTimer();
-    checkDevice();
   }
 
   @override
@@ -1310,6 +1271,8 @@ class _OutputPageState extends State<OutputPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
+    final deviceProvider = Provider.of<DeviceProvider>(context);
+    String your_platform = deviceProvider.yourPlatform; //使用している端末
 
     return PopScope(
       // ここを追加
@@ -1524,7 +1487,7 @@ class _OutputPageState extends State<OutputPage> {
                         child: TextButton(
                           onPressed: () {
                             audioProvider.playSound("tap1.mp3");
-                            Navigator.pushNamed(context, '/');
+                            Navigator.pushNamed(context, '/menu');
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Color.fromARGB(255, 0, 204, 255),

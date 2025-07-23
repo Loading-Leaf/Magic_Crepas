@@ -156,7 +156,7 @@ class _MenuPageState extends State<MenuPage> {
                               onTap: () {
                                 //ここに画面遷移などのイベントを書く。
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/gallery');
+                                Navigator.pushNamed(context, '/preparegallery');
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),

@@ -137,6 +137,7 @@ class _DrawingPageState extends State<DrawingPage> {
   void initState() {
     super.initState();
     _initializeDatabase(); // データベースの初期化を呼び出す
+    _initializeDatabase2();
   }
 
   @override
@@ -181,6 +182,15 @@ class _DrawingPageState extends State<DrawingPage> {
   Future<void> _initializeDatabase() async {
     try {
       _database = await DrawingDatabaseHelper.instance.database; // データベースを初期化
+    } catch (e) {
+      print('Error initializing database: $e');
+    }
+  }
+
+  Future<void> _initializeDatabase2() async {
+    try {
+      _database =
+          await DrawingGalleryDatabaseHelper.instance.database; // データベースを初期化
     } catch (e) {
       print('Error initializing database: $e');
     }
@@ -1108,9 +1118,17 @@ class _DrawingPageState extends State<DrawingPage> {
       final filePath = path.join(directory.path, filename);
       File file = File(filePath);
       await file.writeAsBytes(pngBytes);
+      Map<String, dynamic> drawingData = {
+        'drawingimage': file.path,
+        'title': "",
+        'emotion': "", // null でも可
+        'detailemotion': "",
+        'time': "",
+      };
 
       try {
         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
+        await DrawingGalleryDatabaseHelper.instance.insertDrawing(drawingData);
         print('Drawing saved to database');
       } catch (e) {
         print('Error saving drawing: $e');
@@ -1139,8 +1157,16 @@ class _DrawingPageState extends State<DrawingPage> {
 
       // データベースの初期化と保存
       await _initializeDatabase();
+      Map<String, dynamic> drawingData = {
+        'drawingimage': filePath,
+        'title': "",
+        'emotion': "", // null でも可
+        'detailemotion': "",
+        'time': "",
+      };
       try {
         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
+        await DrawingGalleryDatabaseHelper.instance.insertDrawing(drawingData);
         Navigator.pushNamed(context, '/generate');
       } catch (e) {
         print('Error saving drawing: $e');

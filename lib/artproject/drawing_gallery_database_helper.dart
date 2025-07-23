@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 
-class GalleryDatabaseHelper {
+class DrawingGalleryDatabaseHelper {
   static final _databaseName = "DrawingGalleryDatabase.db"; // DB名
   static final _databaseVersion = 4; // バージョン番号
 
@@ -17,11 +17,12 @@ class GalleryDatabaseHelper {
   static final columnemotion = 'emotion'; // 列3
   static final columndetailemotion = 'detailemotion'; // 列4
   static final columntime = 'time';
+  static final is_photo_flag = "is_photo_flag";
 
   // DatabaseHelperクラスをシングルトンにするためのコンストラクタ
-  GalleryDatabaseHelper._privateConstructor();
-  static final GalleryDatabaseHelper instance =
-      GalleryDatabaseHelper._privateConstructor();
+  DrawingGalleryDatabaseHelper._privateConstructor();
+  static final DrawingGalleryDatabaseHelper instance =
+      DrawingGalleryDatabaseHelper._privateConstructor();
 
   Database? _database;
 
@@ -48,7 +49,8 @@ class GalleryDatabaseHelper {
       $columntitle TEXT NOT NULL,
       $columnemotion TEXT NOT NULL,
       $columndetailemotion TEXT NOT NULL,
-      $columntime TEXT NOT NULL
+      $columntime TEXT NOT NULL,
+      $is_photo_flag INTEGER
     )
     ''');
   }
@@ -83,7 +85,8 @@ class GalleryDatabaseHelper {
         columntitle: drawingData['title'],
         columnemotion: drawingData['emotion'],
         columndetailemotion: drawingData['detailemotion'],
-        columntime: drawingData['time']
+        columntime: drawingData['time'],
+        is_photo_flag: drawingData['is_photo_flag']
       };
       return await db.insert(table, sanitizedData);
     } catch (e) {
