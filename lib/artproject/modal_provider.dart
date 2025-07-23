@@ -120,6 +120,7 @@ class _SomethingDisconnectDialogState extends State<SomethingDisconnectDialog> {
   }
 }
 
+//お絵描きするためのモード
 class DrawingmodeDialog extends StatefulWidget {
   final String message1;
   final String message2;
@@ -145,6 +146,7 @@ class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
 
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
+    double tile_size = screenSize.height * 0.5;
 
     return AlertDialog(
       title: Text(
@@ -168,16 +170,63 @@ class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
           style: TextButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 255, 67, 195),
           ),
-          child: Text(
-              languageProvider.locallanguage == 2
-                  ? "Close"
-                  : languageProvider.isHiragana
-                      ? 'とじる'
-                      : '閉じる',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontsize,
-                  color: Colors.white)),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          //ここに画面遷移などのイベントを書く。
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/drawing');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Container(
+                            height: tile_size, // 縦長の場合
+                            width: tile_size, // 縦長の場合
+                            color: Colors.grey,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              // child: Image.asset('assets/title_image.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //ギャラリー
+                      GestureDetector(
+                        onTap: () {
+                          //ここに画面遷移などのイベントを書く。
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/drawing');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Container(
+                            height: tile_size, // 縦長の場合
+                            width: tile_size, // 縦長の場合
+                            color: Colors.grey,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              // child: Image.asset('assets/title_image.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+                Text(
+                    languageProvider.locallanguage == 2
+                        ? "Close"
+                        : languageProvider.isHiragana
+                            ? 'とじる'
+                            : '閉じる',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white)),
+              ]),
         ),
       ],
     );

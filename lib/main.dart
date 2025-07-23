@@ -65,8 +65,8 @@ class MyApp extends StatelessWidget {
         '/output': (context) => const OutputPage(),
         '/tutorial': (context) => const TutorialPage(),
         '/gallery': (context) => const GalleryPage(),
-        '/prepare': (context) => const preparegalleryPage(),
-        '/preparegallery': (context) => const preparePage(),
+        '/prepare': (context) => const preparePage(),
+        '/preparegallery': (context) => const preparegalleryPage(),
         '/drawinggallery': (context) => const DrawingGalleryPage(),
       },
     );
