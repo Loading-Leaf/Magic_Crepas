@@ -9,6 +9,7 @@ class DeviceProvider with ChangeNotifier {
   String _yourPlatform = ""; // 使用している端末名
   int _deviceNumber = 0; // 1: タブレット, 2: スマホ, 3: その他
   int get deviceNumber => _deviceNumber;
+  String get yourPlatform => _yourPlatform; // 使用している端末名を取得
 
   final LanguageProvider languageProvider;
 
