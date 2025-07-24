@@ -15,7 +15,7 @@ class PlayProvider with ChangeNotifier {
 
   Future<void> _loadGenerateCount() async {
     final prefs = await SharedPreferences.getInstance();
-    generateCount = prefs.getInt('getGenerateCount') ?? 0;
+    generateCount = prefs.getInt('getGenerateCount') ?? generateCount;
     // lastGenerateDateも保存・読込したい場合は同様に実装
     _checkAndResetCount();
   }

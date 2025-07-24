@@ -1090,7 +1090,8 @@ class _GeneratePageState extends State<GeneratePage> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () async {
-                            _showmodesDialog(context, audioProvider);
+                            _GenerateDialog(
+                                context, audioProvider, languageProvider);
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Color.fromARGB(255, 255, 67, 195),
