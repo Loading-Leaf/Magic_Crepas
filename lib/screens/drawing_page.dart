@@ -22,7 +22,8 @@ import 'dart:async';
 import 'dart:math' as math;
 
 class DrawingPage extends StatefulWidget {
-  const DrawingPage({super.key});
+  final int drawing_mode; //1: お絵描き, 2: AI生成
+  const DrawingPage({super.key, required this.drawing_mode});
 
   @override
   _DrawingPageState createState() => _DrawingPageState();
@@ -1027,29 +1028,6 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
 
                   SizedBox(width: 10), // スペースを追加
-                  //写真から選ぶ際、端末上の写真ライブラリから選んで、描画の準備画面に遷移するようにしている
-                  TextButton(
-                    onPressed: () async {
-                      audioProvider.playSound("tap2.mp3");
-                      pickAndProcessImage();
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
-                    ),
-                    child: Text(
-                      languageProvider.locallanguage == 2
-                          ? "Select photo"
-                          : languageProvider.isHiragana
-                              ? 'しゃしんからえらぶ'
-                              : '写真から選ぶ',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                          color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 10), // スペースを追加
-                  //できた場合、スクリーンショットを取得して絵を格納するSQLiteに格納
                   TextButton(
                     onPressed: () async {
                       await _takeScreenshot();
@@ -1127,8 +1105,12 @@ class _DrawingPageState extends State<DrawingPage> {
       };
 
       try {
-        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
-        await DrawingGalleryDatabaseHelper.instance.insertDrawing(drawingData);
+        if (widget.drawing_mode == 1) {
+          await DrawingGalleryDatabaseHelper.instance
+              .insertDrawing(drawingData);
+        } else {
+          await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
+        }
         print('Drawing saved to database');
       } catch (e) {
         print('Error saving drawing: $e');
@@ -1165,8 +1147,13 @@ class _DrawingPageState extends State<DrawingPage> {
         'time': "",
       };
       try {
-        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
-        await DrawingGalleryDatabaseHelper.instance.insertDrawing(drawingData);
+        if (widget.drawing_mode == 1) {
+          await DrawingGalleryDatabaseHelper.instance
+              .insertDrawing(drawingData);
+        } else {
+          await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
+        }
+
         Navigator.pushNamed(context, '/generate');
       } catch (e) {
         print('Error saving drawing: $e');

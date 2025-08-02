@@ -979,7 +979,10 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: TextButton(
                                   onPressed: () {
                                     audioProvider.playSound("tap1.mp3");
-                                    Navigator.pushNamed(context, '/drawing');
+                                    DrawingselectDialog(
+                                        message1: "",
+                                        message2: "",
+                                        message3: "");
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:

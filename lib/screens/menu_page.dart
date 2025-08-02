@@ -146,7 +146,8 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/ButtonImage/menu_1.png'),
+                                    child: Image.asset(
+                                        'assets/ButtonImage/menu_1.png'),
                                   ),
                                 ),
                               ),
@@ -166,7 +167,8 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/ButtonImage/menu_2.png'),
+                                    child: Image.asset(
+                                        'assets/ButtonImage/menu_2.png'),
                                   ),
                                 ),
                               ),
@@ -186,7 +188,8 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/ButtonImage/menu_3.png'),
+                                    child: Image.asset(
+                                        'assets/ButtonImage/menu_3.png'),
                                   ),
                                 ),
                               ),
@@ -210,7 +213,8 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/ButtonImage/menu_4.png'),
+                                    child: Image.asset(
+                                        'assets/ButtonImage/menu_4.png'),
                                   ),
                                 ),
                               ),
@@ -230,7 +234,8 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/ButtonImage/menu_5.png'),
+                                    child: Image.asset(
+                                        'assets/ButtonImage/menu_5.png'),
                                   ),
                                 ),
                               ),
@@ -250,7 +255,8 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/ButtonImage/menu_6.png'),
+                                    child: Image.asset(
+                                        'assets/ButtonImage/menu_6.png'),
                                   ),
                                 ),
                               ),

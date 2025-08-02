@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         '/community': (context) => const CommunityPage(),
         '/menu': (context) => const MenuPage(),
         '/generate': (context) => const GeneratePage(),
-        '/drawing': (context) => const DrawingPage(),
+        '/drawing': (context) => const DrawingPage(drawing_mode: 1),
         '/output': (context) => const OutputPage(),
         '/tutorial': (context) => const TutorialPage(),
         '/gallery': (context) => const GalleryPage(),
