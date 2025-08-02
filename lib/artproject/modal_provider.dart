@@ -146,7 +146,7 @@ class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
 
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    double tile_size = screenSize.height * 0.5;
+    double tile_size = screenSize.height * 0.4;
 
     return AlertDialog(
       title: Text(
@@ -195,6 +195,25 @@ class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
                           ),
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          //ここに画面遷移などのイベントを書く。
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/drawing');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Container(
+                            height: tile_size, // 縦長の場合
+                            width: tile_size, // 縦長の場合
+                            color: Colors.grey,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              // child: Image.asset('assets/title_image.png'),
+                            ),
+                          ),
+                        ),
+                      ),
                       //ギャラリー
                       GestureDetector(
                         onTap: () {
@@ -211,6 +230,143 @@ class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
                             child: FittedBox(
                               fit: BoxFit.fill,
                               // child: Image.asset('assets/title_image.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+                Text(
+                    languageProvider.locallanguage == 2
+                        ? "Close"
+                        : languageProvider.isHiragana
+                            ? 'とじる'
+                            : '閉じる',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontsize,
+                        color: Colors.white)),
+              ]),
+        ),
+      ],
+    );
+  }
+}
+
+//お絵描きするためのモード
+class DrawingselectDialog extends StatefulWidget {
+  final String message1;
+  final String message2;
+  final String message3;
+
+  const DrawingselectDialog({
+    super.key,
+    required this.message1,
+    required this.message2,
+    required this.message3,
+  });
+
+  @override
+  _DrawingselectDialogState createState() => _DrawingselectDialogState();
+}
+
+class _DrawingselectDialogState extends State<DrawingselectDialog> {
+  @override
+  Widget build(BuildContext context) {
+    final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
+
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
+    double tile_size = screenSize.height * 0.4;
+
+    return AlertDialog(
+      title: Text(
+        languageProvider.locallanguage == 2
+            ? widget.message3
+            : languageProvider.isHiragana
+                ? widget.message1
+                : widget.message2,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: fontsize,
+            color: Colors.black),
+      ),
+      content: const SizedBox.shrink(),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            audioProvider.playSound("tap1.mp3");
+            Navigator.of(context).pop();
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 255, 67, 195),
+          ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      //お絵描きギャラリーから選ぶ
+                      GestureDetector(
+                        onTap: () {
+                          //ここに画面遷移などのイベントを書く。
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/drawing');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Container(
+                            height: tile_size, // 縦長の場合
+                            width: tile_size, // 縦長の場合
+                            color: Colors.grey,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.asset(
+                                  'assets/ButtonImage/menu1_1_1.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //リアルアートから選ぶ
+                      GestureDetector(
+                        onTap: () {
+                          //ここに画面遷移などのイベントを書く。
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/drawing');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Container(
+                            height: tile_size, // 縦長の場合
+                            width: tile_size, // 縦長の場合
+                            color: Colors.grey,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.asset(
+                                  'assets/ButtonImage/menu1_1_2.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //お絵描きをしてから絵を使う
+                      GestureDetector(
+                        onTap: () {
+                          //ここに画面遷移などのイベントを書く。
+                          audioProvider.playSound("tap1.mp3");
+                          Navigator.pushNamed(context, '/drawing');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Container(
+                            height: tile_size, // 縦長の場合
+                            width: tile_size, // 縦長の場合
+                            color: Colors.grey,
+                            child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: Image.asset(
+                                  'assets/ButtonImage/menu1_1_3.png'),
                             ),
                           ),
                         ),

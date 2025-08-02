@@ -135,6 +135,7 @@ flutter:
     - assets/tutorial_en/7/
     - assets/tutorial_en/8/
     - assets/bgm/
+    - assets/ButtonImage/
 
 flutter_embedding_v2: # Add this line
     sdk: flutter

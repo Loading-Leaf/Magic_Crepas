@@ -61,12 +61,13 @@ class _preparePageState extends State<preparePage> {
                             color: Colors.grey,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              // child: Image.asset('assets/title_image.png'),
+                              child:
+                                  Image.asset('assets/ButtonImage/menu1_1.png'),
                             ),
                           ),
                         ),
                       ),
-                      //ギャラリー
+                      //お絵描きをする
                       GestureDetector(
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
@@ -81,7 +82,8 @@ class _preparePageState extends State<preparePage> {
                             color: Colors.grey,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              // child: Image.asset('assets/title_image.png'),
+                              child:
+                                  Image.asset('assets/ButtonImage/menu1_2.png'),
                             ),
                           ),
                         ),

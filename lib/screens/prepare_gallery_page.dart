@@ -59,7 +59,8 @@ class _preparegalleryPageState extends State<preparegalleryPage> {
                             color: Colors.grey,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              // child: Image.asset('assets/title_image.png'),
+                              child:
+                                  Image.asset('assets/ButtonImage/menu2_1.png'),
                             ),
                           ),
                         ),
@@ -79,7 +80,8 @@ class _preparegalleryPageState extends State<preparegalleryPage> {
                             color: Colors.grey,
                             child: FittedBox(
                               fit: BoxFit.fill,
-                              // child: Image.asset('assets/title_image.png'),
+                              child:
+                                  Image.asset('assets/ButtonImage/menu2_2.png'),
                             ),
                           ),
                         ),

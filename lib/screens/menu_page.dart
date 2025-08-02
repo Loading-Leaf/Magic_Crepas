@@ -146,7 +146,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/title_image.png'),
+                                    // child: Image.asset('assets/ButtonImage/menu_1.png'),
                                   ),
                                 ),
                               ),
@@ -166,7 +166,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/title_image.png'),
+                                    // child: Image.asset('assets/ButtonImage/menu_2.png'),
                                   ),
                                 ),
                               ),
@@ -176,7 +176,7 @@ class _MenuPageState extends State<MenuPage> {
                               onTap: () {
                                 //ここに画面遷移などのイベントを書く。
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/generate');
+                                Navigator.pushNamed(context, '/puzzle');
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
@@ -186,7 +186,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/title_image.png'),
+                                    // child: Image.asset('assets/ButtonImage/menu_3.png'),
                                   ),
                                 ),
                               ),
@@ -200,7 +200,7 @@ class _MenuPageState extends State<MenuPage> {
                               onTap: () {
                                 //ここに画面遷移などのイベントを書く。
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/generate');
+                                Navigator.pushNamed(context, '/lesson');
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
@@ -210,7 +210,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/title_image.png'),
+                                    // child: Image.asset('assets/ButtonImage/menu_4.png'),
                                   ),
                                 ),
                               ),
@@ -220,7 +220,7 @@ class _MenuPageState extends State<MenuPage> {
                               onTap: () {
                                 //ここに画面遷移などのイベントを書く。
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/generate');
+                                Navigator.pushNamed(context, '/record');
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
@@ -230,7 +230,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/title_image.png'),
+                                    // child: Image.asset('assets/ButtonImage/menu_5.png'),
                                   ),
                                 ),
                               ),
@@ -240,7 +240,7 @@ class _MenuPageState extends State<MenuPage> {
                               onTap: () {
                                 //ここに画面遷移などのイベントを書く。
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/generate');
+                                Navigator.pushNamed(context, '/community');
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
@@ -250,7 +250,7 @@ class _MenuPageState extends State<MenuPage> {
                                   color: Colors.grey,
                                   child: FittedBox(
                                     fit: BoxFit.fill,
-                                    // child: Image.asset('assets/title_image.png'),
+                                    // child: Image.asset('assets/ButtonImage/menu_6.png'),
                                   ),
                                 ),
                               ),

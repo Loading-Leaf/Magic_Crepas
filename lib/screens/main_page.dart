@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
                 Padding(
                   padding: EdgeInsets.all(1.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         languageProvider.locallanguage == 2
@@ -120,11 +120,6 @@ class _MainPageState extends State<MainPage> {
                             fontSize: fontsize,
                             color: Colors.black),
                       ),
-                      // Text(deviceProvider.deviceNumber.toString(),
-                      //     style: TextStyle(
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: fontsize,
-                      //         color: Colors.black)), //デバイス確認用
                     ],
                   ),
                 ),
