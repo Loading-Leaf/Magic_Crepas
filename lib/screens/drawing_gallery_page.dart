@@ -44,7 +44,7 @@ class _DrawingGalleryPageState extends State<DrawingGalleryPage> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Text(
-                  'ギャラリー',
+                  languageProvider.locallanguage == 2 ? "Gallery" : 'ギャラリー',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontsizeBig,
@@ -83,7 +83,6 @@ class _DrawingGalleryPageState extends State<DrawingGalleryPage> {
                           itemBuilder: (context, index) {
                             final outputImagePath =
                                 drawings[index]['drawingimage'] as String?;
-                            print(outputImagePath);
                             if (outputImagePath == null) {
                               return Container(
                                 color: Colors.grey,
@@ -109,6 +108,7 @@ class _DrawingGalleryPageState extends State<DrawingGalleryPage> {
                     }
                   },
                 ),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

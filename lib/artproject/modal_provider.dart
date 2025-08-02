@@ -300,7 +300,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
     _drawingsFuture = DrawingGalleryDatabaseHelper.instance.fetchDrawings();
   }
 
-  _DrawingSelectDialog(BuildContext context) {
+  _DrawingSelectDialog() {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
@@ -430,7 +430,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap1.mp3");
                           Navigator.of(context).pop();
-                          _DrawingSelectDialog(context);
+                          _DrawingSelectDialog();
                         },
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
@@ -492,16 +492,26 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                         ),
                       ),
                     ]),
-                Text(
+                TextButton(
+                  onPressed: () {
+                    audioProvider.playSound("tap1.mp3");
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 0, 204, 255),
+                  ),
+                  child: Text(
                     languageProvider.locallanguage == 2
-                        ? "Close"
+                        ? "Back"
                         : languageProvider.isHiragana
-                            ? 'とじる'
-                            : '閉じる',
+                            ? 'もどる'
+                            : '戻る',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontsize,
-                        color: Colors.white)),
+                        color: Colors.white),
+                  ),
+                ),
               ]),
         ]);
   }
@@ -529,6 +539,11 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
 
       try {
         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, 1);
+        setState(() {
+          _drawingsFuture =
+              DrawingGalleryDatabaseHelper.instance.fetchDrawings();
+          this.image = imageFile;
+        });
         Navigator.pushNamed(context, '/generate');
       } catch (e) {
         print('Error saving drawing: $e');
