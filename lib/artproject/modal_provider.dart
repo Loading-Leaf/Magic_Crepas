@@ -300,7 +300,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
     _drawingsFuture = DrawingGalleryDatabaseHelper.instance.fetchDrawings();
   }
 
-  void _DrawingSelectDialog(BuildContext context) {
+  _DrawingSelectDialog(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);

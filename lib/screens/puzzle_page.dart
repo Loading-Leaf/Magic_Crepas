@@ -21,9 +21,101 @@ class _PuzzlePageState extends State<PuzzlePage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
+    double tile_size = screenSize.height * 0.6;
 
     return PopScope(
         canPop: false, // false で無効化
-        child: Scaffold());
+        child: Scaffold(
+          body: GestureDetector(
+            onTapUp: (details) {
+              // タッチされた位置を取得
+              Offset tapPosition = details.localPosition;
+              // キラキラエフェクトを表示
+              showSparkleEffect(context, tapPosition);
+            },
+            child: SizedBox.expand(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //AIで作った絵
+                        GestureDetector(
+                          onTap: () {
+                            //ここに画面遷移などのイベントを書く。
+                            audioProvider.playSound("tap1.mp3");
+                            //Navigator.pushNamed(context, '/generate');
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(3.0),
+                            child: Container(
+                              height: tile_size, // 縦長の場合
+                              width: tile_size, // 縦長の場合
+                              color: Colors.grey,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                    'assets/ButtonImage/menu1_1.png'),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //お絵描きした絵
+                        GestureDetector(
+                          onTap: () {
+                            //ここに画面遷移などのイベントを書く。
+                            audioProvider.playSound("tap1.mp3");
+                            //Navigator.pushNamed(context, '/drawing',
+                            //  arguments: {"drawing_mode": 1});
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(3.0),
+                            child: Container(
+                              height: tile_size, // 縦長の場合
+                              width: tile_size, // 縦長の場合
+                              color: Colors.grey,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                    'assets/ButtonImage/menu1_2.png'),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 10),
+                      Container(
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            Navigator.pushNamed(context, '/menu');
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.locallanguage == 2
+                                ? "Back to Title"
+                                : languageProvider.isHiragana
+                                    ? 'メニューにもどる'
+                                    : 'メニューに戻る',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }

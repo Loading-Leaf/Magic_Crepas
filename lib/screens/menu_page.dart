@@ -147,7 +147,7 @@ class _MenuPageState extends State<MenuPage> {
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     child: Image.asset(
-                                        'assets/ButtonImage/menu_1.png'),
+                                        'assets/ButtonImage/menu1.png'),
                                   ),
                                 ),
                               ),
@@ -168,7 +168,7 @@ class _MenuPageState extends State<MenuPage> {
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     child: Image.asset(
-                                        'assets/ButtonImage/menu_2.png'),
+                                        'assets/ButtonImage/menu2.png'),
                                   ),
                                 ),
                               ),
@@ -189,7 +189,7 @@ class _MenuPageState extends State<MenuPage> {
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     child: Image.asset(
-                                        'assets/ButtonImage/menu_3.png'),
+                                        'assets/ButtonImage/menu3.png'),
                                   ),
                                 ),
                               ),
@@ -214,7 +214,7 @@ class _MenuPageState extends State<MenuPage> {
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     child: Image.asset(
-                                        'assets/ButtonImage/menu_4.png'),
+                                        'assets/ButtonImage/menu4.png'),
                                   ),
                                 ),
                               ),
@@ -235,7 +235,7 @@ class _MenuPageState extends State<MenuPage> {
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     child: Image.asset(
-                                        'assets/ButtonImage/menu_5.png'),
+                                        'assets/ButtonImage/menu5.png'),
                                   ),
                                 ),
                               ),
@@ -256,7 +256,7 @@ class _MenuPageState extends State<MenuPage> {
                                   child: FittedBox(
                                     fit: BoxFit.fill,
                                     child: Image.asset(
-                                        'assets/ButtonImage/menu_6.png'),
+                                        'assets/ButtonImage/menu6.png'),
                                   ),
                                 ),
                               ),
