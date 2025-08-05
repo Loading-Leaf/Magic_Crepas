@@ -372,6 +372,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                           await outputImageFile.readAsBytes();
                                       await DrawingDatabaseHelper.instance
                                           .insertDrawing(pngBytes, 2);
+                                      Navigator.of(context).pop();
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
@@ -429,7 +430,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap1.mp3");
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(true);
                           _DrawingSelectDialog();
                         },
                         child: Padding(
@@ -451,7 +452,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap2.mp3");
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(true); // ←値を返す
                           pickAndProcessImage();
                         },
                         child: Padding(
@@ -473,7 +474,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap1.mp3");
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(true); // ←値を返す
                           Navigator.pushNamed(context, '/drawing',
                               arguments: {"drawing_mode": 1});
                         },
@@ -495,7 +496,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                 TextButton(
                   onPressed: () {
                     audioProvider.playSound("tap1.mp3");
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(false); // ←値を返す
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 0, 204, 255),
