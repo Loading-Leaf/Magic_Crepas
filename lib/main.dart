@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import "package:ai_art/screens/main_page.dart";
 import "package:ai_art/screens/menu_page.dart";
 import "package:ai_art/screens/generate_page.dart";
-import "package:ai_art/screens/drawing_page.dart";
 import "package:ai_art/screens/output_page.dart";
 import "package:ai_art/screens/tutorial_page.dart";
 import "package:ai_art/screens/image_gallery_page.dart";
@@ -61,7 +60,6 @@ class MyApp extends StatelessWidget {
         '/community': (context) => const CommunityPage(),
         '/menu': (context) => const MenuPage(),
         '/generate': (context) => const GeneratePage(),
-        '/drawing': (context) => const DrawingPage(drawing_mode: 1),
         '/output': (context) => const OutputPage(),
         '/tutorial': (context) => const TutorialPage(),
         '/gallery': (context) => const GalleryPage(),

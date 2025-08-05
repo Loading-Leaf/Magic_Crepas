@@ -13,6 +13,7 @@ import "package:ai_art/artproject/drawing_database_helper.dart";
 import "package:ai_art/artproject/drawing_gallery_database_helper.dart";
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import "package:ai_art/screens/drawing_page.dart";
 
 class WifiDisconnectDialog extends StatelessWidget {
   const WifiDisconnectDialog({super.key});
@@ -477,6 +478,9 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                           Navigator.of(context).pop(true); // ←値を返す
                           Navigator.pushNamed(context, '/drawing',
                               arguments: {"drawing_mode": 1});
+                          MaterialPageRoute(
+                            builder: (context) => DrawingPage(drawing_mode: 2),
+                          );
                         },
                         child: Padding(
                           padding: EdgeInsets.all(3.0),

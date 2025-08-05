@@ -6,6 +6,7 @@ import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/language_provider.dart';
 import 'package:ai_art/artproject/device_provider.dart';
+import "package:ai_art/screens/drawing_page.dart";
 
 class preparePage extends StatefulWidget {
   const preparePage({super.key});
@@ -72,8 +73,9 @@ class _preparePageState extends State<preparePage> {
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap1.mp3");
-                          Navigator.pushNamed(context, '/drawing',
-                              arguments: {"drawing_mode": 1});
+                          MaterialPageRoute(
+                            builder: (context) => DrawingPage(drawing_mode: 2),
+                          );
                         },
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
