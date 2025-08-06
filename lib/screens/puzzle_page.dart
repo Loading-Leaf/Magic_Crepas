@@ -8,6 +8,7 @@ import 'package:ai_art/artproject/language_provider.dart';
 import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'dart:typed_data';
 import 'dart:math';
+import 'dart:async';
 
 class PuzzlePage extends StatefulWidget {
   const PuzzlePage({super.key});
@@ -20,11 +21,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Uint8List? puzzleImage;
   List<int> pieceOrder = List.generate(6, (i) => i); // 0~5
   bool loading = true;
+  int secondsLeft = 60;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _loadRandomImage();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadRandomImage() async {
@@ -36,13 +45,56 @@ class _PuzzlePageState extends State<PuzzlePage> {
         puzzleImage = images[idx]['outputimage'];
         pieceOrder.shuffle(rand);
         loading = false;
+        secondsLeft = 60;
       });
+      _startTimer();
     } else {
       setState(() {
         puzzleImage = null;
         loading = false;
       });
     }
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (secondsLeft <= 1) {
+        timer.cancel();
+        _showTimeoutDialog();
+      } else {
+        setState(() {
+          secondsLeft--;
+        });
+      }
+    });
+  }
+
+  void _showTimeoutDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        title: const Text('時間切れ'),
+        content: const Text('もう一度挑戦してね！'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _loadRandomImage();
+            },
+            child: const Text('リトライ'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/menu');
+            },
+            child: const Text('メニューへ'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _onPieceDropped(int from, int to) {
@@ -52,7 +104,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       pieceOrder[to] = tmp;
     });
     if (_isSolved()) {
-      // パズル完成時の処理
+      _timer?.cancel();
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -60,9 +112,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
           content: const Text('おめでとう！'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            )
+              onPressed: () {
+                Navigator.of(context).pop();
+                _loadRandomImage();
+              },
+              child: const Text('もう一度'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/menu');
+              },
+              child: const Text('メニューへ'),
+            ),
           ],
         ),
       );
@@ -108,6 +170,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            // 残り時間表示
+                            Text(
+                              "残り時間: $secondsLeft 秒",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize_big,
+                                color: Colors.red,
+                              ),
+                            ),
                             SizedBox(
                               width: tile_size,
                               height: tile_size * 2 / 3,
@@ -154,7 +225,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 }
 
-// 6ピースパズルボード（2行×3列）
+// 6ピースパズルボード（2行×3列）画像を分割して表示
 class _PuzzleBoard extends StatelessWidget {
   final Uint8List image;
   final List<int> pieceOrder;
@@ -169,12 +240,13 @@ class _PuzzleBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double boardWidth = MediaQuery.sizeOf(context).height * 0.6;
+    double boardHeight = boardWidth * 2 / 3;
     double pieceWidth = boardWidth / 3;
-    double pieceHeight = boardWidth / 3;
+    double pieceHeight = boardHeight / 2;
 
     return SizedBox(
       width: boardWidth,
-      height: boardWidth * 2 / 3,
+      height: boardHeight,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -199,7 +271,7 @@ class _PuzzleBoard extends StatelessWidget {
   }
 }
 
-// 1ピース
+// 1ピース（画像を分割して表示）
 class _PuzzlePiece extends StatelessWidget {
   final Uint8List image;
   final int pieceIndex; // 0~5
@@ -249,7 +321,7 @@ class _PuzzlePiece extends StatelessWidget {
           child: Align(
             alignment: Alignment(
               -1.0 + col * 1.0,
-              -1.0 + row * 1.0,
+              -1.0 + row * 2.0,
             ),
             widthFactor: 1 / 3,
             heightFactor: 1 / 2,

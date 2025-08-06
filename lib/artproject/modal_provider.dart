@@ -373,7 +373,10 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                           await outputImageFile.readAsBytes();
                                       await DrawingDatabaseHelper.instance
                                           .insertDrawing(pngBytes, 2);
-                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        _drawingsFuture =
+                                            DrawingGalleryDatabaseHelper.instance.fetchDrawings();
+                                      });
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
