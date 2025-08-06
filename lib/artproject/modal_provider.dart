@@ -313,7 +313,8 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return StatefulBuilder(builder: (BuildContext context, setState) {
+          return StatefulBuilder(
+              builder: (BuildContext context, setStateDialog) {
             return Dialog(
                 child: Container(
                     width: screenSize.width * 0.8,
@@ -356,8 +357,6 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                 itemBuilder: (context, index) {
                                   final outputImagePath = drawings[index]
                                       ['drawingimage'] as String?;
-                                  print(outputImagePath);
-
                                   if (outputImagePath == null) {
                                     return Container(
                                       color: Colors.grey,
@@ -373,13 +372,25 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                           await outputImageFile.readAsBytes();
                                       await DrawingDatabaseHelper.instance
                                           .insertDrawing(pngBytes, 2);
-                                      setState(() {
-                                        _drawingsFuture =
-                                            DrawingGalleryDatabaseHelper
-                                                .instance
-                                                .fetchDrawings();
-                                      });
-                                      // Navigator.of(context).pop(true); // ← 削除
+
+                                      // 親StateのdrawingImageDataを即座に更新
+                                      if (mounted) {
+                                        Navigator.of(context).pop(); // モーダルを閉じる
+                                        // ignore: use_build_context_synchronously
+                                        if (context.mounted) {
+                                          // 親StateのsetStateを呼ぶために、Navigator.pop後にFuture.microtaskで遅延
+                                          Future.microtask(() {
+                                            if (context.findAncestorStateOfType<
+                                                    State>() !=
+                                                null) {
+                                              // ignore: invalid_use_of_protected_member
+                                              (context.findAncestorStateOfType<
+                                                      State>() as dynamic)
+                                                  .setState(() {});
+                                            }
+                                          });
+                                        }
+                                      }
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),

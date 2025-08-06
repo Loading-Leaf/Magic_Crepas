@@ -18,28 +18,34 @@ class PuzzlePage extends StatefulWidget {
   State<PuzzlePage> createState() => _PuzzlePageState();
 }
 
+enum PuzzleState {
+  initial,
+  loading,
+  countdown,
+  playing,
+}
+
 class _PuzzlePageState extends State<PuzzlePage> {
   Uint8List? puzzleImage;
   List<Uint8List>? puzzlePieces;
   List<int> pieceOrder = List.generate(6, (i) => i); // 0~5
-  bool loading = true;
+  bool loading = false;
   int secondsLeft = 60;
   Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadRandomImage();
-  }
+  Timer? _countdownTimer;
+  int countdown = 3;
+  PuzzleState puzzleState = PuzzleState.initial;
 
   @override
   void dispose() {
     _timer?.cancel();
+    _countdownTimer?.cancel();
     super.dispose();
   }
 
   Future<List<Uint8List>> splitImage(
       Uint8List imageData, int rows, int cols) async {
+    // 軽量化のため isolate等を使う場合は別途実装
     final image = img.decodeImage(imageData)!;
     final pieceWidth = image.width ~/ cols;
     final pieceHeight = image.height ~/ rows;
@@ -47,7 +53,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < cols; x++) {
-        // img.copyCropの引数名を明示的に指定
         final piece = img.copyCrop(
           image,
           x: x * pieceWidth,
@@ -61,12 +66,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
     return pieces;
   }
 
-  Future<void> _loadRandomImage() async {
+  Future<void> _preparePuzzle() async {
+    setState(() {
+      loading = true;
+      puzzleState = PuzzleState.loading;
+    });
     final images = await GalleryDatabaseHelper.instance.fetchDrawings();
     if (images.isNotEmpty) {
       final rand = Random();
       final idx = rand.nextInt(images.length);
       final Uint8List imageData = images[idx]['outputimage'];
+      // 分割処理
       final pieces = await splitImage(imageData, 2, 3);
       setState(() {
         puzzleImage = imageData;
@@ -74,20 +84,46 @@ class _PuzzlePageState extends State<PuzzlePage> {
         pieceOrder = List.generate(6, (i) => i);
         pieceOrder.shuffle(rand);
         loading = false;
+        countdown = 3;
         secondsLeft = 60;
+        puzzleState = PuzzleState.countdown;
       });
-      _startTimer();
+      _startCountdown();
     } else {
       setState(() {
         puzzleImage = null;
         puzzlePieces = null;
         loading = false;
+        puzzleState = PuzzleState.initial;
       });
     }
   }
 
+  void _startCountdown() {
+    _countdownTimer?.cancel();
+    setState(() {
+      countdown = 3;
+    });
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (countdown <= 1) {
+        timer.cancel();
+        setState(() {
+          puzzleState = PuzzleState.playing;
+        });
+        _startTimer();
+      } else {
+        setState(() {
+          countdown--;
+        });
+      }
+    });
+  }
+
   void _startTimer() {
     _timer?.cancel();
+    setState(() {
+      secondsLeft = 60;
+    });
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (secondsLeft <= 1) {
         timer.cancel();
@@ -111,13 +147,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              _loadRandomImage();
+              _resetPuzzle();
             },
             child: const Text('リトライ'),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              _resetPuzzle();
               Navigator.pushNamed(context, '/menu');
             },
             child: const Text('メニューへ'),
@@ -144,13 +181,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _loadRandomImage();
+                _resetPuzzle();
               },
               child: const Text('もう一度'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                _resetPuzzle();
                 Navigator.pushNamed(context, '/menu');
               },
               child: const Text('メニューへ'),
@@ -168,6 +206,20 @@ class _PuzzlePageState extends State<PuzzlePage> {
     return true;
   }
 
+  void _resetPuzzle() {
+    _timer?.cancel();
+    _countdownTimer?.cancel();
+    setState(() {
+      puzzleImage = null;
+      puzzlePieces = null;
+      pieceOrder = List.generate(6, (i) => i);
+      loading = false;
+      secondsLeft = 60;
+      countdown = 3;
+      puzzleState = PuzzleState.initial;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -177,6 +229,124 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final languageProvider = Provider.of<LanguageProvider>(context);
     double tile_size = screenSize.height * 0.6;
 
+    Widget content;
+    switch (puzzleState) {
+      case PuzzleState.initial:
+        content = Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                languageProvider.locallanguage == 2
+                    ? "Let's Start Puzzle!"
+                    : languageProvider.isHiragana
+                        ? "パズルをはじめよう！"
+                        : "パズルを始めよう！",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontsize_big,
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  audioProvider.playSound("tap1.mp3");
+                  _preparePuzzle();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 255, 67, 195),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                ),
+                child: Text(
+                  languageProvider.locallanguage == 2
+                      ? "Start"
+                      : languageProvider.isHiragana
+                          ? "スタート"
+                          : "スタート",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontsize_big,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+        break;
+      case PuzzleState.loading:
+        content = const Center(
+          child: CircularProgressIndicator(),
+        );
+        break;
+      case PuzzleState.countdown:
+        content = Center(
+          child: Text(
+            countdown > 0 ? countdown.toString() : "",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: fontsize_big * 2,
+              color: Colors.red,
+            ),
+          ),
+        );
+        break;
+      case PuzzleState.playing:
+        content = Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text(
+              "残り時間: $secondsLeft 秒",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: fontsize_big,
+                color: Colors.red,
+              ),
+            ),
+            SizedBox(
+              width: tile_size,
+              height: tile_size,
+              child: _PuzzleBoard(
+                pieces: puzzlePieces!,
+                pieceOrder: pieceOrder,
+                onPieceDropped: _onPieceDropped,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(width: 10),
+                Container(
+                  child: TextButton(
+                    onPressed: () {
+                      audioProvider.playSound("tap1.mp3");
+                      _resetPuzzle();
+                      Navigator.pushNamed(context, '/menu');
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.locallanguage == 2
+                          ? "Back to Title"
+                          : languageProvider.isHiragana
+                              ? 'メニューにもどる'
+                              : 'メニューに戻る',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        );
+        break;
+    }
+
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -185,71 +355,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
             Offset tapPosition = details.localPosition;
             showSparkleEffect(context, tapPosition);
           },
-          child: SizedBox.expand(
-            child: loading
-                ? const Center(child: CircularProgressIndicator())
-                : puzzleImage == null || puzzlePieces == null
-                    ? Center(
-                        child: Text(
-                          languageProvider.locallanguage == 2
-                              ? "No images in gallery"
-                              : "ギャラリーに画像がありません",
-                          style: TextStyle(fontSize: fontsize_big),
-                        ),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          // 残り時間表示
-                          Text(
-                            "残り時間: $secondsLeft 秒",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontsize_big,
-                              color: Colors.red,
-                            ),
-                          ),
-                          SizedBox(
-                            width: tile_size,
-                            height: tile_size,
-                            child: _PuzzleBoard(
-                              pieces: puzzlePieces!,
-                              pieceOrder: pieceOrder,
-                              onPieceDropped: _onPieceDropped,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(width: 10),
-                              Container(
-                                child: TextButton(
-                                  onPressed: () {
-                                    audioProvider.playSound("tap1.mp3");
-                                    Navigator.pushNamed(context, '/menu');
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 255, 67, 195),
-                                  ),
-                                  child: Text(
-                                    languageProvider.locallanguage == 2
-                                        ? "Back to Title"
-                                        : languageProvider.isHiragana
-                                            ? 'メニューにもどる'
-                                            : 'メニューに戻る',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontsize,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-          ),
+          child: SizedBox.expand(child: content),
         ),
       ),
     );
