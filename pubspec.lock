@@ -294,6 +294,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  flutter_grid_image:
+    dependency: "direct main"
+    description:
+      name: flutter_grid_image
+      sha256: "9c9334d6bca3caac7034cc90fd1ff27b921441cd12b8667c30b67abc0f26f226"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   flutter_launcher_icons:
     dependency: "direct main"
     description:

@@ -9,6 +9,7 @@ import 'package:ai_art/artproject/gallery_database_helper.dart';
 import 'dart:typed_data';
 import 'dart:math';
 import 'dart:async';
+import 'package:image/image.dart' as img;
 
 class PuzzlePage extends StatefulWidget {
   const PuzzlePage({super.key});
@@ -19,6 +20,7 @@ class PuzzlePage extends StatefulWidget {
 
 class _PuzzlePageState extends State<PuzzlePage> {
   Uint8List? puzzleImage;
+  List<Uint8List>? puzzlePieces;
   List<int> pieceOrder = List.generate(6, (i) => i); // 0~5
   bool loading = true;
   int secondsLeft = 60;
@@ -36,13 +38,40 @@ class _PuzzlePageState extends State<PuzzlePage> {
     super.dispose();
   }
 
+  Future<List<Uint8List>> splitImage(
+      Uint8List imageData, int rows, int cols) async {
+    final image = img.decodeImage(imageData)!;
+    final pieceWidth = image.width ~/ cols;
+    final pieceHeight = image.height ~/ rows;
+    List<Uint8List> pieces = [];
+
+    for (int y = 0; y < rows; y++) {
+      for (int x = 0; x < cols; x++) {
+        // img.copyCropの引数名を明示的に指定
+        final piece = img.copyCrop(
+          image,
+          x: x * pieceWidth,
+          y: y * pieceHeight,
+          width: pieceWidth,
+          height: pieceHeight,
+        );
+        pieces.add(Uint8List.fromList(img.encodePng(piece)));
+      }
+    }
+    return pieces;
+  }
+
   Future<void> _loadRandomImage() async {
     final images = await GalleryDatabaseHelper.instance.fetchDrawings();
     if (images.isNotEmpty) {
       final rand = Random();
       final idx = rand.nextInt(images.length);
+      final Uint8List imageData = images[idx]['outputimage'];
+      final pieces = await splitImage(imageData, 2, 3);
       setState(() {
-        puzzleImage = images[idx]['outputimage'];
+        puzzleImage = imageData;
+        puzzlePieces = pieces;
+        pieceOrder = List.generate(6, (i) => i);
         pieceOrder.shuffle(rand);
         loading = false;
         secondsLeft = 60;
@@ -51,6 +80,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     } else {
       setState(() {
         puzzleImage = null;
+        puzzlePieces = null;
         loading = false;
       });
     }
@@ -148,91 +178,92 @@ class _PuzzlePageState extends State<PuzzlePage> {
     double tile_size = screenSize.height * 0.6;
 
     return PopScope(
-        canPop: false,
-        child: Scaffold(
-          body: GestureDetector(
-            onTapUp: (details) {
-              Offset tapPosition = details.localPosition;
-              showSparkleEffect(context, tapPosition);
-            },
-            child: SizedBox.expand(
-              child: loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : puzzleImage == null
-                      ? Center(
-                          child: Text(
-                            languageProvider.locallanguage == 2
-                                ? "No images in gallery"
-                                : "ギャラリーに画像がありません",
-                            style: TextStyle(fontSize: fontsize_big),
+      canPop: false,
+      child: Scaffold(
+        body: GestureDetector(
+          onTapUp: (details) {
+            Offset tapPosition = details.localPosition;
+            showSparkleEffect(context, tapPosition);
+          },
+          child: SizedBox.expand(
+            child: loading
+                ? const Center(child: CircularProgressIndicator())
+                : puzzleImage == null || puzzlePieces == null
+                    ? Center(
+                        child: Text(
+                          languageProvider.locallanguage == 2
+                              ? "No images in gallery"
+                              : "ギャラリーに画像がありません",
+                          style: TextStyle(fontSize: fontsize_big),
+                        ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          // 残り時間表示
+                          Text(
+                            "残り時間: $secondsLeft 秒",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontsize_big,
+                              color: Colors.red,
+                            ),
                           ),
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            // 残り時間表示
-                            Text(
-                              "残り時間: $secondsLeft 秒",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: fontsize_big,
-                                color: Colors.red,
-                              ),
+                          SizedBox(
+                            width: tile_size,
+                            height: tile_size,
+                            child: _PuzzleBoard(
+                              pieces: puzzlePieces!,
+                              pieceOrder: pieceOrder,
+                              onPieceDropped: _onPieceDropped,
                             ),
-                            SizedBox(
-                              width: tile_size,
-                              height: tile_size * 2 / 3,
-                              child: _PuzzleBoard(
-                                image: puzzleImage!,
-                                pieceOrder: pieceOrder,
-                                onPieceDropped: _onPieceDropped,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const SizedBox(width: 10),
-                                Container(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      audioProvider.playSound("tap1.mp3");
-                                      Navigator.pushNamed(context, '/menu');
-                                    },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 255, 67, 195),
-                                    ),
-                                    child: Text(
-                                      languageProvider.locallanguage == 2
-                                          ? "Back to Title"
-                                          : languageProvider.isHiragana
-                                              ? 'メニューにもどる'
-                                              : 'メニューに戻る',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: fontsize,
-                                          color: Colors.white),
-                                    ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 10),
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    audioProvider.playSound("tap1.mp3");
+                                    Navigator.pushNamed(context, '/menu');
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 255, 67, 195),
+                                  ),
+                                  child: Text(
+                                    languageProvider.locallanguage == 2
+                                        ? "Back to Title"
+                                        : languageProvider.isHiragana
+                                            ? 'メニューにもどる'
+                                            : 'メニューに戻る',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: fontsize,
+                                        color: Colors.white),
                                   ),
                                 ),
-                              ],
-                            )
-                          ],
-                        ),
-            ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
 // 6ピースパズルボード（2行×3列）画像を分割して表示
 class _PuzzleBoard extends StatelessWidget {
-  final Uint8List image;
+  final List<Uint8List> pieces;
   final List<int> pieceOrder;
   final void Function(int from, int to) onPieceDropped;
 
   const _PuzzleBoard({
-    required this.image,
+    required this.pieces,
     required this.pieceOrder,
     required this.onPieceDropped,
   });
@@ -240,13 +271,12 @@ class _PuzzleBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double boardWidth = MediaQuery.sizeOf(context).height * 0.6;
-    double boardHeight = boardWidth * 2 / 3;
     double pieceWidth = boardWidth / 3;
-    double pieceHeight = boardHeight / 2;
+    double pieceHeight = boardWidth / 3; // 正方形ピース
 
     return SizedBox(
       width: boardWidth,
-      height: boardHeight,
+      height: boardWidth * 2 / 3,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -255,15 +285,14 @@ class _PuzzleBoard extends StatelessWidget {
         itemCount: 6,
         itemBuilder: (context, idx) {
           int pieceIdx = pieceOrder[idx];
-          return _PuzzlePiece(
-            image: image,
-            pieceIndex: pieceIdx,
+          return _ImagePuzzlePiece(
+            imageData: pieces[pieceIdx],
             displayIndex: idx,
-            width: pieceWidth,
-            height: pieceHeight,
             onAccept: (fromIdx) {
               onPieceDropped(fromIdx, idx);
             },
+            width: pieceWidth,
+            height: pieceHeight,
           );
         },
       ),
@@ -271,69 +300,49 @@ class _PuzzleBoard extends StatelessWidget {
   }
 }
 
-// 1ピース（画像を分割して表示）
-class _PuzzlePiece extends StatelessWidget {
-  final Uint8List image;
-  final int pieceIndex; // 0~5
-  final int displayIndex; // 0~5
+// 分割画像ピースWidget
+class _ImagePuzzlePiece extends StatelessWidget {
+  final Uint8List imageData;
+  final int displayIndex;
+  final void Function(int fromIdx) onAccept;
   final double width;
   final double height;
-  final void Function(int fromIdx) onAccept;
 
-  const _PuzzlePiece({
-    required this.image,
-    required this.pieceIndex,
+  const _ImagePuzzlePiece({
+    required this.imageData,
     required this.displayIndex,
+    required this.onAccept,
     required this.width,
     required this.height,
-    required this.onAccept,
   });
 
   @override
   Widget build(BuildContext context) {
-    int row = pieceIndex ~/ 3;
-    int col = pieceIndex % 3;
     return DragTarget<int>(
       onWillAccept: (data) => data != displayIndex,
       onAccept: onAccept,
       builder: (context, candidateData, rejectedData) {
         return LongPressDraggable<int>(
           data: displayIndex,
-          feedback: _buildPiece(row, col, opacity: 0.7),
+          feedback: SizedBox(
+            width: width,
+            height: height,
+            child: Opacity(
+                opacity: 0.7,
+                child: Image.memory(imageData, fit: BoxFit.cover)),
+          ),
           childWhenDragging: Container(
             width: width,
             height: height,
             color: Colors.grey[300],
           ),
-          child: _buildPiece(row, col),
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: Image.memory(imageData, fit: BoxFit.cover),
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildPiece(int row, int col, {double opacity = 1.0}) {
-    return Opacity(
-      opacity: opacity,
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: ClipRect(
-          child: Align(
-            alignment: Alignment(
-              -1.0 + col * 1.0,
-              -1.0 + row * 2.0,
-            ),
-            widthFactor: 1 / 3,
-            heightFactor: 1 / 2,
-            child: Image.memory(
-              image,
-              width: width * 3,
-              height: height * 2,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
