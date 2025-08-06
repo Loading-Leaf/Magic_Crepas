@@ -14,110 +14,106 @@ class LessonPage extends StatefulWidget {
 }
 
 class _LessonPageState extends State<LessonPage> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize_big = screenSize.width / 64;
     double fontsize = screenSize.width / 74.6;
+    double tile_size = screenSize.height * 0.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
     return PopScope(
-      canPop: false,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Lesson モード', style: TextStyle(fontSize: fontsize_big)),
-          centerTitle: true,
-          bottom: TabBar(
-            onTap: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
+        canPop: false, // false で無効化
+        child: Scaffold(
+          body: GestureDetector(
+            onTapUp: (details) {
+              // タッチされた位置を取得
+              Offset tapPosition = details.localPosition;
+              // キラキラエフェクトを表示
+              showSparkleEffect(context, tapPosition);
             },
-            tabs: const [
-              Tab(text: '色を混ぜる'),
-              Tab(text: '色のクイズ'),
-            ],
-            controller: TabController(length: 2, vsync: ScaffoldState()),
-            // ダミー: 実際は下で切り替え
+            child: SizedBox.expand(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //カラーブレンド
+                        GestureDetector(
+                          onTap: () {
+                            //ここに画面遷移などのイベントを書く。
+                            audioProvider.playSound("tap1.mp3");
+                            Navigator.pushNamed(context, '/lesson_color');
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(3.0),
+                            child: Container(
+                              height: tile_size, // 縦長の場合
+                              width: tile_size, // 縦長の場合
+                              color: Colors.grey,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                    'assets/ButtonImage/menu1_1.png'),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //お絵描きをする
+                        GestureDetector(
+                          onTap: () {
+                            //ここに画面遷移などのイベントを書く。
+                            audioProvider.playSound("tap1.mp3");
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(3.0),
+                            child: Container(
+                              height: tile_size, // 縦長の場合
+                              width: tile_size, // 縦長の場合
+                              color: Colors.grey,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                    'assets/ButtonImage/menu1_2.png'),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 10),
+                      Container(
+                        child: TextButton(
+                          onPressed: () {
+                            audioProvider.playSound("tap1.mp3");
+                            Navigator.pushNamed(context, '/menu');
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                          ),
+                          child: Text(
+                            languageProvider.locallanguage == 2
+                                ? "Back to Title"
+                                : languageProvider.isHiragana
+                                    ? 'メニューにもどる'
+                                    : 'メニューに戻る',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontsize,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
           ),
-          toolbarHeight: 60,
-        ),
-        body: _selectedIndex == 0
-            ? _buildMixColorsPage(context, fontsize)
-            : _buildColorQuizPage(context, fontsize),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.color_lens), label: '色を混ぜる'),
-            BottomNavigationBarItem(icon: Icon(Icons.quiz), label: '色のクイズ'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMixColorsPage(BuildContext context, double fontsize) {
-    // 色を混ぜるページの簡易UI
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('2色を選んで混ぜてみよう', style: TextStyle(fontSize: fontsize)),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _colorCircle(Colors.red),
-              SizedBox(width: 20),
-              _colorCircle(Colors.blue),
-            ],
-          ),
-          SizedBox(height: 20),
-          Text('混ぜた色：', style: TextStyle(fontSize: fontsize)),
-          SizedBox(height: 10),
-          _colorCircle(Colors.purple), // 仮: 赤+青=紫
-        ],
-      ),
-    );
-  }
-
-  Widget _buildColorQuizPage(BuildContext context, double fontsize) {
-    // 色のクイズページの簡易UI
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('この色は何色？', style: TextStyle(fontSize: fontsize)),
-          SizedBox(height: 20),
-          _colorCircle(Colors.orange),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('こたえを見る', style: TextStyle(fontSize: fontsize)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _colorCircle(Color color) {
-    return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.black26, width: 2),
-      ),
-    );
+        ));
   }
 }

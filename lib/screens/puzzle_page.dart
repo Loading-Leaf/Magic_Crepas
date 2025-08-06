@@ -35,6 +35,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Timer? _countdownTimer;
   int countdown = 3;
   PuzzleState puzzleState = PuzzleState.initial;
+  int? selectedPieceIndex; // 追加: 選択中ピースのインデックス
 
   @override
   void dispose() {
@@ -164,6 +165,25 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
+  // _onPieceTapped: タップ時の処理
+  void _onPieceTapped(int idx) {
+    if (puzzleState != PuzzleState.playing) return;
+    if (selectedPieceIndex == null) {
+      setState(() {
+        selectedPieceIndex = idx;
+      });
+    } else if (selectedPieceIndex == idx) {
+      setState(() {
+        selectedPieceIndex = null;
+      });
+    } else {
+      _onPieceDropped(selectedPieceIndex!, idx);
+      setState(() {
+        selectedPieceIndex = null;
+      });
+    }
+  }
+
   void _onPieceDropped(int from, int to) {
     setState(() {
       final tmp = pieceOrder[from];
@@ -217,6 +237,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       secondsLeft = 60;
       countdown = 3;
       puzzleState = PuzzleState.initial;
+      selectedPieceIndex = null; // 追加: 選択解除
     });
   }
 
@@ -310,7 +331,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
               child: _PuzzleBoard(
                 pieces: puzzlePieces!,
                 pieceOrder: pieceOrder,
-                onPieceDropped: _onPieceDropped,
+                onPieceTapped: _onPieceTapped, // 追加
+                selectedIndex: selectedPieceIndex, // 追加
               ),
             ),
             Row(
@@ -366,12 +388,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
 class _PuzzleBoard extends StatelessWidget {
   final List<Uint8List> pieces;
   final List<int> pieceOrder;
-  final void Function(int from, int to) onPieceDropped;
+  final void Function(int idx) onPieceTapped; // 追加
+  final int? selectedIndex; // 追加
 
   const _PuzzleBoard({
     required this.pieces,
     required this.pieceOrder,
-    required this.onPieceDropped,
+    required this.onPieceTapped, // 追加
+    required this.selectedIndex, // 追加
   });
 
   @override
@@ -381,28 +405,26 @@ class _PuzzleBoard extends StatelessWidget {
     double pieceHeight = boardWidth / 3; // 正方形ピース
 
     return SizedBox(
-      width: boardWidth,
-      height: boardWidth * 2 / 3,
-      child: GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-        ),
-        itemCount: 6,
-        itemBuilder: (context, idx) {
-          int pieceIdx = pieceOrder[idx];
-          return _ImagePuzzlePiece(
-            imageData: pieces[pieceIdx],
-            displayIndex: idx,
-            onAccept: (fromIdx) {
-              onPieceDropped(fromIdx, idx);
-            },
-            width: pieceWidth,
-            height: pieceHeight,
-          );
-        },
-      ),
-    );
+        width: boardWidth,
+        height: boardWidth * 2 / 3,
+        child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          ),
+          itemCount: 6,
+          itemBuilder: (context, idx) {
+            int pieceIdx = pieceOrder[idx];
+            return _ImagePuzzlePiece(
+              imageData: pieces[pieceIdx],
+              displayIndex: idx,
+              isSelected: selectedIndex == idx, // 追加
+              onTap: () => onPieceTapped(idx), // 追加
+              width: pieceWidth,
+              height: pieceHeight,
+            );
+          },
+        ));
   }
 }
 
@@ -410,45 +432,32 @@ class _PuzzleBoard extends StatelessWidget {
 class _ImagePuzzlePiece extends StatelessWidget {
   final Uint8List imageData;
   final int displayIndex;
-  final void Function(int fromIdx) onAccept;
+  final bool isSelected; // 追加
+  final VoidCallback onTap; // 追加
   final double width;
   final double height;
 
   const _ImagePuzzlePiece({
     required this.imageData,
     required this.displayIndex,
-    required this.onAccept,
+    required this.isSelected, // 追加
+    required this.onTap, // 追加
     required this.width,
     required this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget<int>(
-      onWillAccept: (data) => data != displayIndex,
-      onAccept: onAccept,
-      builder: (context, candidateData, rejectedData) {
-        return LongPressDraggable<int>(
-          data: displayIndex,
-          feedback: SizedBox(
-            width: width,
-            height: height,
-            child: Opacity(
-                opacity: 0.7,
-                child: Image.memory(imageData, fit: BoxFit.cover)),
-          ),
-          childWhenDragging: Container(
-            width: width,
-            height: height,
-            color: Colors.grey[300],
-          ),
-          child: SizedBox(
-            width: width,
-            height: height,
-            child: Image.memory(imageData, fit: BoxFit.cover),
-          ),
-        );
-      },
+    return GestureDetector(
+      onTap: onTap, // 追加
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          border: isSelected ? Border.all(color: Colors.blue, width: 5) : null,
+        ),
+        child: Image.memory(imageData, fit: BoxFit.cover),
+      ),
     );
   }
 }

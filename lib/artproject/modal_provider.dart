@@ -372,25 +372,16 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                           await outputImageFile.readAsBytes();
                                       await DrawingDatabaseHelper.instance
                                           .insertDrawing(pngBytes, 2);
-
-                                      // 親StateのdrawingImageDataを即座に更新
-                                      if (mounted) {
-                                        Navigator.of(context).pop(); // モーダルを閉じる
-                                        // ignore: use_build_context_synchronously
-                                        if (context.mounted) {
-                                          // 親StateのsetStateを呼ぶために、Navigator.pop後にFuture.microtaskで遅延
-                                          Future.microtask(() {
-                                            if (context.findAncestorStateOfType<
-                                                    State>() !=
-                                                null) {
-                                              // ignore: invalid_use_of_protected_member
-                                              (context.findAncestorStateOfType<
-                                                      State>() as dynamic)
-                                                  .setState(() {});
-                                            }
-                                          });
-                                        }
-                                      }
+                                      // drawing格納後にsetStateで即時反映
+                                      setState(() {
+                                        _drawingsFuture =
+                                            DrawingGalleryDatabaseHelper
+                                                .instance
+                                                .fetchDrawings();
+                                        image = outputImageFile;
+                                      });
+                                      // 必要に応じて親Widgetにも通知したい場合は、Navigator.popで値を返す
+                                      Navigator.of(context).pop(true);
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
