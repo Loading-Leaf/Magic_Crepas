@@ -73,8 +73,12 @@ class _preparePageState extends State<preparePage> {
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap1.mp3");
-                          MaterialPageRoute(
-                            builder: (context) => DrawingPage(drawing_mode: 2),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DrawingPage(drawing_mode: 2),
+                            ),
                           );
                         },
                         child: Padding(

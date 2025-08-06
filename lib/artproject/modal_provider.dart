@@ -475,11 +475,12 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                         onTap: () {
                           //ここに画面遷移などのイベントを書く。
                           audioProvider.playSound("tap1.mp3");
-                          Navigator.of(context).pop(true); // ←値を返す
-                          Navigator.pushNamed(context, '/drawing',
-                              arguments: {"drawing_mode": 1});
-                          MaterialPageRoute(
-                            builder: (context) => DrawingPage(drawing_mode: 2),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DrawingPage(drawing_mode: 1),
+                            ),
                           );
                         },
                         child: Padding(
