@@ -91,7 +91,7 @@ class _LessonColorPageState extends State<LessonColorPage> {
                                               MediaQuery.of(context)
                                                       .size
                                                       .width /
-                                                  28,
+                                                  20,
                                               1,
                                               setState),
                                         ]),
@@ -113,7 +113,7 @@ class _LessonColorPageState extends State<LessonColorPage> {
                                               MediaQuery.of(context)
                                                       .size
                                                       .width /
-                                                  28,
+                                                  20,
                                               2,
                                               setState),
                                         ]),
@@ -190,9 +190,9 @@ class _LessonColorPageState extends State<LessonColorPage> {
                                 ),
                                 //混ぜた色を追加
                                 Container(
-                                  width: MediaQuery.of(context).size.width / 28,
+                                  width: MediaQuery.of(context).size.width / 20,
                                   height:
-                                      MediaQuery.of(context).size.width / 28,
+                                      MediaQuery.of(context).size.width / 20,
                                   decoration: BoxDecoration(
                                     color: MixedColor,
                                     shape: BoxShape.circle,
@@ -216,7 +216,7 @@ class _LessonColorPageState extends State<LessonColorPage> {
                               ),
                               //色を混ぜる用のパレット
                               _buildMixedColorPicker(
-                                  MediaQuery.of(context).size.width / 28,
+                                  MediaQuery.of(context).size.width / 20,
                                   select1,
                                   select2,
                                   setState),

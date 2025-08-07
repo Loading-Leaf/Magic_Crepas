@@ -977,7 +977,7 @@ class _GeneratePageState extends State<GeneratePage> {
                               Container(
                                 alignment: Alignment.centerRight,
                                 child: TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     audioProvider.playSound("tap1.mp3");
                                     showDialog(
                                       context: context,

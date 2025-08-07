@@ -14,6 +14,7 @@ import "package:ai_art/screens/prepare_gallery_page.dart";
 import "package:ai_art/screens/puzzle_page.dart";
 import "package:ai_art/screens/community_page.dart";
 import "package:ai_art/screens/lesson_page.dart";
+import "package:ai_art/screens/lesson_colorblend.dart";
 import "package:ai_art/screens/record_page.dart";
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/language_provider.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MainPage(),
         '/puzzle': (context) => const PuzzlePage(),
         '/lesson': (context) => const LessonPage(),
-        '/lesson_color': (context) => const LessonPage(),
+        '/lesson_color': (context) => const CommunityPage(),
         '/record': (context) => const RecordPage(),
         '/community': (context) => const CommunityPage(),
         '/menu': (context) => const MenuPage(),
