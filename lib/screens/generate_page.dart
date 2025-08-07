@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import "package:ai_art/artproject/database_helper.dart";
 import "package:ai_art/artproject/drawing_database_helper.dart";
+import "package:ai_art/artproject/drawing_gallery_database_helper.dart";
+
 import 'dart:typed_data';
 import 'package:sqflite/sqflite.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,8 @@ import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/modal_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:ai_art/artproject/play_provider.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import 'dart:async'; // Timer を利用するために追加
 
@@ -65,6 +69,163 @@ class CirclePainter extends CustomPainter {
 }
 
 class _GeneratePageState extends State<GeneratePage> {
+  // --- DrawingselectDialogのモーダルロジックを移植 ---
+  late Database _drawingGalleryDatabase;
+  File? drawingSelectImage;
+  late Future<List<Map<String, dynamic>>> _drawingsFuture =
+      DrawingGalleryDatabaseHelper.instance.fetchDrawings();
+
+  Future<void> _initializeDrawingGalleryDatabase() async {
+    try {
+      _drawingGalleryDatabase = await DrawingDatabaseHelper.instance.database;
+    } catch (e) {
+      print('Error initializing drawing gallery database: $e');
+    }
+  }
+
+  void _showDrawingSelectDialog() {
+    Size screenSize = MediaQuery.sizeOf(context);
+    double fontsize = screenSize.width / 74.6;
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
+    double imageWidth = screenSize.width / 6 - 10;
+    double imageHeight = imageWidth;
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, setStateDialog) {
+            return Dialog(
+              child: Container(
+                width: screenSize.width * 0.8,
+                height: screenSize.height * 0.9,
+                padding: const EdgeInsets.all(10.0),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Text(
+                    languageProvider.locallanguage == 2
+                        ? "Drawings"
+                        : '今まで描いた絵',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontsize,
+                    ),
+                  ),
+                  FutureBuilder<List<Map<String, dynamic>>>(
+                    future: _drawingsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        print(snapshot.data);
+                        return Text('Error: {snapshot.error}');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Text('まだないよ😢');
+                      } else {
+                        List<Map<String, dynamic>> drawings = snapshot.data!;
+                        return Expanded(
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                            itemCount: drawings.length,
+                            itemBuilder: (context, index) {
+                              final outputImagePath =
+                                  drawings[index]['drawingimage'] as String?;
+                              if (outputImagePath == null) {
+                                return Container(
+                                  color: Colors.grey,
+                                  child: const Center(
+                                      child: Text("Invalid Image")),
+                                );
+                              }
+                              final outputImageFile = File(outputImagePath);
+                              return GestureDetector(
+                                onTap: () async {
+                                  audioProvider.playSound("tap2.mp3");
+                                  Uint8List pngBytes =
+                                      await outputImageFile.readAsBytes();
+                                  await DrawingDatabaseHelper.instance
+                                      .insertDrawing(pngBytes, 2);
+                                  Navigator.of(context).pop(true);
+                                  setStateDialog(() {
+                                    _drawingsFuture =
+                                        DrawingGalleryDatabaseHelper.instance
+                                            .fetchDrawings();
+                                  });
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    outputImageFile,
+                                    width: imageWidth,
+                                    height: imageHeight,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ]),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // pickAndProcessImage も移植
+  Future<void> pickAndProcessImage() async {
+    try {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage == null) return;
+
+      final imageFile = File(pickedImage.path);
+      Uint8List pngBytes = await imageFile.readAsBytes();
+
+      final directory = await getApplicationDocumentsDirectory();
+      final filename = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
+      final filePath = path.join(directory.path, filename);
+      await File(filePath).writeAsBytes(pngBytes);
+
+      await _initializeDrawingGalleryDatabase();
+
+      try {
+        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, 1);
+        setState(() {
+          _drawingsFuture =
+              DrawingGalleryDatabaseHelper.instance.fetchDrawings();
+          drawingSelectImage = imageFile;
+        });
+        Navigator.of(context).pop(true);
+        Navigator.pushNamed(context, '/generate');
+      } catch (e) {
+        print('Error saving drawing: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('データベースへの保存中にエラーが発生しました: $e')),
+        );
+      }
+
+      setState(() => drawingSelectImage = imageFile);
+    } catch (e) {
+      print('Error processing image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('画像の処理中にエラーが発生しました: $e')),
+      );
+    }
+  }
+
   List<Map<String, dynamic>> _images = []; // ここで _images を定義
   late Database _database; // late修飾子を使用
   File? image;
@@ -979,31 +1140,9 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: TextButton(
                                   onPressed: () async {
                                     audioProvider.playSound("tap1.mp3");
-                                    // showDialog(
-                                    //   context: context,
-                                    //   builder: (BuildContext context) {
-                                    //     return DrawingselectDialog(
-                                    //         message1: "えをえらぶ",
-                                    //         message2: "絵を選ぶ",
-                                    //         message3: "Select Drawing");
-                                    //   },
-                                    // );
-                                    final result = await showDialog<bool>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return DrawingselectDialog(
-                                          message1: "えをえらぶ",
-                                          message2: "絵を選ぶ",
-                                          message3: "Select Drawing",
-                                        );
-                                      },
-                                    );
-                                    // ダイアログが閉じられたら画像を再読み込み
-                                    if (result == true) {
-                                      // loadImages()やloadDrawings()を呼び出して状態を更新
-                                      await loadImages();
-                                      await loadDrawings();
-                                    }
+                                    _showDrawingSelectDialog();
+                                    // ダイアログが閉じられたら画像を再読み込みしたい場合は、
+                                    // showDialogの戻り値を利用する形にすることも可能です。
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:

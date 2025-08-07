@@ -264,316 +264,194 @@ class _DrawingmodeDialogState extends State<DrawingmodeDialog> {
   }
 }
 
-//お絵描きするためのモード
-class DrawingselectDialog extends StatefulWidget {
-  final String message1;
-  final String message2;
-  final String message3;
+// //お絵描きするためのモード
+// class DrawingselectDialog extends StatefulWidget {
+//   final String message1;
+//   final String message2;
+//   final String message3;
 
-  const DrawingselectDialog({
-    super.key,
-    required this.message1,
-    required this.message2,
-    required this.message3,
-  });
+//   const DrawingselectDialog({
+//     super.key,
+//     required this.message1,
+//     required this.message2,
+//     required this.message3,
+//   });
 
-  @override
-  _DrawingselectDialogState createState() => _DrawingselectDialogState();
-}
+//   @override
+//   _DrawingselectDialogState createState() => _DrawingselectDialogState();
+// }
 
-class _DrawingselectDialogState extends State<DrawingselectDialog> {
-  late Database _database; // late修飾子を使用
-  File? image;
+// class _DrawingselectDialogState extends State<DrawingselectDialog> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final audioProvider = Provider.of<AudioProvider>(context);
+//     final languageProvider =
+//         Provider.of<LanguageProvider>(context, listen: false);
 
-  Future<void> _initializeDatabase() async {
-    try {
-      _database = await DrawingDatabaseHelper.instance.database; // データベースを初期化
-    } catch (e) {
-      print('Error initializing database: $e');
-    }
-  }
+//     Size screenSize = MediaQuery.sizeOf(context);
+//     double fontsize = screenSize.width / 74.6;
+//     double tile_size = screenSize.height * 0.4;
 
-  late Future<List<Map<String, dynamic>>> _drawingsFuture;
+//     return AlertDialog(
+//         title: Text(
+//           languageProvider.locallanguage == 2
+//               ? widget.message3
+//               : languageProvider.isHiragana
+//                   ? widget.message1
+//                   : widget.message2,
+//           style: TextStyle(
+//               fontWeight: FontWeight.bold,
+//               fontSize: fontsize,
+//               color: Colors.black),
+//         ),
+//         content: const SizedBox.shrink(),
+//         actions: <Widget>[
+//           Column(
+//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//               children: <Widget>[
+//                 Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                     children: [
+//                       //お絵描きギャラリーから選ぶ
+//                       GestureDetector(
+//                         onTap: () {
+//                           //ここに画面遷移などのイベントを書く。
+//                           audioProvider.playSound("tap1.mp3");
+//                           Navigator.of(context).pop(true);
+//                           _DrawingSelectDialog();
+//                         },
+//                         child: Padding(
+//                           padding: EdgeInsets.all(3.0),
+//                           child: Container(
+//                             height: tile_size, // 縦長の場合
+//                             width: tile_size, // 縦長の場合
+//                             color: Colors.grey,
+//                             child: FittedBox(
+//                               fit: BoxFit.fill,
+//                               child: Image.asset(
+//                                   'assets/ButtonImage/menu1_1_1.png'),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       //リアルアートから選ぶ
+//                       GestureDetector(
+//                         onTap: () {
+//                           //ここに画面遷移などのイベントを書く。
+//                           audioProvider.playSound("tap2.mp3");
+//                           Navigator.of(context).pop(true); // ←値を返す
+//                           pickAndProcessImage();
+//                         },
+//                         child: Padding(
+//                           padding: EdgeInsets.all(3.0),
+//                           child: Container(
+//                             height: tile_size, // 縦長の場合
+//                             width: tile_size, // 縦長の場合
+//                             color: Colors.grey,
+//                             child: FittedBox(
+//                               fit: BoxFit.fill,
+//                               child: Image.asset(
+//                                   'assets/ButtonImage/menu1_1_2.png'),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       //お絵描きをしてから絵を使う
+//                       GestureDetector(
+//                         onTap: () {
+//                           //ここに画面遷移などのイベントを書く。
+//                           audioProvider.playSound("tap1.mp3");
+//                           Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) =>
+//                                   DrawingPage(drawing_mode: 1),
+//                             ),
+//                           );
+//                         },
+//                         child: Padding(
+//                           padding: EdgeInsets.all(3.0),
+//                           child: Container(
+//                             height: tile_size, // 縦長の場合
+//                             width: tile_size, // 縦長の場合
+//                             color: Colors.grey,
+//                             child: FittedBox(
+//                               fit: BoxFit.fill,
+//                               child: Image.asset(
+//                                   'assets/ButtonImage/menu1_1_3.png'),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ]),
+//                 TextButton(
+//                   onPressed: () {
+//                     audioProvider.playSound("tap1.mp3");
+//                     Navigator.of(context).pop(false); // ←値を返す
+//                   },
+//                   style: TextButton.styleFrom(
+//                     backgroundColor: Color.fromARGB(255, 0, 204, 255),
+//                   ),
+//                   child: Text(
+//                     languageProvider.locallanguage == 2
+//                         ? "Back"
+//                         : languageProvider.isHiragana
+//                             ? 'もどる'
+//                             : '戻る',
+//                     style: TextStyle(
+//                         fontWeight: FontWeight.bold,
+//                         fontSize: fontsize,
+//                         color: Colors.white),
+//                   ),
+//                 ),
+//               ]),
+//         ]);
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    _drawingsFuture = DrawingGalleryDatabaseHelper.instance.fetchDrawings();
-  }
+//   // 画像を処理する関数
+//   Future<void> pickAndProcessImage() async {
+//     try {
+//       // 画像をギャラリーから選択
+//       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+//       if (image == null) return;
 
-  _DrawingSelectDialog() {
-    Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = screenSize.width / 74.6;
-    final audioProvider = Provider.of<AudioProvider>(context);
-    final languageProvider = Provider.of<LanguageProvider>(context);
-    double imageWidth = screenSize.width / 6 - 10;
-    double imageHeight = imageWidth;
+//       final imageFile = File(image.path);
 
-    showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, setStateDialog) {
-            return Dialog(
-                child: Container(
-                    width: screenSize.width * 0.8,
-                    height: screenSize.height * 0.9,
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      Text(
-                        languageProvider.locallanguage == 2
-                            ? "Drawings"
-                            : '今まで描いた絵',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontsize,
-                        ),
-                      ),
-                      FutureBuilder<List<Map<String, dynamic>>>(
-                        future: _drawingsFuture,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            print(snapshot.data);
-                            return Text('Error: ${snapshot.error}');
-                          } else if (!snapshot.hasData ||
-                              snapshot.data!.isEmpty) {
-                            return const Text('まだないよ😢');
-                          } else {
-                            List<Map<String, dynamic>> drawings =
-                                snapshot.data!;
-                            return Expanded(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 5,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                ),
-                                itemCount: drawings.length,
-                                itemBuilder: (context, index) {
-                                  final outputImagePath = drawings[index]
-                                      ['drawingimage'] as String?;
-                                  if (outputImagePath == null) {
-                                    return Container(
-                                      color: Colors.grey,
-                                      child: const Center(
-                                          child: Text("Invalid Image")),
-                                    );
-                                  }
-                                  final outputImageFile = File(outputImagePath);
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      audioProvider.playSound("tap2.mp3");
-                                      Uint8List pngBytes =
-                                          await outputImageFile.readAsBytes();
-                                      await DrawingDatabaseHelper.instance
-                                          .insertDrawing(pngBytes, 2);
-                                      Navigator.of(context).pop(true);
-                                      // drawing格納後にsetStateで即時反映
-                                      setStateDialog(() {
-                                        _drawingsFuture =
-                                            DrawingGalleryDatabaseHelper
-                                                .instance
-                                                .fetchDrawings();
-                                        //image = outputImageFile;
-                                      });
-                                      // 必要に応じて親Widgetにも通知したい場合は、Navigator.popで値を返す
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.file(
-                                        outputImageFile,
-                                        width: imageWidth,
-                                        height: imageHeight,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ])));
-          });
-        });
-  }
+//       // ファイルをバイト配列に変換
+//       Uint8List pngBytes = await imageFile.readAsBytes();
 
-  @override
-  Widget build(BuildContext context) {
-    final audioProvider = Provider.of<AudioProvider>(context);
-    final languageProvider =
-        Provider.of<LanguageProvider>(context, listen: false);
+//       // デバイスに保存
+//       final directory = await getApplicationDocumentsDirectory();
+//       final filename = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
+//       final filePath = path.join(directory.path, filename);
+//       await File(filePath).writeAsBytes(pngBytes);
 
-    Size screenSize = MediaQuery.sizeOf(context);
-    double fontsize = screenSize.width / 74.6;
-    double tile_size = screenSize.height * 0.4;
+//       // データベースの初期化と保存
+//       await _initializeDatabase();
 
-    return AlertDialog(
-        title: Text(
-          languageProvider.locallanguage == 2
-              ? widget.message3
-              : languageProvider.isHiragana
-                  ? widget.message1
-                  : widget.message2,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: fontsize,
-              color: Colors.black),
-        ),
-        content: const SizedBox.shrink(),
-        actions: <Widget>[
-          Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      //お絵描きギャラリーから選ぶ
-                      GestureDetector(
-                        onTap: () {
-                          //ここに画面遷移などのイベントを書く。
-                          audioProvider.playSound("tap1.mp3");
-                          Navigator.of(context).pop(true);
-                          _DrawingSelectDialog();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: Container(
-                            height: tile_size, // 縦長の場合
-                            width: tile_size, // 縦長の場合
-                            color: Colors.grey,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Image.asset(
-                                  'assets/ButtonImage/menu1_1_1.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      //リアルアートから選ぶ
-                      GestureDetector(
-                        onTap: () {
-                          //ここに画面遷移などのイベントを書く。
-                          audioProvider.playSound("tap2.mp3");
-                          Navigator.of(context).pop(true); // ←値を返す
-                          pickAndProcessImage();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: Container(
-                            height: tile_size, // 縦長の場合
-                            width: tile_size, // 縦長の場合
-                            color: Colors.grey,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Image.asset(
-                                  'assets/ButtonImage/menu1_1_2.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      //お絵描きをしてから絵を使う
-                      GestureDetector(
-                        onTap: () {
-                          //ここに画面遷移などのイベントを書く。
-                          audioProvider.playSound("tap1.mp3");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  DrawingPage(drawing_mode: 1),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: Container(
-                            height: tile_size, // 縦長の場合
-                            width: tile_size, // 縦長の場合
-                            color: Colors.grey,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Image.asset(
-                                  'assets/ButtonImage/menu1_1_3.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
-                TextButton(
-                  onPressed: () {
-                    audioProvider.playSound("tap1.mp3");
-                    Navigator.of(context).pop(false); // ←値を返す
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 0, 204, 255),
-                  ),
-                  child: Text(
-                    languageProvider.locallanguage == 2
-                        ? "Back"
-                        : languageProvider.isHiragana
-                            ? 'もどる'
-                            : '戻る',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontsize,
-                        color: Colors.white),
-                  ),
-                ),
-              ]),
-        ]);
-  }
+//       try {
+//         await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, 1);
+//         setState(() {
+//           _drawingsFuture =
+//               DrawingGalleryDatabaseHelper.instance.fetchDrawings();
+//           this.image = imageFile;
+//         });
+//         Navigator.of(context).pop(true);
+//         Navigator.pushNamed(context, '/generate'); // ← 削除
+//       } catch (e) {
+//         print('Error saving drawing: $e');
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('データベースへの保存中にエラーが発生しました: $e')),
+//         );
+//       }
 
-  // 画像を処理する関数
-  Future<void> pickAndProcessImage() async {
-    try {
-      // 画像をギャラリーから選択
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-
-      final imageFile = File(image.path);
-
-      // ファイルをバイト配列に変換
-      Uint8List pngBytes = await imageFile.readAsBytes();
-
-      // デバイスに保存
-      final directory = await getApplicationDocumentsDirectory();
-      final filename = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
-      final filePath = path.join(directory.path, filename);
-      await File(filePath).writeAsBytes(pngBytes);
-
-      // データベースの初期化と保存
-      await _initializeDatabase();
-
-      try {
-        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, 1);
-        setState(() {
-          _drawingsFuture =
-              DrawingGalleryDatabaseHelper.instance.fetchDrawings();
-          this.image = imageFile;
-        });
-        Navigator.of(context).pop(true);
-        Navigator.pushNamed(context, '/generate'); // ← 削除
-      } catch (e) {
-        print('Error saving drawing: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('データベースへの保存中にエラーが発生しました: $e')),
-        );
-      }
-
-      // UI更新のための状態管理
-      setState(() => this.image = imageFile);
-    } catch (e) {
-      print('Error processing image: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('画像の処理中にエラーが発生しました: $e')),
-      );
-    }
-  }
-}
+//       // UI更新のための状態管理
+//       setState(() => this.image = imageFile);
+//     } catch (e) {
+//       print('Error processing image: $e');
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('画像の処理中にエラーが発生しました: $e')),
+//       );
+//     }
+//   }
+// }
