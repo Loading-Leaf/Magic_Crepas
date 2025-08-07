@@ -372,16 +372,16 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                           await outputImageFile.readAsBytes();
                                       await DrawingDatabaseHelper.instance
                                           .insertDrawing(pngBytes, 2);
+                                      Navigator.of(context).pop(true);
                                       // drawing格納後にsetStateで即時反映
-                                      setState(() {
+                                      setStateDialog(() {
                                         _drawingsFuture =
                                             DrawingGalleryDatabaseHelper
                                                 .instance
                                                 .fetchDrawings();
-                                        image = outputImageFile;
+                                        //image = outputImageFile;
                                       });
                                       // 必要に応じて親Widgetにも通知したい場合は、Navigator.popで値を返す
-                                      Navigator.of(context).pop(true);
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
@@ -558,7 +558,8 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
               DrawingGalleryDatabaseHelper.instance.fetchDrawings();
           this.image = imageFile;
         });
-        // Navigator.pushNamed(context, '/generate'); // ← 削除
+        Navigator.of(context).pop(true);
+        Navigator.pushNamed(context, '/generate'); // ← 削除
       } catch (e) {
         print('Error saving drawing: $e');
         ScaffoldMessenger.of(context).showSnackBar(

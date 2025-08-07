@@ -977,17 +977,33 @@ class _GeneratePageState extends State<GeneratePage> {
                               Container(
                                 alignment: Alignment.centerRight,
                                 child: TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     audioProvider.playSound("tap1.mp3");
-                                    showDialog(
+                                    // showDialog(
+                                    //   context: context,
+                                    //   builder: (BuildContext context) {
+                                    //     return DrawingselectDialog(
+                                    //         message1: "えをえらぶ",
+                                    //         message2: "絵を選ぶ",
+                                    //         message3: "Select Drawing");
+                                    //   },
+                                    // );
+                                    final result = await showDialog<bool>(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return DrawingselectDialog(
-                                            message1: "えをえらぶ",
-                                            message2: "絵を選ぶ",
-                                            message3: "Select Drawing");
+                                          message1: "えをえらぶ",
+                                          message2: "絵を選ぶ",
+                                          message3: "Select Drawing",
+                                        );
                                       },
                                     );
+                                    // ダイアログが閉じられたら画像を再読み込み
+                                    if (result == true) {
+                                      // loadImages()やloadDrawings()を呼び出して状態を更新
+                                      await loadImages();
+                                      await loadDrawings();
+                                    }
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:
