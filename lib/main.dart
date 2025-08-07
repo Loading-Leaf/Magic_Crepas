@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MainPage(),
         '/puzzle': (context) => const PuzzlePage(),
         '/lesson': (context) => const LessonPage(),
-        '/lesson_color': (context) => const CommunityPage(),
+        '/lesson_color': (context) => const LessonColorPage(),
         '/record': (context) => const RecordPage(),
         '/community': (context) => const CommunityPage(),
         '/menu': (context) => const MenuPage(),
