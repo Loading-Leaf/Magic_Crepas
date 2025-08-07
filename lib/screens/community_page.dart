@@ -36,7 +36,8 @@ class _CommunityPageState extends State<CommunityPage> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                      Row(
+                      SizedBox(width: 20),
+                      Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Container(
@@ -59,6 +60,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 10),
                             Container(
                               child: TextButton(
                                 onPressed: () {
@@ -79,6 +81,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 10),
                             Container(
                               child: TextButton(
                                 onPressed: () {

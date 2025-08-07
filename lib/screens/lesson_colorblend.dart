@@ -126,9 +126,10 @@ class _LessonColorPageState extends State<LessonColorPage> {
                                         setState(() {
                                           audioProvider.playSound("tap1.mp3");
                                           _mixColors(); //色を混ぜるための関数
+                                          ismixed = true;
                                         });
 
-                                        ismixed = true; //色を混ぜた場合のフラグ
+                                        //色を混ぜた場合のフラグ
                                       },
                                       style: TextButton.styleFrom(
                                         backgroundColor:
@@ -148,61 +149,33 @@ class _LessonColorPageState extends State<LessonColorPage> {
                                     ),
                                     //色を混ぜた時に表示
                                     //以下のボタンは
-                                    if (ismixed == true) ...[
-                                      SizedBox(width: 10),
-                                      TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            audioProvider.playSound("tap1.mp3");
-
-                                            ismixed = false;
-                                          });
-                                        },
-                                        style: TextButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 0, 204, 255),
-                                        ),
-                                        child: Text(
-                                          languageProvider.locallanguage == 2
-                                              ? "Try again"
-                                              : languageProvider.isHiragana
-                                                  ? 'やりなおす'
-                                                  : 'やり直す',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: fontsize,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ]
                                   ]),
-                              if (ismixed == true) ...[
-                                Text(
-                                  languageProvider.locallanguage == 2
-                                      ? "Blended color"
-                                      : languageProvider.isHiragana
-                                          ? 'まぜたいろ'
-                                          : '混ぜた色',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: fontsize,
+                              Text(
+                                languageProvider.locallanguage == 2
+                                    ? "Blended color"
+                                    : languageProvider.isHiragana
+                                        ? 'まぜたいろ'
+                                        : '混ぜた色',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: fontsize,
+                                ),
+                              ),
+                              //混ぜた色を追加
+                              Container(
+                                width: MediaQuery.of(context).size.width / 20,
+                                height: MediaQuery.of(context).size.width / 20,
+                                decoration: BoxDecoration(
+                                  color: ismixed == true
+                                      ? MixedColor
+                                      : Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.black,
                                   ),
                                 ),
-                                //混ぜた色を追加
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 20,
-                                  height:
-                                      MediaQuery.of(context).size.width / 20,
-                                  decoration: BoxDecoration(
-                                    color: MixedColor,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ]),
                             Column(mainAxisSize: MainAxisSize.min, children: [
                               Text(
@@ -224,10 +197,10 @@ class _LessonColorPageState extends State<LessonColorPage> {
                             //Flutterのelementの影響でモーダルを閉じた後、パレットに即時新たな色が表示されないので以下の文言を追加
                             Text(
                               languageProvider.locallanguage == 2
-                                  ? "If you blend colors, let's tap 'OK'!\n Next, if you select colors, \nblended color appears🎨\nYou can make 6 colors😊"
+                                  ? "If you blend colors, let's tap 'OK'!\n Next, if you select colors, \nblended color appears🎨"
                                   : languageProvider.isHiragana
-                                      ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ🎨\n6しょくつくれるよ😊'
-                                      : '色を混ぜたら\n「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ🎨\n6色作れるよ😊',
+                                      ? 'いろをまぜたら\n「これでOK」をおして、\nパレットのいろをえらんだら\nまぜたいろがでてくるよ🎨'
+                                      : '色を混ぜたら\n「これでOK」を押して、\nパレットの色を選んだら\n混ぜた色が出てくるよ🎨',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontsize,

@@ -304,8 +304,9 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
   _DrawingSelectDialog() {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    final audioProvider = Provider.of<AudioProvider>(context);
-    final languageProvider = Provider.of<LanguageProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     double imageWidth = screenSize.width / 6 - 10;
     double imageHeight = imageWidth;
 
@@ -313,8 +314,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, setStateDialog) {
+          return StatefulBuilder(builder: (BuildContext context, setState) {
             return Dialog(
                 child: Container(
                     width: screenSize.width * 0.8,

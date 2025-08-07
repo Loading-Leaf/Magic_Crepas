@@ -432,6 +432,9 @@ class _GeneratePageState extends State<GeneratePage> {
           is_photo_flag = drawings.last["is_photo_flag"];
           drawingImageData =
               List<int>.from(drawings.last['drawing']); // 描画データを取得
+          if (drawings.last['photo'] != null && drawings.last['photo'] != "") {
+            image = File(drawings.last['photo']);
+          }
           if (drawings.length > 1) {
             DrawingDatabaseHelper.instance.clearNonIdColumns(drawings.length);
           }
