@@ -399,13 +399,11 @@ class _GeneratePageState extends State<GeneratePage> {
           return {'path': path, 'selectedphoto': drawingData};
         }).toList();
       });
-      print(_images[_images.length - 1]);
 
       // 最後に保存した描画データをセット
       if (_images.isNotEmpty) {
         drawingImageData = _images.last['drawing']; // 最後の画像を使用
         setState(() {
-          image = File(_images[_images.length - 1]['path']);
           if (_images.length > 1) {
             DatabaseHelper.instance.clearNonIdColumns(_images.length);
           }
@@ -982,7 +980,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: TextButton(
                                   onPressed: () async {
                                     audioProvider.playSound("tap1.mp3");
-                                    final result = await showDialog(
+                                    await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return DrawingselectDialog(
@@ -992,9 +990,6 @@ class _GeneratePageState extends State<GeneratePage> {
                                         );
                                       },
                                     );
-                                    if (result == true) {
-                                      await loadDrawings();
-                                    }
                                   },
                                   style: TextButton.styleFrom(
                                     backgroundColor:

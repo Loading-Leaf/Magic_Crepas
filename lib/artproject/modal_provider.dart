@@ -382,6 +382,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                       });
                                       // 必要に応じて親Widgetにも通知したい場合は、Navigator.popで値を返す
                                       Navigator.of(context).pop(true);
+                                      Navigator.pushNamed(context, '/generate');
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
@@ -558,6 +559,7 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
               DrawingGalleryDatabaseHelper.instance.fetchDrawings();
           this.image = imageFile;
         });
+        Navigator.pushNamed(context, '/generate');
         // Navigator.pushNamed(context, '/generate'); // ← 削除
       } catch (e) {
         print('Error saving drawing: $e');

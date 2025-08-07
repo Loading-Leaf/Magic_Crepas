@@ -22,6 +22,7 @@ class _LessonColorPageState extends State<LessonColorPage> {
   //色1か色2が選ばれたときに設定
   bool select1 = true;
   bool select2 = false;
+  bool ismixed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,6 @@ class _LessonColorPageState extends State<LessonColorPage> {
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
-    bool ismixed = false;
 
     return PopScope(
         canPop: false, // false で無効化
