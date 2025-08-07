@@ -399,11 +399,13 @@ class _GeneratePageState extends State<GeneratePage> {
           return {'path': path, 'selectedphoto': drawingData};
         }).toList();
       });
+      print(_images[_images.length - 1]);
 
       // 最後に保存した描画データをセット
       if (_images.isNotEmpty) {
         drawingImageData = _images.last['drawing']; // 最後の画像を使用
         setState(() {
+          image = File(_images[_images.length - 1]['path']);
           if (_images.length > 1) {
             DatabaseHelper.instance.clearNonIdColumns(_images.length);
           }
@@ -430,9 +432,6 @@ class _GeneratePageState extends State<GeneratePage> {
           is_photo_flag = drawings.last["is_photo_flag"];
           drawingImageData =
               List<int>.from(drawings.last['drawing']); // 描画データを取得
-          if (drawings.last['photo'] != null && drawings.last['photo'] != "") {
-            image = File(drawings.last['photo']);
-          }
           if (drawings.length > 1) {
             DrawingDatabaseHelper.instance.clearNonIdColumns(drawings.length);
           }
@@ -978,16 +977,15 @@ class _GeneratePageState extends State<GeneratePage> {
                               Container(
                                 alignment: Alignment.centerRight,
                                 child: TextButton(
-                                  onPressed: () async {
+                                  onPressed: () {
                                     audioProvider.playSound("tap1.mp3");
-                                    await showDialog(
+                                    showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return DrawingselectDialog(
-                                          message1: "えをえらぶ",
-                                          message2: "絵を選ぶ",
-                                          message3: "Select Drawing",
-                                        );
+                                            message1: "えをえらぶ",
+                                            message2: "絵を選ぶ",
+                                            message3: "Select Drawing");
                                       },
                                     );
                                   },

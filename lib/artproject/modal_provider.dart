@@ -304,9 +304,8 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
   _DrawingSelectDialog() {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
-    final audioProvider = Provider.of<AudioProvider>(context, listen: false);
-    final languageProvider =
-        Provider.of<LanguageProvider>(context, listen: false);
+    final audioProvider = Provider.of<AudioProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
     double imageWidth = screenSize.width / 6 - 10;
     double imageHeight = imageWidth;
 
@@ -314,7 +313,8 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return StatefulBuilder(builder: (BuildContext context, setState) {
+          return StatefulBuilder(
+              builder: (BuildContext context, setStateDialog) {
             return Dialog(
                 child: Container(
                     width: screenSize.width * 0.8,
@@ -382,7 +382,6 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
                                       });
                                       // 必要に応じて親Widgetにも通知したい場合は、Navigator.popで値を返す
                                       Navigator.of(context).pop(true);
-                                      Navigator.pushNamed(context, '/generate');
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
@@ -559,7 +558,6 @@ class _DrawingselectDialogState extends State<DrawingselectDialog> {
               DrawingGalleryDatabaseHelper.instance.fetchDrawings();
           this.image = imageFile;
         });
-        Navigator.pushNamed(context, '/generate');
         // Navigator.pushNamed(context, '/generate'); // ← 削除
       } catch (e) {
         print('Error saving drawing: $e');
