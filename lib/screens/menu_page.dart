@@ -136,7 +136,7 @@ class _MenuPageState extends State<MenuPage> {
                               onTap: () {
                                 //ここに画面遷移などのイベントを書く。
                                 audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/prepare');
+                                Navigator.pushNamed(context, '/generate');
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(3.0),
@@ -173,6 +173,10 @@ class _MenuPageState extends State<MenuPage> {
                                 ),
                               ),
                             ),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
                             //パズル
                             GestureDetector(
                               onTap: () {
@@ -194,31 +198,6 @@ class _MenuPageState extends State<MenuPage> {
                                 ),
                               ),
                             ),
-                          ]),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            //レッスン
-                            GestureDetector(
-                              onTap: () {
-                                //ここに画面遷移などのイベントを書く。
-                                audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/lesson');
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(3.0),
-                                child: Container(
-                                  height: tile_size, // 縦長の場合
-                                  width: tile_size, // 縦長の場合
-                                  color: Colors.grey,
-                                  child: FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Image.asset(
-                                        'assets/ButtonImage/menu4.png'),
-                                  ),
-                                ),
-                              ),
-                            ),
                             //コミュニティ
                             GestureDetector(
                               onTap: () {
@@ -236,27 +215,6 @@ class _MenuPageState extends State<MenuPage> {
                                     fit: BoxFit.fill,
                                     child: Image.asset(
                                         'assets/ButtonImage/menu5.png'),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            //記録
-                            GestureDetector(
-                              onTap: () {
-                                //ここに画面遷移などのイベントを書く。
-                                audioProvider.playSound("tap1.mp3");
-                                Navigator.pushNamed(context, '/record');
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(3.0),
-                                child: Container(
-                                  height: tile_size, // 縦長の場合
-                                  width: tile_size, // 縦長の場合
-                                  color: Colors.grey,
-                                  child: FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Image.asset(
-                                        'assets/ButtonImage/menu6.png'),
                                   ),
                                 ),
                               ),

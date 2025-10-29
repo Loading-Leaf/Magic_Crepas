@@ -5,8 +5,6 @@ import 'dart:ui' as ui;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import "package:ai_art/artproject/drawing_database_helper.dart";
-import "package:ai_art/artproject/drawing_gallery_database_helper.dart";
-
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io'; // File クラスを使うためのインポート
@@ -16,14 +14,14 @@ import 'package:provider/provider.dart';
 import 'package:ai_art/artproject/audio_provider.dart';
 import 'package:ai_art/artproject/effect_utils.dart';
 import 'package:ai_art/artproject/language_provider.dart';
+import "package:ai_art/artproject/drawing_database_helper.dart";
 
 import 'dart:async';
 
 import 'dart:math' as math;
 
 class DrawingPage extends StatefulWidget {
-  final int drawing_mode; //1: お絵描き, 2: AI生成
-  const DrawingPage({super.key, required this.drawing_mode});
+  const DrawingPage({super.key});
 
   @override
   _DrawingPageState createState() => _DrawingPageState();
@@ -138,7 +136,6 @@ class _DrawingPageState extends State<DrawingPage> {
   void initState() {
     super.initState();
     _initializeDatabase(); // データベースの初期化を呼び出す
-    _initializeDatabase2();
   }
 
   @override
@@ -183,15 +180,6 @@ class _DrawingPageState extends State<DrawingPage> {
   Future<void> _initializeDatabase() async {
     try {
       _database = await DrawingDatabaseHelper.instance.database; // データベースを初期化
-    } catch (e) {
-      print('Error initializing database: $e');
-    }
-  }
-
-  Future<void> _initializeDatabase2() async {
-    try {
-      _database =
-          await DrawingGalleryDatabaseHelper.instance.database; // データベースを初期化
     } catch (e) {
       print('Error initializing database: $e');
     }
@@ -1028,6 +1016,29 @@ class _DrawingPageState extends State<DrawingPage> {
                   ),
 
                   SizedBox(width: 10), // スペースを追加
+                  //写真から選ぶ際、端末上の写真ライブラリから選んで、描画の準備画面に遷移するようにしている
+                  TextButton(
+                    onPressed: () async {
+                      audioProvider.playSound("tap2.mp3");
+                      pickAndProcessImage();
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.locallanguage == 2
+                          ? "Select photo"
+                          : languageProvider.isHiragana
+                              ? 'しゃしんからえらぶ'
+                              : '写真から選ぶ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 10), // スペースを追加
+                  //できた場合、スクリーンショットを取得して絵を格納するSQLiteに格納
                   TextButton(
                     onPressed: () async {
                       await _takeScreenshot();
@@ -1039,6 +1050,24 @@ class _DrawingPageState extends State<DrawingPage> {
                     ),
                     child: Text(
                       languageProvider.locallanguage == 2 ? "Ready" : 'できたよ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontsize,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 10), // スペースを追加
+                  //できた場合、スクリーンショットを取得して絵を格納するSQLiteに格納
+                  TextButton(
+                    onPressed: () async {
+                      await _takeScreenshot();
+                      audioProvider.playSound("tap2.mp3");
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 255, 67, 195),
+                    ),
+                    child: Text(
+                      languageProvider.locallanguage == 2 ? "Save" : '保存する',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontsize,
@@ -1096,21 +1125,9 @@ class _DrawingPageState extends State<DrawingPage> {
       final filePath = path.join(directory.path, filename);
       File file = File(filePath);
       await file.writeAsBytes(pngBytes);
-      Map<String, dynamic> drawingData = {
-        'drawingimage': file.path,
-        'title': "",
-        'emotion': "", // null でも可
-        'detailemotion': "",
-        'time': "",
-      };
 
       try {
-        if (widget.drawing_mode == 1) {
-          await DrawingGalleryDatabaseHelper.instance
-              .insertDrawing(drawingData);
-        } else {
-          await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
-        }
+        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
         print('Drawing saved to database');
       } catch (e) {
         print('Error saving drawing: $e');
@@ -1139,21 +1156,8 @@ class _DrawingPageState extends State<DrawingPage> {
 
       // データベースの初期化と保存
       await _initializeDatabase();
-      Map<String, dynamic> drawingData = {
-        'drawingimage': filePath,
-        'title': "",
-        'emotion': "", // null でも可
-        'detailemotion': "",
-        'time': "",
-      };
       try {
-        if (widget.drawing_mode == 1) {
-          await DrawingGalleryDatabaseHelper.instance
-              .insertDrawing(drawingData);
-        } else {
-          await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
-        }
-
+        await DrawingDatabaseHelper.instance.insertDrawing(pngBytes, isPhoto);
         Navigator.pushNamed(context, '/generate');
       } catch (e) {
         print('Error saving drawing: $e');

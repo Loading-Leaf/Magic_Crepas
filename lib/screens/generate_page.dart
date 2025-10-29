@@ -83,7 +83,7 @@ class _GeneratePageState extends State<GeneratePage> {
     }
   }
 
-  void _showDrawingSelectDialog() {
+  Future<void> _showDrawingDialog() async {
     Size screenSize = MediaQuery.sizeOf(context);
     double fontsize = screenSize.width / 74.6;
     final audioProvider = Provider.of<AudioProvider>(context, listen: false);
@@ -91,97 +91,7 @@ class _GeneratePageState extends State<GeneratePage> {
         Provider.of<LanguageProvider>(context, listen: false);
     double imageWidth = screenSize.width / 6 - 10;
     double imageHeight = imageWidth;
-
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, setStateDialog) {
-            return Dialog(
-              child: Container(
-                width: screenSize.width * 0.8,
-                height: screenSize.height * 0.9,
-                padding: const EdgeInsets.all(10.0),
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Text(
-                    languageProvider.locallanguage == 2
-                        ? "Drawings"
-                        : '今まで描いた絵',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontsize,
-                    ),
-                  ),
-                  FutureBuilder<List<Map<String, dynamic>>>(
-                    future: _drawingsFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        print(snapshot.data);
-                        return Text('Error: {snapshot.error}');
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Text('まだないよ😢');
-                      } else {
-                        List<Map<String, dynamic>> drawings = snapshot.data!;
-                        return Expanded(
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            itemCount: drawings.length,
-                            itemBuilder: (context, index) {
-                              final outputImagePath =
-                                  drawings[index]['drawingimage'] as String?;
-                              if (outputImagePath == null) {
-                                return Container(
-                                  color: Colors.grey,
-                                  child: const Center(
-                                      child: Text("Invalid Image")),
-                                );
-                              }
-                              final outputImageFile = File(outputImagePath);
-                              return GestureDetector(
-                                onTap: () async {
-                                  audioProvider.playSound("tap2.mp3");
-                                  Uint8List pngBytes =
-                                      await outputImageFile.readAsBytes();
-                                  await DrawingDatabaseHelper.instance
-                                      .insertDrawing(pngBytes, 2);
-                                  Navigator.of(context).pop(true);
-                                  setStateDialog(() {
-                                    _drawingsFuture =
-                                        DrawingGalleryDatabaseHelper.instance
-                                            .fetchDrawings();
-                                  });
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(
-                                    outputImageFile,
-                                    width: imageWidth,
-                                    height: imageHeight,
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ]),
-              ),
-            );
-          },
-        );
-      },
-    );
+    int mode = 1; // デフォルトのモード, 2: 絵を選ぶ
   }
 
   // pickAndProcessImage も移植
@@ -1140,7 +1050,7 @@ class _GeneratePageState extends State<GeneratePage> {
                                 child: TextButton(
                                   onPressed: () async {
                                     audioProvider.playSound("tap1.mp3");
-                                    _showDrawingSelectDialog();
+                                    Navigator.pushNamed(context, '/drawing');
                                     // ダイアログが閉じられたら画像を再読み込みしたい場合は、
                                     // showDialogの戻り値を利用する形にすることも可能です。
                                   },
